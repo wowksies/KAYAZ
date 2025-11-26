@@ -370,6 +370,44 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
+const audio = document.getElementById("audio");
+const visualizer = document.getElementById("visualizer");
+
+// make bars
+const bars = 64; 
+for (let i = 0; i < bars; i++) {
+  const bar = document.createElement("div");
+  bar.className = "bar";
+  visualizer.appendChild(bar);
+}
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 256;
+const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+// connect audio
+const source = audioCtx.createMediaElementSource(audio);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+function animate() {
+  requestAnimationFrame(animate);
+  analyser.getByteFrequencyData(dataArray);
+
+  const barElements = document.getElementsByClassName("bar");
+  for (let i = 0; i < bars; i++) {
+    const height = dataArray[i] || 0;
+    barElements[i].style.height = height + "px";
+  }
+}
+
+audio.onplay = () => {
+  audioCtx.resume();
+  animate();
+};
+
+
 // --- Ripple effect for tap/click ---
 function createRipple(x, y) {
   const ripple = document.createElement('div');
