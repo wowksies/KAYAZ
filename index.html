@@ -17,25 +17,25 @@
         body, html {
             height: 100%;
             margin: 0;
-            padding: 0; /* cite: 136 */
+            padding: 0;
             background: none;
-            max-width: 100vw; /* cite: 230 */
-            overflow-x: hidden; /* cite: 230 */
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         body {
             min-height: 100vh;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* cite: 138, 139 */
-            background: linear-gradient(135deg, #1f2937 0%, #000000 50%, #1f2937 100%); /* cite: 137 */
-            overflow: hidden; /* cite: 139 */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1f2937 0%, #000000 50%, #1f2937 100%);
+            overflow: hidden;
         }
 
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box; /* cite: 138 */
+            box-sizing: border-box;
         }
 
         .profile-container {
@@ -45,68 +45,18 @@
             align-items: center;
             height: 100vh;
             min-height: 100vh;
-            z-index: 1; /* cite: 140 */
-        }
-
-        .stars {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .star {
-            position: absolute;
-            color: white;
-            font-size: 12px; /* cite: 141 */
-            opacity: 0.6;
-            animation: twinkle 3s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.3; /* cite: 142 */ }
-            100% { opacity: 0.8; }
-        }
-
-        .top-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0; /* cite: 143 */
-            height: 4px;
-            background-color: #dc2626;
-        }
-
-        .volume-icon {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            color: white;
-            padding: 8px; /* cite: 144 */
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .volume-icon:hover {
-            background-color: rgba(55, 65, 81, 0.5); /* cite: 145 */
-        }
-
-        .main-content {
-            text-align: center;
-            z-index: 10;
-            max-width: 400px;
-            padding: 0 16px; /* cite: 146 */
+            z-index: 1;
         }
 
         .glass-card {
             position: relative;
             z-index: 2;
-            background: rgba(24, 28, 47, 0.85); /* cite: 147 */
-            box-shadow: 0 8px 40px 0 #7c2fff33, 0 1.5px 8px 0 #00000044; /* cite: 147 */
+            background: rgba(24, 28, 47, 0.85);
+            box-shadow: 0 8px 40px 0 #7c2fff33, 0 1.5px 8px 0 #00000044;
             border-radius: 24px;
             padding: 40px 32px 32px 32px;
             display: flex;
-            flex-direction: column; /* cite: 148 */
+            flex-direction: column;
             align-items: center;
             min-width: 340px;
             min-height: 420px;
@@ -116,93 +66,56 @@
         .glass-reflection {
             position: absolute;
             top: 0;
-            left: 0; /* cite: 149 */
+            left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
             background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 60%, rgba(255,255,255,0) 100%);
             opacity: 0.7;
             z-index: 1;
-            transition: opacity 0.3s; /* cite: 150 */
+            transition: opacity 0.3s;
             border-radius: 24px;
-        }
-
-        .glass-card:hover .glass-reflection {
-            opacity: 1;
         }
 
         .profile-picture {
             position: relative;
-            width: 128px; /* cite: 151 */
-            height: 128px; /* cite: 151 */
+            width: 128px;
+            height: 128px;
             margin-bottom: 16px;
             transition: transform 0.2s cubic-bezier(.25,.8,.25,1);
             will-change: transform;
             z-index: 2;
-            perspective: 600px; /* cite: 152, 182 */
-            transition: box-shadow 0.2s, filter 0.2s; /* cite: 152 */
-            /* box-shadow: 0 0 0 2px #a855f7, 0 0 12px 2px #a855f780; */
+            perspective: 600px;
+            transition: box-shadow 0.2s, filter 0.2s;
         }
 
         .profile-picture img {
-            width: 128px; /* cite: 153 */
-            height: 128px; /* cite: 153 */
+            width: 128px;
+            height: 128px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid rgba(255,255,255,0.5);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.2); /* cite: 154 */
-        }
-
-        .profile-picture:hover {
-            /* box-shadow: 0 0 0 3px #a855f7, 0 0 24px 6px #a855f7cc; */
-            filter: brightness(1.1) saturate(1.1); /* cite: 155 */
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
         }
 
         .profile-picture.tilt {
-            transition: transform 0.1s cubic-bezier(.25,.8,.25,1); /* cite: 182 */
-        }
-
-        .username-section {
-            margin-bottom: 16px; /* cite: 156 */
-        }
-
-        .username {
-            color: #fff;
-            font-size: 2.2rem;
-            font-weight: bold;
-            text-align: center;
-            letter-spacing: 0.04em;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2); /* cite: 157 */
-        }
-
-        .welcome-text {
-            color: #d1d5db;
-            font-size: 18px;
-        }
-
-        .location {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px; /* cite: 158 */
-            color: #d1d5db;
-            margin-bottom: 24px;
+            transition: transform 0.1s cubic-bezier(.25,.8,.25,1);
         }
 
         .status-card {
             background: rgba(31, 41, 55, 0.8);
             border: 1px solid #374151;
-            border-radius: 16px; /* cite: 159 */
+            border-radius: 16px;
             margin: 0 auto 24px;
             max-width: 320px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .status-content {
-            padding: 16px; /* cite: 160 */
-            display: flex; /* cite: 160 */
-            align-items: center; /* cite: 160 */
-            gap: 12px; /* cite: 160 */
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .status-avatar {
@@ -210,23 +123,18 @@
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            background: linear-gradient(135deg, #6b7280, #9ca3af); /* cite: 161 */
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
             flex-shrink: 0;
-            box-shadow: 0 0 0 2px #a855f7, 0 0 12px 2px #a855f780; /* cite: 161 */
-            transition: box-shadow 0.2s, filter 0.2s; /* cite: 162 */
+            box-shadow: 0 0 0 2px #a855f7, 0 0 12px 2px #a855f780;
+            transition: box-shadow 0.2s, filter 0.2s;
         }
 
-        .status-avatar:hover {
-            box-shadow: 0 0 0 3px #a855f7, 0 0 24px 6px #a855f7cc; /* cite: 163 */
-            filter: brightness(1.15) saturate(1.2); /* cite: 163 */
-        }
-        
         @keyframes spin {
           0% { transform: rotate(0deg);}
           100% { transform: rotate(360deg);}
         }
         .status-avatar.spin {
-          animation: spin 1.2s linear infinite; /* cite: 183 */
+          animation: spin 1.2s linear infinite;
         }
 
         .status-info {
@@ -235,32 +143,20 @@
         }
 
         .status-name {
-            display: flex; /* cite: 164 */
-            align-items: center; /* cite: 164 */
+            display: flex;
+            align-items: center;
             gap: 8px;
             margin-bottom: 4px;
         }
 
         .status-name span {
             color: white;
-            font-weight: 600; /* cite: 165 */
-        }
-
-        .checkmark {
-            color: #10b981;
+            font-weight: 600;
         }
 
         .status-text {
             color: #9ca3af;
-            font-size: 14px; /* cite: 166 */
-        }
-
-        .dnd-indicator {
-            background-color: #dc2626;
-            border-radius: 50%;
-            padding: 4px;
-            color: white;
-            flex-shrink: 0; /* cite: 167 */
+            font-size: 14px;
         }
 
         .social-icons {
@@ -268,7 +164,7 @@
             align-items: center;
             justify-content: center;
             gap: 24px;
-            margin-top: 24px; /* cite: 168 */
+            margin-top: 24px;
         }
 
         .social-icons a {
@@ -279,81 +175,8 @@
             height: 40px;
             border-radius: 50%;
             background: rgba(255,255,255,0.12);
-            transition: background 0.2s, transform 0.2s, box-shadow 0.2s, filter 0.2s; /* cite: 169 */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* cite: 170 */
-        }
-
-        .social-icons a:hover {
-            background: rgba(255,255,255,0.25);
-            transform: scale(1.12); /* cite: 171 */
-            box-shadow: 0 0 0 3px #a855f7, 0 0 24px 6px #a855f7cc; /* cite: 171 */
-            filter: brightness(1.15) saturate(1.2); /* cite: 172 */
-        }
-
-        .social-icons img, .social-icons svg {
-            width: 28px;
-            height: 28px;
-            display: block; /* cite: 173 */
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 2px 16px rgba(179,0,0,0.08);
-            padding: 2rem 1.5rem; /* cite: 174 */
-        }
-
-        header h1 {
-            color: #b30000;
-            font-size: 2rem;
-            margin: 0 0 1.5rem 0;
-            text-align: center;
-            font-weight: 700; /* cite: 175 */
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .avatar {
-            width: 80px; /* cite: 176 */
-            height: 80px; /* cite: 176 */
-            border-radius: 50%;
-            background: #eee;
-            border: 3px solid #b30000;
-            box-shadow: 0 2px 8px rgba(179,0,0,0.05); /* cite: 177 */
-        }
-
-        .info {
-            flex: 1;
-        }
-
-        #username {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.3rem;
-            color: #b30000; /* cite: 178 */
-        }
-
-        #status, #activity {
-            margin: 0.2rem 0;
-            color: #b30000;
-            font-size: 1rem;
-            opacity: 0.8; /* cite: 179 */
-        }
-
-        #discord-pfp {
-            border-radius: 50%;
-            border: 2px solid #7289da;
-            margin-bottom: 10px; /* cite: 180 */
-        }
-
-        #discord-status, #discord-activity {
-            font-size: 1.2em;
-            margin: 5px 0; /* cite: 181 */
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s, filter 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .neon-bg-text {
@@ -363,7 +186,7 @@
             transform: translate(-50%, -50%);
             font-size: 13vw;
             font-family: 'SuperMario256', 'Segoe UI', Arial, sans-serif;
-            color: #a855f7; /* cite: 184 */
+            color: #a855f7;
             opacity: 0.13;
             pointer-events: none;
             user-select: none;
@@ -372,8 +195,8 @@
                 0 0 16px #a855f7,
                 0 0 32px #a855f7,
                 0 0 64px #a855f7,
-                0 0 128px #a855f7; /* cite: 185 */
-            z-index: 0; /* cite: 186 */
+                0 0 128px #a855f7;
+            z-index: 0;
         }
 
         .music-btn {
@@ -382,46 +205,38 @@
             left: 32px;
             z-index: 10;
             background: rgba(31, 41, 55, 0.95);
-            border: 3px solid #a855f7; /* cite: 187 */
+            border: 3px solid #a855f7;
             border-radius: 50%;
             width: 64px;
             height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 32px 8px #a855f7cc, 0 0 64px 16px #a855f744; /* cite: 188 */
-            cursor: pointer; /* cite: 189 */
-            transition: box-shadow 0.2s, background 0.2s, border-color 0.2s, transform 0.2s; /* cite: 189 */
+            box-shadow: 0 0 32px 8px #a855f7cc, 0 0 64px 16px #a855f744;
+            cursor: pointer;
+            transition: box-shadow 0.2s, background 0.2s, border-color 0.2s, transform 0.2s;
             outline: none;
             overflow: visible;
         }
 
-        .music-btn:active {
-            transform: scale(0.92) rotate(-10deg); /* cite: 190 */
-        }
-
-        .music-btn.noactive:active {
-            transform: none; /* cite: 190 */
-        }
-
         .music-btn.on {
             background: rgba(168, 85, 247, 0.25);
-            border-color: #a855f7; /* cite: 191 */
-            box-shadow: 0 0 48px 16px #a855f7ee, 0 0 96px 24px #a855f7cc; /* cite: 191 */
+            border-color: #a855f7;
+            box-shadow: 0 0 48px 16px #a855f7ee, 0 0 96px 24px #a855f7cc;
         }
 
         .music-btn.off {
-            background: rgba(31, 41, 55, 0.95); /* cite: 192 */
-            border-color: #374151; /* cite: 192 */
-            box-shadow: 0 0 12px 2px #37415180; /* cite: 192 */
-            filter: grayscale(0.7) brightness(0.7); /* cite: 192 */
+            background: rgba(31, 41, 55, 0.95);
+            border-color: #374151;
+            box-shadow: 0 0 12px 2px #37415180;
+            filter: grayscale(0.7) brightness(0.7);
         }
 
         .music-note {
             font-size: 2.3em;
-            color: #fff; /* cite: 193 */
-            transition: color 0.2s, filter 0.2s, text-shadow 0.2s; /* cite: 193 */
-            text-shadow: 0 0 16px #a855f7, 0 0 32px #a855f7; /* cite: 194 */
+            color: #fff;
+            transition: color 0.2s, filter 0.2s, text-shadow 0.2s;
+            text-shadow: 0 0 16px #a855f7, 0 0 32px #a855f7;
         }
 
         .music-btn.off .music-note {
@@ -434,246 +249,72 @@
             position: absolute;
             left: 100%;
             top: 50%;
-            transform: translateY(-50%) scaleX(0.7); /* cite: 195 */
+            transform: translateY(-50%) scaleX(0.7);
             background: rgba(31,41,55,0.95);
             border-radius: 16px;
             box-shadow: 0 0 16px 2px #a855f7cc;
             padding: 12px 18px;
             margin-left: 18px;
             opacity: 0;
-            pointer-events: none; /* cite: 196 */
+            pointer-events: none;
             transition: opacity 0.25s, transform 0.25s;
             display: flex;
             align-items: center;
             min-width: 120px;
-            z-index: 20; /* cite: 197 */
-        }
-
-        .music-btn:hover .music-volume-compartment,
-        .music-btn:focus-within .music-volume-compartment {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(-50%) scaleX(1);
+            z-index: 20;
         }
 
         #music-volume {
             width: 90px;
-            accent-color: #a855f7; /* cite: 198 */
-            background: transparent; /* cite: 198 */
+            accent-color: #a855f7;
+            background: transparent;
             border-radius: 8px;
             outline: none;
             height: 4px;
             margin: 0 0 0 0;
-            box-shadow: 0 0 8px #a855f7cc; /* cite: 199 */
-            transition: box-shadow 0.2s; /* cite: 199 */
-        }
-
-        #music-volume:focus {
-            box-shadow: 0 0 16px #a855f7cc;
+            box-shadow: 0 0 8px #a855f7cc;
+            transition: box-shadow 0.2s;
         }
 
         .enter-overlay {
             position: fixed;
             top: 0; left: 0;
-            right: 0; bottom: 0; /* cite: 200 */
+            right: 0; bottom: 0;
             width: 100vw;
             height: 100vh;
             z-index: 1000;
             background: rgba(20, 20, 30, 0.7);
             backdrop-filter: blur(12px);
             display: flex;
-            align-items: center; /* cite: 201 */
-            justify-content: center; /* cite: 201 */
+            align-items: center;
+            justify-content: center;
             transition: opacity 0.6s cubic-bezier(.4,0,.2,1), visibility 0.6s cubic-bezier(.4,0,.2,1);
         }
 
         .enter-overlay.hide {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* cite: 202 */
+            pointer-events: none;
         }
 
         .enter-glass-btn {
             background: rgba(255,255,255,0.13);
             border-radius: 24px;
-            box-shadow: 0 0 32px 8px #fff8, 0 0 64px 16px #a855f7cc; /* cite: 203 */
-            border: 1.5px solid #fff6; /* cite: 203 */
+            box-shadow: 0 0 32px 8px #fff8, 0 0 64px 16px #a855f7cc;
+            border: 1.5px solid #fff6;
             padding: 36px 64px;
             font-size: 2.5rem;
             color: #fff;
-            font-family: 'SuperMario256', 'Segoe UI', Arial, sans-serif; /* cite: 204 */
-            text-shadow: 0 0 24px #fff, 0 0 48px #a855f7; /* cite: 204 */
+            font-family: 'SuperMario256', 'Segoe UI', Arial, sans-serif;
+            text-shadow: 0 0 24px #fff, 0 0 48px #a855f7;
             cursor: pointer;
             user-select: none;
-            transition: box-shadow 0.2s, background 0.2s, transform 0.2s; /* cite: 205 */
-            outline: none; /* cite: 205 */
+            transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
+            outline: none;
             display: flex;
             align-items: center;
             justify-content: center;
             letter-spacing: 0.08em;
-        }
-
-        .enter-glass-btn:hover, .enter-glass-btn:focus {
-            background: rgba(255,255,255,0.22); /* cite: 206 */
-            box-shadow: 0 0 48px 16px #fff, 0 0 96px 24px #a855f7cc; /* cite: 206 */
-            transform: scale(1.04); /* cite: 207 */
-        }
-
-        /* --- Responsive Design --- */
-        @media (max-width: 900px) {
-            .glass-card {
-                min-width: 220px;
-                max-width: 98vw;
-                padding: 32px 8vw 24px 8vw; /* cite: 208 */
-            }
-            .profile-picture {
-                width: 96px; /* cite: 209 */
-                height: 96px; /* cite: 209 */
-            }
-            .profile-picture img {
-                width: 96px; /* cite: 210 */
-                height: 96px; /* cite: 210 */
-            }
-            .status-card {
-                max-width: 98vw;
-            }
-            .main-content {
-                max-width: 98vw;
-                padding: 0 2vw; /* cite: 211 */
-            }
-            .neon-bg-text {
-                font-size: 10vw; /* cite: 212 */
-            }
-            .music-btn {
-                width: 52px;
-                height: 52px;
-                top: 16px;
-                left: 16px; /* cite: 213 */
-            }
-            .music-note {
-                font-size: 1.5em; /* cite: 213 */
-            }
-            .music-volume-compartment {
-                min-width: 80px; /* cite: 214 */
-                padding: 8px 10px; /* cite: 214 */
-                margin-left: 8px;
-            }
-            #music-volume {
-                width: 60px; /* cite: 215 */
-            }
-            .enter-glass-btn {
-                font-size: 1.3rem;
-                padding: 18px 24px; /* cite: 216 */
-            }
-        }
-
-        @media (max-width: 700px) {
-          .profile-container {
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: auto;
-            min-height: 100vh; /* cite: 235 */
-          }
-          .glass-card {
-            min-width: 90vw; /* cite: 236 */
-            min-height: 340px; /* cite: 236 */
-            padding: 24px 8px 24px 8px; /* cite: 236 */
-          }
-          .side-arrow {
-            left: 50%;
-            top: 100%;
-            transform: translate(-50%, 32px); /* cite: 237 */
-            margin-top: 0;
-          }
-          .side-panel {
-            left: 50%;
-            top: 100%;
-            transform: translate(-50%, 32px) scale(0.95); /* cite: 238 */
-            margin-top: 0;
-          }
-          .side-panel.active {
-            transform: translate(-50%, 32px) scale(1); /* cite: 238 */
-          }
-        }
-        
-        @media (max-width: 600px) {
-            .glass-card {
-                margin-top: 22vw;
-                z-index: 5;
-                min-width: 0;
-                max-width: 98vw;
-                padding: 12px 2vw 10px 2vw; /* cite: 217 */
-                border-radius: 10px;
-                box-shadow: 0 4px 24px 0 #7c2fff33, 0 1.5px 8px 0 #00000044; /* cite: 218 */
-            }
-            .profile-picture {
-                width: 80px;
-                height: 80px;
-                margin-bottom: 10px; /* cite: 219 */
-            }
-            .profile-picture img {
-                width: 80px;
-                height: 80px; /* cite: 220 */
-            }
-            .username {
-                font-size: 1.3rem;
-                margin-bottom: 2px;
-            }
-            .status-card {
-                border-radius: 8px; /* cite: 221 */
-                margin-bottom: 10px; /* cite: 221 */
-                max-width: 100vw;
-            }
-            .status-content {
-                padding: 7px;
-                gap: 5px; /* cite: 222 */
-            }
-            .status-avatar {
-                width: 26px;
-                height: 26px;
-            }
-            .social-icons {
-                gap: 8px; /* cite: 223 */
-                margin-top: 8px; /* cite: 223 */
-            }
-            .social-icons a {
-                width: 28px;
-                height: 28px; /* cite: 224 */
-            }
-            .social-icons img, .social-icons svg {
-                width: 18px;
-                height: 18px; /* cite: 225 */
-            }
-            .neon-bg-text {
-                font-size: 12vw;
-                letter-spacing: 0.08em;
-                opacity: 0.10;
-                top: 62%; /* cite: 226 */
-            }
-            .music-btn {
-                width: 36px;
-                height: 36px;
-                top: 10px;
-                left: 10px;
-                z-index: 10; /* cite: 227 */
-            }
-            .music-note {
-                font-size: 1em; /* cite: 227 */
-            }
-            .music-volume-compartment {
-                min-width: 44px; /* cite: 228 */
-                padding: 3px 4px; /* cite: 228 */
-                margin-left: 2px;
-            }
-            #music-volume {
-                width: 30px; /* cite: 229 */
-            }
-            .enter-glass-btn {
-                font-size: 0.9rem;
-                padding: 8px 10px;
-                border-radius: 10px;
-            }
         }
 
         .side-arrow {
@@ -684,14 +325,14 @@
             background: #7c2fff;
             color: #fff;
             border: none;
-            border-radius: 50%; /* cite: 231 */
+            border-radius: 50%;
             width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.5em; /* cite: 232 */
+            font-size: 1.5em;
         }
 
         .side-panel {
@@ -703,7 +344,7 @@
             background: #181c2f;
             color: #fff;
             border-radius: 12px;
-            box-shadow: 0 0 12px 2px #7c2fff33; /* cite: 233 */
+            box-shadow: 0 0 12px 2px #7c2fff33;
             padding: 16px;
             opacity: 0;
             pointer-events: none;
@@ -711,32 +352,25 @@
 
         .side-panel.active {
             opacity: 1;
-            pointer-events: auto; /* cite: 234 */
+            pointer-events: auto;
         }
 
         .info-tooltip-btn {
             display: block;
-            margin: 32px auto 0 auto; /* cite: 239 */
+            margin: 32px auto 0 auto;
             background: rgba(24, 28, 47, 0.85);
             color: #fff;
             border: 2px solid #a855f7;
             border-radius: 50%;
             width: 40px;
-            height: 40px; /* cite: 240 */
+            height: 40px;
             font-size: 1.5em;
             font-family: inherit;
             cursor: pointer;
             box-shadow: 0 2px 12px #a855f7cc;
-            transition: background 0.2s, box-shadow 0.2s, border-color 0.2s; /* cite: 241 */
-            position: relative; /* cite: 241 */
+            transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
             z-index: 10;
-        }
-
-        .info-tooltip-btn:hover,
-        .info-tooltip-btn:focus {
-            background: rgba(168, 85, 247, 0.25);
-            border-color: #fff;
-            box-shadow: 0 0 24px 6px #a855f7cc; /* cite: 242 */
         }
 
         .info-tooltip-text {
@@ -746,49 +380,34 @@
             transform: translateX(-50%) translateY(-120%) scale(0.98);
             background: rgba(24, 28, 47, 0.95);
             color: #fff;
-            padding: 12px 20px; /* cite: 243 */
+            padding: 12px 20px;
             border-radius: 16px;
             box-shadow: 0 2px 16px #a855f7cc;
             font-size: 1rem;
             white-space: nowrap;
             pointer-events: none;
             z-index: 20;
-            opacity: 0; /* cite: 244 */
-            transition: opacity 0.32s cubic-bezier(.4,0,.2,1), transform 0.32s cubic-bezier(.4,0,.2,1), visibility 0.32s cubic-bezier(.4,0,.2,1); /* cite: 244 */
-            visibility: hidden; /* cite: 245 */
+            opacity: 0;
+            transition: opacity 0.32s cubic-bezier(.4,0,.2,1), transform 0.32s cubic-bezier(.4,0,.2,1), visibility 0.32s cubic-bezier(.4,0,.2,1);
+            visibility: hidden;
         }
 
         .info-tooltip-btn:hover + .info-tooltip-text,
         .info-tooltip-btn:focus + .info-tooltip-text {
             opacity: 1;
             transform: translateX(-50%) translateY(-170%) scale(1.04);
-            visibility: visible; /* cite: 246 */
+            visibility: visible;
         }
 
-        @media (max-width: 700px) {
-            .info-tooltip-btn {
-                width: 32px;
-                height: 32px;
-                font-size: 1.1em;
-                margin-top: 18px; /* cite: 247 */
-            }
-            .info-tooltip-text {
-                font-size: 0.9em;
-                padding: 8px 12px; /* cite: 248 */
-            }
-        }
-
-        /* Shiny animated username effect */
         .shiny-text {
             position: relative;
-            color: #b5b5b5; /* cite: 249 */
-            /* Always-visible grey base */
-            font-family: 'SuperMario256', 'Segoe UI', Arial, sans-serif; /* cite: 249 */
+            color: #b5b5b5;
+            font-family: 'SuperMario256', 'Segoe UI', Arial, sans-serif;
             font-size: 2.2rem;
             font-weight: 900;
             letter-spacing: 0.04em;
             text-align: center;
-            display: inline-block; /* cite: 250 */
+            display: inline-block;
         }
 
         .shiny-text::after {
@@ -796,21 +415,21 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            color: transparent; /* cite: 251 */
+            color: transparent;
             background: linear-gradient(
                 120deg,
                 rgba(255, 255, 255, 0) 30%,
                 #fff 48%,
                 #fff 52%,
                 rgba(255, 255, 255, 0) 70%
-            ); /* cite: 252 */
-            background-size: 200% 100%; /* cite: 252 */
+            );
+            background-size: 200% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             text-fill-color: transparent;
             animation: shine 1.5s linear infinite;
-            pointer-events: none; /* cite: 253 */
+            pointer-events: none;
         }
 
         @keyframes shine {
@@ -818,15 +437,10 @@
                 background-position: 100%;
             }
             100% {
-                background-position: -100%; /* cite: 254 */
+                background-position: -100%;
             }
         }
 
-        .shiny-text.disabled {
-            animation: none;
-        }
-        
-        /* Star Border Animation Example CSS */
         .star-border-container {
             display: inline-block;
             position: relative;
@@ -838,13 +452,13 @@
             position: absolute;
             width: 300%;
             height: 50%;
-            opacity: 0.7; /* cite: 256 */
+            opacity: 0.7;
             bottom: -12px;
             right: -250%;
             border-radius: 50%;
             background: radial-gradient(circle, white, transparent 10%);
-            animation: star-movement-bottom 6s linear infinite alternate; /* cite: 257 */
-            z-index: 0; /* cite: 257 */
+            animation: star-movement-bottom 6s linear infinite alternate;
+            z-index: 0;
         }
 
         .border-gradient-top {
@@ -855,38 +469,38 @@
             top: -12px;
             left: -250%;
             border-radius: 50%;
-            background: radial-gradient(circle, white, transparent 10%); /* cite: 258 */
+            background: radial-gradient(circle, white, transparent 10%);
             animation: star-movement-top 6s linear infinite alternate;
             z-index: 0;
         }
 
         .inner-content {
             position: relative;
-            border: 1px solid #222; /* cite: 259 */
+            border: 1px solid #222;
             background: #000;
             color: white;
             font-size: 16px;
             text-align: center;
             padding: 16px 26px;
             border-radius: 20px;
-            z-index: 1; /* cite: 260 */
+            z-index: 1;
         }
 
         @keyframes star-movement-bottom {
             0% {
                 transform: translate(0%, 0%);
-                opacity: 1; /* cite: 261 */
+                opacity: 1;
             }
             100% {
                 transform: translate(-100%, 0%);
-                opacity: 0; /* cite: 262 */
+                opacity: 0;
             }
         }
 
         @keyframes star-movement-top {
             0% {
                 transform: translate(0%, 0%);
-                opacity: 1; /* cite: 263 */
+                opacity: 1;
             }
             100% {
                 transform: translate(100%, 0%);
@@ -897,7 +511,7 @@
         #particles-bg {
             position: fixed;
             top: 0;
-            left: 0; /* cite: 264 */
+            left: 0;
             width: 100vw;
             height: 100vh;
             z-index: -1;
@@ -905,11 +519,11 @@
         }
         #particles-bg canvas {
             width: 100vw !important;
-            height: 100vh !important; /* cite: 265 */
+            height: 100vh !important;
             display: block;
             position: absolute;
             top: 0; left: 0;
-            z-index: -1; /* cite: 266 */
+            z-index: -1;
             pointer-events: none;
         }
 
@@ -918,12 +532,12 @@
             position: fixed;
             width: 50px;
             height: 50px;
-            border-radius: 50%; /* cite: 267 */
-            background: rgba(180, 100, 255, 0.3); /* cite: 267 */
+            border-radius: 50%;
+            background: rgba(180, 100, 255, 0.3);
             pointer-events: none;
             transform: scale(0);
             animation: ripple-anim 0.6s linear;
-            z-index: 9999; /* cite: 268 */
+            z-index: 9999;
         }
 
         @keyframes ripple-anim {
@@ -1007,11 +621,12 @@
     </div>
     
     <script>
+        // --- Main DOM Manipulation Script (runs after all HTML elements are loaded) ---
         document.addEventListener('DOMContentLoaded', function() {
             const userId = "747411610389446747";
             const apiUrl = \`https://lanyard.rest/v1/users/${userId}\`;
 
-            // Music control logic
+            // Elements
             const musicBtn = document.getElementById('music-toggle');
             const musicIcon = document.getElementById('music-icon');
             const bgMusic = document.getElementById('bg-music');
@@ -1019,20 +634,73 @@
             const musicCompartment = document.querySelector('.music-volume-compartment');
             let musicOn = true;
             let hideCompartmentTimeout = null;
+            const enterOverlay = document.getElementById('enter-overlay');
+            const enterBtn = document.getElementById('enter-btn');
+            
+            // --- ENTER OVERLAY LOGIC (The primary function that makes the site "work") ---
+            if (enterOverlay && enterBtn) {
+                // Pause music until user enters (Important: music.mp3 must be in the same directory)
+                if (bgMusic) bgMusic.pause();
 
-            // Prevent skew on slider drag
-            if (musicBtn && musicVolume) {
-                musicVolume.addEventListener('mousedown', function() {
-                    musicBtn.classList.add('noactive');
+                // Hide overlay and start music on click
+                enterBtn.addEventListener('click', function() {
+                    enterOverlay.classList.add('hide');
+                    // Delay setting display: none until after the transition finishes
+                    setTimeout(() => {
+                        enterOverlay.style.display = 'none';
+                    }, 700);
+                    
+                    // Attempt to play music, which is now allowed after a user interaction
+                    if (bgMusic && musicOn) {
+                         // Use .play().catch to prevent uncaught promise rejection errors if playback fails
+                        bgMusic.play().catch(e => console.log("Music auto-play failed, but overlay is gone.", e));
+                    }
                 });
-                musicVolume.addEventListener('touchstart', function() {
-                    musicBtn.classList.add('noactive');
-                });
-                document.addEventListener('mouseup', function() {
-                    musicBtn.classList.remove('noactive');
-                });
-                document.addEventListener('touchend', function() {
-                    musicBtn.classList.remove('noactive');
+            }
+            
+            // --- MUSIC CONTROL LOGIC ---
+            function updateMusicBtn() {
+                if (musicOn) {
+                    musicBtn.classList.add('on');
+                    musicBtn.classList.remove('off');
+                    musicIcon.textContent = '\uD83C\uDFB5'; // 🎵
+                } else {
+                    musicBtn.classList.remove('on');
+                    musicBtn.classList.add('off');
+                    musicIcon.textContent = '\uD83C\uDFB5'; // 🎵
+                }
+            }
+
+            if (musicBtn && bgMusic) {
+                updateMusicBtn();
+                // Set initial volume
+                bgMusic.volume = musicVolume ? parseFloat(musicVolume.value) : 0.5; 
+                
+                if (musicVolume) {
+                    musicVolume.value = bgMusic.volume;
+                    musicVolume.addEventListener('input', function(e) {
+                        bgMusic.volume = parseFloat(this.value);
+                        e.stopPropagation();
+                    });
+                    // Prevent mousedown/touchstart on slider from triggering button animation
+                    musicVolume.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+                    musicVolume.addEventListener('touchstart', function(e) { e.stopPropagation(); });
+                }
+                
+                musicBtn.addEventListener('click', function(e) {
+                    // Don't toggle music or animate if clicking the slider
+                    if (e.target === musicVolume) return;
+                    
+                    musicOn = !musicOn;
+                    if (musicOn) {
+                        bgMusic.play().catch(e => console.log("Music play failed.", e));
+                    } else {
+                        bgMusic.pause();
+                    }
+                    
+                    musicBtn.classList.add('toggling');
+                    setTimeout(() => musicBtn.classList.remove('toggling'), 250);
+                    updateMusicBtn();
                 });
             }
 
@@ -1064,66 +732,24 @@
                 musicCompartment.addEventListener('mouseenter', showCompartment);
                 musicCompartment.addEventListener('mouseleave', hideCompartment);
             }
-
-            // Enter overlay logic
-            const enterOverlay = document.getElementById('enter-overlay');
-            const enterBtn = document.getElementById('enter-btn');
-            if (enterOverlay && enterBtn) {
-                // Pause music until user enters
-                if (bgMusic) bgMusic.pause();
-                // Hide overlay and start music on click
-                enterBtn.addEventListener('click', function() {
-                    enterOverlay.classList.add('hide');
-                    setTimeout(() => {
-                        enterOverlay.style.display = 'none';
-                    }, 700);
-                    if (bgMusic && musicOn) {
-                        bgMusic.play();
-                    }
+            
+            // Prevent skew on slider drag
+            if (musicBtn && musicVolume) {
+                musicVolume.addEventListener('mousedown', function() {
+                    musicBtn.classList.add('noactive');
+                });
+                musicVolume.addEventListener('touchstart', function() {
+                    musicBtn.classList.add('noactive');
+                });
+                document.addEventListener('mouseup', function() {
+                    musicBtn.classList.remove('noactive');
+                });
+                document.addEventListener('touchend', function() {
+                    musicBtn.classList.remove('noactive');
                 });
             }
 
-            function updateMusicBtn() {
-                if (musicOn) {
-                    musicBtn.classList.add('on');
-                    musicBtn.classList.remove('off');
-                    musicIcon.textContent = '\uD83C\uDFB5'; // 🎵
-                } else {
-                    musicBtn.classList.remove('on');
-                    musicBtn.classList.add('off');
-                    musicIcon.textContent = '\uD83C\uDFB5'; // 🎵
-                }
-            }
-
-            if (musicBtn && bgMusic) {
-                updateMusicBtn();
-                bgMusic.volume = musicVolume ? parseFloat(musicVolume.value) : 0.5;
-                if (musicVolume) {
-                    musicVolume.value = bgMusic.volume;
-                    musicVolume.addEventListener('input', function(e) {
-                        bgMusic.volume = parseFloat(this.value);
-                        // Prevent toggling animation if adjusting volume
-                        e.stopPropagation();
-                    });
-                    // Prevent mousedown/touchstart on slider from triggering button animation
-                    musicVolume.addEventListener('mousedown', function(e) { e.stopPropagation(); });
-                    musicVolume.addEventListener('touchstart', function(e) { e.stopPropagation(); });
-                }
-                musicBtn.addEventListener('click', function(e) {
-                    // Don't toggle music or animate if clicking the slider
-                    if (e.target === musicVolume) return;
-                    musicOn = !musicOn;
-                    if (musicOn) {
-                        bgMusic.play();
-                    } else {
-                        bgMusic.pause();
-                    }
-                    musicBtn.classList.add('toggling');
-                    setTimeout(() => musicBtn.classList.remove('toggling'), 250);
-                    updateMusicBtn();
-                });
-            }
-
+            // --- LANYARD API FETCH (Discord Status) ---
             fetch(apiUrl)
                 .then(res => res.json())
                 .then(({ data }) => {
@@ -1133,8 +759,6 @@
                     if (discordPfp) discordPfp.src = avatarUrl;
 
                     // Username
-                    const usernameElem = document.getElementById('username');
-                    if (usernameElem) usernameElem.textContent = data.discord_user.username;
                     const statusUsernameElem = document.getElementById('status-username');
                     if (statusUsernameElem) statusUsernameElem.textContent = data.discord_user.username;
 
@@ -1142,11 +766,10 @@
                     const statusIcon = document.getElementById('status-icon');
                     const statusTextElem = document.getElementById('status-text');
                     let activityText = "currently doing nothing";
-                    let iconUrl = "bored.png"; // Default to bored image
+                    let iconUrl = "bored.png"; // Fallback image
                     let spinning = false;
 
                     if (data.activities && data.activities.length > 0) {
-                        // Spotify (type 2)
                         const spotify = data.activities.find(act => act.type === 2);
                         if (spotify) {
                             activityText = \`Listening to ${spotify.details} by ${spotify.state}\`;
@@ -1155,7 +778,6 @@
                                 : avatarUrl;
                             spinning = true;
                         } else {
-                            // Game or other activity
                             const game = data.activities.find(act => act.type === 0 || act.type === 4);
                             if (game) {
                                 activityText = \`Playing ${game.name}\`;
@@ -1180,7 +802,7 @@
                     if (statusTextElem) statusTextElem.textContent = "Could not fetch Discord data.";
                 });
 
-            // 3D hover effect for profile picture
+            // --- 3D Hover Effect ---
             const pfp3d = document.getElementById('pfp-3d');
             if (pfp3d) {
                 pfp3d.addEventListener('mousemove', (e) => {
@@ -1200,7 +822,7 @@
                 });
             }
 
-            // Side panel toggle logic
+            // --- Side panel toggle logic ---
             const sideArrow = document.getElementById('side-arrow');
             const sidePanel = document.getElementById('side-panel');
             if (sideArrow && sidePanel) {
@@ -1210,9 +832,9 @@
             }
         });
 
-        // --- Interactive Particle Background using OGL ---
+        // --- Interactive Particle Background using OGL (Runs immediately) ---
         (function() {
-            if (!window.OGL) return; // OGL must be loaded
+            if (!window.OGL) return; 
 
             const defaultColors = ["#ffffff", "#ffffff", "#ffffff"];
             const hexToRgb = (hex) => {
@@ -1370,7 +992,6 @@
             }
             animationFrameId = requestAnimationFrame(update);
 
-            // Clean up on page unload
             window.addEventListener('beforeunload', () => {
                 cancelAnimationFrame(animationFrameId);
                 if (container.contains(gl.canvas)) {
@@ -1379,7 +1000,7 @@
             });
         })();
 
-        // --- Ripple effect for tap/click ---
+        // --- Ripple effect for tap/click (Runs immediately to attach global listeners) ---
         function createRipple(x, y) {
             const ripple = document.createElement('div');
             ripple.className = 'ripple';
