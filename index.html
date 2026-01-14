@@ -31,36 +31,28 @@
             color: white;
         }
 
-        /* --- BACKGROUND PARTICLES --- */
+        /* --- BACKGROUND LAYERS --- */
+        #visualizer-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0; /* Behind everything */
+            opacity: 0.3; /* Faded effect */
+            pointer-events: none;
+        }
+
         #particles-bg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            z-index: 0; pointer-events: none;
-        }
-
-        /* --- VISUALIZER (Fixed: Full Screen & Active) --- */
-        #visualizer {
-            position: fixed;
-            bottom: 0; left: 0;
-            width: 100%; height: 35vh;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center; /* Center bars */
-            gap: 2px;
-            z-index: 1;
+            z-index: 1; /* Above visualizer, below card */
             pointer-events: none;
-            padding: 0 5px;
         }
 
-        .bar {
-            flex-grow: 1;
-            /* Glass Effect Gradient */
-            background: linear-gradient(to top, rgba(50, 0, 0, 0), rgba(255, 0, 0, 0.5));
-            border-top: 1px solid rgba(255, 100, 100, 0.4);
-            border-radius: 4px 4px 0 0;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
-            transition: height 0.05s ease;
-            max-width: 20px; /* Prevent them getting too fat on wide screens */
+        /* BG Text */
+        .bg-text {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 15vw; color: #300000; opacity: 0.3; z-index: 1; pointer-events: none;
+            font-weight: 900;
         }
 
         /* --- MAIN CONTAINER --- */
@@ -70,10 +62,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            z-index: 5;
+            z-index: 10; /* Top layer */
         }
 
-        /* --- GLASS CARD (No Tilt, Added Shine) --- */
+        /* --- GLASS CARD --- */
         .glass-card {
             position: relative;
             background: rgba(20, 5, 5, 0.7);
@@ -85,17 +77,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow: hidden; /* For shine effect */
+            overflow: hidden;
         }
 
         /* Shine Effect */
         .glass-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -150%;
+            width: 100%; height: 100%;
             background: linear-gradient(
                 to right,
                 transparent 0%,
@@ -111,8 +101,8 @@
 
         @keyframes cardShine {
             0% { left: -150%; }
-            20% { left: 150%; } /* Fast pass */
-            100% { left: 150%; } /* Wait */
+            20% { left: 150%; }
+            100% { left: 150%; }
         }
 
         /* --- PROFILE PICTURE --- */
@@ -172,7 +162,7 @@
         .status-name { font-weight: bold; font-size: 0.9rem; color: #fff; }
         .status-text { font-size: 0.8rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* --- SKILLS SECTION --- */
+        /* --- SKILLS --- */
         .skills-container {
             display: flex;
             gap: 15px;
@@ -189,16 +179,14 @@
             transition: transform 0.2s;
             cursor: help;
         }
-        /* Devicon Colors */
         .devicon-html5-plain { color: #e34f26; }
         .devicon-css3-plain { color: #1572b6; }
         .devicon-javascript-plain { color: #f7df1e; }
         .devicon-python-plain { color: #3776ab; }
         .devicon-cplusplus-plain { color: #00599C; }
-        
         .skills-container i:hover { transform: scale(1.2); filter: drop-shadow(0 0 5px currentColor); }
 
-        /* --- SOCIAL ICONS (New FontAwesome Styles) --- */
+        /* --- SOCIAL ICONS --- */
         .social-icons { display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; z-index: 2; }
         .social-btn {
             width: 42px; height: 42px;
@@ -209,12 +197,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-decoration: none;
         }
-        .social-btn i {
-            font-size: 20px;
-            color: #ddd;
-            transition: color 0.2s;
-        }
-        
+        .social-btn i { font-size: 20px; color: #ddd; transition: color 0.2s; }
         .social-btn:hover {
             background: rgba(255, 0, 0, 0.2);
             border-color: #ff0000;
@@ -223,7 +206,7 @@
         }
         .social-btn:hover i { color: #fff; }
 
-        /* --- BUTTONS (Gallery) --- */
+        /* --- BUTTONS --- */
         .action-btn {
             width: 100%;
             padding: 10px;
@@ -256,47 +239,31 @@
         .side-panel.active { right: -220px; opacity: 1; pointer-events: auto; }
 
         /* --- MUSIC PLAYER --- */
-        .music-wrapper {
-            position: fixed; top: 30px; left: 30px; z-index: 50;
-        }
+        .music-wrapper { position: fixed; top: 30px; left: 30px; z-index: 50; }
         .music-btn {
             width: 50px; height: 50px; border-radius: 50%;
             background: rgba(10, 0, 0, 0.9); border: 2px solid #ff0000;
             color: white; display: flex; align-items: center; justify-content: center;
             cursor: pointer; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
             transition: all 0.3s;
-            position: relative; z-index: 52;
-            font-size: 1.2rem;
+            position: relative; z-index: 52; font-size: 1.2rem;
         }
         .music-btn.playing { animation: pulseRed 2s infinite; }
         @keyframes pulseRed { 0% {box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(255, 0, 0, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);} }
 
-        /* Volume Slider Compartment */
         .volume-container {
-            position: absolute; left: 25px; top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.85);
-            border: 1px solid #ff0000;
-            padding: 10px 10px 10px 35px;
-            border-radius: 0 20px 20px 0;
-            width: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            z-index: 51;
-            pointer-events: none;
+            position: absolute; left: 25px; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.85); border: 1px solid #ff0000;
+            padding: 10px 10px 10px 35px; border-radius: 0 20px 20px 0;
+            width: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease;
+            z-index: 51; pointer-events: none;
         }
-        
-        .music-wrapper:hover .volume-container, 
-        .volume-container.force-show {
-            width: 160px;
-            opacity: 1;
-            pointer-events: auto;
+        .music-wrapper:hover .volume-container, .volume-container.force-show {
+            width: 160px; opacity: 1; pointer-events: auto;
         }
-
         input[type=range] { width: 100%; accent-color: #ff0000; cursor: pointer; }
 
-        /* --- SCREENSHOT GALLERY MODAL --- */
+        /* --- GALLERY MODAL --- */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 2000;
@@ -305,29 +272,12 @@
             backdrop-filter: blur(5px);
         }
         .modal.open { opacity: 1; pointer-events: auto; }
-        
-        .gallery-content {
-            position: relative; max-width: 90%; max-height: 90%;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .gallery-img {
-            max-width: 80vw; max-height: 70vh;
-            border: 2px solid #ff0000; border-radius: 10px;
-            box-shadow: 0 0 30px rgba(255,0,0,0.3);
-        }
-        .gallery-controls {
-            margin-top: 20px; display: flex; gap: 20px;
-        }
-        .g-btn {
-            background: transparent; border: 1px solid #ff4d4d; color: white;
-            padding: 10px 20px; cursor: pointer; border-radius: 5px;
-            transition: 0.2s;
-        }
+        .gallery-content { position: relative; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
+        .gallery-img { max-width: 80vw; max-height: 70vh; border: 2px solid #ff0000; border-radius: 10px; box-shadow: 0 0 30px rgba(255,0,0,0.3); }
+        .gallery-controls { margin-top: 20px; display: flex; gap: 20px; }
+        .g-btn { background: transparent; border: 1px solid #ff4d4d; color: white; padding: 10px 20px; cursor: pointer; border-radius: 5px; transition: 0.2s; }
         .g-btn:hover { background: #ff4d4d; color: black; }
-        .close-modal {
-            position: absolute; top: 20px; right: 20px; font-size: 2rem;
-            color: white; cursor: pointer; z-index: 2001;
-        }
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: white; cursor: pointer; z-index: 2001; }
 
         /* --- ENTER OVERLAY --- */
         .enter-overlay {
@@ -344,21 +294,15 @@
         }
         .enter-btn:hover { background: rgba(255,0,0,0.1); transform: scale(1.05); }
 
-        /* BG Text */
-        .bg-text {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 15vw; color: #300000; opacity: 0.3; z-index: 0; pointer-events: none;
-            font-weight: 900;
-        }
     </style>
 </head>
 <body>
 
+    <canvas id="visualizer-canvas"></canvas>
+
     <div id="particles-bg"></div>
     
     <div class="bg-text">KAYAZ</div>
-
-    <div id="visualizer"></div>
 
     <div class="profile-container">
         
@@ -391,12 +335,14 @@
                    <i class="fa-brands fa-discord"></i>
                 </a>
                 <a href="https://www.roblox.com/users/1728947656/profile" target="_blank" class="social-btn" title="Roblox">
-                     <i class="fa-solid fa-gamepad"></i> </a>
+                     <i class="fa-solid fa-gamepad"></i>
+                </a>
                 <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="social-btn" title="TikTok">
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
                 <a href="https://stats.cc/siege/KAYAZ.CTRL/29032a28-cbf4-444a-ad19-3413761f3710" target="_blank" class="social-btn" title="R6 Siege">
-                     <i class="fa-solid fa-crosshairs"></i> </a>
+                     <i class="fa-solid fa-crosshairs"></i>
+                </a>
             </div>
 
             <button class="action-btn" id="open-gallery-btn">
@@ -431,29 +377,39 @@
                 <button class="g-btn" id="prev-img">&#10094; Prev</button>
                 <button class="g-btn" id="next-img">Next &#10095;</button>
             </div>
-            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const userId = "747411610389446747"; // Lanyard ID
-            
+            const userId = "747411610389446747"; 
+
             // SCREENSHOT LINKS
             const screenshots = [
-                "https://images.unsplash.com/photo-1614726365723-49cfae90ec76?auto=format&fit=crop&w=1000&q=80",
-                "https://images.unsplash.com/photo-1620641788427-b11e699f1d44?auto=format&fit=crop&w=1000&q=80",
-                "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80"
+                "https://cdn.discordapp.com/attachments/1459215420916760753/1459645704141013119/togif.gif?ex=6968a5be&is=6967543e&hm=5f8b87ebcd8909b95f78508b3b3b44dedb320f9e6671cf7a9fc0c33591522943&",
+                
             ];
 
-            /* --- AUDIO SETUP --- */
+            /* --- AUDIO SETUP (Canvas Version - No Lag) --- */
             const bgMusic = document.getElementById('bg-music');
             const musicBtn = document.getElementById('music-toggle');
             const musicVolume = document.getElementById('music-volume');
             const volumeContainer = document.getElementById('volume-container');
             const musicWrapper = document.getElementById('music-wrapper');
+            const canvas = document.getElementById('visualizer-canvas');
+            const ctx = canvas.getContext('2d');
+            
             let audioCtx, analyser, dataArray, bufferLength;
             let musicOn = false;
             let hideVolumeTimeout;
+
+            // Resize Canvas
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
 
             // Enter Button Logic
             document.getElementById('enter-btn').addEventListener('click', () => {
@@ -466,15 +422,14 @@
                 }).catch(e => console.log("Audio play failed:", e));
             });
 
-            // Init Audio & Visualizer (Fixed Logic)
+            // Init Audio & Canvas Visualizer
             function initAudio() {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (!AudioContext) return;
                 
                 audioCtx = new AudioContext();
                 analyser = audioCtx.createAnalyser();
-                // Higher FFT size for better resolution across wide screen
-                analyser.fftSize = 2048; 
+                analyser.fftSize = 256; 
                 
                 const source = audioCtx.createMediaElementSource(bgMusic);
                 source.connect(analyser);
@@ -483,48 +438,49 @@
                 bufferLength = analyser.frequencyBinCount;
                 dataArray = new Uint8Array(bufferLength);
                 
-                const visualizer = document.getElementById("visualizer");
-                visualizer.innerHTML = '';
-                
-                // Calculate how many bars fit on screen (roughly)
-                const barWidth = 10; // px approx
-                const totalBars = Math.floor(window.innerWidth / barWidth); 
-
-                for (let i = 0; i < totalBars; i++) {
-                    const bar = document.createElement("div");
-                    bar.className = "bar";
-                    visualizer.appendChild(bar);
-                }
-                
-                animateVisualizer(totalBars);
+                renderFrame();
             }
 
-            function animateVisualizer(totalBars) {
-                requestAnimationFrame(() => animateVisualizer(totalBars));
+            function renderFrame() {
+                requestAnimationFrame(renderFrame);
                 analyser.getByteFrequencyData(dataArray);
-                
-                const barElements = document.getElementsByClassName("bar");
-                
-                for (let i = 0; i < totalBars; i++) {
-                    if(barElements[i]) {
-                        // Map bar index to audio frequency index
-                        // We stretch the data array to fit the visualizer width
-                        const dataIndex = Math.floor(i * (bufferLength / totalBars));
-                        
-                        // Artificial boost for high frequencies (right side)
-                        // Because music usually has less energy in high freq, we multiply it
-                        const booster = 1 + (i / totalBars) * 2; 
 
-                        let value = dataArray[dataIndex] * booster;
-                        if (value > 255) value = 255; // Cap it
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                        const h = (value / 255) * 50; // Max height 50vh
-                        barElements[i].style.height = Math.max(2, h) + "vh"; // Min height 2vh
-                    }
+                // Settings
+                const bars = 100; // Number of bars
+                const barWidth = canvas.width / bars;
+                
+                // We only use the first 70% of frequency data (cutoff highs)
+                // so the visualizer is active across the whole screen
+                const usefulDataLength = Math.floor(bufferLength * 0.7);
+
+                for (let i = 0; i < bars; i++) {
+                    // Map visualizer bar index to useful audio data index
+                    const dataIndex = Math.floor((i / bars) * usefulDataLength);
+                    
+                    const value = dataArray[dataIndex];
+                    
+                    // Height is big (up to 70% of screen)
+                    const percent = value / 255;
+                    const height = percent * canvas.height * 0.7; 
+
+                    const x = i * barWidth;
+                    const y = canvas.height - height;
+
+                    // Draw Bar
+                    ctx.fillStyle = `rgba(255, 0, 0, ${percent * 0.5})`; // Red with opacity based on volume
+                    // Add slight glow
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = "rgba(255, 0, 0, 0.5)";
+                    
+                    ctx.fillRect(x, y, barWidth - 2, height);
+                    
+                    ctx.shadowBlur = 0; // Reset
                 }
             }
 
-            /* --- MUSIC CONTROLS (Delay Logic) --- */
+            /* --- MUSIC CONTROLS --- */
             musicWrapper.addEventListener('mouseenter', () => {
                 clearTimeout(hideVolumeTimeout);
                 volumeContainer.classList.add('force-show');
@@ -622,7 +578,7 @@
             });
         });
 
-        /* --- OGL PARTICLES --- */
+        /* --- OGL PARTICLES (Optimized) --- */
         (function() {
             if (!window.OGL) return;
             const particleCount = 80;
