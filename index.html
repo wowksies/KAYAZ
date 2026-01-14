@@ -154,6 +154,7 @@
         .status-avatar {
             width: 35px; height: 35px; border-radius: 50%;
             border: 2px solid #a00;
+            background-color: #222; /* Dark bg for transparent images */
         }
         .status-avatar.spin { animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -317,7 +318,7 @@
             <div class="status-card">
                 <img id="status-icon" class="status-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" />
                 <div class="status-info">
-                    <div class="status-name" id="status-username">Loading...</div>
+                    <div class="status-name" id="status-username">kayazzzzz</div>
                     <div class="status-text" id="status-text">Fetching data...</div>
                 </div>
             </div>
@@ -386,8 +387,9 @@
 
             // SCREENSHOT LINKS
             const screenshots = [
-                "https://cdn.discordapp.com/attachments/1459215420916760753/1459645704141013119/togif.gif?ex=6968a5be&is=6967543e&hm=5f8b87ebcd8909b95f78508b3b3b44dedb320f9e6671cf7a9fc0c33591522943&",
-                
+                "https://images.unsplash.com/photo-1614726365723-49cfae90ec76?auto=format&fit=crop&w=1000&q=80",
+                "https://images.unsplash.com/photo-1620641788427-b11e699f1d44?auto=format&fit=crop&w=1000&q=80",
+                "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80"
             ];
 
             /* --- AUDIO SETUP (Canvas Version - No Lag) --- */
@@ -447,7 +449,6 @@
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Settings
                 const bars = 100; // Number of bars
                 const barWidth = canvas.width / bars;
                 
@@ -456,12 +457,9 @@
                 const usefulDataLength = Math.floor(bufferLength * 0.7);
 
                 for (let i = 0; i < bars; i++) {
-                    // Map visualizer bar index to useful audio data index
                     const dataIndex = Math.floor((i / bars) * usefulDataLength);
-                    
                     const value = dataArray[dataIndex];
                     
-                    // Height is big (up to 70% of screen)
                     const percent = value / 255;
                     const height = percent * canvas.height * 0.7; 
 
@@ -470,13 +468,10 @@
 
                     // Draw Bar
                     ctx.fillStyle = `rgba(255, 0, 0, ${percent * 0.5})`; // Red with opacity based on volume
-                    // Add slight glow
                     ctx.shadowBlur = 20;
                     ctx.shadowColor = "rgba(255, 0, 0, 0.5)";
-                    
                     ctx.fillRect(x, y, barWidth - 2, height);
-                    
-                    ctx.shadowBlur = 0; // Reset
+                    ctx.shadowBlur = 0;
                 }
             }
 
@@ -544,10 +539,14 @@
                 if(!data || !data.discord_user) return;
                 
                 document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png?size=512`;
-                document.getElementById('status-username').textContent = data.discord_user.username;
+                
+                // 1. FORCE THE NAME
+                document.getElementById('status-username').textContent = "kayazzzzz";
 
-                let statusText = "Chilling";
-                let iconUrl = `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png`;
+                // 2. DEFAULT IDLE STATE
+                let statusText = "Currently doing nothing";
+                // Discord Idle Moon Icon (High Quality PNG)
+                let iconUrl = "https://i.imgur.com/K3p5u8D.png"; 
                 let spin = false;
 
                 if (data.activities && data.activities.length) {
@@ -567,6 +566,9 @@
                 document.getElementById('status-text').textContent = statusText;
                 const sIcon = document.getElementById('status-icon');
                 sIcon.src = iconUrl;
+                
+                // Remove existing spin class first
+                sIcon.classList.remove('spin');
                 if(spin) sIcon.classList.add('spin');
             });
 
@@ -578,7 +580,7 @@
             });
         });
 
-        /* --- OGL PARTICLES (Optimized) --- */
+        /* --- OGL PARTICLES --- */
         (function() {
             if (!window.OGL) return;
             const particleCount = 80;
