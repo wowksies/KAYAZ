@@ -43,7 +43,6 @@
             z-index: 1; pointer-events: none;
         }
         
-        /* Breathing Glow Animation */
         @keyframes breathingGlow {
             0%, 100% { text-shadow: 0 0 20px rgba(50, 0, 0, 0.2); opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
             50% { text-shadow: 0 0 60px rgba(255, 0, 0, 0.5); opacity: 0.4; transform: translate(-50%, -50%) scale(1.02); }
@@ -242,18 +241,66 @@
         .progress-wrapper { width: 100%; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 5px; cursor: pointer; }
         .progress-fill { height: 100%; background: #ff4d4d; width: 0%; border-radius: 3px; pointer-events: none; }
 
-        /* --- GALLERY MODAL --- */
+        /* --- UPDATED GALLERY MODAL (More Appealing & Fast) --- */
         .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000;
-            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(5px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.8); z-index: 2000;
+            display: flex; align-items: center; justify-content: center; 
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; 
+            backdrop-filter: blur(10px);
         }
         .modal.open { opacity: 1; pointer-events: auto; }
-        .gallery-content { position: relative; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
-        .gallery-img { max-width: 80vw; max-height: 70vh; border: 2px solid #ff0000; border-radius: 10px; box-shadow: 0 0 30px rgba(255,0,0,0.3); }
-        .gallery-controls { margin-top: 20px; display: flex; gap: 20px; }
-        .g-btn { background: transparent; border: 1px solid #ff4d4d; color: white; padding: 10px 20px; cursor: pointer; border-radius: 5px; transition: 0.2s; }
-        .g-btn:hover { background: #ff4d4d; color: black; }
-        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: white; cursor: pointer; z-index: 2001; }
+        
+        .gallery-content { 
+            position: relative; max-width: 90%; max-height: 90%; 
+            display: flex; flex-direction: column; align-items: center;
+            background: rgba(30, 0, 0, 0.6);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.15);
+        }
+        
+        .gallery-img-container {
+            width: 80vw; height: 70vh;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+        }
+
+        .gallery-img { 
+            max-width: 100%; max-height: 100%; 
+            object-fit: contain;
+            opacity: 0; /* Hidden by default for fade in */
+            transition: opacity 0.3s ease;
+        }
+        .gallery-img.loaded { opacity: 1; }
+
+        .gallery-controls { 
+            margin-top: 20px; display: flex; gap: 40px; 
+        }
+        
+        .g-btn { 
+            background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid #ff4d4d; 
+            color: white; 
+            width: 50px; height: 50px;
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s; 
+        }
+        .g-btn:hover { background: #ff4d4d; color: black; transform: scale(1.1); box-shadow: 0 0 20px #ff4d4d; }
+        
+        .close-modal { 
+            position: absolute; top: 15px; right: 20px; 
+            font-size: 2rem; color: white; cursor: pointer; z-index: 2001;
+            text-shadow: 0 0 10px black;
+            transition: color 0.2s;
+        }
+        .close-modal:hover { color: #ff4d4d; }
 
         /* --- ENTER OVERLAY --- */
         .enter-overlay {
@@ -365,10 +412,12 @@
     <div class="modal" id="gallery-modal">
         <div class="close-modal" id="close-gallery">&times;</div>
         <div class="gallery-content">
-            <img src="" alt="Screenshot" class="gallery-img" id="current-img">
+            <div class="gallery-img-container">
+                <img src="" alt="Screenshot" class="gallery-img" id="current-img">
+            </div>
             <div class="gallery-controls">
-                <button class="g-btn" id="prev-img">&#10094; Prev</button>
-                <button class="g-btn" id="next-img">Next &#10095;</button>
+                <button class="g-btn" id="prev-img"><i class="fa-solid fa-arrow-left"></i></button>
+                <button class="g-btn" id="next-img"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </div>
@@ -403,6 +452,15 @@
                 "https://cdn.discordapp.com/attachments/1404188647217168447/1408864806366216343/cheatermcpetereateer.png?ex=69687a59&is=696728d9&hm=08958d4f055858bc832752bc6c84cd7eab25f6f1ddeb35754be27773c7e1c153&",
             ];
 
+            // --- PRELOAD IMAGES FOR SPEED ---
+            function preloadImages(urls) {
+                urls.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            }
+            preloadImages(screenshots);
+
             /* --- AUDIO SYSTEM --- */
             const audio = document.getElementById('main-audio');
             const visualizerCanvas = document.getElementById('visualizer-canvas');
@@ -412,7 +470,7 @@
             let isPlaying = false;
             let isShuffle = false;
 
-            // VOLUME INCREASED
+            // 50% VOLUME
             audio.volume = 0.5;
 
             // Widget Elements
@@ -435,7 +493,6 @@
                 topSongName.innerText = song.title;
                 widgetCover.src = song.cover;
                 
-                // Show Top Banner briefly
                 topBanner.classList.add('visible');
                 setTimeout(() => topBanner.classList.remove('visible'), 4000);
             }
@@ -487,7 +544,7 @@
                 }
             });
 
-            // SEEKING LOGIC ADDED HERE
+            // SEEKING LOGIC
             progressWrapper.addEventListener('click', (e) => {
                 const width = progressWrapper.clientWidth;
                 const clickX = e.offsetX;
@@ -535,7 +592,6 @@
 
                 ctx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
                 
-                // --- FADED TOP GRADIENT FOR VISUALIZER ---
                 const gradient = ctx.createLinearGradient(0, visualizerCanvas.height, 0, 0);
                 gradient.addColorStop(0, "rgba(255, 0, 0, 0.4)"); 
                 gradient.addColorStop(1, "rgba(255, 0, 0, 0)");   
@@ -559,16 +615,37 @@
                 }
             }
 
-            /* --- GALLERY LOGIC --- */
+            /* --- UPDATED GALLERY LOGIC --- */
             const modal = document.getElementById('gallery-modal');
             const currentImg = document.getElementById('current-img');
             let imgIndex = 0;
-            document.getElementById('open-gallery-btn').addEventListener('click', () => { modal.classList.add('open'); if(screenshots.length) currentImg.src = screenshots[0]; });
-            document.getElementById('close-gallery').addEventListener('click', () => { modal.classList.remove('open'); });
-            document.getElementById('next-img').addEventListener('click', () => { imgIndex = (imgIndex + 1) % screenshots.length; currentImg.src = screenshots[imgIndex]; });
-            document.getElementById('prev-img').addEventListener('click', () => { imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length; currentImg.src = screenshots[imgIndex]; });
 
-            /* --- DISCORD / LANYARD LOGIC --- */
+            function updateGallery() {
+                // Fade out
+                currentImg.classList.remove('loaded');
+                setTimeout(() => {
+                    if(screenshots.length > 0) currentImg.src = screenshots[imgIndex];
+                    // Fade in after short delay for src load
+                    currentImg.onload = () => currentImg.classList.add('loaded');
+                }, 200);
+            }
+
+            document.getElementById('open-gallery-btn').addEventListener('click', () => { 
+                modal.classList.add('open'); 
+                updateGallery();
+            });
+            document.getElementById('close-gallery').addEventListener('click', () => { modal.classList.remove('open'); });
+            
+            document.getElementById('next-img').addEventListener('click', () => { 
+                imgIndex = (imgIndex + 1) % screenshots.length; 
+                updateGallery(); 
+            });
+            document.getElementById('prev-img').addEventListener('click', () => { 
+                imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length; 
+                updateGallery(); 
+            });
+
+            /* --- DISCORD / LANYARD LOGIC (1 Second Update) --- */
             function fetchStatus() {
                 fetch(`https://lanyard.rest/v1/users/${userId}`)
                 .then(res => res.json())
@@ -623,20 +700,17 @@
                         }
                     }
 
-                    // Spotify Progress
                     if (spotify && spotify.timestamps) {
                         spotifyProgress.classList.add('active');
                         const start = spotify.timestamps.start;
                         const end = spotify.timestamps.end;
                         const total = end - start;
                         
-                        if(window.spotifyInterval) clearInterval(window.spotifyInterval);
-                        window.spotifyInterval = setInterval(() => {
-                            const now = Date.now();
-                            const current = now - start;
-                            const percent = Math.min((current / total) * 100, 100);
-                            spotifyBar.style.width = `${percent}%`;
-                        }, 1000);
+                        // Immediate update for faster feel
+                        const now = Date.now();
+                        const current = now - start;
+                        const percent = Math.min((current / total) * 100, 100);
+                        spotifyBar.style.width = `${percent}%`;
                     }
 
                     statusBold.textContent = boldText;
@@ -646,7 +720,8 @@
             }
 
             fetchStatus();
-            setInterval(fetchStatus, 30000);
+            // FAST UPDATE (1 Second)
+            setInterval(fetchStatus, 1000);
 
             /* --- SIDE PANEL --- */
             const sideArrow = document.getElementById('side-arrow');
