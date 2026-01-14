@@ -46,6 +46,25 @@
             font-weight: 900;
         }
 
+        /* --- TOP SONG BANNER --- */
+        .top-song-banner {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 10px;
+            background: linear-gradient(180deg, rgba(20,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            text-align: center;
+            z-index: 100;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
+            transform: translateY(-100%); /* Hidden initially */
+            transition: transform 0.5s ease;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255,0,0,0.1);
+        }
+        .top-song-banner.visible { transform: translateY(0); }
+        .top-song-banner span { color: #ff4d4d; }
+
         /* --- MAIN CONTAINER --- */
         .profile-container {
             position: relative;
@@ -97,35 +116,25 @@
         .status-card {
             background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 0, 0, 0.2);
             border-radius: 16px; padding: 15px; width: 100%;
-            display: flex; flex-direction: column; /* Changed to column for progress bar */
+            display: flex; flex-direction: column;
             gap: 10px;
             margin-bottom: 25px; z-index: 2;
         }
         
-        .status-header {
-            display: flex; align-items: center; gap: 15px; width: 100%;
-        }
+        .status-header { display: flex; align-items: center; gap: 15px; width: 100%; }
 
         .status-icon-box {
-            position: relative; 
-            width: 50px; height: 50px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
+            position: relative; width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-
-        .status-avatar-img {
-            width: 48px; height: 48px; border-radius: 8px; object-fit: cover;
-        }
+        .status-avatar-img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; }
         .status-avatar-img.round { border-radius: 50%; }
         .status-avatar-img.spin { animation: spin 4s linear infinite; }
 
         .secondary-icon {
-            position: absolute; bottom: -5px; right: -5px;
-            width: 24px; height: 24px; border-radius: 50%;
-            border: 2px solid #1a0505; background: #000;
-            object-fit: cover; z-index: 10;
+            position: absolute; bottom: -5px; right: -5px; width: 24px; height: 24px; border-radius: 50%;
+            border: 2px solid #1a0505; background: #000; object-fit: cover; z-index: 10;
         }
-
         .idle-icon {
             font-size: 28px; color: #FFFF00; filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.5));
             animation: idleFloat 3s ease-in-out infinite;
@@ -137,24 +146,13 @@
         .status-name { font-weight: bold; font-size: 1rem; color: #fff; margin-bottom: 2px; }
         .status-text { font-size: 0.85rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* --- SPOTIFY PROGRESS BAR --- */
+        /* Spotify Bar (Discord Activity) */
         .spotify-progress-container {
             width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px; overflow: hidden; margin-top: 5px;
-            display: none; /* Hidden by default */
+            border-radius: 2px; overflow: hidden; margin-top: 5px; display: none;
         }
         .spotify-progress-container.active { display: block; }
-        
-        .spotify-progress-bar {
-            height: 100%; background: #1DB954; width: 0%;
-            border-radius: 2px; transition: width 1s linear;
-        }
-        .timestamps {
-            display: flex; justify-content: space-between;
-            font-size: 0.7rem; color: #aaa; margin-top: 2px;
-            display: none;
-        }
-        .timestamps.active { display: flex; }
+        .spotify-progress-bar { height: 100%; background: #1DB954; width: 0%; border-radius: 2px; transition: width 1s linear; }
 
         /* --- SKILLS --- */
         .skills-container {
@@ -205,22 +203,33 @@
         }
         .side-panel.active { right: -250px; opacity: 1; pointer-events: auto; }
 
-        /* --- MUSIC PLAYER --- */
-        .music-wrapper { position: fixed; top: 30px; left: 30px; z-index: 50; }
-        .music-btn {
-            width: 50px; height: 50px; border-radius: 50%; background: rgba(10, 0, 0, 0.9); border: 2px solid #ff0000;
-            color: white; display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); transition: all 0.3s; position: relative; z-index: 52; font-size: 1.2rem;
+        /* --- NEW MUSIC PLAYER WIDGET (Bottom Left) --- */
+        .player-widget {
+            position: fixed; bottom: 30px; left: 30px; z-index: 100;
+            background: rgba(10, 0, 0, 0.95); border: 1px solid #ff4d4d;
+            border-radius: 16px; padding: 15px; width: 260px;
+            display: flex; gap: 15px; align-items: center;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
-        .music-btn.playing { animation: pulseRed 2s infinite; }
-        @keyframes pulseRed { 0% {box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(255, 0, 0, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);} }
-        .volume-container {
-            position: absolute; left: 25px; top: 50%; transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.85); border: 1px solid #ff0000; padding: 10px 10px 10px 35px; border-radius: 0 20px 20px 0;
-            width: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; z-index: 51; pointer-events: none;
+        .player-cover {
+            width: 60px; height: 60px; border-radius: 8px; object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1); flex-shrink: 0;
+            animation: spin 6s linear infinite; animation-play-state: paused;
         }
-        .music-wrapper:hover .volume-container, .volume-container.force-show { width: 160px; opacity: 1; pointer-events: auto; }
-        input[type=range] { width: 100%; accent-color: #ff0000; cursor: pointer; }
+        .player-cover.playing { animation-play-state: running; }
+        
+        .player-details { flex: 1; display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
+        .song-title-widget { font-size: 0.9rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+        
+        .player-controls { display: flex; align-items: center; gap: 10px; }
+        .ctrl-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
+        .ctrl-btn:hover { color: #ff4d4d; }
+        .ctrl-btn.main { font-size: 1.2rem; color: #fff; }
+        
+        .progress-wrapper { width: 100%; height: 3px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 5px; cursor: pointer; }
+        .progress-fill { height: 100%; background: #ff4d4d; width: 0%; border-radius: 3px; }
 
         /* --- GALLERY MODAL --- */
         .modal {
@@ -251,6 +260,10 @@
 </head>
 <body>
 
+    <div id="top-banner" class="top-song-banner">
+        NOW PLAYING: <span id="top-song-name">Nothing</span>
+    </div>
+
     <canvas id="visualizer-canvas"></canvas>
 
     <div id="particles-bg"></div>
@@ -279,10 +292,6 @@
                 
                 <div class="spotify-progress-container" id="spotify-progress">
                     <div class="spotify-progress-bar" id="spotify-bar"></div>
-                </div>
-                <div class="timestamps" id="timestamps">
-                    <span id="time-current">0:00</span>
-                    <span id="time-total">0:00</span>
                 </div>
             </div>
 
@@ -320,13 +329,23 @@
         </div>
     </div>
 
-    <div class="music-wrapper" id="music-wrapper">
-        <div class="music-btn" id="music-toggle"><i class="fa-solid fa-music"></i></div>
-        <div class="volume-container" id="volume-container">
-            <input type="range" id="music-volume" min="0" max="1" step="0.01" value="0.5" />
+    <div class="player-widget" id="player-widget">
+        <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=200" id="player-cover" class="player-cover" alt="Cover">
+        <div class="player-details">
+            <div class="song-title-widget" id="widget-title">Select Song</div>
+            <div class="player-controls">
+                <button class="ctrl-btn" id="prev-btn"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="ctrl-btn main" id="play-pause-btn"><i class="fa-solid fa-play"></i></button>
+                <button class="ctrl-btn" id="next-btn"><i class="fa-solid fa-forward-step"></i></button>
+                <button class="ctrl-btn" id="shuffle-btn"><i class="fa-solid fa-shuffle"></i></button>
+            </div>
+            <div class="progress-wrapper" id="player-progress-wrapper">
+                <div class="progress-fill" id="player-progress-fill"></div>
+            </div>
         </div>
     </div>
-    <audio id="bg-music" src="music.mp3" loop></audio>
+
+    <audio id="main-audio"></audio>
 
     <div id="enter-overlay" class="enter-overlay">
         <button class="enter-btn" id="enter-btn">CLICK TO ENTER</button>
@@ -346,29 +365,119 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const userId = "747411610389446747"; 
+
+            // --- PLAYLIST CONFIGURATION ---
+            const playlist = [
+                {
+                    title: "Work Hard (feat. Ne-Yo & Akon)",
+                    src: "songs/music1.mp3",
+                    cover: "https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=200&auto=format&fit=crop"
+                },
+                {
+                    title: "Runway Walk (feat. Brevi)",
+                    src: "songs/music2.mp3",
+                    cover: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=200&auto=format&fit=crop"
+                },
+                {
+                    title: "Borderline",
+                    src: "songs/music3.mp3",
+                    cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=200&auto=format&fit=crop"
+                }
+            ];
+
+            // SCREENSHOTS
             const screenshots = [
                 "https://images.unsplash.com/photo-1614726365723-49cfae90ec76?auto=format&fit=crop&w=1000&q=80",
                 "https://images.unsplash.com/photo-1620641788427-b11e699f1d44?auto=format&fit=crop&w=1000&q=80",
                 "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80"
             ];
 
-            /* --- AUDIO SETUP --- */
-            const bgMusic = document.getElementById('bg-music');
-            const musicBtn = document.getElementById('music-toggle');
-            const musicVolume = document.getElementById('music-volume');
-            const volumeContainer = document.getElementById('volume-container');
-            const musicWrapper = document.getElementById('music-wrapper');
-            const canvas = document.getElementById('visualizer-canvas');
-            const ctx = canvas.getContext('2d');
-            
+            /* --- AUDIO SYSTEM --- */
+            const audio = document.getElementById('main-audio');
+            const visualizerCanvas = document.getElementById('visualizer-canvas');
+            const ctx = visualizerCanvas.getContext('2d');
             let audioCtx, analyser, dataArray, bufferLength;
-            let musicOn = false;
-            let hideVolumeTimeout;
-            let currentTrackId = null;
+            let currentSongIndex = 0;
+            let isPlaying = false;
+            let isShuffle = false;
 
+            // Widget Elements
+            const widgetTitle = document.getElementById('widget-title');
+            const widgetCover = document.getElementById('player-cover');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const shuffleBtn = document.getElementById('shuffle-btn');
+            const progressFill = document.getElementById('player-progress-fill');
+            const topBanner = document.getElementById('top-banner');
+            const topSongName = document.getElementById('top-song-name');
+
+            // --- LOAD SONG FUNCTION ---
+            function loadSong(index) {
+                const song = playlist[index];
+                audio.src = song.src;
+                widgetTitle.innerText = song.title;
+                topSongName.innerText = song.title;
+                widgetCover.src = song.cover;
+                
+                // Show Top Banner briefly
+                topBanner.classList.add('visible');
+                setTimeout(() => topBanner.classList.remove('visible'), 4000);
+            }
+
+            function playSong() {
+                // Ensure context is running
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                
+                audio.play();
+                isPlaying = true;
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                widgetCover.classList.add('playing');
+            }
+
+            function pauseSong() {
+                audio.pause();
+                isPlaying = false;
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                widgetCover.classList.remove('playing');
+            }
+
+            function prevSong() {
+                currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+                loadSong(currentSongIndex);
+                playSong();
+            }
+
+            function nextSong() {
+                if (isShuffle) {
+                    currentSongIndex = Math.floor(Math.random() * playlist.length);
+                } else {
+                    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+                }
+                loadSong(currentSongIndex);
+                playSong();
+            }
+
+            // --- EVENT LISTENERS ---
+            playPauseBtn.addEventListener('click', () => isPlaying ? pauseSong() : playSong());
+            prevBtn.addEventListener('click', prevSong);
+            nextBtn.addEventListener('click', nextSong);
+            shuffleBtn.addEventListener('click', () => {
+                isShuffle = !isShuffle;
+                shuffleBtn.style.color = isShuffle ? '#ff4d4d' : '#ccc';
+            });
+            audio.addEventListener('ended', nextSong);
+            audio.addEventListener('timeupdate', () => {
+                if(audio.duration) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    progressFill.style.width = `${percent}%`;
+                }
+            });
+
+            // --- ENTER & INIT ---
             function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                visualizerCanvas.width = window.innerWidth;
+                visualizerCanvas.height = window.innerHeight;
             }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
@@ -376,13 +485,8 @@
             document.getElementById('enter-btn').addEventListener('click', () => {
                 document.getElementById('enter-overlay').classList.add('hide');
                 initAudio();
-                if(bgMusic.src && bgMusic.src !== "") {
-                     bgMusic.volume = 0.5;
-                     bgMusic.play().then(() => {
-                        musicOn = true;
-                        musicBtn.classList.add('playing');
-                     }).catch(e => console.log("Audio play failed:", e));
-                }
+                loadSong(currentSongIndex);
+                playSong();
             });
 
             function initAudio() {
@@ -393,12 +497,9 @@
                 analyser = audioCtx.createAnalyser();
                 analyser.fftSize = 256; 
                 
-                // Note: CORS issues may block visualizer if stream is external (like Spotify preview)
-                try {
-                    const source = audioCtx.createMediaElementSource(bgMusic);
-                    source.connect(analyser);
-                    analyser.connect(audioCtx.destination);
-                } catch(e) { console.log("Visualizer blocked by CORS (External Audio)"); }
+                const source = audioCtx.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
 
                 bufferLength = analyser.frequencyBinCount;
                 dataArray = new Uint8Array(bufferLength);
@@ -409,19 +510,19 @@
                 requestAnimationFrame(renderFrame);
                 if(analyser) analyser.getByteFrequencyData(dataArray);
 
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
                 const bars = 100; 
-                const barWidth = canvas.width / bars;
+                const barWidth = visualizerCanvas.width / bars;
                 const usefulDataLength = Math.floor(bufferLength * 0.7);
 
                 for (let i = 0; i < bars; i++) {
                     const dataIndex = Math.floor((i / bars) * usefulDataLength);
                     const value = dataArray ? dataArray[dataIndex] : 0;
                     const percent = value / 255;
-                    const height = percent * canvas.height * 0.7; 
+                    const height = percent * visualizerCanvas.height * 0.7; 
 
                     const x = i * barWidth;
-                    const y = canvas.height - height;
+                    const y = visualizerCanvas.height - height;
 
                     ctx.fillStyle = `rgba(255, 0, 0, ${percent * 0.5})`;
                     ctx.shadowBlur = 20;
@@ -431,35 +532,16 @@
                 }
             }
 
-            /* --- MUSIC CONTROLS --- */
-            musicWrapper.addEventListener('mouseenter', () => { clearTimeout(hideVolumeTimeout); volumeContainer.classList.add('force-show'); });
-            musicWrapper.addEventListener('mouseleave', () => { hideVolumeTimeout = setTimeout(() => { volumeContainer.classList.remove('force-show'); }, 1500); });
-            musicVolume.addEventListener('input', (e) => { bgMusic.volume = e.target.value; });
-            musicBtn.addEventListener('click', () => {
-                if(musicOn) { bgMusic.pause(); musicBtn.classList.remove('playing'); } 
-                else { bgMusic.play(); musicBtn.classList.add('playing'); }
-                musicOn = !musicOn;
-            });
-
-            /* --- GALLERY --- */
+            /* --- GALLERY LOGIC --- */
             const modal = document.getElementById('gallery-modal');
             const currentImg = document.getElementById('current-img');
             let imgIndex = 0;
-            document.getElementById('open-gallery-btn').addEventListener('click', () => { modal.classList.add('open'); updateGallery(); });
+            document.getElementById('open-gallery-btn').addEventListener('click', () => { modal.classList.add('open'); if(screenshots.length) currentImg.src = screenshots[0]; });
             document.getElementById('close-gallery').addEventListener('click', () => { modal.classList.remove('open'); });
-            document.getElementById('next-img').addEventListener('click', () => { imgIndex = (imgIndex + 1) % screenshots.length; updateGallery(); });
-            document.getElementById('prev-img').addEventListener('click', () => { imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length; updateGallery(); });
-            function updateGallery() { if(screenshots.length > 0) currentImg.src = screenshots[imgIndex]; }
+            document.getElementById('next-img').addEventListener('click', () => { imgIndex = (imgIndex + 1) % screenshots.length; currentImg.src = screenshots[imgIndex]; });
+            document.getElementById('prev-img').addEventListener('click', () => { imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length; currentImg.src = screenshots[imgIndex]; });
 
-            /* --- LANYARD / DISCORD LOGIC --- */
-            
-            // Format Time Helper
-            function formatTime(ms) {
-                const seconds = Math.floor((ms / 1000) % 60);
-                const minutes = Math.floor((ms / 1000 / 60) % 60);
-                return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            }
-
+            /* --- DISCORD / LANYARD LOGIC --- */
             function fetchStatus() {
                 fetch(`https://lanyard.rest/v1/users/${userId}`)
                 .then(res => res.json())
@@ -471,13 +553,8 @@
                     const statusIconContainer = document.getElementById('status-icon-container');
                     const statusBold = document.getElementById('status-bold');
                     const statusText = document.getElementById('status-text');
-                    
-                    // Progress Bar Elements
                     const spotifyProgress = document.getElementById('spotify-progress');
                     const spotifyBar = document.getElementById('spotify-bar');
-                    const timestampsDiv = document.getElementById('timestamps');
-                    const timeCurrent = document.getElementById('time-current');
-                    const timeTotal = document.getElementById('time-total');
 
                     let boldText = "Status";
                     let smallText = "Currently doing nothing";
@@ -488,15 +565,12 @@
                     let game = null;
 
                     if (data.activities && data.activities.length) {
-                        spotify = data.activities.find(a => a.type === 2); // Listening
-                        game = data.activities.find(a => a.type === 0);    // Playing
+                        spotify = data.activities.find(a => a.type === 2);
+                        game = data.activities.find(a => a.type === 0);
                     }
 
-                    // --- RESET UI ---
                     spotifyProgress.classList.remove('active');
-                    timestampsDiv.classList.remove('active');
 
-                    // --- ACTIVITY LOGIC ---
                     if (game) {
                         boldText = game.name;
                         smallText = game.details || game.state || "Playing";
@@ -522,62 +596,29 @@
                         }
                     }
 
-                    // --- SPOTIFY PROGRESS LOGIC ---
+                    // Spotify Progress
                     if (spotify && spotify.timestamps) {
                         spotifyProgress.classList.add('active');
-                        timestampsDiv.classList.add('active');
-                        
                         const start = spotify.timestamps.start;
                         const end = spotify.timestamps.end;
                         const total = end - start;
                         
-                        // Update Progress Loop
-                        // We use a separate interval to update the bar smoothly between fetches
                         if(window.spotifyInterval) clearInterval(window.spotifyInterval);
-                        
                         window.spotifyInterval = setInterval(() => {
                             const now = Date.now();
                             const current = now - start;
-                            const percent = (current / total) * 100;
-                            
-                            if (percent >= 100) {
-                                spotifyBar.style.width = '100%';
-                                timeCurrent.innerText = formatTime(total);
-                            } else {
-                                spotifyBar.style.width = `${percent}%`;
-                                timeCurrent.innerText = formatTime(current);
-                            }
-                            timeTotal.innerText = formatTime(total);
+                            const percent = Math.min((current / total) * 100, 100);
+                            spotifyBar.style.width = `${percent}%`;
                         }, 1000);
                     }
 
                     statusBold.textContent = boldText;
                     statusText.textContent = smallText;
                     statusIconContainer.innerHTML = mainIconHtml + secondaryIconHtml;
-
-                    // --- MUSIC PLAYBACK LOGIC ---
-                    if (data.listening_to_spotify && spotify) {
-                        // Check if track changed
-                        if (currentTrackId !== spotify.track_id) {
-                            currentTrackId = spotify.track_id;
-                            // Check if Lanyard gave us a preview url (rare but possible)
-                            // If not, we keep playing local mp3 to avoid silence.
-                            // Spotify blocks direct streaming to 3rd party sites without auth.
-                        }
-                    } else {
-                         // Fallback to local mp3 if not listening
-                         if(bgMusic.src.indexOf('music.mp3') === -1) {
-                             bgMusic.src = 'music.mp3';
-                             if(musicOn) bgMusic.play();
-                         }
-                    }
-
                 });
             }
 
-            // Initial Fetch
             fetchStatus();
-            // Update every 30 seconds as requested
             setInterval(fetchStatus, 30000);
 
             /* --- SIDE PANEL --- */
