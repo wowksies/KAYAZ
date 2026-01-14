@@ -2,935 +2,368 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <title>Kivro Games</title>
-    <meta name="description" content="Premium unblocked games library.">
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#050505">
-    
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logoactual.png">
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8524021281977248" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAYAZ | Profile</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap');
-        
-        :root {
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --neon-primary: #6366f1;
+        /* --- RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'gg sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-            overscroll-behavior-y: none;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* --- BACKGROUND & ATMOSPHERE --- */
-        .plasma-background {
-            background: radial-gradient(circle at 15% 25%, rgba(99, 102, 241, 0.12) 0%, rgba(0, 0, 0, 0) 45%),
-                        radial-gradient(circle at 85% 75%, rgba(168, 85, 247, 0.12) 0%, rgba(0, 0, 0, 0) 45%),
-                        #050505;
-            background-size: 100% 100%;
-            min-height: 100vh; position: fixed; inset: 0; z-index: -3;
-        }
-
-        /* Noise Texture for Premium Feel */
-        .bg-noise {
-            position: fixed; inset: 0; z-index: -2; opacity: 0.03; pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        .falling-lights-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none; overflow: hidden;
-        }
-
-        .falling-light {
-            position: absolute; top: -150px; width: 1px; height: 150px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.1) 50%, rgba(255,255,255,0));
-            animation: fall-light linear infinite;
-        }
-
-        @keyframes fall-light {
-            0% { transform: translateY(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(120vh); opacity: 0; }
-        }
-
-        /* --- LIQUID GLASS COMPONENTS --- */
-        .liquid-glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-            position: relative;
+            /* Requested Red & Dark Red Gradient Background */
+            background: linear-gradient(135deg, #2a0a0a, #5c0000, #2a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
-            /* iOS Corner Fix */
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-            mask-image: radial-gradient(white, black);
         }
 
-        .liquid-glass::after {
-            content: '';
-            position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-            transform: skewX(-25deg);
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- PROFILE CARD CONTAINER --- */
+        .profile-card {
+            background: rgba(0, 0, 0, 0.65);
+            width: 340px;
+            border-radius: 18px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- BANNER --- */
+        .banner {
+            height: 120px;
+            background-color: #7a0000; /* Fallback */
+            background-image: url('https://images.unsplash.com/photo-1542259681-d30902996160?q=80&w=1000&auto=format&fit=crop'); /* Abstract Red Image */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* --- AVATAR --- */
+        .avatar-container {
+            position: relative;
+            margin-top: -50px;
+            margin-left: 20px;
+            width: 90px;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 6px solid #111; /* Matches dark card bg */
+            background-color: #111;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05) rotate(5deg);
+            border-color: #7a0000;
+        }
+
+        /* Online Status Indicator */
+        .status-indicator {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 22px;
+            height: 22px;
+            background-color: #23a559; /* Discord Green */
+            border: 4px solid #111;
+            border-radius: 50%;
+            z-index: 3;
+        }
+
+        /* --- USER INFO --- */
+        .user-info {
+            padding: 12px 20px 20px;
+            background-color: #111;
+            margin: 0 10px 10px 10px;
+            border-radius: 8px;
+        }
+
+        .username-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .display-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .username {
+            font-size: 0.9rem;
+            color: #b9bbbe;
+        }
+
+        /* Badges */
+        .badges {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .badge {
+            width: 20px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            cursor: help;
+            transition: background 0.2s;
+        }
+
+        .badge:hover {
+            background-color: #ff3333;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #2f3136;
+            margin: 12px 0;
+        }
+
+        /* --- ABOUT ME SECTION --- */
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #b9bbbe;
+            margin-bottom: 8px;
+        }
+
+        .bio-text {
+            font-size: 0.9rem;
+            color: #dcddde;
+            line-height: 1.4;
+        }
+
+        .bio-text a {
+            color: #ff4d4d; /* Red link color */
+            text-decoration: none;
+        }
+
+        .bio-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- ACTIVITY / ROLES --- */
+        .activity {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: #2f3136;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .activity-details h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .activity-details p {
+            font-size: 0.75rem;
+            color: #b9bbbe;
+        }
+
+        /* --- BUTTONS --- */
+        .actions {
+            margin-top: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .btn-primary {
+            background-color: #5865F2; /* Discord Blurple */
+            color: white;
+        }
+        
+        /* Custom Red Button Override */
+        .btn-primary {
+            background-color: #8a0000;
+        }
+
+        .btn-primary:hover {
+            background-color: #a30000;
+        }
+
+        .btn-secondary {
+            background-color: #4f545c;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #686d73;
+        }
+
+        /* --- JS INTERACTION STYLES --- */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3ba55c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0;
             pointer-events: none;
-            animation: glass-shimmer 6s infinite cubic-bezier(0.4, 0, 0.2, 1);
-            animation-delay: var(--shimmer-delay, 0s);
+            transition: opacity 0.3s;
+            z-index: 100;
         }
 
-        @keyframes glass-shimmer {
-            0% { left: -100%; opacity: 0; }
-            5% { opacity: 1; }
-            40% { left: 200%; opacity: 1; }
-            100% { left: 200%; opacity: 0; }
+        .toast.show {
+            opacity: 1;
         }
 
-        .glass-header {
-            background: rgba(5, 5, 8, 0.85);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid var(--glass-border);
-            transition: background 0.3s ease;
-            padding-top: env(safe-area-inset-top); 
-            height: auto; min-height: 80px;
-        }
-        
-        .header-inner { height: 80px; display: flex; align-items: center; justify-content: space-between; }
-
-        /* --- HERO & CARDS --- */
-        .intro-card {
-            background: linear-gradient(160deg, rgba(20, 20, 30, 0.7) 0%, rgba(5, 5, 10, 0.9) 100%);
-            backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 40px;
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
-            position: relative; overflow: hidden;
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-        }
-
-        .game-card {
-            border-radius: 24px;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transform: translateZ(0); 
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid transparent;
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-        }
-        
-        @media (hover: hover) {
-            .game-card:hover {
-                transform: translateY(-8px) scale(1.02);
-                border-color: rgba(255, 255, 255, 0.2);
-                background: rgba(255, 255, 255, 0.08); 
-                box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
-                z-index: 20;
-            }
-            .game-card:hover img { transform: scale(1.08); filter: brightness(1.1); }
-        }
-
-        .game-card img {
-            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s;
-            filter: brightness(1.05);
-        }
-
-        /* --- ANIMATIONS --- */
-        #cinematic-splash {
-            position: fixed; inset: 0; background-color: #000; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.5s ease;
-        }
-        
-        .splash-logo {
-            width: 100px; height: 100px; border-radius: 24px;
-            box-shadow: 0 0 50px rgba(99, 102, 241, 0.4);
-            animation: pulse-logo 2.5s infinite ease-in-out;
-            margin-bottom: 24px;
-        }
-
-        .splash-text {
-            font-size: 2rem; font-weight: 900; letter-spacing: -0.05em;
-            background: linear-gradient(to bottom right, #fff, #94a3b8);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            opacity: 0; animation: slide-text 0.8s ease forwards 0.2s;
-        }
-
-        .splash-loader {
-            width: 180px; height: 3px; background: rgba(255,255,255,0.1);
-            border-radius: 99px; margin-top: 30px; overflow: hidden; position: relative;
-        }
-
-        .splash-loader::after {
-            content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 0%;
-            background: #6366f1; box-shadow: 0 0 15px #6366f1;
-            animation: load-bar 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-
-        .splash-exit { transform: translateY(-100%); pointer-events: none; }
-
-        @keyframes pulse-logo {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
-            50% { transform: scale(1.03); box-shadow: 0 0 60px rgba(99, 102, 241, 0.6); }
-        }
-        @keyframes slide-text { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes load-bar { 0% { width: 0%; } 100% { width: 100%; } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .card-anim { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
-
-        /* --- BLOB ANIMATIONS (Optimized) --- */
-        @keyframes blob-float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(20px, -20px) scale(1.05); }
-        }
-        .blob {
-            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5;
-            animation: blob-float 15s infinite ease-in-out; pointer-events: none;
-        }
-        .blob-1 { background: rgba(79, 70, 229, 0.4); width: 400px; height: 400px; top: -100px; left: -100px; }
-        .blob-2 { background: rgba(168, 85, 247, 0.4); width: 350px; height: 350px; bottom: -50px; right: -50px; animation-delay: -5s; }
-        .blob-3 { background: rgba(236, 72, 153, 0.3); width: 300px; height: 300px; bottom: 100px; left: 30%; animation-delay: -10s; }
-
-        /* --- ELEMENTS --- */
-        .star-btn {
-            position: absolute; top: 12px; right: 12px; z-index: 20;
-            width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center;
-            color: #9ca3af; transition: all 0.2s; cursor: pointer;
-        }
-        .star-active { color: #fbbf24 !important; background: rgba(251, 191, 36, 0.15); border-color: #fbbf24; }
-
-        .tab-btn { position: relative; z-index: 10; transition: color 0.2s ease; }
-        .tab-active-text { color: white; text-shadow: 0 0 12px rgba(255,255,255,0.6); }
-        .tab-inactive-text { color: #9ca3af; }
-        .tab-inactive-text:hover { color: white; }
-
-        /* POPUP COMMON */
-        #install-popup, #disclaimer-popup, #ad-timer-popup, #updates-popup, #owner-popup { 
-            opacity: 0; transition: opacity 0.3s ease; pointer-events: none; 
-        }
-        #install-popup.active, #disclaimer-popup.active, #ad-timer-popup.active, #updates-popup.active, #owner-popup.active { 
-            opacity: 1; pointer-events: auto; 
-        }
-        
-        /* INPUTS */
-        .glass-input {
-            background: rgba(30, 30, 35, 0.6) !important;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1) !important;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .glass-input:focus {
-            background: rgba(40, 40, 45, 0.9) !important;
-            border-color: rgba(129, 140, 248, 0.6) !important;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2), inset 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .ad-banner-container {
-            width: 100%; max-width: 728px; min-height: 90px;
-            margin: 0 auto 30px auto;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden; position: relative;
-        }
-
-        .update-item { position: relative; padding-left: 16px; }
-        .update-item::before {
-            content: ''; position: absolute; left: 0; top: 7px;
-            width: 6px; height: 6px; background: #818cf8; border-radius: 50%;
-            box-shadow: 0 0 8px rgba(129,140,248,0.5);
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444; }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="antialiased selection:bg-indigo-500/30 selection:text-white">
+<body>
 
-    <div class="plasma-background"></div>
-    <div class="bg-noise"></div>
-    <div id="gradient-canvas"></div>
-    <div class="falling-lights-container" id="falling-lights"></div>
+    <div class="profile-card">
+        <div class="banner"></div>
 
-    <div id="cinematic-splash">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logoactual.png" class="splash-logo">
-        <h1 class="splash-text">KIVRO GAMES</h1>
-        <div class="splash-loader"></div>
-    </div>
+        <div class="avatar-container">
+            <img src="https://ui-avatars.com/api/?name=KAYAZ&background=ff3333&color=fff&size=128" alt="Profile Picture" class="avatar" id="avatar">
+            <div class="status-indicator" title="Online"></div>
+        </div>
 
-    <div id="ad-notice-toast" class="fixed bottom-5 right-5 z-[8000] max-w-sm w-[90%] transform translate-y-40 opacity-0 transition-all duration-700 pointer-events-none">
-        <div class="liquid-glass p-5 rounded-2xl border border-yellow-500/30 flex flex-col gap-3 shadow-[0_0_30px_rgba(234,179,8,0.15)] bg-[#1a1500]/80">
-            <div class="flex items-center gap-3">
-                <span class="text-2xl">⚠️</span>
+        <div class="user-info">
+            <div class="username-wrapper">
                 <div>
-                    <h3 class="font-bold text-yellow-100">Ad Notice</h3>
-                    <p class="text-xs text-yellow-200/60">Keep Kivro Free</p>
+                    <div class="display-name">KAYAZ</div>
+                    <div class="username">kayaz#0001</div>
+                </div>
+                <div class="badges">
+                    <div class="badge" title="HypeSquad"><i class="fas fa-house-user"></i></div>
+                    <div class="badge" title="Developer"><i class="fas fa-code"></i></div>
                 </div>
             </div>
-            <p class="text-xs text-gray-300 leading-relaxed">
-                We use ads to support this site. If redirected, press <b class="text-white">Go Back</b> to return.
-            </p>
-            <button id="close-ad-notice" disabled class="bg-white/5 cursor-not-allowed py-2.5 rounded-lg text-xs font-bold text-gray-400 transition-all duration-300 border border-white/5 tracking-wide">
-                Wait 10s...
-            </button>
-        </div>
-    </div>
 
-    <div id="owner-popup" class="fixed inset-0 bg-black/85 flex items-center justify-center z-[9000] hidden backdrop-blur-md" aria-hidden="true">
-        <div class="liquid-glass text-gray-100 rounded-3xl p-8 max-w-md w-[90%] shadow-2xl text-center border border-indigo-500/30 bg-[#0a0a12]/90">
-            <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10">
-                <span class="text-3xl">👋</span>
-            </div>
-            <h2 class="text-2xl font-black text-white mb-3 tracking-tight">New Era Begins</h2>
-            <p class="text-gray-400 text-sm mb-8 leading-relaxed">
-                Kivro Games is undergoing a transition. Ownership is being transferred to a new lead developer to bring you even more content.
-            </p>
-            <button id="close-owner-popup" class="w-full py-3.5 rounded-full font-bold text-sm transition-all bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 cursor-pointer transform hover:scale-[1.02] active:scale-95">
-                Awesome, Let's Play!
-            </button>
-        </div>
-    </div>
+            <div class="divider"></div>
 
-    <div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden backdrop-blur-md" aria-hidden="true">
-      <div id="install-content" class="liquid-glass text-gray-100 rounded-2xl p-6 max-w-2xl w-[92%] shadow-2xl overflow-y-auto max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="install-title">
-        <h2 id="install-title" class="text-2xl font-bold text-purple-300 mb-2 text-center">📱 Add to Home Screen</h2>
-        <p class="text-gray-300 mb-6 text-center text-sm">For the best experience, follow these quick steps:</p>
-        <h2 class="text-lg font-bold text-white mb-4 text-center">Customize Icon</h2>
-        <div class="flex justify-center gap-6 mb-8 flex-wrap">
-          <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-            <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" class="select-icon relative w-16 h-16 rounded-2xl border-2 border-transparent hover:border-indigo-400 shadow-lg bg-black/50" alt="Icon 1">
-          </div>
-          <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-            <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" class="select-icon relative w-16 h-16 rounded-2xl border-2 border-transparent hover:border-indigo-400 shadow-lg bg-black/50" alt="Icon 2">
-          </div>
-          <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-            <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" class="select-icon relative w-16 h-16 rounded-2xl border-2 border-transparent hover:border-indigo-400 shadow-lg bg-black/50" alt="Icon 3">
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-center">
-          <div class="install-step bg-white/5 p-4 rounded-xl border border-white/5">
-            <div class="number text-xl font-black mb-2 text-indigo-400">1</div>
-            <p class="text-xs text-gray-400">Tap <strong>Share</strong></p>
-          </div>
-          <div class="install-step bg-white/5 p-4 rounded-xl border border-white/5">
-            <div class="number text-xl font-black mb-2 text-indigo-400">2</div>
-            <p class="text-xs text-gray-400">Scroll Down</p>
-          </div>
-          <div class="install-step bg-white/5 p-4 rounded-xl border border-white/5">
-            <div class="number text-xl font-black mb-2 text-indigo-400">3</div>
-            <p class="text-xs text-gray-400">Add to Home</p>
-          </div>
-        </div>
-        <div class="flex justify-center">
-          <button id="close-popup" class="bg-white/10 hover:bg-white/20 border border-white/10 px-8 py-3 rounded-full text-sm font-bold text-white transition-all">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="disclaimer-popup" class="fixed inset-0 bg-black/80 flex items-center justify-center z-[5000] hidden backdrop-blur-md" aria-hidden="true">
-      <div class="liquid-glass text-gray-100 rounded-2xl p-6 max-w-md w-[90%] shadow-2xl text-center border border-indigo-500/30">
-        <div class="flex justify-center mb-4"><span class="text-4xl">🤝</span></div>
-        <h2 class="text-xl font-bold text-white mb-2">Partner App</h2>
-        <p class="text-gray-400 text-sm mb-6 leading-relaxed">
-            This app is hosted on Kivro Games but developed by a partner. Please report bugs directly to them.
-        </p>
-        <button id="disclaimer-btn" disabled class="w-full py-3 rounded-full font-bold text-sm transition-all bg-white/5 text-gray-500 cursor-not-allowed border border-white/10">
-            Loading...
-        </button>
-      </div>
-    </div>
-
-    <div id="ad-timer-popup" class="fixed inset-0 bg-black/95 flex items-center justify-center z-[6000] hidden backdrop-blur-xl" aria-hidden="true">
-        <div class="relative w-full max-w-lg aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800 flex flex-col items-center justify-center group">
-            <div class="absolute inset-0 bg-[url('https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Asworldc.jpg')] bg-cover bg-center opacity-20 blur-md"></div>
-            <div class="absolute inset-0 bg-black/70"></div>
-            <div class="relative z-10 text-center p-6">
-                <h2 class="text-lg font-bold text-white mb-6 drop-shadow-md tracking-wide">Sponsored Content</h2>
-                <button id="ad-trigger-btn" class="group/btn relative inline-flex items-center justify-center w-20 h-20 bg-white/10 hover:bg-red-600 rounded-full backdrop-blur-sm border-2 border-white/20 transition-all duration-300 hover:scale-110">
-                    <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <p id="ad-status-text" class="text-xs font-mono text-gray-400 mt-6 uppercase tracking-widest">Click to Unlock</p>
-            </div>
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-gray-800">
-                <div id="ad-progress-bar" class="h-full bg-red-600 w-0 transition-all duration-[1000ms] ease-linear"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="updates-popup" class="fixed inset-0 bg-black/80 flex items-center justify-center z-[5000] hidden backdrop-blur-md" aria-hidden="true">
-        <div class="liquid-glass text-gray-100 rounded-3xl p-0 max-w-lg w-[92%] shadow-2xl flex flex-col max-h-[80vh] border border-white/10">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
-                <h2 class="text-xl font-black text-white flex items-center gap-2">📢 Changelog</h2>
-                <button id="close-updates" class="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors">✕</button>
-            </div>
-            <div id="updates-content" class="p-6 overflow-y-auto space-y-6"></div>
-        </div>
-    </div>
-
-    <header class="sticky top-0 z-50 w-full glass-header">
-        <div class="max-w-7xl mx-auto px-4 header-inner gap-4">
-            <div class="flex items-center gap-3">
-                <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logoactual.png" class="w-9 h-9 rounded-xl shadow-lg border border-white/10">
-                <span class="text-lg font-bold text-white hidden sm:block tracking-tight">Kivro</span>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <div class="liquid-glass relative flex p-1 rounded-full backdrop-blur-md">
-                    <div id="tab-pill" class="absolute top-1 bottom-1 bg-indigo-500 rounded-full shadow-lg transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]" style="left: 4px; width: 0; opacity: 0;"></div>
-                    <button id="tab-games" class="tab-btn tab-active-text px-4 py-1.5 rounded-full text-xs font-bold">GAMES</button>
-                    <button id="tab-apps" class="tab-btn tab-inactive-text px-4 py-1.5 rounded-full text-xs font-bold">APPS</button>
-                    <button id="tab-favs" class="tab-btn tab-inactive-text px-4 py-1.5 rounded-full text-xs font-bold flex gap-1 items-center">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </button>
-                </div>
-                
-                <button id="install-trigger-btn" class="liquid-glass hover:bg-white/10 text-white p-2 rounded-full transition-all active:scale-95 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                </button>
-            </div>
-
-            <div class="relative group w-full max-w-xs hidden sm:block">
-                <input type="text" id="search-input" placeholder="Search..." class="glass-input text-xs text-gray-200 rounded-full pl-9 pr-4 py-2.5 w-full outline-none transition-all">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <button id="clear-search" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white hidden">✕</button>
-            </div>
-        </div>
-        
-        <div class="sm:hidden px-4 pb-3 relative">
-            <input type="text" id="search-input-mobile" placeholder="Search library..." class="glass-input text-xs text-gray-200 rounded-xl pl-4 pr-10 py-2.5 w-full outline-none">
-            <button id="clear-search-mobile" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white hidden p-2">✕</button>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        
-        <div class="intro-card p-8 md:p-12 mb-10 text-center flex flex-col items-center justify-center min-h-[380px] relative group">
-            <div class="blob blob-1"></div>
-            <div class="blob blob-2"></div>
-            <div class="blob blob-3"></div>
-
-            <div class="relative z-10 flex flex-col items-center">
-                <button onclick="openUpdates()" class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/5 border border-white/10 text-indigo-200 text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-md hover:bg-white/10 transition-all cursor-pointer">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                    v7.0 Stable • Read Logs
-                </button>
-                
-                <h1 class="text-5xl sm:text-7xl font-black text-white mb-6 tracking-tighter drop-shadow-2xl">
-                    Kivro <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Games</span>
-                </h1>
-                
-                <p class="text-gray-300 text-sm sm:text-base max-w-lg mx-auto mb-8 font-medium leading-relaxed opacity-90">
-                    Premium unblocked library. <br> Cloud Save • Zero Lag • 75+ Titles
-                </p>
-                
-                <div class="flex flex-wrap justify-center gap-3 w-full sm:w-auto">
-                    <button onclick="document.getElementById('game-grid').scrollIntoView({behavior: 'smooth'})"
-                            class="relative overflow-hidden group px-8 py-3.5 bg-white text-black font-extrabold rounded-full transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center justify-center gap-2 text-sm">
-                        <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/80 to-transparent -translate-x-full group-hover:animate-[shimmer_1s_infinite]"></div>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        <span>PLAY NOW</span>
-                    </button>
-                    
-                    <div class="flex gap-2">
-                        <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__TF_CsRUNkFLWEg2QzdFOE5EVVRKU0xaTk5aUlNIUi4u" target="_blank"
-                           class="liquid-glass px-5 py-3.5 text-white font-bold rounded-full hover:bg-white/10 transition-all border border-white/10 text-sm">Request</a>
-                        <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__TF_CsRUMk1TVUNXSVNXMjRYSFZONFBJWktISlIwWC4u" target="_blank"
-                           class="liquid-glass px-5 py-3.5 text-white font-bold rounded-full hover:bg-white/10 transition-all border border-white/10 text-sm">Report</a>
-                    </div>
+            <div class="about-me">
+                <div class="section-title">About Me</div>
+                <div class="bio-text">
+                    Developer & Designer.<br>
+                    Creating cool stuff with code.<br>
+                    <a href="https://github.com/wowksies" target="_blank">github.com/wowksies</a>
                 </div>
             </div>
-        </div>
 
-        <div class="max-w-4xl mx-auto mb-10">
-            <div class="liquid-glass rounded-3xl p-6 border border-white/5 flex flex-col gap-4 bg-[#0a0a0f]/40">
-                <div class="flex items-center gap-2 border-b border-white/5 pb-3">
-                    <span class="text-lg">📢</span>
-                    <h2 class="text-sm font-bold text-white uppercase tracking-widest">System Log</h2>
+            <div class="activity">
+                <div class="activity-icon">
+                    <i class="fab fa-spotify" style="color: #1DB954;"></i>
                 </div>
-                <div id="on-page-updates" class="space-y-3 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar"></div>
+                <div class="activity-details">
+                    <h4>Listening to Spotify</h4>
+                    <p>Red & Dark Vibes Playlist</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="copyUsername()">Message</button>
             </div>
         </div>
+    </div>
 
-        <div class="flex items-center justify-between mb-4 px-1">
-            <h2 id="grid-title" class="text-lg font-bold text-white flex items-center gap-2">
-                Library <span id="game-count" class="bg-white/10 text-gray-300 text-xs px-2 py-0.5 rounded border border-white/5">0</span>
-            </h2>
-            <div class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Direct Launch</div>
-        </div>
+    <div class="toast" id="toast">Copied username to clipboard!</div>
 
-        <div class="ad-banner-container">
-            <span class="text-[10px] text-gray-600 uppercase tracking-widest absolute top-1 left-2 z-10">Advertisement</span>
-            <ins class="adsbygoogle" style="display:block; width:100%; height:100%;" data-ad-client="ca-pub-8524021281977248" data-ad-slot="3696385549" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-
-        <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 pb-20"></div>
-    </main>
-
-    <button onclick="window.location.href='https://member.foodvillage.ie/login'" 
-            class="liquid-glass fixed bottom-6 right-6 z-50 text-white p-3.5 rounded-full shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-transform hover:scale-110 active:scale-95 group hover:bg-red-600/80 border-red-500/30">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-    </button>
-
-    <script>(function(s){s.dataset.zone='10362665',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-    <script>(function(s){s.dataset.zone='10362611',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-    
     <script>
-        // --- 🔴 CONFIGURATION 🔴 ---
-        const AD_CHANCE = 0.2; 
-        const DIRECT_LINK_URL = "https://otieu.com/4/10362606"; 
-
-        // --- UPDATES LOG ---
-        const updatesLog = [
-            {
-                version: "v7.0",
-                date: "Recent",
-                title: "Ads & UI Polish",
-                desc: "Added ad support, cleaner UI, and iOS fixes.",
-                changes: [ "Cinematic Intro", "Ownership Notice", "Performance Tweaks" ]
-            },
-            {
-                version: "v6.0",
-                date: "Oct 2023",
-                title: "Ultra Upgrade",
-                desc: "Major visual overhaul.",
-                changes: [ "Liquid Glass UI", "Direct Launch", "75+ Games" ]
-            }
-        ];
-
-        // --- APP DATA ---
-        const THUMB_BASE = "https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/";
-        const GITHUB_BASE = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
+        /* --- JAVASCRIPT LOGIC --- */
         
-        const gamesList = [
-            { id: 5, title: "2048", category: "Puzzle", imgUrl: THUMB_BASE + "2048.png", gameUrl: "https://ixl-library.netlify.app//2048/index.html" },
-            { id: 7, title: "BTD4", category: "Tower Defense", imgUrl: THUMB_BASE + "BTD4.jpg", gameUrl: "https://ixl-library.netlify.app//btd4/index.html" },
-            { id: 6, title: "Bitlife", category: "Simulation", imgUrl: THUMB_BASE + "Bitlife.webp", gameUrl: "https://ixl-library.netlify.app//bitlife/index.html" },
-            { id: 8, title: "Chess", category: "Strategy", imgUrl: THUMB_BASE + "chess.jpg", gameUrl: GITHUB_BASE + "chess/index.html" },
-            { id: 9, title: "Cookie Clicker", category: "Idle", imgUrl: THUMB_BASE + "Cookie-Clicker.jpg", gameUrl: GITHUB_BASE + "cookieclicker/index.html" },
-            { id: 10, title: "Drive Mad", category: "Racing", imgUrl: THUMB_BASE + "Drive-Mad.jpg", gameUrl: "https://ixl-library.netlify.app//drivemad/index.html" },
-            { id: 2, title: "Flappy Bird", category: "Arcade", imgUrl: THUMB_BASE + "Flappy-Bird.jpg", gameUrl: "https://ixl-library.netlify.app//flappybird/index.html" },
-            { id: 3, title: "Geo Dash", category: "Rhythm", imgUrl: THUMB_BASE + "Geometry-Dash.webp", gameUrl: "https://geometryite.vercel.app/" },
-            { id: 15, title: "Google Snake", category: "Arcade", imgUrl: THUMB_BASE + "Google-Snake.jpg", gameUrl: "https://raw.githack.com/KAYAZzz/kivro-library/main/Snake/index.html" },
-            { id: 11, title: "Monkey Mart", category: "Sim", imgUrl: THUMB_BASE + "Monkey-Mart.jpg", gameUrl: "https://ixl-library.netlify.app//monkeymart/index.html" },
-            { id: 12, title: "PacMan", category: "Arcade", imgUrl: THUMB_BASE + "Pacman.jpg", gameUrl: GITHUB_BASE + "pacman/index.html" },
-            { id: 1, title: "Retro Ball", category: "Sports", imgUrl: THUMB_BASE + "Retro-Ball.webp", gameUrl: GITHUB_BASE + "retrobowl/index.html" },
-            { id: 14, title: "Slope", category: "Runner", imgUrl: THUMB_BASE + "slope.png", gameUrl: "https://ixl-library.netlify.app//Slope/index.html" },
-            { id: 16, title: "Snow Battle", category: "Arcade", imgUrl: THUMB_BASE + "Snow-Battle.png", gameUrl: GITHUB_BASE + "snowbattle/index.html" },
-            { id: 17, title: "Stack", category: "Puzzle", imgUrl: THUMB_BASE + "Stack.webp", gameUrl: GITHUB_BASE + "stack/index.html" },
-            { id: 4, title: "Drift Boss", category: "Racing", imgUrl: THUMB_BASE + "Drift1.jpg", gameUrl: "https://ixl-library.netlify.app//DriftBoss/index.html" },
-            { id: 18, title: "Subway Surfers", category: "Runner", imgUrl: THUMB_BASE + "Subway-Surfers.jpg", gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html" },
-            { id: 19, title: "Baldi's Basics", category: "Horror", imgUrl: THUMB_BASE + "BaldisBasics.webp", gameUrl: GITHUB_BASE + "baldisbasics/index.html" },
-            { id: 20, title: "Dino Runner", category: "Runner", imgUrl: THUMB_BASE + "Dino.jpg", gameUrl: "https://ixl-library.netlify.app//chromedino/index.html" },
-            { id: 21, title: "Stickman Hook", category: "Arcade", imgUrl: THUMB_BASE + "stickman-hook.png", gameUrl: "https://ixl-library.netlify.app//StickmanHook/index.html" },
-            { id: 23, title: "Block Blast", category: "Puzzle", imgUrl: THUMB_BASE + "block-blast.jpeg", gameUrl: "https://ixl-library.netlify.app//blockblast/index.html" },
-            { id: 24, title: "Merge Rot", category: "Puzzle", imgUrl: THUMB_BASE + "merge-rot.png", gameUrl: "https://ixl-library.netlify.app//MergeRot/index.html" },
-            { id: 25, title: "Hole.io", category: "Arcade", imgUrl: THUMB_BASE + "Hole.png", gameUrl: "https://ixl-library.netlify.app//HoleIO/index.html" },
-            { id: 26, title: "Sausage Flip", category: "Arcade", imgUrl: THUMB_BASE + "sausage-flip.png", gameUrl: "https://ixl-library.netlify.app//sausage-flip/index.html" },
-            { id: 27, title: "YoHoHo.io", category: "Battle Royale", imgUrl: THUMB_BASE + "Yohoho.jpg", gameUrl: "https://ixl-library.netlify.app/yohohoio/index.html" },
-            { id: 28, title: "Mr.Bullet", category: "Puzzle", imgUrl: THUMB_BASE + "Bullet.jpg", gameUrl: "https://ixl-library.netlify.app//MrBullet/index.html" },
-            { id: 29, title: "Impossible Quiz", category: "Puzzle", imgUrl: THUMB_BASE + "Impossible.png", gameUrl: "https://raw.githack.com/selenite-cc/selenite-old/main/theimpossiblequiz/index.html" },
-            { id: 30, title: "Paper.io", category: "Strategy", imgUrl: THUMB_BASE + "paper-io.png", gameUrl: GITHUB_BASE + "paperio/index.html" },
-            { id: 31, title: "Hill Climb", category: "Racing", imgUrl: THUMB_BASE + "HillClimb.png", gameUrl: "https://ixl-library.netlify.app//HillClimbRacing/index.html" },
-            { id: 34, title: "Bottle Flip", category: "Skill", imgUrl: THUMB_BASE + "bottleflip.png", gameUrl: "https://ixl-library.netlify.app//BottleFlip2/index.html" },
-            { id: 35, title: "Penalty Kicks", category: "Sports", imgUrl: THUMB_BASE + "penalty.jpg", gameUrl: "https://ixl-library.netlify.app//PenaltyKicks/index.html" },
-            { id: 36, title: "Gun Spin", category: "Arcade", imgUrl: THUMB_BASE + "gunspin.png", gameUrl: "https://ixl-library.netlify.app//Gunspin/index.html" },
-            { id: 37, title: "SandBoxel", category: "Sim", imgUrl: THUMB_BASE + "Sandboxel.png", gameUrl: "https://raw.githack.com/R74nCom/sandboxels/main/index.html" },
-            { id: 38, title: "Ballistic", category: "Puzzle", imgUrl: THUMB_BASE + "ballistic.png", gameUrl: "https://ixl-library.netlify.app//Ballistic/index.html" },
-            { id: 39, title: "Stacktris", category: "Arcade", imgUrl: THUMB_BASE + "stacktris.jpeg", gameUrl: "https://ixl-library.netlify.app//stacktris/index.html" },
-            { id: 40, title: "Tomb of Mask", category: "Arcade", imgUrl: THUMB_BASE + "TofM.jpg", gameUrl: "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/tombofthemask/index.html" },
-            { id: 41, title: "Paper Plane", category: "Arcade", imgUrl: THUMB_BASE + "Planef.jpg", gameUrl: "https://ixl-library.netlify.app//PaperFlight1/index.html" },
-            { id: 42, title: "Curve Rush", category: "Arcade", imgUrl: THUMB_BASE + "curve-rush.webp", gameUrl: "https://curverush.com/curve-rush.embed" },
-            { id: 43, title: "Burrito Bison", category: "Action", imgUrl: THUMB_BASE + "Bb.png", gameUrl: "https://burrito-bison-cnm.vercel.app/" },
-            { id: 44, title: "Golf Orbit", category: "Sports", imgUrl: THUMB_BASE + "golf-orbit.png", gameUrl: "https://golf-orbit-k8ue.vercel.app/" },
-            { id: 45, title: "Ragdoll Archers", category: "Action", imgUrl: THUMB_BASE + "ragdoll-archers.jpg", gameUrl: "https://ixl-library.netlify.app//Ragdoll-Archers/index.html" },
-            { id: 46, title: "Helix Jump", category: "Arcade", imgUrl: THUMB_BASE + "HelixJ.webp", gameUrl: "https://ixl-library.netlify.app//helixjump/index.html" },
-            { id: 47, title: "PolyTrack", category: "Racing", imgUrl: THUMB_BASE + "Polyt.webp", gameUrl: "https://raw.githack.com/AnonymousBirb5100/polytrack/main/index.html" },
-            { id: 48, title: "Gobble", category: "Arcade", imgUrl: THUMB_BASE + "Gobble.png", gameUrl: "https://ixl-library.netlify.app//Gobble/gobble/index.html" },
-            { id: 49, title: "Swingo", category: "Platform", imgUrl: THUMB_BASE + "swingo.jpg", gameUrl: "https://ixl-library.netlify.app//Swingo/index.html" },
-            { id: 50, title: "Spiral Roll", category: "Arcade", imgUrl: THUMB_BASE + "Spiralr.png", gameUrl: "https://ixl-library.netlify.app//spralr/index.html" },
-            { id: 51, title: "Wordle", category: "Puzzle", imgUrl: THUMB_BASE + "IMG_0829.jpeg", gameUrl: "https://wordle-actual.vercel.app" },
-            { id: 52, title: "Unicycle Heroes", category: "Physics", imgUrl: THUMB_BASE + "IMG_0832.jpeg", gameUrl: "https://unicycleh.vercel.app" },
-            { id: 53, title: "Sheep Sheep", category: "Puzzle", imgUrl: THUMB_BASE + "Sheep.jpeg", gameUrl: "https://ubgfun.github.io/puzzle/hell-tile/" },
-            { id: 54, title: "Game In Game", category: "Arcade", imgUrl: THUMB_BASE + "GameInsideGame.png", gameUrl: "https://ixl-library.netlify.app//game-inside/index.html" },
-            { id: 55, title: "Black Jack", category: "Card", imgUrl: THUMB_BASE + "Blackjack.png", gameUrl: "https://blackjack-self.vercel.app/" },
-            { id: 56, title: "Raft Wars", category: "Action", imgUrl: THUMB_BASE + "Raftwars.jpg", gameUrl: "https://ixl-library.netlify.app//raft-war/index.html" },
-            { id: 57, title: "Small World Cup", category: "Sports", imgUrl: THUMB_BASE + "Asworldc.jpg", gameUrl: "https://ixl-library.netlify.app//a-smallwc/index.html" },
-            { id: 58, title: "BowMasters", category: "Action", imgUrl: THUMB_BASE + "IMG_0856.png", gameUrl: "https://ixl-libraryy.netlify.app//bowmasters/index.html" },
-            { id: 59, title: "State.io", category: "Strategy", imgUrl: THUMB_BASE + "IMG_0862.png", gameUrl: "https://stateactual.vercel.app/rvvASMiM/1701b2232f8c4f7689394f229bda07d7/index.html" },
-            { id: 60, title: "Day of Meat", category: "Defense", imgUrl: THUMB_BASE + "Deathofmeat.jpg", gameUrl: "https://ixl-library.netlify.app//DayOfMeat/index.html" },
-            { id: 61, title: "Knife Hit", category: "Arcade", imgUrl: THUMB_BASE + "Knifehit.png", gameUrl: "https://ixl-library.netlify.app//knifehit/index.html" },
-            { id: 62, title: "Solar Smash", category: "Sim", imgUrl: THUMB_BASE + "IMG_0868.png", gameUrl: "https://ixl-libraryy.netlify.app//solar-smash/index.html" },
-            { id: 63, title: "Bridge Race", category: "Casual", imgUrl: THUMB_BASE + "IMG_0870.jpeg", gameUrl: "https://ixl-libraryy.netlify.app//bridge-race/index.html" },
-            { id: 64, title: "Papa's Pizzeria", category: "Cooking", imgUrl: THUMB_BASE + "papaspiz.webp", gameUrl: "https://ixl-library.netlify.app//papsp/index.html" },
-            { id: 65, title: "Little Alchemy", category: "Puzzle", imgUrl: THUMB_BASE + "littleA.png", gameUrl: "https://ixl-library.netlify.app//little-alchemy/index.html" },
-            { id: 66, title: "8 Ball Pool", category: "Sports", imgUrl: THUMB_BASE + "8ballpool.webp", gameUrl: "https://ixl-library.netlify.app//pool-pixijs/index.html" },
-            { id: 67, title: "Stealth Master", category: "Action", imgUrl: THUMB_BASE + "stealthmaster.jpg", gameUrl: "https://ixl-libraryy.netlify.app//stealth-master/index.html" },
-            { id: 68, title: "Hide and Seek", category: "Arcade", imgUrl: THUMB_BASE + "hideandseek.webp", gameUrl: "https://ixl-library.netlify.app//hideandseek/8328750458724478102.playables.usercontent.goog/v/assets/index.html" },
-            { id: 69, title: "Slice it All", category: "Arcade", imgUrl: THUMB_BASE + "sliceitall.png", gameUrl: "https://ixl-libraryy.netlify.app//slice-it-all/index.html" },
-            { id: 70, title: "Bus Out", category: "Sim", imgUrl: THUMB_BASE + "busout.webp", gameUrl: "https://gamesbun.github.io/busout-school/" },
-            { id: 71, title: "Blumgi Racers", category: "Racing", imgUrl: THUMB_BASE + "br.webp", gameUrl: "https://ixl-library.netlify.app//blumgir/index.html" },
-            { id: 72, title: "Hills Of Steel", category: "Action", imgUrl: THUMB_BASE + "hills%20of%20steel.webp", gameUrl: "https://hillofsteele.vercel.app/" },
-            { id: 73, title: "Rooftop Snipers 2", category: "Action", imgUrl: THUMB_BASE + "rooftop-snipers.webp", gameUrl: "https://ixl-library.netlify.app//rooftopsnipers/index.html" },
-            { id: 74, title: "Bounce Masters", category: "Arcade", imgUrl: THUMB_BASE + "bouncemasters.webp", gameUrl: "https://ixl-libraryy.netlify.app//bouncemasters/index.html" },
-            { id: 75, title: "Blumgi Ball", category: "Arcade", imgUrl: THUMB_BASE + "blumgiball.webp", gameUrl: "https://ixl-library.netlify.app//blumgiball/index.html" },
-            { id: 76, title: "Draw Joust", category: "Action", imgUrl: THUMB_BASE + "IMG_0959.png", gameUrl: "https://ixl-library.netlify.app//DrawJoustindex.html" },
-            { id: 77, title: "Basketball Legends", category: "Sports", imgUrl: THUMB_BASE + "IMG_0963.jpeg", gameUrl: "https://ixl-library.netlify.app//basketball-legends-main/index.html" },
-            { id: 78, title: "Football Legends", category: "Sports", imgUrl: THUMB_BASE + "Football-Legends.jpg", gameUrl: "https://ixl-library.netlify.app//football-legends/index.html" },
-            { id: 79, title: "Crossy Road", category: "Arcade", imgUrl: THUMB_BASE + "CrossyR.jpg", gameUrl: "https://ixl-libraryy.netlify.app//crossy-road/index.html" },
-            { id: 80, title: "GetAway Shootout", category: "Action", imgUrl: THUMB_BASE + "IMG_0980.jpeg", gameUrl: "https://ixl-library.netlify.app/getaway-shootout/index.html" }
-        ];
-
-        const appsList = [
-            { id: 1001, title: "BlackFlix", category: "App", gameUrl: "https://ixlgroupjam.lovable.app/", imgUrl: THUMB_BASE + "IMG_0988.jpeg" }
-        ];
-
-        const library = [...gamesList, ...appsList];
-
-        let favorites = [];
-        try { favorites = JSON.parse(localStorage.getItem('kivro_favs')) || []; } catch(e) {}
-        let currentTab = 'Games';
-        let searchTerm = '';
-        let disclaimerUrl = '';
-        let countdownInterval;
-
-        // --- CORE FUNCTIONS ---
-        function openDisclaimer(url) {
-            disclaimerUrl = url;
-            const popup = document.getElementById('disclaimer-popup');
-            const btn = document.getElementById('disclaimer-btn');
-            if(!popup || !btn) return;
-            let timeLeft = 10;
-            btn.disabled = true;
-            btn.className = "w-full py-3 rounded-full font-bold text-sm transition-all bg-white/5 text-gray-500 cursor-not-allowed border border-white/10";
-            btn.innerHTML = `Wait <span id="disclaimer-timer">${timeLeft}</span>s...`;
-            popup.classList.remove('hidden');
-            popup.style.display = 'flex';
-            setTimeout(() => { popup.classList.add('active'); }, 10);
-            if (countdownInterval) clearInterval(countdownInterval);
-            countdownInterval = setInterval(() => {
-                timeLeft--;
-                const span = document.getElementById('disclaimer-timer');
-                if(span) span.innerText = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    btn.disabled = false;
-                    btn.className = "w-full py-3 rounded-full font-bold text-sm transition-all bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg cursor-pointer";
-                    btn.innerHTML = "Continue to App";
-                }
-            }, 1000);
-        }
-
-        function closeDisclaimer() {
-            const popup = document.getElementById('disclaimer-popup');
-            if (popup) {
-                popup.classList.remove('active');
-                setTimeout(() => { popup.classList.add('hidden'); popup.style.display = 'none'; }, 300);
-            }
-            if (countdownInterval) clearInterval(countdownInterval);
-        }
-
-        const disclaimerBtn = document.getElementById('disclaimer-btn');
-        if (disclaimerBtn) disclaimerBtn.onclick = () => { if (disclaimerUrl) { window.open(disclaimerUrl, '_blank'); closeDisclaimer(); } };
-
-        const disclaimerPopup = document.getElementById('disclaimer-popup');
-        if (disclaimerPopup) disclaimerPopup.addEventListener('click', (e) => { if (e.target === disclaimerPopup) closeDisclaimer(); });
-
-        let adInterval;
-        function showAdOverlay(targetGameUrl) {
-            const popup = document.getElementById('ad-timer-popup');
-            const btn = document.getElementById('ad-trigger-btn');
-            const status = document.getElementById('ad-status-text');
-            const progressBar = document.getElementById('ad-progress-bar');
-            
-            popup.classList.remove('hidden'); popup.style.display = 'flex';
-            setTimeout(() => { popup.classList.add('active'); }, 10);
-            
-            progressBar.style.width = '0%';
-            btn.style.pointerEvents = 'auto'; btn.style.opacity = '1';
-            status.innerText = "Click play to start video";
-
-            btn.onclick = () => {
-                window.open(DIRECT_LINK_URL, '_blank');
-                let timeLeft = 10; let totalTime = 10;
-                btn.style.pointerEvents = 'none'; btn.style.opacity = '0.5';
-                status.innerText = "Loading video...";
-
-                if(adInterval) clearInterval(adInterval);
-                adInterval = setInterval(() => {
-                    timeLeft--;
-                    if(timeLeft > 15) status.innerText = "Connecting...";
-                    else if(timeLeft > 5) status.innerText = "Playing ad...";
-                    else status.innerText = "Finalizing...";
-                    
-                    const percentage = ((totalTime - timeLeft) / totalTime) * 100;
-                    progressBar.style.width = percentage + '%';
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(adInterval);
-                        popup.classList.remove('active');
-                        setTimeout(() => { popup.classList.add('hidden'); popup.style.display = 'none'; }, 300);
-                        window.open(targetGameUrl, '_blank');
-                    }
-                }, 1000);
-            };
-        }
-
-        function openUpdates() {
-            const popup = document.getElementById('updates-popup');
-            const content = document.getElementById('updates-content');
-            if(!popup || !content) return;
-            // Render logic same as on-page updates
-            content.innerHTML = document.getElementById('on-page-updates').innerHTML;
-            popup.classList.remove('hidden'); popup.style.display = 'flex';
-            setTimeout(() => { popup.classList.add('active'); }, 10);
-        }
-
-        const closeUpdatesBtn = document.getElementById('close-updates');
-        if(closeUpdatesBtn) closeUpdatesBtn.onclick = () => {
-            const popup = document.getElementById('updates-popup');
-            popup.classList.remove('active');
-            setTimeout(() => { popup.classList.add('hidden'); popup.style.display = 'none'; }, 300);
-        };
-
-        function renderUpdates() {
-            const container = document.getElementById('on-page-updates');
-            if(!container) return;
-            container.innerHTML = updatesLog.map((log) => {
-                let changeList = log.changes.map(c => `<li class="update-item text-gray-300 text-xs mb-1">${c}</li>`).join('');
-                return `
-                    <div class="bg-white/5 p-4 rounded-xl border border-white/5 text-left">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-sm font-bold text-white">${log.title}</h3>
-                            <span class="text-[10px] text-indigo-300 bg-indigo-500/20 px-2 py-0.5 rounded-full border border-indigo-500/30">${log.version}</span>
-                        </div>
-                        <ul class="space-y-1">${changeList}</ul>
-                    </div>`;
-            }).join('');
-        }
-
-        function movePill(targetBtn) {
-            const pill = document.getElementById('tab-pill');
-            if(!pill || !targetBtn) return;
-            pill.style.opacity = '1';
-            pill.style.left = targetBtn.offsetLeft + 'px';
-            pill.style.width = targetBtn.offsetWidth + 'px';
-        }
-
-        function renderGrid() {
-            const grid = document.getElementById('game-grid');
-            if(!grid) return;
-            grid.innerHTML = '';
-            
-            let items = library.filter(item => {
-                const search = searchTerm.toLowerCase();
-                const matchesSearch = item.title.toLowerCase().includes(search);
-                if(currentTab === 'Favs') return favorites.includes(item.id) && matchesSearch;
-                if(currentTab === 'Games') return item.category !== 'App' && matchesSearch;
-                return item.category === 'App' && matchesSearch;
-            });
-
-            if(currentTab === 'Games' && !searchTerm) items.sort((a,b) => (favorites.includes(b.id) ? 1 : 0) - (favorites.includes(a.id) ? 1 : 0));
-            document.getElementById('game-count').innerText = items.length;
-
-            if (items.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 animate-[fadeUp_0.5s_ease-out]">No results found.</div>`;
-                return;
-            }
-
-            const fragment = document.createDocumentFragment();
-            items.forEach((item, index) => {
-                const isFav = favorites.includes(item.id);
-                const card = document.createElement('div');
-                card.className = "game-card group cursor-pointer card-anim liquid-glass";
-                card.style.animationDelay = `${Math.min(index * 30, 900)}ms`; // Performance limit delay
-                
-                card.onclick = () => {
-                    const targetUrl = item.gameUrl;
-                    if (item.id === 1001) { openDisclaimer(targetUrl); return; }
-                    if (Math.random() < AD_CHANCE) { showAdOverlay(targetUrl); } 
-                    else { window.open(targetUrl, '_blank'); }
-                };
-
-                card.innerHTML = `
-                    <button class="star-btn ${isFav ? 'star-active' : ''}" onclick="window.toggleFav(event, ${item.id})">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </button>
-                    <div class="h-32 sm:h-40 overflow-hidden relative border-b border-white/5">
-                        <img src="${item.imgUrl}" loading="lazy" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400?text=Game'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-300"></div>
-                        <span class="absolute bottom-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded bg-white/10 text-white backdrop-blur-md border border-white/20 uppercase tracking-wider">
-                            ${item.category}
-                        </span>
-                    </div>
-                    <div class="p-3">
-                        <h3 class="text-xs sm:text-sm font-bold text-white truncate">${item.title}</h3>
-                    </div>`;
-                fragment.appendChild(card);
-            });
-            grid.appendChild(fragment);
-        }
-
-        ['search-input', 'search-input-mobile'].forEach(id => {
-            const el = document.getElementById(id);
-            if(el) {
-                el.addEventListener('input', (e) => {
-                    searchTerm = e.target.value;
-                    const btn = document.getElementById(id.includes('mobile') ? 'clear-search-mobile' : 'clear-search');
-                    if(searchTerm.length > 0) btn.classList.remove('hidden'); else btn.classList.add('hidden');
-                    renderGrid();
-                });
-            }
-        });
-
-        document.querySelectorAll('[id^=clear-search]').forEach(btn => {
-            btn.onclick = () => {
-                searchTerm = '';
-                document.getElementById('search-input').value = '';
-                document.getElementById('search-input-mobile').value = '';
-                btn.classList.add('hidden');
-                renderGrid();
-            };
-        });
-
-        ['tab-games','tab-apps','tab-favs'].forEach(t => {
-            document.getElementById(t).onclick = (e) => {
-                currentTab = t.replace('tab-','').charAt(0).toUpperCase() + t.slice(5);
-                ['tab-games','tab-apps','tab-favs'].forEach(btnId => {
-                    const btn = document.getElementById(btnId);
-                    if(btnId === t) { btn.classList.add('tab-active-text'); btn.classList.remove('tab-inactive-text'); movePill(btn); }
-                    else { btn.classList.remove('tab-active-text'); btn.classList.add('tab-inactive-text'); }
-                });
-                renderGrid();
-            };
-        });
-
-        const ownerPopup = document.getElementById('owner-popup');
-        const closeOwnerBtn = document.getElementById('close-owner-popup');
-        if(closeOwnerBtn && ownerPopup) {
-            closeOwnerBtn.addEventListener('click', () => {
-                ownerPopup.classList.remove('active');
-                setTimeout(() => { ownerPopup.classList.add('hidden'); ownerPopup.style.display = 'none'; }, 300);
-                localStorage.setItem('kivro_ownership_seen', 'true');
+        // Function to copy username
+        function copyUsername() {
+            const username = "kayaz#0001";
+            navigator.clipboard.writeText(username).then(() => {
+                showToast(`Copied ${username}!`);
             });
         }
 
-        const installPopup = document.getElementById('install-popup');
-        if(document.getElementById('install-trigger-btn')) {
-            document.getElementById('install-trigger-btn').onclick = () => {
-                installPopup.classList.remove('hidden'); installPopup.style.display = 'flex';
-                setTimeout(() => { installPopup.classList.add('active'); }, 10);
-            };
-        }
-        if(document.getElementById('close-popup')) {
-            document.getElementById('close-popup').onclick = () => {
-                installPopup.classList.remove('active');
-                setTimeout(() => { installPopup.classList.add('hidden'); installPopup.style.display = 'none'; }, 300);
-            };
-        }
-
-        // --- INIT ---
-        window.addEventListener('load', () => {
-            // Failsafe Intro Timer (2.2s Max)
+        // Function to show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            
             setTimeout(() => {
-                const intro = document.getElementById('cinematic-splash');
-                if(intro) intro.classList.add('splash-exit');
-                
-                // Show Ownership Popup (Priority 1)
-                if (!localStorage.getItem('kivro_ownership_seen')) {
-                    setTimeout(() => {
-                        const ownerPopup = document.getElementById('owner-popup');
-                        if(ownerPopup) {
-                            ownerPopup.classList.remove('hidden'); ownerPopup.style.display = 'flex';
-                            setTimeout(() => { ownerPopup.classList.add('active'); }, 10);
-                        }
-                    }, 500);
-                } else {
-                    // Show Ad Notice (Priority 2)
-                    if (!localStorage.getItem('kivro_ad_notice_seen_v1')) {
-                        setTimeout(() => {
-                            const notice = document.getElementById('ad-notice-toast');
-                            const closeNotice = document.getElementById('close-ad-notice');
-                            notice.classList.remove('translate-y-40', 'opacity-0', 'pointer-events-none');
-                            let waitTime = 10;
-                            const timer = setInterval(() => {
-                                waitTime--;
-                                closeNotice.innerText = `Wait ${waitTime}s...`;
-                                if(waitTime <= 0) {
-                                    clearInterval(timer);
-                                    closeNotice.disabled = false;
-                                    closeNotice.classList.remove('cursor-not-allowed', 'bg-white/5', 'text-gray-400');
-                                    closeNotice.classList.add('bg-white', 'text-black', 'hover:bg-gray-200');
-                                    closeNotice.innerText = "Understood";
-                                    closeNotice.onclick = () => {
-                                        localStorage.setItem('kivro_ad_notice_seen_v1', 'true');
-                                        notice.classList.add('translate-y-40', 'opacity-0', 'pointer-events-none');
-                                    };
-                                }
-                            }, 1000);
-                        }, 1000);
-                    }
-                }
-            }, 2200);
+                toast.classList.remove('show');
+            }, 3000);
+        }
 
-            renderGrid();
-            renderUpdates();
-            const defaultTab = document.getElementById('tab-games');
-            if(defaultTab) movePill(defaultTab);
-            createFallingLights(15);
+        // Add 3D Tilt Effect to the Card
+        const card = document.querySelector('.profile-card');
+        const container = document.body;
+
+        container.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
-        function createFallingLights(count) {
-            const container = document.getElementById('falling-lights');
-            if (!container) return;
-            for (let i = 0; i < count; i++) {
-                const light = document.createElement('div');
-                light.className = 'falling-light';
-                light.style.left = `${Math.random() * 100}%`;
-                light.style.animationDuration = `${2 + Math.random() * 3}s`;
-                light.style.animationDelay = `${Math.random() * 5}s`;
-                light.style.opacity = `${0.3 + Math.random() * 0.5}`;
-                container.appendChild(light);
-            }
-        }
-    </script>
-
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-      const firebaseConfig = {
-        apiKey: "AIzaSyAqizVfClbZ1S03RXFZ6HG-J8UvkYcMxhw",
-        authDomain: "kivro-lib.firebaseapp.com",
-        projectId: "kivro-lib",
-        storageBucket: "kivro-lib.firebasestorage.app",
-        messagingSenderId: "486702554442",
-        appId: "1:486702554442:web:a3760baf7f8e96e82035b3",
-        measurementId: "G-NYBRQEHXHY"
-      };
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
+        // Reset tilt on mouse leave
+        container.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            card.style.transition = "all 0.5s ease";
+        });
+        
+        container.addEventListener('mouseenter', () => {
+            card.style.transition = "none";
+        });
     </script>
 </body>
 </html>
