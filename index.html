@@ -33,21 +33,13 @@
 
         /* --- BACKGROUND LAYERS --- */
         #visualizer-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0; 
-            opacity: 0.3; 
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; opacity: 0.3; pointer-events: none;
         }
-
         #particles-bg {
-            position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: 1; 
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
         }
-
         .bg-text {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             font-size: 15vw; color: #300000; opacity: 0.3; z-index: 1; pointer-events: none;
@@ -57,128 +49,91 @@
         /* --- MAIN CONTAINER --- */
         .profile-container {
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            z-index: 10;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; z-index: 10;
         }
 
-        /* --- GLASS CARD (Bigger Size) --- */
+        /* --- GLASS CARD --- */
         .glass-card {
             position: relative;
             background: rgba(20, 5, 5, 0.75);
             box-shadow: 0 8px 32px 0 rgba(255, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 0, 0, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 24px;
-            /* Increased padding and width */
             padding: 50px 40px; 
             width: 440px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
             overflow: hidden;
-            transition: transform 0.2s;
         }
 
         /* Shine Effect */
         .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -150%;
-            width: 100%; height: 100%;
-            background: linear-gradient(
-                to right,
-                transparent 0%,
-                rgba(255, 255, 255, 0.05) 40%,
-                rgba(255, 255, 255, 0.1) 50%,
-                rgba(255, 255, 255, 0.05) 60%,
-                transparent 100%
-            );
-            transform: skewX(-25deg);
-            animation: cardShine 6s infinite;
-            pointer-events: none;
+            content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 60%, transparent 100%);
+            transform: skewX(-25deg); animation: cardShine 6s infinite; pointer-events: none;
         }
-
-        @keyframes cardShine {
-            0% { left: -150%; }
-            20% { left: 150%; }
-            100% { left: 150%; }
-        }
+        @keyframes cardShine { 0% { left: -150%; } 20% { left: 150%; } 100% { left: 150%; } }
 
         /* --- PROFILE PICTURE --- */
         .profile-picture {
-            width: 130px; height: 130px;
-            margin-bottom: 20px;
-            z-index: 2;
+            width: 130px; height: 130px; margin-bottom: 20px; z-index: 2;
         }
         .profile-picture img {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid rgba(255, 50, 50, 0.8);
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 4px solid rgba(255, 50, 50, 0.8); box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
             transition: transform 0.3s;
         }
-        .profile-picture:hover img {
-            transform: scale(1.05);
-            border-color: #ff0000;
-        }
+        .profile-picture:hover img { transform: scale(1.05); border-color: #ff0000; }
 
         /* --- TEXT --- */
         .shiny-text {
-            font-family: 'SuperMario256', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(120deg, #aaa 0%, #fff 50%, #aaa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            z-index: 2;
-            letter-spacing: 2px;
+            font-family: 'SuperMario256', sans-serif; font-size: 2.8rem; font-weight: 900;
+            text-align: center; background: linear-gradient(120deg, #aaa 0%, #fff 50%, #aaa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 20px; text-transform: uppercase; z-index: 2; letter-spacing: 2px;
         }
 
-        /* --- STATUS BOX --- */
+        /* --- STATUS BOX (UPDATED FOR DUAL ICONS) --- */
         .status-card {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 0, 0, 0.2);
-            border-radius: 16px;
-            padding: 15px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            z-index: 2;
+            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 0, 0, 0.2);
+            border-radius: 16px; padding: 15px; width: 100%;
+            display: flex; align-items: center; gap: 15px;
+            margin-bottom: 25px; z-index: 2;
         }
         
-        /* Container for either the Image or the Icon */
         .status-icon-box {
-            width: 45px; height: 45px;
+            position: relative; /* Needed for absolute positioning of secondary bubble */
+            width: 50px; height: 50px;
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
 
+        /* Main Icon */
         .status-avatar-img {
-            width: 45px; height: 45px; border-radius: 8px;
-            object-fit: cover;
+            width: 48px; height: 48px; border-radius: 8px; object-fit: cover;
         }
-        .status-avatar-img.spin { animation: spin 4s linear infinite; border-radius: 50%; }
+        .status-avatar-img.round { border-radius: 50%; }
+        .status-avatar-img.spin { animation: spin 4s linear infinite; }
 
-        /* Idle Moon Icon Style */
+        /* Secondary Bubble Icon */
+        .secondary-icon {
+            position: absolute;
+            bottom: -5px; right: -5px;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            border: 2px solid #1a0505; /* Match card background to create separation */
+            background: #000;
+            object-fit: cover;
+            z-index: 10;
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
+        }
+
+        /* Idle Icon */
         .idle-icon {
-            font-size: 28px;
-            color: #FFFF00; /* Yellow Moon */
-            filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.5));
+            font-size: 28px; color: #FFFF00; filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.5));
             animation: idleFloat 3s ease-in-out infinite;
         }
-        @keyframes idleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
+        @keyframes idleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
         .status-info { flex: 1; overflow: hidden; }
@@ -187,66 +142,37 @@
 
         /* --- SKILLS --- */
         .skills-container {
-            display: flex; gap: 18px; justify-content: center;
-            margin-bottom: 25px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 2;
+            display: flex; gap: 18px; justify-content: center; margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.03); padding: 10px 20px;
+            border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.05); z-index: 2;
         }
-        .skills-container i {
-            font-size: 1.8rem;
-            transition: transform 0.2s;
-            cursor: help;
-        }
-        .devicon-html5-plain { color: #e34f26; }
-        .devicon-css3-plain { color: #1572b6; }
-        .devicon-javascript-plain { color: #f7df1e; }
-        .devicon-python-plain { color: #3776ab; }
+        .skills-container i { font-size: 1.8rem; transition: transform 0.2s; cursor: help; }
+        .devicon-html5-plain { color: #e34f26; } .devicon-css3-plain { color: #1572b6; }
+        .devicon-javascript-plain { color: #f7df1e; } .devicon-python-plain { color: #3776ab; }
         .devicon-cplusplus-plain { color: #00599C; }
         .skills-container i:hover { transform: scale(1.2); filter: drop-shadow(0 0 8px currentColor); }
 
-        /* --- SOCIAL ICONS (Improved) --- */
+        /* --- SOCIAL ICONS --- */
         .social-icons { display: flex; gap: 20px; justify-content: center; margin-bottom: 25px; z-index: 2; }
         .social-btn {
-            width: 48px; height: 48px;
-            border-radius: 12px; /* Softer square */
-            background: rgba(255, 255, 255, 0.03);
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
+            width: 48px; height: 48px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03); display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.1); text-decoration: none;
         }
-        .social-btn i { font-size: 24px; color: #aaa; transition: color 0.2s; z-index: 2; }
-        
-        /* Brand Colors on Hover */
+        .social-btn i { font-size: 24px; color: #aaa; transition: color 0.2s; }
         .social-btn:hover { transform: translateY(-4px); border-color: transparent; }
-        
         .social-btn.discord:hover { background: #5865F2; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); }
         .social-btn.roblox:hover { background: #000000; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); }
         .social-btn.tiktok:hover { background: linear-gradient(45deg, #25F4EE, #FE2C55); box-shadow: 0 4px 15px rgba(254, 44, 85, 0.4); }
         .social-btn.siege:hover { background: #ff5500; box-shadow: 0 4px 15px rgba(255, 85, 0, 0.4); }
-
         .social-btn:hover i { color: #fff; }
 
         /* --- BUTTONS --- */
         .action-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, #5c0000, #8a0000);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 2;
+            width: 100%; padding: 12px; background: linear-gradient(90deg, #5c0000, #8a0000);
+            border: none; border-radius: 10px; color: white; font-weight: bold; font-size: 1rem;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2;
         }
         .action-btn:hover { background: linear-gradient(90deg, #7a0000, #a30000); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 0, 0, 0.2); }
 
@@ -254,50 +180,36 @@
         .side-arrow {
             position: absolute; right: -60px; top: 50%; transform: translateY(-50%);
             background: #5c0000; color: white; border: 2px solid #ff4d4d;
-            width: 45px; height: 45px; border-radius: 50%;
-            cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
         }
         .side-panel {
             position: absolute; right: -320px; top: 50%; transform: translateY(-50%);
             width: 240px; background: rgba(10, 0, 0, 0.95); border: 1px solid #ff0000;
-            padding: 20px; border-radius: 15px; color: #fff; opacity: 0; pointer-events: none;
-            transition: all 0.3s;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            padding: 20px; border-radius: 15px; color: #fff; opacity: 0; pointer-events: none; transition: all 0.3s;
         }
         .side-panel.active { right: -250px; opacity: 1; pointer-events: auto; }
 
         /* --- MUSIC PLAYER --- */
         .music-wrapper { position: fixed; top: 30px; left: 30px; z-index: 50; }
         .music-btn {
-            width: 50px; height: 50px; border-radius: 50%;
-            background: rgba(10, 0, 0, 0.9); border: 2px solid #ff0000;
-            color: white; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-            transition: all 0.3s;
-            position: relative; z-index: 52; font-size: 1.2rem;
+            width: 50px; height: 50px; border-radius: 50%; background: rgba(10, 0, 0, 0.9); border: 2px solid #ff0000;
+            color: white; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); transition: all 0.3s; position: relative; z-index: 52; font-size: 1.2rem;
         }
         .music-btn.playing { animation: pulseRed 2s infinite; }
         @keyframes pulseRed { 0% {box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(255, 0, 0, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);} }
-
         .volume-container {
             position: absolute; left: 25px; top: 50%; transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.85); border: 1px solid #ff0000;
-            padding: 10px 10px 10px 35px; border-radius: 0 20px 20px 0;
-            width: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease;
-            z-index: 51; pointer-events: none;
+            background: rgba(0, 0, 0, 0.85); border: 1px solid #ff0000; padding: 10px 10px 10px 35px; border-radius: 0 20px 20px 0;
+            width: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; z-index: 51; pointer-events: none;
         }
-        .music-wrapper:hover .volume-container, .volume-container.force-show {
-            width: 160px; opacity: 1; pointer-events: auto;
-        }
+        .music-wrapper:hover .volume-container, .volume-container.force-show { width: 160px; opacity: 1; pointer-events: auto; }
         input[type=range] { width: 100%; accent-color: #ff0000; cursor: pointer; }
 
         /* --- GALLERY MODAL --- */
         .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-            backdrop-filter: blur(5px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000;
+            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(5px);
         }
         .modal.open { opacity: 1; pointer-events: auto; }
         .gallery-content { position: relative; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
@@ -310,15 +222,12 @@
         /* --- ENTER OVERLAY --- */
         .enter-overlay {
             position: fixed; inset: 0; background: #000; z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.5s;
+            display: flex; justify-content: center; align-items: center; transition: opacity 0.5s;
         }
         .enter-overlay.hide { opacity: 0; pointer-events: none; }
         .enter-btn {
-            padding: 15px 40px; border: 2px solid #ff0000; color: #fff;
-            font-size: 1.5rem; font-family: sans-serif; cursor: pointer;
-            border-radius: 50px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-            background: transparent; transition: 0.2s;
+            padding: 15px 40px; border: 2px solid #ff0000; color: #fff; font-size: 1.5rem; font-family: sans-serif; cursor: pointer;
+            border-radius: 50px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); background: transparent; transition: 0.2s;
         }
         .enter-btn:hover { background: rgba(255,0,0,0.1); transform: scale(1.05); }
 
@@ -333,7 +242,6 @@
     <div class="bg-text">KAYAZ</div>
 
     <div class="profile-container">
-        
         <div class="glass-card">
             
             <div class="profile-picture">
@@ -384,7 +292,6 @@
         <div id="side-panel" class="side-panel">
             You mess with the Mister, you get the Sigma
         </div>
-
     </div>
 
     <div class="music-wrapper" id="music-wrapper">
@@ -416,13 +323,12 @@
 
             // SCREENSHOT LINKS
             const screenshots = [
-                "https://cdn.discordapp.com/attachments/1459215420916760753/1459645704141013119/togif.gif?ex=6968a5be&is=6967543e&hm=5f8b87ebcd8909b95f78508b3b3b44dedb320f9e6671cf7a9fc0c33591522943&",
-                "https://media.discordapp.net/attachments/1416145318629871626/1442255371682054265/image.png?ex=6968a9bc&is=6967583c&hm=44f770aab2943c0539e19f7027fb0b8d3e250871925576670491a2a7b52eacc8&=&format=webp&quality=lossless&width=1543&height=779",
-                "https://cdn.discordapp.com/attachments/1404188647217168447/1408864806366216343/cheatermcpetereateer.png?ex=69687a59&is=696728d9&hm=08958d4f055858bc832752bc6c84cd7eab25f6f1ddeb35754be27773c7e1c153&",
-                
+                "https://images.unsplash.com/photo-1614726365723-49cfae90ec76?auto=format&fit=crop&w=1000&q=80",
+                "https://images.unsplash.com/photo-1620641788427-b11e699f1d44?auto=format&fit=crop&w=1000&q=80",
+                "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80"
             ];
 
-            /* --- AUDIO SETUP --- */
+            /* --- AUDIO & VISUALIZER SETUP --- */
             const bgMusic = document.getElementById('bg-music');
             const musicBtn = document.getElementById('music-toggle');
             const musicVolume = document.getElementById('music-volume');
@@ -434,6 +340,7 @@
             let audioCtx, analyser, dataArray, bufferLength;
             let musicOn = false;
             let hideVolumeTimeout;
+            let currentSpotifyTrackId = null; // Track ID to prevent reloading same song
 
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
@@ -445,11 +352,14 @@
             document.getElementById('enter-btn').addEventListener('click', () => {
                 document.getElementById('enter-overlay').classList.add('hide');
                 initAudio();
-                bgMusic.volume = 0.5;
-                bgMusic.play().then(() => {
-                    musicOn = true;
-                    musicBtn.classList.add('playing');
-                }).catch(e => console.log("Audio play failed:", e));
+                // Check if Spotify has a preview, otherwise play default
+                if(bgMusic.src && bgMusic.src !== "") {
+                     bgMusic.volume = 0.5;
+                     bgMusic.play().then(() => {
+                        musicOn = true;
+                        musicBtn.classList.add('playing');
+                     }).catch(e => console.log("Audio play failed:", e));
+                }
             });
 
             function initAudio() {
@@ -474,7 +384,6 @@
                 analyser.getByteFrequencyData(dataArray);
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
                 const bars = 100; 
                 const barWidth = canvas.width / bars;
                 const usefulDataLength = Math.floor(bufferLength * 0.7);
@@ -524,77 +433,107 @@
             const modal = document.getElementById('gallery-modal');
             const currentImg = document.getElementById('current-img');
             let imgIndex = 0;
+            document.getElementById('open-gallery-btn').addEventListener('click', () => { modal.classList.add('open'); updateGallery(); });
+            document.getElementById('close-gallery').addEventListener('click', () => { modal.classList.remove('open'); });
+            document.getElementById('next-img').addEventListener('click', () => { imgIndex = (imgIndex + 1) % screenshots.length; updateGallery(); });
+            document.getElementById('prev-img').addEventListener('click', () => { imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length; updateGallery(); });
+            function updateGallery() { if(screenshots.length > 0) currentImg.src = screenshots[imgIndex]; }
 
-            document.getElementById('open-gallery-btn').addEventListener('click', () => {
-                modal.classList.add('open');
-                updateGallery();
-            });
-            document.getElementById('close-gallery').addEventListener('click', () => {
-                modal.classList.remove('open');
-            });
-            document.getElementById('next-img').addEventListener('click', () => {
-                imgIndex = (imgIndex + 1) % screenshots.length;
-                updateGallery();
-            });
-            document.getElementById('prev-img').addEventListener('click', () => {
-                imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length;
-                updateGallery();
-            });
-            function updateGallery() {
-                if(screenshots.length > 0) {
-                    currentImg.src = screenshots[imgIndex];
-                }
-            }
+            /* --- LANYARD / DISCORD + DUAL STATUS LOGIC --- */
+            
+            // We set an interval to check status updates (every 5s) to catch music changes
+            function fetchStatus() {
+                fetch(`https://lanyard.rest/v1/users/${userId}`)
+                .then(res => res.json())
+                .then(({ data }) => {
+                    if(!data || !data.discord_user) return;
+                    
+                    document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png?size=512`;
+                    
+                    // --- DUAL STATUS LOGIC ---
+                    const statusIconContainer = document.getElementById('status-icon-container');
+                    const statusBold = document.getElementById('status-bold');
+                    const statusText = document.getElementById('status-text');
 
-            /* --- LANYARD / DISCORD --- */
-            fetch(`https://lanyard.rest/v1/users/${userId}`)
-            .then(res => res.json())
-            .then(({ data }) => {
-                if(!data || !data.discord_user) return;
-                
-                document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png?size=512`;
-                
-                // --- STATUS LOGIC ---
-                const statusIconContainer = document.getElementById('status-icon-container');
-                const statusBold = document.getElementById('status-bold');
-                const statusText = document.getElementById('status-text');
+                    let boldText = "Status";
+                    let smallText = "Currently doing nothing";
+                    // Default Idle Icon
+                    let mainIconHtml = `<i class="fa-solid fa-moon idle-icon"></i>`; 
+                    let secondaryIconHtml = "";
 
-                let boldText = "Status";
-                let smallText = "Currently doing nothing";
-                let imageHtml = `<i class="fa-solid fa-moon idle-icon"></i>`; // Default Idle Icon
+                    let spotify = null;
+                    let game = null;
 
-                if (data.activities && data.activities.length) {
-                    const spotify = data.activities.find(a => a.type === 2);
-                    const game = data.activities.find(a => a.type === 0);
+                    if (data.activities && data.activities.length) {
+                        spotify = data.activities.find(a => a.type === 2); // Type 2 = Listening
+                        game = data.activities.find(a => a.type === 0);    // Type 0 = Playing
+                    }
 
-                    if (spotify) {
-                        boldText = "Spotify";
-                        smallText = `${spotify.details} - ${spotify.state}`;
-                        if(spotify.assets) {
-                            const url = `https://i.scdn.co/image/${spotify.assets.large_image.replace("spotify:", "")}`;
-                            imageHtml = `<img src="${url}" class="status-avatar-img spin" />`;
-                        }
-                    } else if (game) {
+                    // Priority Logic:
+                    // 1. If Game + Spotify: Game is Main, Spotify is Bubble
+                    // 2. If Only Game: Game is Main
+                    // 3. If Only Spotify: Spotify is Main
+                    
+                    if (game) {
                         boldText = game.name;
                         smallText = game.details || game.state || "Playing";
                         if(game.assets && game.assets.large_image) {
                             const url = `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
-                            imageHtml = `<img src="${url}" class="status-avatar-img" />`;
+                            mainIconHtml = `<img src="${url}" class="status-avatar-img" />`;
+                        } else {
+                            // Generic Game Icon if no asset
+                            mainIconHtml = `<img src="https://cdn.discordapp.com/embed/avatars/0.png" class="status-avatar-img" />`; 
+                        }
+
+                        // If playing game AND spotify, show secondary bubble
+                        if (spotify && spotify.assets && spotify.assets.large_image) {
+                             const spotUrl = `https://i.scdn.co/image/${spotify.assets.large_image.replace("spotify:", "")}`;
+                             secondaryIconHtml = `<img src="${spotUrl}" class="secondary-icon" title="Listening to Spotify" />`;
+                             smallText += ` & Listening`; // Update text slightly
+                        }
+
+                    } else if (spotify) {
+                        boldText = "Spotify";
+                        smallText = `${spotify.details} - ${spotify.state}`;
+                        if(spotify.assets && spotify.assets.large_image) {
+                            const url = `https://i.scdn.co/image/${spotify.assets.large_image.replace("spotify:", "")}`;
+                            mainIconHtml = `<img src="${url}" class="status-avatar-img round spin" />`;
                         }
                     }
-                }
 
-                statusBold.textContent = boldText;
-                statusText.textContent = smallText;
-                statusIconContainer.innerHTML = imageHtml;
-            });
+                    statusBold.textContent = boldText;
+                    statusText.textContent = smallText;
+                    // Combine Main Icon + Secondary Bubble (if any)
+                    statusIconContainer.innerHTML = mainIconHtml + secondaryIconHtml;
+
+                    // --- SPOTIFY MUSIC SYNC (Best Effort) ---
+                    // Note: Lanyard usually does NOT return the preview_url directly in the filtered activity.
+                    // However, we check if we can switch music. 
+                    // Since we can't get the preview URL easily without full Spotify API, 
+                    // this remains a UI feature primarily. The following block checks if we *could*.
+                    
+                    /* Logic for Music Sync:
+                       If we had the track preview URL, we would do:
+                       if (spotify && spotify.track_id !== currentSpotifyTrackId) {
+                           // Attempt to set bgMusic.src = preview_url
+                           // bgMusic.play();
+                       }
+                       
+                       Since we don't, we keep the default music.mp3 playing to ensure audio works.
+                    */
+
+                });
+            }
+
+            // Initial Fetch
+            fetchStatus();
+            // Update every 10 seconds to catch changes (polling)
+            setInterval(fetchStatus, 10000);
 
             /* --- SIDE PANEL --- */
             const sideArrow = document.getElementById('side-arrow');
             const sidePanel = document.getElementById('side-panel');
-            sideArrow.addEventListener('click', () => {
-                sidePanel.classList.toggle('active');
-            });
+            sideArrow.addEventListener('click', () => { sidePanel.classList.toggle('active'); });
         });
 
         /* --- OGL PARTICLES --- */
@@ -623,59 +562,22 @@
                 const r = 10 * Math.cbrt(Math.random());
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos(2 * Math.random() - 1);
-                positions.set([
-                    r * Math.sin(phi) * Math.cos(theta),
-                    r * Math.sin(phi) * Math.sin(theta),
-                    r * Math.cos(phi)
-                ], i*3);
+                positions.set([r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)], i*3);
                 randoms.set([Math.random(), Math.random(), Math.random(), Math.random()], i*4);
             }
 
-            const geometry = new OGL.Geometry(gl, {
-                position: { size: 3, data: positions },
-                random: { size: 4, data: randoms }
-            });
+            const geometry = new OGL.Geometry(gl, { position: { size: 3, data: positions }, random: { size: 4, data: randoms } });
 
             const program = new OGL.Program(gl, {
-                vertex: `
-                    attribute vec3 position;
-                    attribute vec4 random;
-                    uniform mat4 modelMatrix;
-                    uniform mat4 viewMatrix;
-                    uniform mat4 projectionMatrix;
-                    uniform float uTime;
-                    void main() {
-                        vec3 pos = position;
-                        pos.x += sin(uTime * random.x + position.y) * 0.5;
-                        pos.y += cos(uTime * random.y + position.x) * 0.5;
-                        vec4 glPos = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
-                        gl_Position = glPos;
-                        gl_PointSize = (50.0 * random.z) / glPos.w;
-                    }
-                `,
-                fragment: `
-                    precision highp float;
-                    void main() {
-                        vec2 uv = gl_PointCoord.xy;
-                        float d = length(uv - vec2(0.5));
-                        if(d > 0.5) discard;
-                        gl_FragColor = vec4(1.0, 0.0, 0.0, 0.6);
-                    }
-                `,
-                uniforms: { uTime: { value: 0 } },
-                transparent: true,
-                depthTest: false
+                vertex: `attribute vec3 position; attribute vec4 random; uniform mat4 modelMatrix; uniform mat4 viewMatrix; uniform mat4 projectionMatrix; uniform float uTime; void main() { vec3 pos = position; pos.x += sin(uTime * random.x + position.y) * 0.5; pos.y += cos(uTime * random.y + position.x) * 0.5; vec4 glPos = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0); gl_Position = glPos; gl_PointSize = (50.0 * random.z) / glPos.w; }`,
+                fragment: `precision highp float; void main() { vec2 uv = gl_PointCoord.xy; float d = length(uv - vec2(0.5)); if(d > 0.5) discard; gl_FragColor = vec4(1.0, 0.0, 0.0, 0.6); }`,
+                uniforms: { uTime: { value: 0 } }, transparent: true, depthTest: false
             });
 
             const particles = new OGL.Mesh(gl, { mode: gl.POINTS, geometry, program });
 
             requestAnimationFrame(update);
-            function update(t) {
-                requestAnimationFrame(update);
-                program.uniforms.uTime.value = t * 0.001;
-                particles.rotation.y = t * 0.0002;
-                renderer.render({ scene: particles, camera });
-            }
+            function update(t) { requestAnimationFrame(update); program.uniforms.uTime.value = t * 0.001; particles.rotation.y = t * 0.0002; renderer.render({ scene: particles, camera }); }
         })();
     </script>
 </body>
