@@ -35,7 +35,7 @@
         #visualizer-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; 
-            opacity: 0.2; /* Faded more as requested */
+            opacity: 0.2; 
             pointer-events: none;
         }
         #particles-bg {
@@ -43,18 +43,10 @@
             z-index: 1; pointer-events: none;
         }
         
-        /* Breathing Glow Animation for Background Text */
+        /* Breathing Glow Animation */
         @keyframes breathingGlow {
-            0%, 100% { 
-                text-shadow: 0 0 20px rgba(50, 0, 0, 0.2); 
-                opacity: 0.2; 
-                transform: translate(-50%, -50%) scale(1);
-            }
-            50% { 
-                text-shadow: 0 0 60px rgba(255, 0, 0, 0.5); 
-                opacity: 0.4; 
-                transform: translate(-50%, -50%) scale(1.02);
-            }
+            0%, 100% { text-shadow: 0 0 20px rgba(50, 0, 0, 0.2); opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+            50% { text-shadow: 0 0 60px rgba(255, 0, 0, 0.5); opacity: 0.4; transform: translate(-50%, -50%) scale(1.02); }
         }
 
         .bg-text {
@@ -62,7 +54,7 @@
             font-size: 15vw; color: #300000; 
             z-index: 1; pointer-events: none;
             font-weight: 900;
-            animation: breathingGlow 6s ease-in-out infinite; /* Added Animation */
+            animation: breathingGlow 6s ease-in-out infinite; 
         }
 
         /* --- TOP SONG BANNER --- */
@@ -232,7 +224,6 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
-        /* ROUNDED COVER */
         .player-cover {
             width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.1); flex-shrink: 0;
@@ -248,8 +239,8 @@
         .ctrl-btn:hover { color: #ff4d4d; }
         .ctrl-btn.main { font-size: 1.2rem; color: #fff; }
         
-        .progress-wrapper { width: 100%; height: 3px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 5px; cursor: pointer; }
-        .progress-fill { height: 100%; background: #ff4d4d; width: 0%; border-radius: 3px; }
+        .progress-wrapper { width: 100%; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 5px; cursor: pointer; }
+        .progress-fill { height: 100%; background: #ff4d4d; width: 0%; border-radius: 3px; pointer-events: none; }
 
         /* --- GALLERY MODAL --- */
         .modal {
@@ -350,7 +341,7 @@
     </div>
 
     <div class="player-widget" id="player-widget">
-        <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=200" id="player-cover" class="player-cover" alt="Cover">
+        <img src="" id="player-cover" class="player-cover" alt="Cover">
         <div class="player-details">
             <div class="song-title-widget" id="widget-title">Select Song</div>
             <div class="player-controls">
@@ -386,7 +377,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const userId = "747411610389446747"; 
 
-            // --- PLAYLIST CONFIGURATION (Updated Folder/Files) ---
+            // --- PLAYLIST CONFIGURATION ---
             const playlist = [
                 {
                     title: "Work Hard (feat. Ne-Yo & Akon)",
@@ -421,8 +412,8 @@
             let isPlaying = false;
             let isShuffle = false;
 
-            // LOWER VOLUME ON START
-            audio.volume = 0.3;
+            // VOLUME INCREASED
+            audio.volume = 0.5;
 
             // Widget Elements
             const widgetTitle = document.getElementById('widget-title');
@@ -432,6 +423,7 @@
             const nextBtn = document.getElementById('next-btn');
             const shuffleBtn = document.getElementById('shuffle-btn');
             const progressFill = document.getElementById('player-progress-fill');
+            const progressWrapper = document.getElementById('player-progress-wrapper');
             const topBanner = document.getElementById('top-banner');
             const topSongName = document.getElementById('top-song-name');
 
@@ -495,6 +487,16 @@
                 }
             });
 
+            // SEEKING LOGIC ADDED HERE
+            progressWrapper.addEventListener('click', (e) => {
+                const width = progressWrapper.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                if (duration) {
+                    audio.currentTime = (clickX / width) * duration;
+                }
+            });
+
             // --- ENTER & INIT ---
             function resizeCanvas() {
                 visualizerCanvas.width = window.innerWidth;
@@ -535,8 +537,8 @@
                 
                 // --- FADED TOP GRADIENT FOR VISUALIZER ---
                 const gradient = ctx.createLinearGradient(0, visualizerCanvas.height, 0, 0);
-                gradient.addColorStop(0, "rgba(255, 0, 0, 0.4)"); // Red Bottom
-                gradient.addColorStop(1, "rgba(255, 0, 0, 0)");   // Transparent Top
+                gradient.addColorStop(0, "rgba(255, 0, 0, 0.4)"); 
+                gradient.addColorStop(1, "rgba(255, 0, 0, 0)");   
                 ctx.fillStyle = gradient;
 
                 const bars = 100; 
@@ -552,7 +554,7 @@
                     const x = i * barWidth;
                     const y = visualizerCanvas.height - height;
 
-                    ctx.shadowBlur = 0; // Removed Glow for cleaner fade
+                    ctx.shadowBlur = 0; 
                     ctx.fillRect(x, y, barWidth - 2, height);
                 }
             }
