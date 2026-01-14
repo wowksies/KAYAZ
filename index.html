@@ -36,19 +36,18 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: 0; /* Behind everything */
-            opacity: 0.3; /* Faded effect */
+            z-index: 0; 
+            opacity: 0.3; 
             pointer-events: none;
         }
 
         #particles-bg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            z-index: 1; /* Above visualizer, below card */
+            z-index: 1; 
             pointer-events: none;
         }
 
-        /* BG Text */
         .bg-text {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             font-size: 15vw; color: #300000; opacity: 0.3; z-index: 1; pointer-events: none;
@@ -62,22 +61,24 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            z-index: 10; /* Top layer */
+            z-index: 10;
         }
 
-        /* --- GLASS CARD --- */
+        /* --- GLASS CARD (Bigger Size) --- */
         .glass-card {
             position: relative;
-            background: rgba(20, 5, 5, 0.7);
+            background: rgba(20, 5, 5, 0.75);
             box-shadow: 0 8px 32px 0 rgba(255, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 0, 0, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 24px;
-            padding: 40px;
-            width: 380px;
+            /* Increased padding and width */
+            padding: 50px 40px; 
+            width: 440px; 
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow: hidden;
+            transition: transform 0.2s;
         }
 
         /* Shine Effect */
@@ -107,16 +108,16 @@
 
         /* --- PROFILE PICTURE --- */
         .profile-picture {
-            width: 120px; height: 120px;
-            margin-bottom: 15px;
+            width: 130px; height: 130px;
+            margin-bottom: 20px;
             z-index: 2;
         }
         .profile-picture img {
             width: 100%; height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255, 50, 50, 0.8);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            border: 4px solid rgba(255, 50, 50, 0.8);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
             transition: transform 0.3s;
         }
         .profile-picture:hover img {
@@ -127,56 +128,75 @@
         /* --- TEXT --- */
         .shiny-text {
             font-family: 'SuperMario256', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 900;
             text-align: center;
-            background: linear-gradient(120deg, #888 0%, #fff 50%, #888 100%);
+            background: linear-gradient(120deg, #aaa 0%, #fff 50%, #aaa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             text-transform: uppercase;
             z-index: 2;
+            letter-spacing: 2px;
         }
 
         /* --- STATUS BOX --- */
         .status-card {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 16px;
+            padding: 15px;
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 25px;
             z-index: 2;
         }
-        .status-avatar {
-            width: 35px; height: 35px; border-radius: 50%;
-            border: 2px solid #a00;
-            background-color: #222; /* Dark bg for transparent images */
+        
+        /* Container for either the Image or the Icon */
+        .status-icon-box {
+            width: 45px; height: 45px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
         }
-        .status-avatar.spin { animation: spin 4s linear infinite; }
+
+        .status-avatar-img {
+            width: 45px; height: 45px; border-radius: 8px;
+            object-fit: cover;
+        }
+        .status-avatar-img.spin { animation: spin 4s linear infinite; border-radius: 50%; }
+
+        /* Idle Moon Icon Style */
+        .idle-icon {
+            font-size: 28px;
+            color: #FFFF00; /* Yellow Moon */
+            filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.5));
+            animation: idleFloat 3s ease-in-out infinite;
+        }
+        @keyframes idleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
         .status-info { flex: 1; overflow: hidden; }
-        .status-name { font-weight: bold; font-size: 0.9rem; color: #fff; }
-        .status-text { font-size: 0.8rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .status-name { font-weight: bold; font-size: 1rem; color: #fff; margin-bottom: 2px; }
+        .status-text { font-size: 0.85rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* --- SKILLS --- */
         .skills-container {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 20px;
+            display: flex; gap: 18px; justify-content: center;
+            margin-bottom: 25px;
             background: rgba(255, 255, 255, 0.03);
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 2;
         }
         .skills-container i {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             transition: transform 0.2s;
             cursor: help;
         }
@@ -185,59 +205,66 @@
         .devicon-javascript-plain { color: #f7df1e; }
         .devicon-python-plain { color: #3776ab; }
         .devicon-cplusplus-plain { color: #00599C; }
-        .skills-container i:hover { transform: scale(1.2); filter: drop-shadow(0 0 5px currentColor); }
+        .skills-container i:hover { transform: scale(1.2); filter: drop-shadow(0 0 8px currentColor); }
 
-        /* --- SOCIAL ICONS --- */
-        .social-icons { display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; z-index: 2; }
+        /* --- SOCIAL ICONS (Improved) --- */
+        .social-icons { display: flex; gap: 20px; justify-content: center; margin-bottom: 25px; z-index: 2; }
         .social-btn {
-            width: 42px; height: 42px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+            width: 48px; height: 48px;
+            border-radius: 12px; /* Softer square */
+            background: rgba(255, 255, 255, 0.03);
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
-        .social-btn i { font-size: 20px; color: #ddd; transition: color 0.2s; }
-        .social-btn:hover {
-            background: rgba(255, 0, 0, 0.2);
-            border-color: #ff0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-            transform: translateY(-3px);
-        }
+        .social-btn i { font-size: 24px; color: #aaa; transition: color 0.2s; z-index: 2; }
+        
+        /* Brand Colors on Hover */
+        .social-btn:hover { transform: translateY(-4px); border-color: transparent; }
+        
+        .social-btn.discord:hover { background: #5865F2; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); }
+        .social-btn.roblox:hover { background: #000000; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); }
+        .social-btn.tiktok:hover { background: linear-gradient(45deg, #25F4EE, #FE2C55); box-shadow: 0 4px 15px rgba(254, 44, 85, 0.4); }
+        .social-btn.siege:hover { background: #ff5500; box-shadow: 0 4px 15px rgba(255, 85, 0, 0.4); }
+
         .social-btn:hover i { color: #fff; }
 
         /* --- BUTTONS --- */
         .action-btn {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: linear-gradient(90deg, #5c0000, #8a0000);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: white;
             font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 2;
         }
-        .action-btn:hover { background: linear-gradient(90deg, #7a0000, #a30000); transform: translateY(-2px); }
+        .action-btn:hover { background: linear-gradient(90deg, #7a0000, #a30000); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 0, 0, 0.2); }
 
         /* --- SIDE PANEL --- */
         .side-arrow {
-            position: absolute; right: -50px; top: 50%; transform: translateY(-50%);
+            position: absolute; right: -60px; top: 50%; transform: translateY(-50%);
             background: #5c0000; color: white; border: 2px solid #ff4d4d;
-            width: 40px; height: 40px; border-radius: 50%;
+            width: 45px; height: 45px; border-radius: 50%;
             cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
         }
         .side-panel {
-            position: absolute; right: -280px; top: 50%; transform: translateY(-50%);
-            width: 200px; background: rgba(0,0,0,0.9); border: 1px solid #ff0000;
-            padding: 15px; border-radius: 10px; color: #fff; opacity: 0; pointer-events: none;
+            position: absolute; right: -320px; top: 50%; transform: translateY(-50%);
+            width: 240px; background: rgba(10, 0, 0, 0.95); border: 1px solid #ff0000;
+            padding: 20px; border-radius: 15px; color: #fff; opacity: 0; pointer-events: none;
             transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
-        .side-panel.active { right: -220px; opacity: 1; pointer-events: auto; }
+        .side-panel.active { right: -250px; opacity: 1; pointer-events: auto; }
 
         /* --- MUSIC PLAYER --- */
         .music-wrapper { position: fixed; top: 30px; left: 30px; z-index: 50; }
@@ -316,10 +343,12 @@
             <div class="shiny-text">KAYAZ</div>
 
             <div class="status-card">
-                <img id="status-icon" class="status-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" />
+                <div class="status-icon-box" id="status-icon-container">
+                    <i class="fa-solid fa-moon idle-icon"></i>
+                </div>
                 <div class="status-info">
-                    <div class="status-name" id="status-username">kayazzzzz</div>
-                    <div class="status-text" id="status-text">Fetching data...</div>
+                    <div class="status-name" id="status-bold">Status</div>
+                    <div class="status-text" id="status-text">Loading...</div>
                 </div>
             </div>
 
@@ -332,16 +361,16 @@
             </div>
 
             <div class="social-icons">
-                <a href="https://discord.com/users/747411610389446747" target="_blank" class="social-btn" title="Discord">
+                <a href="https://discord.com/users/747411610389446747" target="_blank" class="social-btn discord" title="Discord">
                    <i class="fa-brands fa-discord"></i>
                 </a>
-                <a href="https://www.roblox.com/users/1728947656/profile" target="_blank" class="social-btn" title="Roblox">
+                <a href="https://www.roblox.com/users/1728947656/profile" target="_blank" class="social-btn roblox" title="Roblox">
                      <i class="fa-solid fa-gamepad"></i>
                 </a>
-                <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="social-btn" title="TikTok">
+                <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="social-btn tiktok" title="TikTok">
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
-                <a href="https://stats.cc/siege/KAYAZ.CTRL/29032a28-cbf4-444a-ad19-3413761f3710" target="_blank" class="social-btn" title="R6 Siege">
+                <a href="https://stats.cc/siege/KAYAZ.CTRL/29032a28-cbf4-444a-ad19-3413761f3710" target="_blank" class="social-btn siege" title="R6 Siege">
                      <i class="fa-solid fa-crosshairs"></i>
                 </a>
             </div>
@@ -392,7 +421,7 @@
                 "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80"
             ];
 
-            /* --- AUDIO SETUP (Canvas Version - No Lag) --- */
+            /* --- AUDIO SETUP --- */
             const bgMusic = document.getElementById('bg-music');
             const musicBtn = document.getElementById('music-toggle');
             const musicVolume = document.getElementById('music-volume');
@@ -405,7 +434,6 @@
             let musicOn = false;
             let hideVolumeTimeout;
 
-            // Resize Canvas
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
@@ -413,7 +441,6 @@
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
-            // Enter Button Logic
             document.getElementById('enter-btn').addEventListener('click', () => {
                 document.getElementById('enter-overlay').classList.add('hide');
                 initAudio();
@@ -424,7 +451,6 @@
                 }).catch(e => console.log("Audio play failed:", e));
             });
 
-            // Init Audio & Canvas Visualizer
             function initAudio() {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (!AudioContext) return;
@@ -439,7 +465,6 @@
 
                 bufferLength = analyser.frequencyBinCount;
                 dataArray = new Uint8Array(bufferLength);
-                
                 renderFrame();
             }
 
@@ -449,25 +474,20 @@
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                const bars = 100; // Number of bars
+                const bars = 100; 
                 const barWidth = canvas.width / bars;
-                
-                // We only use the first 70% of frequency data (cutoff highs)
-                // so the visualizer is active across the whole screen
                 const usefulDataLength = Math.floor(bufferLength * 0.7);
 
                 for (let i = 0; i < bars; i++) {
                     const dataIndex = Math.floor((i / bars) * usefulDataLength);
                     const value = dataArray[dataIndex];
-                    
                     const percent = value / 255;
                     const height = percent * canvas.height * 0.7; 
 
                     const x = i * barWidth;
                     const y = canvas.height - height;
 
-                    // Draw Bar
-                    ctx.fillStyle = `rgba(255, 0, 0, ${percent * 0.5})`; // Red with opacity based on volume
+                    ctx.fillStyle = `rgba(255, 0, 0, ${percent * 0.5})`;
                     ctx.shadowBlur = 20;
                     ctx.shadowColor = "rgba(255, 0, 0, 0.5)";
                     ctx.fillRect(x, y, barWidth - 2, height);
@@ -480,17 +500,14 @@
                 clearTimeout(hideVolumeTimeout);
                 volumeContainer.classList.add('force-show');
             });
-
             musicWrapper.addEventListener('mouseleave', () => {
                 hideVolumeTimeout = setTimeout(() => {
                     volumeContainer.classList.remove('force-show');
                 }, 1500);
             });
-
             musicVolume.addEventListener('input', (e) => {
                 bgMusic.volume = e.target.value;
             });
-
             musicBtn.addEventListener('click', () => {
                 if(musicOn) {
                     bgMusic.pause();
@@ -502,7 +519,7 @@
                 musicOn = !musicOn;
             });
 
-            /* --- SCREENSHOT GALLERY --- */
+            /* --- GALLERY --- */
             const modal = document.getElementById('gallery-modal');
             const currentImg = document.getElementById('current-img');
             let imgIndex = 0;
@@ -511,21 +528,17 @@
                 modal.classList.add('open');
                 updateGallery();
             });
-
             document.getElementById('close-gallery').addEventListener('click', () => {
                 modal.classList.remove('open');
             });
-
             document.getElementById('next-img').addEventListener('click', () => {
                 imgIndex = (imgIndex + 1) % screenshots.length;
                 updateGallery();
             });
-
             document.getElementById('prev-img').addEventListener('click', () => {
                 imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length;
                 updateGallery();
             });
-
             function updateGallery() {
                 if(screenshots.length > 0) {
                     currentImg.src = screenshots[imgIndex];
@@ -540,36 +553,39 @@
                 
                 document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png?size=512`;
                 
-                // 1. FORCE THE NAME
-                document.getElementById('status-username').textContent = "kayazzzzz";
+                // --- STATUS LOGIC ---
+                const statusIconContainer = document.getElementById('status-icon-container');
+                const statusBold = document.getElementById('status-bold');
+                const statusText = document.getElementById('status-text');
 
-                // 2. DEFAULT IDLE STATE
-                let statusText = "Currently doing nothing";
-                // Discord Idle Moon Icon (High Quality PNG)
-                let iconUrl = "https://i.imgur.com/K3p5u8D.png"; 
-                let spin = false;
+                let boldText = "Status";
+                let smallText = "Currently doing nothing";
+                let imageHtml = `<i class="fa-solid fa-moon idle-icon"></i>`; // Default Idle Icon
 
                 if (data.activities && data.activities.length) {
                     const spotify = data.activities.find(a => a.type === 2);
                     const game = data.activities.find(a => a.type === 0);
 
                     if (spotify) {
-                        statusText = `Listening to ${spotify.details}`;
-                        if(spotify.assets) iconUrl = `https://i.scdn.co/image/${spotify.assets.large_image.replace("spotify:", "")}`;
-                        spin = true;
+                        boldText = "Spotify";
+                        smallText = `${spotify.details} - ${spotify.state}`;
+                        if(spotify.assets) {
+                            const url = `https://i.scdn.co/image/${spotify.assets.large_image.replace("spotify:", "")}`;
+                            imageHtml = `<img src="${url}" class="status-avatar-img spin" />`;
+                        }
                     } else if (game) {
-                        statusText = `Playing ${game.name}`;
-                        if(game.assets) iconUrl = `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
+                        boldText = game.name;
+                        smallText = game.details || game.state || "Playing";
+                        if(game.assets && game.assets.large_image) {
+                            const url = `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
+                            imageHtml = `<img src="${url}" class="status-avatar-img" />`;
+                        }
                     }
                 }
 
-                document.getElementById('status-text').textContent = statusText;
-                const sIcon = document.getElementById('status-icon');
-                sIcon.src = iconUrl;
-                
-                // Remove existing spin class first
-                sIcon.classList.remove('spin');
-                if(spin) sIcon.classList.add('spin');
+                statusBold.textContent = boldText;
+                statusText.textContent = smallText;
+                statusIconContainer.innerHTML = imageHtml;
             });
 
             /* --- SIDE PANEL --- */
