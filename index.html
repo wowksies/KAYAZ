@@ -34,16 +34,35 @@
         /* --- BACKGROUND LAYERS --- */
         #visualizer-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; opacity: 0.3; pointer-events: none;
+            z-index: 0; 
+            opacity: 0.2; /* Faded more as requested */
+            pointer-events: none;
         }
         #particles-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 1; pointer-events: none;
         }
+        
+        /* Breathing Glow Animation for Background Text */
+        @keyframes breathingGlow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(50, 0, 0, 0.2); 
+                opacity: 0.2; 
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 60px rgba(255, 0, 0, 0.5); 
+                opacity: 0.4; 
+                transform: translate(-50%, -50%) scale(1.02);
+            }
+        }
+
         .bg-text {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 15vw; color: #300000; opacity: 0.3; z-index: 1; pointer-events: none;
+            font-size: 15vw; color: #300000; 
+            z-index: 1; pointer-events: none;
             font-weight: 900;
+            animation: breathingGlow 6s ease-in-out infinite; /* Added Animation */
         }
 
         /* --- TOP SONG BANNER --- */
@@ -57,7 +76,7 @@
             font-weight: 600;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(255,0,0,0.5);
-            transform: translateY(-100%); /* Hidden initially */
+            transform: translateY(-100%);
             transition: transform 0.5s ease;
             backdrop-filter: blur(5px);
             border-bottom: 1px solid rgba(255,0,0,0.1);
@@ -146,7 +165,7 @@
         .status-name { font-weight: bold; font-size: 1rem; color: #fff; margin-bottom: 2px; }
         .status-text { font-size: 0.85rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Spotify Bar (Discord Activity) */
+        /* Spotify Bar */
         .spotify-progress-container {
             width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1);
             border-radius: 2px; overflow: hidden; margin-top: 5px; display: none;
@@ -203,7 +222,7 @@
         }
         .side-panel.active { right: -250px; opacity: 1; pointer-events: auto; }
 
-        /* --- NEW MUSIC PLAYER WIDGET (Bottom Left) --- */
+        /* --- MUSIC PLAYER WIDGET --- */
         .player-widget {
             position: fixed; bottom: 30px; left: 30px; z-index: 100;
             background: rgba(10, 0, 0, 0.95); border: 1px solid #ff4d4d;
@@ -213,9 +232,10 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
+        /* ROUNDED COVER */
         .player-cover {
-            width: 60px; height: 60px; border-radius: 8px; object-fit: cover;
-            border: 1px solid rgba(255, 255, 255, 0.1); flex-shrink: 0;
+            width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1); flex-shrink: 0;
             animation: spin 6s linear infinite; animation-play-state: paused;
         }
         .player-cover.playing { animation-play-state: running; }
@@ -366,22 +386,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             const userId = "747411610389446747"; 
 
-            // --- PLAYLIST CONFIGURATION ---
+            // --- PLAYLIST CONFIGURATION (Updated Folder/Files) ---
             const playlist = [
                 {
                     title: "Work Hard (feat. Ne-Yo & Akon)",
                     src: "songs/music1.mp3",
-                    cover: "https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=200&auto=format&fit=crop"
+                    cover: "song_covers/music1_cover.png"
                 },
                 {
                     title: "Runway Walk (feat. Brevi)",
                     src: "songs/music2.mp3",
-                    cover: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=200&auto=format&fit=crop"
+                    cover: "song_covers/music2_cover.jpg"
                 },
                 {
                     title: "Borderline",
                     src: "songs/music3.mp3",
-                    cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=200&auto=format&fit=crop"
+                    cover: "song_covers/music3_cover.jpg"
                 }
             ];
 
@@ -400,6 +420,9 @@
             let currentSongIndex = 0;
             let isPlaying = false;
             let isShuffle = false;
+
+            // LOWER VOLUME ON START
+            audio.volume = 0.3;
 
             // Widget Elements
             const widgetTitle = document.getElementById('widget-title');
@@ -426,9 +449,7 @@
             }
 
             function playSong() {
-                // Ensure context is running
                 if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-                
                 audio.play();
                 isPlaying = true;
                 playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
@@ -511,6 +532,13 @@
                 if(analyser) analyser.getByteFrequencyData(dataArray);
 
                 ctx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
+                
+                // --- FADED TOP GRADIENT FOR VISUALIZER ---
+                const gradient = ctx.createLinearGradient(0, visualizerCanvas.height, 0, 0);
+                gradient.addColorStop(0, "rgba(255, 0, 0, 0.4)"); // Red Bottom
+                gradient.addColorStop(1, "rgba(255, 0, 0, 0)");   // Transparent Top
+                ctx.fillStyle = gradient;
+
                 const bars = 100; 
                 const barWidth = visualizerCanvas.width / bars;
                 const usefulDataLength = Math.floor(bufferLength * 0.7);
@@ -524,11 +552,8 @@
                     const x = i * barWidth;
                     const y = visualizerCanvas.height - height;
 
-                    ctx.fillStyle = `rgba(255, 0, 0, ${percent * 0.5})`;
-                    ctx.shadowBlur = 20;
-                    ctx.shadowColor = "rgba(255, 0, 0, 0.5)";
+                    ctx.shadowBlur = 0; // Removed Glow for cleaner fade
                     ctx.fillRect(x, y, barWidth - 2, height);
-                    ctx.shadowBlur = 0;
                 }
             }
 
