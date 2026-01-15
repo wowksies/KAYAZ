@@ -405,28 +405,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             color: #fff;
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .clip-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: #aaa;
-        }
-
-        .clip-views {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .clip-date {
-            color: #888;
+            text-align: center;
         }
 
         /* Scrollbar styling for clips modal */
@@ -611,24 +590,19 @@
                 "https://cdn.discordapp.com/attachments/1404188647217168447/1408864806366216343/cheatermcpetereateer.png?ex=69687a59&is=696728d9&hm=08958d4f055858bc832752bc6c84cd7eab25f6f1ddeb35754be27773c7e1c153&",
             ];
 
-            // MEDAL CLIPS - Add your Medal.tv clip URLs here
+            // MEDAL CLIPS - Add your Medal.tv embed URLs here
             const medalClips = [
                 {
-                    url: "https://medal.tv/games/r6-siege/clips/lBjCVIQKvBIwbeoi6?invite=cr-MSxpaGosMjU3OTY3MzM1",
-                    title: "Sigma",
-                    
+                    embedUrl: "https://medal.tv/games/r6-siege/clip/lBjCVIQKvBIwbeoi6?invite=cr-MSxpaGosMjU3OTY3MzM1",
+                    title: "Insane Ace"
                 },
                 {
-                    url: "https://medal.tv/games/rainbow-six/clips/your-clip-id-2",
-                    title: "Clutch Win",
-                    views: "890",
-                    date: "5 days ago"
+                    embedUrl: "https://medal.tv/games/r6-siege/clip/YOUR_CLIP_ID_2?invite=cr-YOUR_INVITE",
+                    title: "Clutch Win"
                 },
                 {
-                    url: "https://medal.tv/games/valorant/clips/your-clip-id-3",
-                    title: "4K Spray Transfer",
-                    views: "2.1K",
-                    date: "1 week ago"
+                    embedUrl: "https://medal.tv/games/valorant/clip/YOUR_CLIP_ID_3?invite=cr-YOUR_INVITE",
+                    title: "4K Spray Transfer"
                 }
             ];
 
@@ -816,6 +790,13 @@
             });
             document.getElementById('close-gallery').addEventListener('click', () => { modal.classList.remove('open'); });
             
+            // Close gallery modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('open');
+                }
+            });
+            
             document.getElementById('next-img').addEventListener('click', () => { 
                 imgIndex = (imgIndex + 1) % screenshots.length; 
                 updateGallery(); 
@@ -830,27 +811,17 @@
             const clipsGrid = document.getElementById('clips-grid');
 
             function createClipCard(clip) {
-                const clipId = clip.url.split('/clips/')[1] || clip.url.split('/').pop();
-                const embedUrl = `https://medal.tv/clip/${clipId}?muted=false&autoplay=0`;
-                
                 return `
                     <div class="clip-card">
                         <iframe 
                             class="clip-video" 
-                            src="${embedUrl}" 
+                            src="${clip.embedUrl}" 
                             frameborder="0" 
                             allow="autoplay; fullscreen" 
                             allowfullscreen>
                         </iframe>
                         <div class="clip-info">
                             <div class="clip-title">${clip.title}</div>
-                            <div class="clip-meta">
-                                <div class="clip-views">
-                                    <i class="fa-solid fa-eye"></i>
-                                    <span>${clip.views}</span>
-                                </div>
-                                <div class="clip-date">${clip.date}</div>
-                            </div>
                         </div>
                     </div>
                 `;
@@ -869,6 +840,13 @@
 
             document.getElementById('close-clips').addEventListener('click', () => {
                 clipsModal.classList.remove('open');
+            });
+
+            // Close clips modal when clicking outside
+            clipsModal.addEventListener('click', (e) => {
+                if (e.target === clipsModal) {
+                    clipsModal.classList.remove('open');
+                }
             });
 
             /* --- DISCORD / LANYARD LOGIC (1 Second Update) --- */
