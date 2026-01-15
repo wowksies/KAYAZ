@@ -366,6 +366,9 @@
             max-height: 90vh; 
             overflow-y: auto;
             padding: 40px 20px 20px 20px;
+            background: rgba(10, 0, 0, 0.95);
+            border-radius: 20px;
+            border: 2px solid #ff4d4d;
         }
 
         .clips-grid {
@@ -373,6 +376,7 @@
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
             padding: 10px;
+            min-height: 200px;
         }
 
         .clip-card {
@@ -832,10 +836,10 @@
             }
 
             document.getElementById('open-clips-btn').addEventListener('click', () => {
+                console.log('Opening clips modal');
+                console.log('Medal clips:', medalClips);
                 clipsModal.classList.add('open');
-                if (clipsGrid.innerHTML === '') {
-                    loadClips();
-                }
+                loadClips();
             });
 
             document.getElementById('close-clips').addEventListener('click', () => {
