@@ -44,16 +44,25 @@
         }
         
         @keyframes breathingGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(50, 0, 0, 0.2); opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
-            50% { text-shadow: 0 0 60px rgba(255, 0, 0, 0.5); opacity: 0.4; transform: translate(-50%, -50%) scale(1.02); }
+            0%, 100% { 
+                text-shadow: 0 0 40px rgba(255, 0, 0, 0.3), 0 0 80px rgba(255, 0, 0, 0.2); 
+                opacity: 0.35; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+            50% { 
+                text-shadow: 0 0 80px rgba(255, 0, 0, 0.6), 0 0 120px rgba(255, 0, 0, 0.4); 
+                opacity: 0.5; 
+                transform: translate(-50%, -50%) scale(1.03); 
+            }
         }
 
         .bg-text {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 15vw; color: #300000; 
+            font-size: 15vw; color: #500000; 
             z-index: 1; pointer-events: none;
             font-weight: 900;
-            animation: breathingGlow 6s ease-in-out infinite; 
+            animation: breathingGlow 6s ease-in-out infinite;
+            letter-spacing: 0.1em;
         }
 
         /* --- TOP SONG BANNER --- */
@@ -93,6 +102,12 @@
             width: 440px; 
             display: flex; flex-direction: column; align-items: center;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(255, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 0, 0, 0.2);
         }
 
         /* Shine Effect */
@@ -129,6 +144,14 @@
             display: flex; flex-direction: column;
             gap: 10px;
             margin-bottom: 25px; z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: rgba(255, 0, 0, 0.4);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
         }
         
         .status-header { display: flex; align-items: center; gap: 15px; width: 100%; }
@@ -137,9 +160,18 @@
             position: relative; width: 50px; height: 50px;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .status-avatar-img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; }
+        .status-avatar-img { 
+            width: 48px; height: 48px; border-radius: 8px; object-fit: cover; 
+            transition: transform 0.3s ease;
+        }
+        .status-avatar-img:hover {
+            transform: scale(1.1);
+        }
         .status-avatar-img.round { border-radius: 50%; }
-        .status-avatar-img.spin { animation: spin 4s linear infinite; }
+        .status-avatar-img.spin { 
+            animation: spin 4s linear infinite; 
+            animation-play-state: running !important;
+        }
 
         .secondary-icon {
             position: absolute; bottom: -5px; right: -5px; width: 24px; height: 24px; border-radius: 50%;
@@ -169,12 +201,27 @@
             display: flex; gap: 18px; justify-content: center; margin-bottom: 25px;
             background: rgba(255, 255, 255, 0.03); padding: 10px 20px;
             border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.05); z-index: 2;
+            transition: all 0.3s ease;
         }
-        .skills-container i { font-size: 1.8rem; transition: transform 0.2s; cursor: help; }
-        .devicon-html5-plain { color: #e34f26; } .devicon-css3-plain { color: #1572b6; }
-        .devicon-javascript-plain { color: #f7df1e; } .devicon-python-plain { color: #3776ab; }
+        .skills-container:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 0, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+        .skills-container i { 
+            font-size: 1.8rem; 
+            transition: all 0.3s ease; 
+            cursor: help; 
+        }
+        .devicon-html5-plain { color: #e34f26; } 
+        .devicon-css3-plain { color: #1572b6; }
+        .devicon-javascript-plain { color: #f7df1e; } 
+        .devicon-python-plain { color: #3776ab; }
         .devicon-cplusplus-plain { color: #00599C; }
-        .skills-container i:hover { transform: scale(1.2); filter: drop-shadow(0 0 8px currentColor); }
+        .skills-container i:hover { 
+            transform: scale(1.3) rotate(5deg); 
+            filter: drop-shadow(0 0 12px currentColor); 
+        }
 
         /* --- SOCIAL ICONS --- */
         .social-icons { display: flex; gap: 20px; justify-content: center; margin-bottom: 25px; z-index: 2; }
@@ -223,6 +270,11 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
+        .player-widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            border-color: #ff6666;
+        }
         .player-cover {
             width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.1); flex-shrink: 0;
@@ -234,9 +286,19 @@
         .song-title-widget { font-size: 0.9rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
         
         .player-controls { display: flex; align-items: center; gap: 10px; }
-        .ctrl-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1rem; transition: color 0.2s; }
-        .ctrl-btn:hover { color: #ff4d4d; }
+        .ctrl-btn { 
+            background: none; border: none; color: #ccc; cursor: pointer; 
+            font-size: 1rem; 
+            transition: all 0.2s ease; 
+        }
+        .ctrl-btn:hover { 
+            color: #ff4d4d; 
+            transform: scale(1.2);
+        }
         .ctrl-btn.main { font-size: 1.2rem; color: #fff; }
+        .ctrl-btn.main:hover {
+            transform: scale(1.3);
+        }
         
         .progress-wrapper { width: 100%; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 5px; cursor: pointer; }
         .progress-fill { height: 100%; background: #ff4d4d; width: 0%; border-radius: 3px; pointer-events: none; }
@@ -254,23 +316,20 @@
         .gallery-content { 
             position: relative; max-width: 90vw; max-height: 85vh; 
             display: flex; flex-direction: column; align-items: center;
-            /* Removed background/border from container */
         }
         
         .gallery-img-container {
-            /* Container just holds the image in place */
             max-width: 100%; max-height: 75vh;
             display: flex; align-items: center; justify-content: center;
         }
 
         .gallery-img { 
-            /* Border and style applied directly to image */
             max-width: 100%; max-height: 100%; 
             object-fit: contain;
             border-radius: 12px;
-            border: 3px solid #ff4d4d; /* Border hugs image */
-            box-shadow: 0 0 30px rgba(255, 77, 77, 0.4); /* Glow hugs image */
-            opacity: 0; /* Hidden by default for fade in */
+            border: 3px solid #ff4d4d;
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.4);
+            opacity: 0;
             transition: opacity 0.3s ease;
         }
         .gallery-img.loaded { opacity: 1; }
@@ -496,280 +555,3 @@
             }
 
             function playSong() {
-                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-                audio.play();
-                isPlaying = true;
-                playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                widgetCover.classList.add('playing');
-            }
-
-            function pauseSong() {
-                audio.pause();
-                isPlaying = false;
-                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                widgetCover.classList.remove('playing');
-            }
-
-            function prevSong() {
-                currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-                loadSong(currentSongIndex);
-                playSong();
-            }
-
-            function nextSong() {
-                if (isShuffle) {
-                    currentSongIndex = Math.floor(Math.random() * playlist.length);
-                } else {
-                    currentSongIndex = (currentSongIndex + 1) % playlist.length;
-                }
-                loadSong(currentSongIndex);
-                playSong();
-            }
-
-            // --- EVENT LISTENERS ---
-            playPauseBtn.addEventListener('click', () => isPlaying ? pauseSong() : playSong());
-            prevBtn.addEventListener('click', prevSong);
-            nextBtn.addEventListener('click', nextSong);
-            shuffleBtn.addEventListener('click', () => {
-                isShuffle = !isShuffle;
-                shuffleBtn.style.color = isShuffle ? '#ff4d4d' : '#ccc';
-            });
-            audio.addEventListener('ended', nextSong);
-            audio.addEventListener('timeupdate', () => {
-                if(audio.duration) {
-                    const percent = (audio.currentTime / audio.duration) * 100;
-                    progressFill.style.width = `${percent}%`;
-                }
-            });
-
-            // SEEKING LOGIC
-            progressWrapper.addEventListener('click', (e) => {
-                const width = progressWrapper.clientWidth;
-                const clickX = e.offsetX;
-                const duration = audio.duration;
-                if (duration) {
-                    audio.currentTime = (clickX / width) * duration;
-                }
-            });
-
-            // --- ENTER & INIT ---
-            function resizeCanvas() {
-                visualizerCanvas.width = window.innerWidth;
-                visualizerCanvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-
-            document.getElementById('enter-btn').addEventListener('click', () => {
-                document.getElementById('enter-overlay').classList.add('hide');
-                initAudio();
-                loadSong(currentSongIndex);
-                playSong();
-            });
-
-            function initAudio() {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                
-                audioCtx = new AudioContext();
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 256; 
-                
-                const source = audioCtx.createMediaElementSource(audio);
-                source.connect(analyser);
-                analyser.connect(audioCtx.destination);
-
-                bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-                renderFrame();
-            }
-
-            function renderFrame() {
-                requestAnimationFrame(renderFrame);
-                if(analyser) analyser.getByteFrequencyData(dataArray);
-
-                ctx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
-                
-                const gradient = ctx.createLinearGradient(0, visualizerCanvas.height, 0, 0);
-                gradient.addColorStop(0, "rgba(255, 0, 0, 0.4)"); 
-                gradient.addColorStop(1, "rgba(255, 0, 0, 0)");   
-                ctx.fillStyle = gradient;
-
-                const bars = 100; 
-                const barWidth = visualizerCanvas.width / bars;
-                const usefulDataLength = Math.floor(bufferLength * 0.7);
-
-                for (let i = 0; i < bars; i++) {
-                    const dataIndex = Math.floor((i / bars) * usefulDataLength);
-                    const value = dataArray ? dataArray[dataIndex] : 0;
-                    const percent = value / 255;
-                    const height = percent * visualizerCanvas.height * 0.7; 
-
-                    const x = i * barWidth;
-                    const y = visualizerCanvas.height - height;
-
-                    ctx.shadowBlur = 0; 
-                    ctx.fillRect(x, y, barWidth - 2, height);
-                }
-            }
-
-            /* --- UPDATED GALLERY LOGIC --- */
-            const modal = document.getElementById('gallery-modal');
-            const currentImg = document.getElementById('current-img');
-            let imgIndex = 0;
-
-            function updateGallery() {
-                // Fade out
-                currentImg.classList.remove('loaded');
-                setTimeout(() => {
-                    if(screenshots.length > 0) currentImg.src = screenshots[imgIndex];
-                    // Fade in after short delay for src load
-                    currentImg.onload = () => currentImg.classList.add('loaded');
-                }, 200);
-            }
-
-            document.getElementById('open-gallery-btn').addEventListener('click', () => { 
-                modal.classList.add('open'); 
-                updateGallery();
-            });
-            document.getElementById('close-gallery').addEventListener('click', () => { modal.classList.remove('open'); });
-            
-            document.getElementById('next-img').addEventListener('click', () => { 
-                imgIndex = (imgIndex + 1) % screenshots.length; 
-                updateGallery(); 
-            });
-            document.getElementById('prev-img').addEventListener('click', () => { 
-                imgIndex = (imgIndex - 1 + screenshots.length) % screenshots.length; 
-                updateGallery(); 
-            });
-
-            /* --- DISCORD / LANYARD LOGIC (1 Second Update) --- */
-            function fetchStatus() {
-                fetch(`https://lanyard.rest/v1/users/${userId}`)
-                .then(res => res.json())
-                .then(({ data }) => {
-                    if(!data || !data.discord_user) return;
-                    
-                    document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png?size=512`;
-                    
-                    const statusIconContainer = document.getElementById('status-icon-container');
-                    const statusBold = document.getElementById('status-bold');
-                    const statusText = document.getElementById('status-text');
-                    const spotifyProgress = document.getElementById('spotify-progress');
-                    const spotifyBar = document.getElementById('spotify-bar');
-
-                    let boldText = "Status";
-                    let smallText = "Currently doing nothing";
-                    let mainIconHtml = `<i class="fa-solid fa-moon idle-icon"></i>`; 
-                    let secondaryIconHtml = "";
-
-                    let spotify = null;
-                    let game = null;
-
-                    if (data.activities && data.activities.length) {
-                        spotify = data.activities.find(a => a.type === 2);
-                        game = data.activities.find(a => a.type === 0);
-                    }
-
-                    spotifyProgress.classList.remove('active');
-
-                    if (game) {
-                        boldText = game.name;
-                        smallText = game.details || game.state || "Playing";
-                        if(game.assets && game.assets.large_image) {
-                            const url = `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
-                            mainIconHtml = `<img src="${url}" class="status-avatar-img" />`;
-                        } else {
-                            mainIconHtml = `<img src="https://cdn.discordapp.com/embed/avatars/0.png" class="status-avatar-img" />`; 
-                        }
-
-                        if (spotify && spotify.assets) {
-                             const spotUrl = `https://i.scdn.co/image/${spotify.assets.large_image.replace("spotify:", "")}`;
-                             secondaryIconHtml = `<img src="${spotUrl}" class="secondary-icon" title="Listening to Spotify" />`;
-                             smallText += ` & Listening`;
-                        }
-
-                    } else if (spotify) {
-                        boldText = "Spotify";
-                        smallText = `${spotify.details}`;
-                        if(spotify.assets) {
-                            const url = `https://i.scdn.co/image/${spotify.assets.large_image.replace("spotify:", "")}`;
-                            mainIconHtml = `<img src="${url}" class="status-avatar-img round spin" />`;
-                        }
-                    }
-
-                    if (spotify && spotify.timestamps) {
-                        spotifyProgress.classList.add('active');
-                        const start = spotify.timestamps.start;
-                        const end = spotify.timestamps.end;
-                        const total = end - start;
-                        
-                        // Immediate update for faster feel
-                        const now = Date.now();
-                        const current = now - start;
-                        const percent = Math.min((current / total) * 100, 100);
-                        spotifyBar.style.width = `${percent}%`;
-                    }
-
-                    statusBold.textContent = boldText;
-                    statusText.textContent = smallText;
-                    statusIconContainer.innerHTML = mainIconHtml + secondaryIconHtml;
-                });
-            }
-
-            fetchStatus();
-            // FAST UPDATE (1 Second)
-            setInterval(fetchStatus, 1000);
-
-            /* --- SIDE PANEL --- */
-            const sideArrow = document.getElementById('side-arrow');
-            const sidePanel = document.getElementById('side-panel');
-            sideArrow.addEventListener('click', () => { sidePanel.classList.toggle('active'); });
-        });
-
-        /* --- OGL PARTICLES --- */
-        (function() {
-            if (!window.OGL) return;
-            const particleCount = 80;
-            const renderer = new OGL.Renderer({ alpha: true });
-            const gl = renderer.gl;
-            document.getElementById('particles-bg').appendChild(gl.canvas);
-
-            const camera = new OGL.Camera(gl, { fov: 35 });
-            camera.position.set(0, 0, 20);
-
-            function resize() {
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                camera.perspective({ aspect: gl.canvas.width / gl.canvas.height });
-            }
-            window.addEventListener('resize', resize, false);
-            resize();
-
-            const count = particleCount;
-            const positions = new Float32Array(count * 3);
-            const randoms = new Float32Array(count * 4);
-
-            for(let i=0; i<count; i++) {
-                const r = 10 * Math.cbrt(Math.random());
-                const theta = Math.random() * Math.PI * 2;
-                const phi = Math.acos(2 * Math.random() - 1);
-                positions.set([r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)], i*3);
-                randoms.set([Math.random(), Math.random(), Math.random(), Math.random()], i*4);
-            }
-
-            const geometry = new OGL.Geometry(gl, { position: { size: 3, data: positions }, random: { size: 4, data: randoms } });
-
-            const program = new OGL.Program(gl, {
-                vertex: `attribute vec3 position; attribute vec4 random; uniform mat4 modelMatrix; uniform mat4 viewMatrix; uniform mat4 projectionMatrix; uniform float uTime; void main() { vec3 pos = position; pos.x += sin(uTime * random.x + position.y) * 0.5; pos.y += cos(uTime * random.y + position.x) * 0.5; vec4 glPos = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0); gl_Position = glPos; gl_PointSize = (50.0 * random.z) / glPos.w; }`,
-                fragment: `precision highp float; void main() { vec2 uv = gl_PointCoord.xy; float d = length(uv - vec2(0.5)); if(d > 0.5) discard; gl_FragColor = vec4(1.0, 0.0, 0.0, 0.6); }`,
-                uniforms: { uTime: { value: 0 } }, transparent: true, depthTest: false
-            });
-
-            const particles = new OGL.Mesh(gl, { mode: gl.POINTS, geometry, program });
-
-            requestAnimationFrame(update);
-            function update(t) { requestAnimationFrame(update); program.uniforms.uTime.value = t * 0.001; particles.rotation.y = t * 0.0002; renderer.render({ scene: particles, camera }); }
-        })();
-    </script>
-</body>
-</html>
