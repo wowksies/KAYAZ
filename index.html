@@ -6,22 +6,22 @@
     <title>KAYAZ | SIGMA ENVIRONMENT</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 
     <style>
-        /* --- THEME VARIABLES --- */
+        /* --- PREMIUM THEME VARIABLES --- */
         :root {
-            --bg: #030303;
-            --panel: rgba(10, 10, 10, 0.7);
-            --border: rgba(255, 0, 60, 0.2);
-            --border-hover: rgba(255, 0, 60, 0.8);
-            --primary: #ff003c; /* Premium Glowing Red */
+            --bg: #050505;
+            --card-bg: rgba(12, 12, 12, 0.65);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #ff0f39; /* Richer Premium Red */
+            --primary-glow: rgba(255, 15, 57, 0.35);
             --text-main: #ffffff;
-            --text-dim: #a0a0a0;
-            --glow: 0 0 20px rgba(255, 0, 60, 0.3);
+            --text-dim: #8f8f8f;
+            --radius: 24px; /* Rounded Premium Look */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,197 +34,208 @@
             min-height: 100vh;
         }
 
-        /* Scrollbar */
+        /* Smooth Scrolling */
+        html { scroll-behavior: smooth; }
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* --- CANVAS BACKGROUND --- */
+        /* --- BACKGROUND CANVAS --- */
         #mesh-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
+            z-index: -1; pointer-events: none; opacity: 0.8;
         }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%;
-            padding: 15px 40px;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 1000px;
+            padding: 12px 30px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000;
-            background: rgba(3, 3, 3, 0.85);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 50px; /* Pill Shape */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .brand { 
             font-family: 'JetBrains Mono', monospace; 
-            font-weight: 700; font-size: 1.2rem; 
-            display: flex; align-items: center; gap: 10px;
-            text-shadow: 0 0 10px var(--primary);
+            font-weight: 700; font-size: 1.1rem; 
+            letter-spacing: -1px; display: flex; align-items: center; gap: 8px;
         }
-        .brand i { color: var(--primary); }
+        .brand i { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         .nav-links { display: flex; gap: 5px; }
         
         .nav-btn {
-            background: transparent; border: 1px solid transparent; 
+            background: transparent; border: none;
             color: var(--text-dim);
-            font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 1rem;
+            font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.95rem;
             padding: 8px 20px; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
-            position: relative; overflow: hidden;
-        }
-        
-        .nav-btn::before {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px;
-            background: var(--primary); transition: 0.3s;
+            border-radius: 30px;
+            text-transform: uppercase;
         }
 
-        .nav-btn:hover { color: var(--text-main); text-shadow: 0 0 8px var(--primary); }
-        .nav-btn:hover::before { width: 100%; }
+        .nav-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
 
         .nav-btn.active { 
-            color: var(--primary); 
-            text-shadow: 0 0 15px var(--primary);
+            background: var(--primary); 
+            color: #fff;
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
-        .nav-btn.active::before { width: 100%; }
 
-        /* --- PAGES --- */
+        /* --- PAGE STRUCTURE --- */
         .page-section {
-            padding-top: 100px; padding-bottom: 60px;
+            padding-top: 140px; padding-bottom: 80px;
             display: none; opacity: 0;
-            animation: fadeIn 0.5s forwards;
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             min-height: 100vh;
         }
         .page-section.active { display: block; }
         
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        /* --- PROFILE CARD (HOME) --- */
-        .profile-wrapper {
-            display: flex; align-items: flex-start; justify-content: center; gap: 50px;
-            margin-top: 50px;
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .glass-panel {
-            background: var(--panel); border: 1px solid var(--border);
-            border-radius: 4px; padding: 40px;
-            box-shadow: var(--glow);
-            position: relative;
-            backdrop-filter: blur(10px);
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- GLASS CARD UTILITY --- */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .glass-card:hover { border-color: rgba(255, 255, 255, 0.15); }
+
+        /* --- PROFILE PAGE --- */
+        .profile-layout {
+            display: grid; grid-template-columns: 320px 1fr; gap: 30px;
+            align-items: start;
         }
 
-        .profile-card { width: 350px; text-align: center; }
+        /* Profile Sidebar */
+        .profile-sidebar {
+            padding: 40px 30px; text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-        .pfp-container {
-            position: relative; width: 140px; height: 140px; margin: 0 auto 20px;
+        .pfp-wrapper {
+            position: relative; width: 130px; height: 130px; margin-bottom: 20px;
         }
         .pfp-img {
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 30px var(--primary);
+            border: 2px solid rgba(255,255,255,0.1);
         }
-        .status-dot {
-            position: absolute; bottom: 10px; right: 10px;
-            width: 25px; height: 25px; background: #000; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+        .status-ring {
+            position: absolute; inset: -5px; border-radius: 50%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+            animation: pulseRing 2s infinite;
         }
-        .status-indicator {
-            width: 15px; height: 15px; background: #43b581; border-radius: 50%;
-            box-shadow: 0 0 10px #43b581;
+        @keyframes pulseRing { 0% { opacity: 0.5; transform: scale(0.95); } 100% { opacity: 0; transform: scale(1.1); } }
+
+        .tag-pill {
+            font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--primary);
+            background: rgba(255, 15, 57, 0.08); border: 1px solid rgba(255, 15, 57, 0.2);
+            padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; display: inline-block;
         }
 
-        .tag { 
-            font-family: 'JetBrains Mono'; color: var(--primary); font-size: 0.8rem; 
-            border: 1px solid var(--primary); padding: 4px 12px; display: inline-block; margin-bottom: 15px;
-            box-shadow: 0 0 10px rgba(255, 0, 60, 0.2);
+        /* Status Widget */
+        .status-widget {
+            width: 100%; background: rgba(0,0,0,0.4);
+            border-radius: 16px; padding: 15px; margin-top: 10px;
+            display: flex; align-items: center; gap: 12px;
+            text-align: left; border: 1px solid var(--border);
         }
-
-        /* Status Box Logic */
-        .status-box {
-            background: rgba(0,0,0,0.6); border: 1px solid #333;
-            padding: 15px; border-radius: 8px; margin-top: 20px; text-align: left;
-            display: flex; align-items: center; gap: 15px;
-        }
-        .activity-icon { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; }
+        .activity-img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
         
-        .socials { display: flex; justify-content: center; gap: 15px; margin-top: 25px; }
+        .social-row { display: flex; gap: 10px; margin-top: 25px; width: 100%; justify-content: center; }
         .social-btn {
-            width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            color: var(--text-main); font-size: 1.2rem; transition: 0.3s; text-decoration: none;
+            width: 42px; height: 42px; border-radius: 12px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; font-size: 1.1rem; text-decoration: none;
         }
-        .social-btn:hover { 
-            background: var(--primary); border-color: var(--primary); 
-            box-shadow: 0 0 20px var(--primary); transform: translateY(-3px);
-        }
+        .social-btn:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px var(--primary-glow); }
 
-        .about-text { max-width: 600px; }
-        .about-text h1 { font-size: 4rem; line-height: 1; margin-bottom: 20px; text-transform: uppercase; }
-        .about-text p { font-size: 1.1rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 30px; }
+        /* Profile Content */
+        .profile-main { padding: 50px; }
+        .hero-title { font-size: 3.5rem; line-height: 1; margin-bottom: 20px; text-transform: uppercase; }
+        .hero-text { font-size: 1.1rem; color: var(--text-dim); line-height: 1.6; max-width: 600px; margin-bottom: 40px; }
 
-        /* --- SDK PAGE --- */
-        .project-hero { text-align: center; margin-bottom: 50px; }
-        .project-hero h1 { font-size: 3.5rem; text-shadow: 0 0 20px var(--primary); }
-        .project-hero span { color: var(--primary); }
+        .stack-row { display: flex; gap: 20px; margin-top: 30px; font-size: 2.5rem; color: #fff; opacity: 0.8; }
+        .game-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 16px; border-radius: 12px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            font-size: 0.9rem; color: #ccc; margin-right: 8px; margin-bottom: 8px;
+        }
+        .game-tag i { color: var(--primary); }
 
-        .feature-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px; margin-bottom: 50px;
+        /* --- PROJECT PAGES (SDK & CS2) --- */
+        .project-header { text-align: center; margin-bottom: 50px; }
+        .project-header h1 { font-size: 4rem; text-transform: uppercase; margin-bottom: 10px; text-shadow: 0 0 30px var(--primary-glow); }
+        .project-header span { color: var(--primary); }
+        .status-badge {
+            display: inline-block; padding: 6px 16px; border-radius: 20px;
+            font-family: 'JetBrains Mono'; font-size: 0.8rem; letter-spacing: 1px;
+            border: 1px solid var(--border); background: rgba(0,0,0,0.3); color: #888;
         }
-
-        .feature-card {
-            background: rgba(10, 10, 10, 0.6); border: 1px solid var(--border);
-            padding: 25px; transition: 0.3s;
-        }
-        .feature-card:hover { 
-            border-color: var(--primary); 
-            box-shadow: inset 0 0 20px rgba(255, 0, 60, 0.1); 
-            transform: translateY(-5px);
-        }
-        .feature-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
-        .feature-card h3 { font-family: 'JetBrains Mono'; margin-bottom: 10px; }
-        .feature-card p { font-size: 0.9rem; color: var(--text-dim); }
+        .status-badge.live { color: #0f0; border-color: rgba(0,255,0,0.2); background: rgba(0,255,0,0.05); }
 
         /* Comparison Slider */
-        .comp-container {
-            position: relative; width: 100%; max-width: 900px; aspect-ratio: 16/9; margin: 0 auto 50px;
-            border: 2px solid var(--border); box-shadow: 0 0 50px rgba(255, 0, 60, 0.15);
-            cursor: col-resize; overflow: hidden;
+        .compare-frame {
+            position: relative; width: 100%; max-width: 900px; aspect-ratio: 16/9; margin: 0 auto 60px;
+            border-radius: 16px; border: 1px solid var(--border); overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); cursor: col-resize;
         }
-        .comp-img { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; pointer-events: none; user-select: none;
-        }
-        .img-before { z-index: 2; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); }
-        .comp-handle {
+        .comp-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
+        .layer-top { z-index: 2; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); }
+        .slider-bar {
             position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
-            background: var(--primary); z-index: 10; pointer-events: none;
-            box-shadow: 0 0 20px var(--primary);
+            background: #fff; z-index: 10; pointer-events: none;
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
         }
-        .comp-circle {
+        .slider-knob {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 40px; height: 40px; background: var(--bg); border: 2px solid var(--primary);
+            width: 40px; height: 40px; background: rgba(0,0,0,0.8); border: 2px solid #fff;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: var(--primary);
         }
+
+        /* Features Grid */
+        .grid-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 50px; }
+        .feat-card {
+            padding: 30px; display: flex; flex-direction: column; gap: 15px;
+            background: linear-gradient(160deg, rgba(20,20,20,0.6) 0%, rgba(5,5,5,0.8) 100%);
+        }
+        .feat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .feat-icon { font-size: 2rem; color: var(--primary); margin-bottom: 5px; }
 
         /* Video Embed */
-        .video-wrapper {
+        .video-box {
+            width: 100%; max-width: 900px; margin: 0 auto 50px;
             position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-            border: 1px solid var(--border); background: #000; margin-bottom: 50px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            border-radius: 16px; border: 1px solid var(--border); background: #000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 900px) {
-            .profile-wrapper { flex-direction: column; align-items: center; }
-            .about-text { text-align: center; }
-            .about-text h1 { font-size: 2.5rem; }
+            .profile-layout { grid-template-columns: 1fr; }
+            .profile-sidebar { padding: 30px; }
+            .profile-main { padding: 30px; text-align: center; }
+            .hero-text { margin: 0 auto 30px; }
+            .stack-row { justify-content: center; }
+            nav { width: 95%; padding: 10px 20px; }
         }
     </style>
 </head>
@@ -234,172 +245,156 @@
 
     <nav>
         <div class="brand">
-            <i class="fa-solid fa-biohazard"></i> KAYAZ.DEV
+            <i class="fa-solid fa-code"></i> KAYAZ.DEV
         </div>
         <div class="nav-links">
-            <button class="nav-btn active" onclick="switchTab('home', this)">Home</button>
+            <button class="nav-btn active" onclick="switchTab('home', this)">Profile</button>
             <button class="nav-btn" onclick="switchTab('sigma', this)">Sigma SDK</button>
             <button class="nav-btn" onclick="switchTab('cs2', this)">CS2 Internal</button>
         </div>
     </nav>
 
-    <div id="home" class="page-section active">
+    <section id="home" class="page-section active">
         <div class="container">
-            <div class="profile-wrapper">
+            <div class="profile-layout">
                 
-                <div class="glass-panel profile-card">
-                    <div class="pfp-container">
+                <div class="glass-card profile-sidebar">
+                    <div class="pfp-wrapper">
                         <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="pfp-img" id="discord-pfp">
-                        <div class="status-dot">
-                            <div class="status-indicator" id="status-color"></div>
-                        </div>
+                        <div class="status-ring"></div>
                     </div>
                     
-                    <h2 style="font-size: 2rem; margin-bottom: 5px;">Kayaz</h2>
-                    <div class="tag">PROMPT ENGINEER // DEV</div>
-                    
-                    <div class="status-box">
-                        <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="activity-icon" id="activity-img">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 5px;">Kayaz</h2>
+                    <div class="tag-pill">DEVELOPER</div>
+
+                    <div class="status-widget">
+                        <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="activity-img" id="activity-img">
                         <div style="overflow: hidden;">
-                            <div style="font-weight: bold; font-size: 0.9rem; color: #fff;" id="activity-name">Offline</div>
-                            <div style="font-size: 0.8rem; color: #888; white-space: nowrap;" id="activity-state">Currently doing nothing</div>
+                            <div style="font-weight: 700; font-size: 0.9rem; color: #fff;" id="activity-name">Offline</div>
+                            <div style="font-size: 0.8rem; color: #888; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" id="activity-state">Currently idle</div>
                         </div>
                     </div>
 
-                    <div class="socials">
-                        <a href="https://discord.com/users/747411610389446747" target="_blank" class="social-btn" title="Discord"><i class="fa-brands fa-discord"></i></a>
-                        <a href="https://stats.cc/siege/KAYAZ.CTRL/29032a28-cbf4-444a-ad19-3413761f3710" target="_blank" class="social-btn" title="R6 Tracker"><i class="fa-solid fa-crosshairs"></i></a>
-                        <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="social-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <div class="social-row">
+                        <a href="https://discord.com/users/747411610389446747" target="_blank" class="social-btn"><i class="fa-brands fa-discord"></i></a>
+                        <a href="https://github.com/" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="social-btn"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
                 </div>
 
-                <div class="about-text glass-panel" style="background: transparent; border: none; box-shadow: none;">
-                    <h1>I Build <br><span style="color: var(--primary);">Game Logic.</span></h1>
-                    <p>
-                        Specializing in Reverse Engineering and Internal Frameworks. I create high-performance tools that extend game functionality beyond standard limits.
+                <div class="glass-card profile-main">
+                    <h1>I BREAK <br><span style="color: var(--primary);">GAME LOGIC.</span></h1>
+                    <p class="hero-text">
+                        Specializing in Reverse Engineering and Internal Frameworks. I build premium, high-performance tools that extend game functionality beyond standard limits.
                     </p>
-                    
-                    <div style="margin-top: 30px;">
-                        <h3 style="font-family:'JetBrains Mono'; color:#fff; margin-bottom: 15px;">CURRENT PLAYLIST</h3>
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                            <span class="tag"><i class="fa-solid fa-crosshairs"></i> Rainbow Six Siege</span>
-                            <span class="tag"><i class="fa-solid fa-car"></i> Rocket League</span>
-                            <span class="tag"><i class="fa-solid fa-terminal"></i> CS2</span>
-                        </div>
+
+                    <h3 style="font-family:'JetBrains Mono'; font-size: 0.9rem; color: #fff; margin-bottom: 15px; letter-spacing: 1px;">ACTIVE TITLES</h3>
+                    <div style="display: flex; flex-wrap: wrap;">
+                        <div class="game-tag"><i class="fa-solid fa-crosshairs"></i> R6 Siege</div>
+                        <div class="game-tag"><i class="fa-solid fa-car"></i> Rocket League</div>
+                        <div class="game-tag"><i class="fa-solid fa-terminal"></i> CS2</div>
                     </div>
 
-                    <div style="margin-top: 40px; display: flex; gap: 20px; font-size: 2.5rem; color: #333;">
-                        <i class="devicon-cplusplus-plain" style="color: #fff;"></i>
-                        <i class="devicon-python-plain" style="color: #fff;"></i>
-                        <i class="devicon-javascript-plain" style="color: #fff;"></i>
+                    <div class="stack-row">
+                        <i class="devicon-cplusplus-plain"></i>
+                        <i class="devicon-python-plain"></i>
+                        <i class="devicon-javascript-plain"></i>
+                        <i class="devicon-cmake-plain"></i>
                     </div>
                 </div>
 
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="sigma" class="page-section">
+    <section id="sigma" class="page-section">
         <div class="container">
             
-            <div class="project-hero">
-                <div class="tag">PROJECT STATUS: UNDETECTED</div>
+            <div class="project-header">
+                <div class="status-badge live" style="margin-bottom: 15px;">STATUS: UNDETECTED</div>
                 <h1>SIGMA <span>SDK</span></h1>
-                <p style="color: var(--text-dim); max-width: 600px; margin: 10px auto;">
-                    A premium Reinforcement Learning framework for Rocket League. Dominate the field with AI-assisted prediction.
-                </p>
+                <p style="color: var(--text-dim); font-size: 1.1rem;">The definitive Reinforcement Learning framework for Rocket League.</p>
             </div>
 
-            <h3 style="text-align: center; margin-bottom: 20px; color: var(--text-main);">VISUAL ENHANCEMENT</h3>
-            <div class="comp-container" id="rl-compare" onmousemove="moveSlider(event)" ontouchmove="moveSlider(event)">
-                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/after.png" class="comp-img" alt="After">
-                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/before.png" class="comp-img img-before" id="before-img" alt="Before">
-                <div class="comp-handle" id="slider-handle">
-                    <div class="comp-circle"><i class="fa-solid fa-arrows-left-right"></i></div>
+            <div class="compare-frame" id="rl-compare" onmousemove="moveSlider(event)" ontouchmove="moveSlider(event)">
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/after.png" class="comp-layer" alt="After">
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/before.png" class="comp-layer layer-top" id="before-img" alt="Before">
+                <div class="slider-bar" id="slider-handle">
+                    <div class="slider-knob"><i class="fa-solid fa-arrow-right-arrow-left" style="font-size: 12px;"></i></div>
                 </div>
             </div>
 
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <i class="fa-solid fa-microchip"></i>
+            <div class="grid-features">
+                <div class="glass-card feat-card">
+                    <i class="fa-solid fa-shield-cat feat-icon"></i>
                     <h3>Kernel Driver</h3>
-                    <p>Ring-0 execution level ensures complete invisibility from anti-cheat systems.</p>
+                    <p>Ring-0 level execution ensures complete invisibility from anti-cheat systems.</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-robot"></i>
-                    <h3>Sigma Bot (WIP)</h3>
-                    <p>Next-gen RL agent integration for automated aerial mechanics.</p>
+                <div class="glass-card feat-card">
+                    <i class="fa-solid fa-brain feat-icon"></i>
+                    <h3>Sigma Bot</h3>
+                    <p>Integrated RL Agent capable of autonomous aerial mechanics (WIP).</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <h3>Prediction Engine</h3>
-                    <p>Real-time ball trajectory rendering for perfect positioning.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <h3>ImGui Menu</h3>
-                    <p>Fully customizable internal overlay with cloud config saving.</p>
+                <div class="glass-card feat-card">
+                    <i class="fa-solid fa-eye feat-icon"></i>
+                    <h3>Prediction ESP</h3>
+                    <p>Render future ball trajectories and player positions in real-time.</p>
                 </div>
             </div>
 
-            <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/W0mwIbr6kM0" allowfullscreen></iframe>
+            <div class="video-box">
+                <iframe src="https://www.youtube.com/embed/W0mwIbr6kM0?rel=0" allowfullscreen></iframe>
             </div>
 
-            <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/Menu/Home.png" style="width: 100%; border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 0 30px rgba(255,0,60,0.1);">
+            <div style="text-align: center; margin-top: 50px;">
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/Menu/Home.png" style="width: 100%; max-width: 800px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 0 30px rgba(255,0,60,0.15);">
+            </div>
 
         </div>
-    </div>
+    </section>
 
-    <div id="cs2" class="page-section">
+    <section id="cs2" class="page-section">
         <div class="container">
             
-            <div class="project-hero">
-                <div class="tag" style="color: #00afff; border-color: #00afff; box-shadow: 0 0 10px rgba(0,175,255,0.3);">PROJECT STATUS: PRIVATE</div>
-                <h1 style="text-shadow: 0 0 20px #00afff;">CS2 <span>INTERNAL</span></h1>
-                <p style="color: var(--text-dim); max-width: 600px; margin: 10px auto;">
-                    Lightweight, hook-based internal for Counter-Strike 2. Focus on performance and legitimacy.
-                </p>
+            <div class="project-header">
+                <div class="status-badge" style="color: #00aaff; border-color: rgba(0,170,255,0.3); background: rgba(0,170,255,0.05); margin-bottom: 15px;">PRIVATE BUILD</div>
+                <h1 style="text-shadow: 0 0 30px rgba(0,170,255,0.4);">CS2 <span style="color: #00aaff;">INTERNAL</span></h1>
+                <p style="color: var(--text-dim); font-size: 1.1rem;">Lightweight, hook-based internal cheat designed for legitimacy.</p>
             </div>
 
-            <div class="feature-grid">
-                <div class="feature-card" style="border-color: rgba(0,175,255,0.3);">
-                    <i class="fa-solid fa-eye" style="color: #00afff;"></i>
+            <div class="video-box" style="border-color: rgba(0,170,255,0.3); box-shadow: 0 0 30px rgba(0,170,255,0.1);">
+                <iframe src="https://www.youtube.com/embed/rgpcAkbctfY?rel=0" allowfullscreen></iframe>
+            </div>
+
+            <div class="grid-features">
+                <div class="glass-card feat-card" style="border-top: 3px solid #00aaff;">
+                    <i class="fa-solid fa-bone feat-icon" style="color: #00aaff;"></i>
                     <h3>Skeleton ESP</h3>
-                    <p>Lag-free bone rendering overlaid directly on the game engine.</p>
+                    <p>Lag-free bone rendering overlaid directly on the engine using DirectX hooks.</p>
                 </div>
-                <div class="feature-card" style="border-color: rgba(0,175,255,0.3);">
-                    <i class="fa-solid fa-crosshairs" style="color: #00afff;"></i>
+                <div class="glass-card feat-card" style="border-top: 3px solid #00aaff;">
+                    <i class="fa-solid fa-crosshairs feat-icon" style="color: #00aaff;"></i>
                     <h3>Silent Aim</h3>
-                    <p>Invisible vector manipulation for accurate shots without cursor snapping.</p>
+                    <p>Manipulate view angles invisibly for accurate shots without mouse snapping.</p>
                 </div>
-                <div class="feature-card" style="border-color: rgba(0,175,255,0.3);">
-                    <i class="fa-solid fa-user-secret" style="color: #00afff;"></i>
+                <div class="glass-card feat-card" style="border-top: 3px solid #00aaff;">
+                    <i class="fa-solid fa-user-ninja feat-icon" style="color: #00aaff;"></i>
                     <h3>Stealth Mode</h3>
-                    <p>Advanced obfuscation techniques to prevent signature detection.</p>
+                    <p>Advanced obfuscation and thread hijacking protection.</p>
                 </div>
-            </div>
-
-            <div class="video-wrapper" style="border-color: rgba(0,175,255,0.3);">
-                <iframe src="https://www.youtube.com/embed/pSBrc2darcs" allowfullscreen></iframe>
             </div>
 
         </div>
-    </div>
+    </section>
 
     <script>
-        // --- 1. Navigation Logic ---
-        function switchTab(pageId, btnElement) {
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-            // Deactivate buttons
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+        // --- 1. Tab Switching ---
+        function switchTab(id, btn) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             
-            // Activate target
-            document.getElementById(pageId).classList.add('active');
-            btnElement.classList.add('active');
-            
-            // Scroll to top
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
             window.scrollTo(0,0);
         }
 
@@ -407,82 +402,73 @@
         function moveSlider(e) {
             if(e.type === 'touchmove') e.preventDefault();
             
-            const container = document.getElementById('rl-compare');
-            const before = document.getElementById('before-img');
+            const box = document.getElementById('rl-compare');
+            const topLayer = document.getElementById('before-img');
             const handle = document.getElementById('slider-handle');
             
-            const rect = container.getBoundingClientRect();
+            const rect = box.getBoundingClientRect();
             let x = (e.clientX || e.touches[0].clientX) - rect.left;
             
-            // Bounds check
-            if (x < 0) x = 0;
-            if (x > rect.width) x = rect.width;
+            if(x < 0) x = 0;
+            if(x > rect.width) x = rect.width;
             
             const percent = (x / rect.width) * 100;
             
-            before.style.clipPath = `polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%)`;
+            topLayer.style.clipPath = `polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%)`;
             handle.style.left = `${percent}%`;
         }
 
-        // --- 3. Discord Status (Lanyard API) ---
+        // --- 3. Lanyard Status Logic ---
         const userId = "747411610389446747";
         
-        async function fetchStatus() {
+        async function updateStatus() {
             try {
-                const response = await fetch(`https://lanyard.rest/v1/users/${userId}`);
-                const json = await response.json();
-                const data = json.data;
-
+                const res = await fetch(`https://lanyard.rest/v1/users/${userId}`);
+                const data = (await res.json()).data;
+                
                 if(!data) return;
 
-                // 1. PFP
-                const avatarUrl = `https://cdn.discordapp.com/avatars/${userId}/${data.discord_user.avatar}.png?size=512`;
-                document.getElementById('discord-pfp').src = avatarUrl;
+                // Update PFP
+                document.getElementById('discord-pfp').src = 
+                    `https://cdn.discordapp.com/avatars/${userId}/${data.discord_user.avatar}.png?size=512`;
 
-                // 2. Status Color
-                const colors = {
-                    online: "#43b581",
-                    idle: "#faa61a",
-                    dnd: "#f04747",
-                    offline: "#747f8d"
-                };
-                document.getElementById('status-color').style.backgroundColor = colors[data.discord_status] || colors.offline;
+                // Status Ring Color
+                const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
+                const color = colors[data.discord_status] || colors.offline;
+                document.querySelector('.status-ring').style.borderColor = color;
+                document.querySelector('.status-ring').style.boxShadow = `0 0 15px ${color}`;
 
-                // 3. Activity
+                // Activity
                 const nameEl = document.getElementById('activity-name');
                 const stateEl = document.getElementById('activity-state');
                 const imgEl = document.getElementById('activity-img');
 
-                if (data.activities && data.activities.length > 0) {
-                    // Prioritize Game or Spotify
-                    const activity = data.activities.find(a => a.type === 0) || data.activities[0];
+                if(data.activities && data.activities.length > 0) {
+                    const act = data.activities.find(a => a.type === 0) || data.activities[0];
+                    nameEl.innerText = act.name;
+                    stateEl.innerText = act.state || act.details || "Playing";
                     
-                    nameEl.innerText = activity.name;
-                    stateEl.innerText = activity.state || activity.details || "Playing";
-
-                    // Try to get activity image
-                    if(activity.assets && activity.assets.large_image) {
-                        if(activity.assets.large_image.startsWith('spotify:')) {
-                            imgEl.src = `https://i.scdn.co/image/${activity.assets.large_image.replace("spotify:", "")}`;
+                    if(act.assets && act.assets.large_image) {
+                        if(act.assets.large_image.startsWith('spotify:')) {
+                            imgEl.src = `https://i.scdn.co/image/${act.assets.large_image.replace("spotify:", "")}`;
                         } else {
-                            imgEl.src = `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`;
+                            imgEl.src = `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
                         }
                     } else {
                         imgEl.src = "https://cdn.discordapp.com/embed/avatars/0.png";
                     }
                 } else {
-                    nameEl.innerText = "Chilling";
-                    stateEl.innerText = "No activity detected";
-                    imgEl.src = `https://cdn.discordapp.com/embed/avatars/0.png`;
+                    nameEl.innerText = "Offline";
+                    stateEl.innerText = "No activity";
+                    imgEl.src = "https://cdn.discordapp.com/embed/avatars/0.png";
                 }
 
-            } catch (e) { console.error("Lanyard Error:", e); }
+            } catch(e) { console.log(e); }
         }
-        
-        fetchStatus();
-        setInterval(fetchStatus, 10000); // Update every 10s
+        setInterval(updateStatus, 5000);
+        updateStatus();
 
-        // --- 4. Glowing Trimesh Background ---
+        // --- 4. Red Trimesh Background ---
         const canvas = document.getElementById('mesh-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, particles = [];
@@ -494,13 +480,13 @@
         window.addEventListener('resize', resize);
         resize();
 
-        class Dot {
+        class Particle {
             constructor() {
                 this.x = Math.random() * w;
                 this.y = Math.random() * h;
                 this.vx = (Math.random() - 0.5) * 0.5;
                 this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
+                this.size = Math.random() * 2 + 1;
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
@@ -509,26 +495,20 @@
             }
         }
 
-        // Initialize dots
-        for(let i=0; i<60; i++) particles.push(new Dot());
+        for(let i=0; i<60; i++) particles.push(new Particle());
 
         function animate() {
             ctx.clearRect(0, 0, w, h);
-            
             for(let i=0; i<particles.length; i++) {
                 let p1 = particles[i];
                 p1.update();
                 
                 for(let j=i; j<particles.length; j++) {
                     let p2 = particles[j];
-                    let dx = p1.x - p2.x;
-                    let dy = p1.y - p2.y;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    
-                    if(dist < 150) {
+                    let d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                    if(d < 150) {
                         ctx.beginPath();
-                        // Premium Red Glow Lines
-                        ctx.strokeStyle = `rgba(255, 0, 60, ${0.15 - (dist/150)*0.15})`;
+                        ctx.strokeStyle = `rgba(255, 15, 57, ${0.15 * (1 - d/150)})`;
                         ctx.lineWidth = 1;
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(p2.x, p2.y);
@@ -538,7 +518,7 @@
                 
                 ctx.beginPath();
                 ctx.arc(p1.x, p1.y, p1.size, 0, Math.PI*2);
-                ctx.fillStyle = "rgba(255, 0, 60, 0.5)";
+                ctx.fillStyle = "rgba(255, 15, 57, 0.5)";
                 ctx.fill();
             }
             requestAnimationFrame(animate);
