@@ -3,211 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAYAZ | PRO PROMPTER</title>
+    <title>KAYAZ | NEXUS</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 
     <style>
-        /* --- PREMIUM RED THEME --- */
+        /* --- VARIABLES --- */
         :root {
-            --bg: #030303;
-            --glass: rgba(12, 12, 12, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --bg: #050505;
+            --sidebar: #0a0a0a;
+            --panel: #0f0f0f;
+            --border: #1a1a1a;
             --primary: #ff0f39;
-            --primary-dark: #b30022;
-            --glow: 0 0 25px rgba(255, 15, 57, 0.25);
-            --text: #ffffff;
-            --text-dim: #999;
+            --primary-dim: rgba(255, 15, 57, 0.1);
+            --text-main: #fff;
+            --text-dim: #666;
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
+            height: 100vh;
+            overflow: hidden; /* Main body doesn't scroll, content does */
+            display: flex;
         }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         /* --- BACKGROUND MESH --- */
         #mesh-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
+            z-index: -1; opacity: 0.5; pointer-events: none;
         }
 
-        /* --- NAVIGATION (Fixed Top Pill) --- */
-        nav {
-            position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px);
-            padding: 8px 10px; border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            display: flex; gap: 5px; z-index: 1000;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        /* --- SIDEBAR (Fixed Left) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            padding: 25px;
+            z-index: 100;
+            flex-shrink: 0;
         }
 
-        .nav-btn {
-            background: transparent; border: none; color: var(--text-dim);
-            padding: 10px 24px; border-radius: 30px;
-            font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.95rem;
-            cursor: pointer; transition: 0.3s ease;
-        }
-
-        .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
-
-        .nav-btn.active {
-            background: var(--primary); color: #fff;
-            box-shadow: 0 4px 15px rgba(255, 15, 57, 0.4);
-        }
-
-        /* --- PAGE LAYOUT (Fixes Overlap) --- */
-        .page-section {
-            display: none; 
-            padding-top: 130px; /* Crucial: Clears the navbar */
-            padding-bottom: 100px;
-            min-height: 100vh;
-            width: 100%;
-            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .page-section.active { display: block; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-
-        /* --- PROFILE CARD (Home) --- */
-        .profile-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 60px;
-            display: flex; align-items: center; gap: 50px;
-            box-shadow: var(--glow);
-            transition: transform 0.3s;
-        }
-        .profile-card:hover { transform: translateY(-5px); border-color: rgba(255, 15, 57, 0.3); }
-
-        .pfp-wrap { position: relative; width: 160px; height: 160px; flex-shrink: 0; }
-        .pfp-img { 
-            width: 100%; height: 100%; border-radius: 40px; object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.1); 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .status-badge {
-            position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
-            background: #111; padding: 5px 15px; border-radius: 20px;
-            border: 1px solid var(--primary); color: var(--primary);
-            font-size: 0.75rem; font-weight: 700; font-family: 'JetBrains Mono';
-            white-space: nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        .hero-title { font-size: 4.5rem; font-weight: 800; line-height: 0.9; margin-bottom: 20px; letter-spacing: -2px; }
-        .hero-title span { 
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        /* Profile Section in Sidebar */
+        .profile-header {
+            text-align: center; margin-bottom: 30px;
+            border-bottom: 1px solid var(--border); padding-bottom: 20px;
         }
         
-        .hero-desc { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 30px; font-weight: 300; max-width: 500px; }
-
-        .social-row { display: flex; gap: 15px; }
-        .s-btn {
-            width: 48px; height: 48px; border-radius: 12px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 1.2rem; transition: 0.3s; text-decoration: none;
+        .pfp-container {
+            position: relative; width: 100px; height: 100px; margin: 0 auto 15px;
         }
-        .s-btn:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-3px); }
+        .pfp-img {
+            width: 100%; height: 100%; border-radius: 12px; object-fit: cover;
+            border: 2px solid var(--border);
+        }
+        .status-dot {
+            position: absolute; bottom: -5px; right: -5px; width: 18px; height: 18px;
+            background: #333; border: 3px solid var(--sidebar); border-radius: 50%;
+        }
 
-        /* --- PROJECT STYLES --- */
-        .project-header { text-align: center; margin-bottom: 50px; }
-        .project-header h1 { font-size: 3.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
-        .project-header p { color: var(--text-dim); font-size: 1.1rem; }
+        .user-name { font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; }
+        .user-role { font-family: 'JetBrains Mono'; color: var(--primary); font-size: 0.75rem; background: var(--primary-dim); padding: 4px 8px; border-radius: 4px; display: inline-block; margin-top: 5px;}
 
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        /* Navigation */
+        .nav-menu { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .nav-item {
+            display: flex; align-items: center; gap: 15px;
+            padding: 12px 15px; border-radius: 8px;
+            color: var(--text-dim); text-decoration: none;
+            transition: 0.2s; cursor: pointer;
+            font-weight: 600; letter-spacing: 0.5px;
+            border: 1px solid transparent;
+        }
+        .nav-item:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .nav-item.active { 
+            background: var(--primary-dim); color: var(--primary); 
+            border-color: rgba(255, 15, 57, 0.2);
+        }
+        .nav-item i { width: 20px; text-align: center; }
+
+        /* Sidebar Music Player */
+        .mini-player {
+            margin-top: auto;
+            background: #000; border: 1px solid var(--border);
+            border-radius: 12px; padding: 15px;
+        }
+        .mp-info { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .mp-art { width: 35px; height: 35px; border-radius: 6px; object-fit: cover; }
+        .mp-text { overflow: hidden; }
+        .mp-title { font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+        .mp-artist { font-size: 0.7rem; color: #555; }
+        .mp-controls { display: flex; justify-content: space-between; align-items: center; }
+        .mp-btn { background: none; border: none; color: #666; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .mp-btn:hover { color: var(--primary); }
+
+        /* --- MAIN CONTENT AREA --- */
+        .main-content {
+            flex: 1; height: 100vh; overflow-y: auto; overflow-x: hidden;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        .page-container {
+            padding: 60px 80px;
+            max-width: 1200px; margin: 0 auto;
+            display: none; opacity: 0;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .page-container.active { display: block; }
         
-        .feature-card {
-            background: rgba(20, 20, 20, 0.5); border: 1px solid var(--glass-border);
-            padding: 30px; border-radius: 20px; transition: 0.3s;
-        }
-        .feature-card:hover { border-color: var(--primary); box-shadow: 0 10px 30px rgba(255, 15, 57, 0.1); transform: translateY(-5px); }
-        .feature-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
-        .feature-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
-        .feature-card p { color: var(--text-dim); line-height: 1.5; font-size: 0.95rem; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Comparison Slider */
-        .compare-box {
-            position: relative; width: 100%; max-width: 900px; aspect-ratio: 16/9; margin: 0 auto 50px;
-            border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border);
-            box-shadow: var(--glow); cursor: col-resize;
-        }
-        .c-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-        .c-top { z-index: 2; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); }
-        .c-handle {
-            position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; z-index: 10;
-            box-shadow: 0 0 20px rgba(255,255,255,0.5); pointer-events: none;
-        }
-        .c-circle {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid #fff;
-            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
-        }
+        /* Headers */
+        .page-header { margin-bottom: 50px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .page-title { font-size: 3rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .page-title span { color: var(--primary); }
+        .page-desc { color: var(--text-dim); font-size: 1.1rem; max-width: 600px; }
 
-        /* Video Embed */
-        .video-box {
-            width: 100%; max-width: 900px; margin: 0 auto 50px;
-            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-            background: #000; border-radius: 20px; border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-        /* --- MUSIC PLAYER (Fixed Bottom Right) --- */
-        .player {
-            position: fixed; bottom: 30px; right: 30px; width: 320px;
-            background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            padding: 15px; display: flex; align-items: center; gap: 15px;
-            z-index: 2000; transition: 0.3s;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        .player:hover { border-color: var(--primary); transform: translateY(-3px); }
+        /* Grids & Cards */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         
-        .p-art { 
-            width: 50px; height: 50px; border-radius: 12px; object-fit: cover; 
-            animation: spin 6s linear infinite; animation-play-state: paused;
+        .panel {
+            background: var(--panel); border: 1px solid var(--border);
+            border-radius: 12px; padding: 30px;
+            transition: 0.3s;
         }
-        .p-art.spin { animation-play-state: running; }
-        
-        .p-info { flex: 1; overflow: hidden; }
-        .p-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .p-artist { font-size: 0.75rem; color: var(--text-dim); }
-        
-        .p-controls { display: flex; gap: 10px; margin-top: 5px; }
-        .pc-btn { background: none; border: none; color: #888; cursor: pointer; transition: 0.2s; }
-        .pc-btn:hover { color: var(--primary); }
+        .panel:hover { border-color: var(--primary); transform: translateY(-3px); }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        /* Home Specifics */
+        .big-stat { font-size: 3rem; font-weight: 700; color: #fff; line-height: 1; }
+        .stat-label { color: var(--text-dim); font-size: 0.9rem; font-family: 'JetBrains Mono'; margin-top: 5px; }
 
-        /* --- RESPONSIVE --- */
+        .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 30px; }
+        .social-tile {
+            background: var(--panel); border: 1px solid var(--border);
+            height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 8px; color: var(--text-dim); text-decoration: none; transition: 0.2s;
+        }
+        .social-tile:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .social-tile i { font-size: 1.5rem; margin-bottom: 5px; }
+
+        /* Project Specifics */
+        .compare-wrapper {
+            position: relative; width: 100%; aspect-ratio: 16/9;
+            border-radius: 12px; border: 1px solid var(--border); overflow: hidden;
+            margin-bottom: 40px; cursor: col-resize;
+        }
+        .comp-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .comp-overlay { z-index: 2; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); }
+        .comp-handle {
+            position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--primary); z-index: 10;
+            box-shadow: 0 0 15px var(--primary); pointer-events: none;
+        }
+
+        .video-embed {
+            width: 100%; aspect-ratio: 16/9; background: #000;
+            border-radius: 12px; border: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .feature-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .feature-item { 
+            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 6px; 
+            display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono'; font-size: 0.9rem;
+        }
+        .feature-item i { color: var(--primary); }
+
+        /* Mobile Responsive */
         @media (max-width: 900px) {
-            .profile-card { flex-direction: column; text-align: center; padding: 40px 20px; gap: 30px; }
-            .hero-title { font-size: 3rem; }
-            .social-row { justify-content: center; }
-            .player { width: calc(100% - 40px); bottom: 20px; right: 20px; }
+            body { flex-direction: column; overflow: auto; }
+            .sidebar { 
+                width: 100%; height: auto; 
+                flex-direction: row; align-items: center; justify-content: space-between;
+                padding: 15px 20px; position: sticky; top: 0; border-bottom: 1px solid var(--border);
+            }
+            .profile-header { border: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 10px; text-align: left; }
+            .pfp-container { width: 40px; height: 40px; margin: 0; }
+            .status-dot { width: 10px; height: 10px; }
+            .user-role, .mini-player, .nav-text { display: none; }
+            .nav-menu { flex-direction: row; flex: 0; }
+            .nav-item { padding: 10px; }
+            .main-content { height: auto; overflow: visible; }
+            .page-container { padding: 30px 20px; }
+            .social-grid { grid-template-columns: repeat(2, 1fr); }
+            .feature-list { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -215,146 +204,158 @@
 
     <canvas id="mesh-canvas"></canvas>
 
-    <nav>
-        <button class="nav-btn active" onclick="switchTab('home', this)">Profile</button>
-        <button class="nav-btn" onclick="switchTab('sigma', this)">Sigma SDK</button>
-        <button class="nav-btn" onclick="switchTab('cs2', this)">CS2 Internal</button>
-    </nav>
+    <aside class="sidebar">
+        <div class="profile-header">
+            <div class="pfp-container">
+                <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="pfp-img" id="sidebar-pfp">
+                <div class="status-dot" id="status-indicator"></div>
+            </div>
+            <div>
+                <div class="user-name">KAYAZ</div>
+                <div class="user-role">PRO PROMPTER</div>
+            </div>
+        </div>
 
-    <section id="home" class="page-section active">
-        <div class="container">
-            <div class="profile-card">
-                <div class="pfp-wrap">
-                    <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="pfp-img" id="discord-pfp">
-                    <div class="status-badge" id="discord-status">OFFLINE</div>
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="switchTab('home', this)">
+                <i class="fa-solid fa-house"></i> <span class="nav-text">DASHBOARD</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('sigma', this)">
+                <i class="fa-solid fa-cube"></i> <span class="nav-text">SIGMA SDK</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('cs2', this)">
+                <i class="fa-solid fa-crosshairs"></i> <span class="nav-text">CS2 INTERNAL</span>
+            </div>
+        </nav>
+
+        <div class="mini-player">
+            <div class="mp-info">
+                <img src="song_covers/music1_cover.png" class="mp-art" id="mp-art" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                <div class="mp-text">
+                    <div class="mp-title" id="mp-title">Loading...</div>
+                    <div class="mp-artist" id="mp-status">Paused</div>
                 </div>
-                <div>
-                    <div class="hero-title">PRO <br><span>PROMPTER.</span></div>
-                    <p class="hero-desc">
-                        I write code, break logic (allegedly), and make computers do cool things. <br>
-                        Currently building <b>Reinforcement Learning</b> agents and <b>Internal Frameworks</b>.
-                    </p>
-                    <div class="social-row">
-                        <a href="https://discord.com/users/747411610389446747" target="_blank" class="s-btn"><i class="fa-brands fa-discord"></i></a>
-                        <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="s-btn"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://github.com/" target="_blank" class="s-btn"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <div class="mp-controls">
+                <button class="mp-btn" onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="mp-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-icon"></i></button>
+                <button class="mp-btn" onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <div id="home" class="page-container active">
+            <div class="page-header">
+                <div class="page-title">WELCOME <span>HOME</span></div>
+                <p class="page-desc">I write code, break logic, and make computers do cool things. Currently specializing in internal frameworks.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="panel">
+                    <div class="big-stat" id="discord-activity">OFFLINE</div>
+                    <div class="stat-label">CURRENT STATUS</div>
+                </div>
+                <div class="panel">
+                    <div class="big-stat">3</div>
+                    <div class="stat-label">ACTIVE PROJECTS</div>
+                </div>
+                <div class="panel">
+                    <div style="font-size: 2.5rem; color: #fff;">
+                        <i class="devicon-cplusplus-plain"></i>
+                        <i class="devicon-python-plain"></i>
                     </div>
+                    <div class="stat-label">MAIN STACK</div>
                 </div>
+            </div>
+
+            <div class="social-grid">
+                <a href="https://discord.com/users/747411610389446747" target="_blank" class="social-tile"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
+                <a href="https://github.com/" target="_blank" class="social-tile"><i class="fa-brands fa-github"></i><span>GitHub</span></a>
+                <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="social-tile"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a>
+                <a href="#" class="social-tile"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
             </div>
         </div>
-    </section>
 
-    <section id="sigma" class="page-section">
-        <div class="container">
-            <div class="project-header">
-                <h1>SIGMA <span>SDK</span></h1>
-                <p>The "totally legitimate" Rocket League framework.</p>
+        <div id="sigma" class="page-container">
+            <div class="page-header">
+                <div class="page-title">SIGMA <span>SDK</span></div>
+                <p class="page-desc">Premium Rocket League Reinforcement Learning Framework.</p>
             </div>
 
-            <div class="compare-box" id="rl-compare" onmousemove="moveSlider(event)" ontouchmove="moveSlider(event)">
-                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/after.png" class="c-img" alt="After">
-                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/before.png" class="c-img c-top" id="before-img" alt="Before">
-                <div class="c-handle" id="slider-handle">
-                    <div class="c-circle"><i class="fa-solid fa-code-compare"></i></div>
-                </div>
+            <div class="compare-wrapper" id="rl-compare" onmousemove="moveSlider(event)" ontouchmove="moveSlider(event)">
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/after.png" class="comp-img" alt="After">
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/before.png" class="comp-img comp-overlay" id="before-img" alt="Before">
+                <div class="comp-handle" id="slider-handle"></div>
             </div>
 
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <i class="fa-solid fa-shield-cat"></i>
-                    <h3>Kernel Driver</h3>
-                    <p>Ring-0 execution level ensures complete invisibility from anti-cheat systems.</p>
+            <div class="grid-3" style="margin-bottom: 40px;">
+                <div class="panel">
+                    <i class="fa-solid fa-shield-halved" style="color:var(--primary); font-size:1.5rem; margin-bottom:10px;"></i>
+                    <h3>Kernel Mode</h3>
+                    <p style="color:var(--text-dim); font-size:0.9rem;">Ring-0 protection layer.</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-robot"></i>
-                    <h3>Sigma Bot (WIP)</h3>
-                    <p>Integrated RL Agent capable of autonomous aerial mechanics.</p>
+                <div class="panel">
+                    <i class="fa-solid fa-robot" style="color:var(--primary); font-size:1.5rem; margin-bottom:10px;"></i>
+                    <h3>Sigma Bot</h3>
+                    <p style="color:var(--text-dim); font-size:0.9rem;">Autonomous aerial agent.</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-eye"></i>
-                    <h3>Prediction ESP</h3>
-                    <p>Render future ball trajectories and player positions in real-time.</p>
+                <div class="panel">
+                    <i class="fa-solid fa-eye" style="color:var(--primary); font-size:1.5rem; margin-bottom:10px;"></i>
+                    <h3>Visuals</h3>
+                    <p style="color:var(--text-dim); font-size:0.9rem;">Prediction engine & ESP.</p>
                 </div>
             </div>
 
-            <div class="video-box">
-                <iframe src="https://www.youtube.com/embed/W0mwIbr6kM0?rel=0" allowfullscreen></iframe>
+            <iframe class="video-embed" src="https://www.youtube.com/embed/W0mwIbr6kM0" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+        <div id="cs2" class="page-container">
+            <div class="page-header">
+                <div class="page-title">CS2 <span>INTERNAL</span></div>
+                <p class="page-desc">Lightweight internal tool hooked directly into Source 2.</p>
+            </div>
+
+            <iframe class="video-embed" src="https://www.youtube.com/embed/a-Eb8PEyrkE" frameborder="0" allowfullscreen></iframe>
+
+            <div class="panel">
+                <h3 style="margin-bottom: 20px;">FEATURE LIST</h3>
+                <ul class="feature-list">
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Silent Aim (Vector)</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Skeleton ESP (DirectX)</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Health & Armor Bars</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Thread Hijacking Protection</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Cloud Config System</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Stream Proof</li>
+                </ul>
             </div>
         </div>
-    </section>
 
-    <section id="cs2" class="page-section">
-        <div class="container">
-            <div class="project-header">
-                <h1>CS2 <span>INTERNAL</span></h1>
-                <p>Hooking into Source 2 for educational purposes.</p>
-            </div>
+    </main>
 
-            <div class="video-box">
-                <iframe src="https://www.youtube.com/embed/a-Eb8PEyrkE?rel=0" allowfullscreen></iframe>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <i class="fa-solid fa-crosshairs"></i>
-                    <h3>Silent Aim</h3>
-                    <p>Manipulate view angles invisibly for accurate shots without mouse snapping.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-bone"></i>
-                    <h3>Skeleton ESP</h3>
-                    <p>Lag-free bone rendering overlaid directly on the engine using DirectX hooks.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-ghost"></i>
-                    <h3>Stealth Mode</h3>
-                    <p>Advanced obfuscation and thread hijacking protection.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="player">
-        <img src="song_covers/music1_cover.png" class="p-art" id="p-art" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
-        <div class="p-info">
-            <div class="p-title" id="p-title">Select Song</div>
-            <div class="p-artist" id="p-status">Paused</div>
-            <div class="p-controls">
-                <button class="pc-btn" onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
-                <button class="pc-btn" onclick="togglePlay()" style="color:#fff"><i class="fa-solid fa-play" id="play-icon"></i></button>
-                <button class="pc-btn" onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
-            </div>
-        </div>
-    </div>
-    <audio id="audio"></audio>
+    <audio id="audio-player"></audio>
 
     <script>
-        // --- 1. Navigation ---
+        // --- TABS ---
         function switchTab(id, btn) {
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(p => {
-                p.classList.remove('active');
-                p.style.animation = 'none';
-                p.offsetHeight; /* Trigger reflow */
-                p.style.animation = null; 
-            });
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
-            // Show new page
+            document.querySelectorAll('.page-container').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             btn.classList.add('active');
-            window.scrollTo(0,0);
+            // Reset Scroll
+            document.querySelector('.main-content').scrollTop = 0;
         }
 
-        // --- 2. Comparison Slider ---
+        // --- COMPARISON SLIDER ---
         function moveSlider(e) {
             if(e.type === 'touchmove') e.preventDefault();
             const box = document.getElementById('rl-compare');
             const top = document.getElementById('before-img');
             const handle = document.getElementById('slider-handle');
             const rect = box.getBoundingClientRect();
-            
             let x = (e.clientX || e.touches[0].clientX) - rect.left;
+            
             if(x < 0) x = 0; if(x > rect.width) x = rect.width;
             
             const p = (x / rect.width) * 100;
@@ -362,109 +363,84 @@
             handle.style.left = `${p}%`;
         }
 
-        // --- 3. Music Player ---
+        // --- MUSIC PLAYER ---
         const playlist = [
             { title: "Work Hard", src: "songs/music1.mp3", cover: "song_covers/music1_cover.png" },
             { title: "Runway Walk", src: "songs/music2.mp3", cover: "song_covers/music2_cover.jpg" },
             { title: "Borderline", src: "songs/music3.mp3", cover: "song_covers/music3_cover.jpg" }
         ];
-        let cIdx = 0;
-        const audio = document.getElementById('audio');
-        const pTitle = document.getElementById('p-title');
-        const pArt = document.getElementById('p-art');
-        const pIcon = document.getElementById('play-icon');
-        const pStatus = document.getElementById('p-status');
-
-        function loadSong(idx) {
-            audio.src = playlist[idx].src;
-            pTitle.innerText = playlist[idx].title;
-            pArt.src = playlist[idx].cover;
+        let idx = 0;
+        const audio = document.getElementById('audio-player');
+        
+        function loadSong(i) {
+            audio.src = playlist[i].src;
+            document.getElementById('mp-title').innerText = playlist[i].title;
+            document.getElementById('mp-art').src = playlist[i].cover;
         }
 
         function togglePlay() {
             if(audio.paused) {
-                audio.play().catch(() => console.log("Audio file missing"));
-                pIcon.classList.replace('fa-play', 'fa-pause');
-                pArt.classList.add('spin');
-                pStatus.innerText = "Playing";
-                pStatus.style.color = "#ff0f39";
+                audio.play().catch(e=>console.log("No audio file"));
+                document.getElementById('play-icon').classList.replace('fa-play', 'fa-pause');
+                document.getElementById('mp-status').innerText = "Playing";
+                document.getElementById('mp-status').style.color = "#ff0f39";
             } else {
                 audio.pause();
-                pIcon.classList.replace('fa-pause', 'fa-play');
-                pArt.classList.remove('spin');
-                pStatus.innerText = "Paused";
-                pStatus.style.color = "#888";
+                document.getElementById('play-icon').classList.replace('fa-pause', 'fa-play');
+                document.getElementById('mp-status').innerText = "Paused";
+                document.getElementById('mp-status').style.color = "#666";
             }
         }
+        function nextSong() { idx=(idx+1)%playlist.length; loadSong(idx); togglePlay(); }
+        function prevSong() { idx=(idx-1+playlist.length)%playlist.length; loadSong(idx); togglePlay(); }
+        loadSong(0);
 
-        function nextSong() { cIdx = (cIdx+1)%playlist.length; loadSong(cIdx); togglePlay(); }
-        function prevSong() { cIdx = (cIdx-1+playlist.length)%playlist.length; loadSong(cIdx); togglePlay(); }
-        
-        loadSong(0); // Init
-
-        // --- 4. Lanyard Status ---
-        const userId = "747411610389446747";
-        setInterval(async () => {
+        // --- LANYARD ---
+        const uid = "747411610389446747";
+        setInterval(async()=>{
             try {
-                const res = await fetch(`https://lanyard.rest/v1/users/${userId}`);
-                const data = (await res.json()).data;
-                if(data) {
-                    document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${userId}/${data.discord_user.avatar}.png?size=512`;
+                const d = (await (await fetch(`https://lanyard.rest/v1/users/${uid}`)).json()).data;
+                if(d) {
+                    document.getElementById('sidebar-pfp').src = `https://cdn.discordapp.com/avatars/${uid}/${d.discord_user.avatar}.png?size=512`;
+                    const c = {online:'#43b581', idle:'#faa61a', dnd:'#f04747', offline:'#666'}[d.discord_status];
+                    document.getElementById('status-indicator').style.background = c;
                     
-                    if(data.activities.length) {
-                        const act = data.activities[0];
-                        document.getElementById('discord-status').innerText = act.name.toUpperCase();
-                        document.getElementById('discord-status').style.color = "#ff0f39";
-                        document.getElementById('discord-status').style.borderColor = "#ff0f39";
-                    } else {
-                        document.getElementById('discord-status').innerText = data.discord_status.toUpperCase();
-                        document.getElementById('discord-status').style.color = "#888";
-                        document.getElementById('discord-status').style.borderColor = "#888";
-                    }
+                    if(d.activities.length) document.getElementById('discord-activity').innerText = d.activities[0].name.toUpperCase();
+                    else document.getElementById('discord-activity').innerText = d.discord_status.toUpperCase();
                 }
             } catch(e){}
         }, 5000);
 
-        // --- 5. Red Mesh Background ---
-        const canvas = document.getElementById('mesh-canvas');
-        const ctx = canvas.getContext('2d');
-        let w, h, particles = [];
-
-        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+        // --- MESH BG ---
+        const cvs = document.getElementById('mesh-canvas');
+        const ctx = cvs.getContext('2d');
+        let w, h, pts = [];
+        const resize = () => { w=cvs.width=window.innerWidth; h=cvs.height=window.innerHeight; };
         window.addEventListener('resize', resize); resize();
-
-        class P {
-            constructor() {
-                this.x = Math.random()*w; this.y = Math.random()*h;
-                this.vx = (Math.random()-0.5)*0.5; this.vy = (Math.random()-0.5)*0.5;
-            }
-            update() {
-                this.x+=this.vx; this.y+=this.vy;
-                if(this.x<0||this.x>w) this.vx*=-1; if(this.y<0||this.y>h) this.vy*=-1;
-            }
+        
+        class Pt {
+            constructor(){this.x=Math.random()*w;this.y=Math.random()*h;this.vx=(Math.random()-.5)*.5;this.vy=(Math.random()-.5)*.5;}
+            tick(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>w)this.vx*=-1;if(this.y<0||this.y>h)this.vy*=-1;}
         }
-        for(let i=0; i<60; i++) particles.push(new P());
-
-        function animate() {
+        for(let i=0;i<50;i++) pts.push(new Pt());
+        
+        function anim() {
             ctx.clearRect(0,0,w,h);
-            for(let i=0; i<particles.length; i++) {
-                let p = particles[i]; p.update();
-                for(let j=i; j<particles.length; j++) {
-                    let p2 = particles[j];
-                    let d = Math.hypot(p.x-p2.x, p.y-p2.y);
-                    if(d<140) {
+            for(let i=0;i<pts.length;i++){
+                pts[i].tick();
+                for(let j=i;j<pts.length;j++){
+                    let d = Math.hypot(pts[i].x-pts[j].x, pts[i].y-pts[j].y);
+                    if(d<150){
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(255, 15, 57, ${0.15 * (1 - d/140)})`;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                        ctx.strokeStyle=`rgba(255,15,57,${0.15*(1-d/150)})`;
+                        ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();
                     }
                 }
-                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, 6.28);
-                ctx.fillStyle = "rgba(255, 15, 57, 0.5)"; ctx.fill();
+                ctx.fillStyle="rgba(255,15,57,0.5)";ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,2,0,6.28);ctx.fill();
             }
-            requestAnimationFrame(animate);
+            requestAnimationFrame(anim);
         }
-        animate();
+        anim();
     </script>
 </body>
 </html>
