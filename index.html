@@ -3,460 +3,429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAYAZ | SIGMA SDK PORTFOLIO</title>
+    <title>KAYAZ | Developer Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 
     <style>
+        /* --- DESIGN SYSTEM --- */
         :root {
-            --primary: #ff003c; /* Cyberpunk Red */
-            --dark: #050505;
-            --glass: rgba(10, 10, 10, 0.65);
-            --border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-dim: #888;
+            --bg: #0a0a0a;
+            --glass: rgba(20, 20, 20, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #ffffff;
+            --accent-dim: #888;
+            --red-glow: #ff2e4d; /* Specific accent for Sigma */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--dark);
-            color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
-            overflow: hidden; /* Hide scrollbars for slideshow effect */
-            height: 100vh;
-            width: 100vw;
+            background-color: var(--bg);
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* --- BACKGROUND MESH CANVAS --- */
+        /* --- BACKGROUND MESH --- */
         #mesh-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none;
+            z-index: -1; opacity: 0.4; /* Subtle effect */
         }
 
-        /* --- CRT OVERLAY EFFECT --- */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            z-index: 1; pointer-events: none; opacity: 0.6;
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 20px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--border);
         }
 
-        /* --- SLIDESHOW CONTAINER --- */
-        .slider-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10;
-            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; letter-spacing: -1px; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-btn {
+            background: none; border: none; color: var(--accent-dim);
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active { color: var(--accent); }
+        .nav-btn.active { font-weight: 600; }
+
+        /* --- PAGE CONTAINER --- */
+        .page-container {
+            padding-top: 100px; /* Space for nav */
+            min-height: 100vh;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease;
+        }
+        .page-container.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-wrapper {
+            max-width: 1000px; margin: 0 auto; padding: 0 20px 50px;
         }
 
-        .slide {
-            width: 100vw; height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-            padding: 2rem;
-        }
-
-        /* --- GLASS CARD DESIGN --- */
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+        /* --- HOME PROFILE CARD --- */
+        .profile-header {
+            display: flex; align-items: center; gap: 30px; margin-bottom: 40px;
+            background: var(--glass); padding: 40px; border-radius: 20px;
             border: 1px solid var(--border);
-            border-left: 4px solid var(--primary);
-            padding: 3rem;
-            max-width: 1100px;
-            width: 100%;
-            border-radius: 4px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            display: flex;
-            gap: 3rem;
-            opacity: 0; transform: translateY(30px); /* Animation Start State */
-            transition: all 0.8s ease 0.3s;
+        }
+        .pfp-large { 
+            width: 120px; height: 120px; border-radius: 50%; object-fit: cover; 
+            border: 2px solid var(--border);
+        }
+        .profile-info h1 { font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 5px; }
+        .profile-info p { color: var(--accent-dim); font-size: 1.1rem; }
+        .status-badge { 
+            display: inline-block; font-size: 0.75rem; background: rgba(255,255,255,0.1); 
+            padding: 4px 10px; border-radius: 20px; margin-top: 10px; 
         }
 
-        /* Animation when slide is active */
-        .slide.active .card { opacity: 1; transform: translateY(0); }
+        /* --- PROJECT HEADERS --- */
+        .project-hero { text-align: center; margin-bottom: 50px; }
+        .project-hero h1 { font-family: 'Space Grotesk'; font-size: 3rem; margin-bottom: 10px; }
+        .project-hero p { color: var(--accent-dim); max-width: 600px; margin: 0 auto; }
+        .tag { color: var(--red-glow); font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; }
 
-        .card-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .card-visual { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
-
-        /* --- TYPOGRAPHY --- */
-        h1 { font-size: 4rem; text-transform: uppercase; line-height: 0.9; margin-bottom: 1rem; text-shadow: 0 0 20px rgba(255, 0, 60, 0.4); }
-        h2 { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--text-main); }
-        h3 { font-family: 'JetBrains Mono', monospace; color: var(--primary); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
-        p { color: var(--text-dim); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
-
-        /* --- IMAGES & MEDIA --- */
-        .showcase-img {
-            width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 0 30px rgba(255, 0, 60, 0.15);
-            transition: transform 0.3s; cursor: pointer;
+        /* --- COMPARISON SLIDER (SIGMA) --- */
+        .comparison-container {
+            position: relative; width: 100%; max-width: 800px; margin: 0 auto 50px;
+            aspect-ratio: 16/9; border-radius: 12px; overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            cursor: col-resize;
         }
-        .showcase-img:hover { transform: scale(1.02); border-color: var(--primary); }
-
-        /* --- BUTTONS --- */
-        .btn {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 12px 28px;
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s;
-            text-transform: uppercase;
+        .comp-img { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; 
+            user-select: none; pointer-events: none;
         }
-        .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
-        .btn-group { display: flex; gap: 15px; }
-
-        /* --- NAVIGATION DOTS --- */
-        .nav-dots {
-            position: fixed; right: 40px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 20px; z-index: 100;
+        .img-before { z-index: 2; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); }
+        .slider-handle {
+            position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+            background: #fff; z-index: 10; pointer-events: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        .dot {
-            width: 12px; height: 12px; border: 1px solid #555; transform: rotate(45deg);
-            cursor: pointer; transition: 0.3s;
+        .handle-circle {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 30px; height: 30px; background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: #000;
         }
-        .dot.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 10px var(--primary); }
 
-        /* --- SLIDE SPECIFIC ADJUSTMENTS --- */
-        /* Slide 1: Intro */
-        .glitch-wrapper { position: relative; }
-        .profile-badge {
-            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
-            border: 1px solid #333; padding: 10px; width: fit-content; background: rgba(0,0,0,0.5);
+        /* --- FEATURES GRID --- */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+        .feature-card {
+            background: var(--glass); border: 1px solid var(--border); padding: 25px; border-radius: 12px;
+            transition: 0.2s;
         }
-        .pfp-small { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .feature-card:hover { border-color: var(--accent-dim); transform: translateY(-2px); }
+        .feature-card i { font-size: 1.5rem; margin-bottom: 15px; color: #fff; }
+        .feature-card h3 { margin-bottom: 10px; font-family: 'Space Grotesk'; }
+        .feature-card p { font-size: 0.9rem; color: var(--accent-dim); line-height: 1.5; }
 
-        /* Slide 4: Skills/Contact */
-        .skills-grid { display: flex; gap: 20px; margin-bottom: 30px; font-size: 3rem; }
-        .social-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; }
-        .social-card {
-            background: rgba(255,255,255,0.05); padding: 15px; border: 1px solid rgba(255,255,255,0.05);
-            display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none;
-            transition: 0.3s; font-family: 'JetBrains Mono', monospace;
+        /* --- MEDIA GRID --- */
+        .media-container { margin-bottom: 40px; }
+        .media-header { font-family: 'Space Grotesk'; margin-bottom: 20px; border-left: 3px solid var(--accent); padding-left: 15px; }
+        .video-wrapper {
+            position: relative; padding-bottom: 56.25%; /* 16:9 */ height: 0; overflow: hidden;
+            border-radius: 12px; border: 1px solid var(--border); background: #000;
         }
-        .social-card:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Feature List */
-        .feature-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .feature-list li { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #aaa; display: flex; align-items: center; gap: 8px; }
-        .feature-list li i { color: var(--primary); font-size: 0.7rem; }
+        /* --- SOCIAL LINKS --- */
+        .social-bar { display: flex; gap: 15px; margin-top: 20px; }
+        .social-btn {
+            padding: 10px 20px; background: rgba(255,255,255,0.05); color: #fff;
+            text-decoration: none; border-radius: 6px; border: 1px solid var(--border);
+            transition: 0.2s; display: flex; align-items: center; gap: 10px;
+        }
+        .social-btn:hover { background: #fff; color: #000; }
 
-        /* Mobile Responsive */
-        @media (max-width: 900px) {
-            .card { flex-direction: column; padding: 1.5rem; gap: 1.5rem; margin-top: 50px;}
-            h1 { font-size: 2.5rem; }
-            .nav-dots { right: 10px; }
-            .skills-grid { flex-wrap: wrap; justify-content: center; }
+        /* --- RESPONSIVE --- */
+        @media(max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .profile-header { flex-direction: column; text-align: center; }
+            .nav-links { display: none; } /* Could add hamburger menu for mobile */
         }
     </style>
 </head>
 <body>
 
     <canvas id="mesh-canvas"></canvas>
-    
-    <div class="scanlines"></div>
 
-    <div class="nav-dots">
-        <div class="dot active" onclick="goToSlide(0)"></div>
-        <div class="dot" onclick="goToSlide(1)"></div>
-        <div class="dot" onclick="goToSlide(2)"></div>
-        <div class="dot" onclick="goToSlide(3)"></div>
+    <nav>
+        <div class="logo">KAYAZ.DEV</div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="showPage('home', this)">Profile</button>
+            <button class="nav-btn" onclick="showPage('sigma', this)">Sigma SDK</button>
+            <button class="nav-btn" onclick="showPage('cs2', this)">CS2 Internal</button>
+        </div>
+    </nav>
+
+    <div id="home" class="page-container active">
+        <div class="content-wrapper">
+            
+            <div class="profile-header">
+                <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="pfp-large" id="discord-pfp">
+                <div class="profile-info">
+                    <h1>Kayaz</h1>
+                    <p>Prompt Engineer & Software Developer</p>
+                    <div class="status-badge" id="discord-status">Fetching status...</div>
+                    
+                    <div class="social-bar">
+                        <a href="https://discord.com/users/747411610389446747" target="_blank" class="social-btn"><i class="fa-brands fa-discord"></i> Discord</a>
+                        <a href="#" class="social-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="media-header">About Me</h2>
+            <div class="feature-card" style="margin-bottom: 30px;">
+                <p>
+                    I specialize in reverse engineering, internal game logic, and advanced prompt engineering. 
+                    My work focuses on creating high-performance SDKs and secure frameworks for various applications.
+                    I build tools that push the boundaries of what's possible in standard environments.
+                </p>
+            </div>
+
+            <h2 class="media-header">Technical Stack</h2>
+            <div class="grid-2">
+                <div class="feature-card">
+                    <i class="devicon-cplusplus-plain"></i>
+                    <h3>C++ Development</h3>
+                    <p>Internal logic, memory manipulation, and high-performance system architecture.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="devicon-python-plain"></i>
+                    <h3>AI & Scripting</h3>
+                    <p>Reinforcement learning models, automation scripts, and data processing.</p>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="slider-container" id="slider">
-
-        <div class="slide active">
-            <div class="card">
-                <div class="card-content">
-                    <div class="profile-badge">
-                        <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="pfp-small" id="discord-pfp">
-                        <div>
-                            <div style="font-weight:bold; line-height:1;">KAYAZ</div>
-                            <div style="font-size:0.8rem; color:#666; font-family:'JetBrains Mono'">Developer & Reverse Engineer</div>
-                        </div>
-                    </div>
-                    <h3>WELCOME TO THE ARCHIVE</h3>
-                    <h1>I BREAK <br><span style="color:var(--primary)">GAME LOGIC.</span></h1>
-                    <p>
-                        Specializing in internal SDKs, Reinforcement Learning game agents, and kernel-level manipulation. Creator of the Sigma SDK.
-                    </p>
-                    <div class="btn-group">
-                        <button class="btn" onclick="goToSlide(1)">View Projects</button>
-                        <a href="https://discord.com/users/747411610389446747" target="_blank" class="btn"><i class="fa-brands fa-discord"></i> Discord</a>
-                    </div>
-                </div>
-                <div class="card-visual">
-                    <i class="fa-solid fa-code" style="font-size: 15rem; opacity: 0.1; position: absolute;"></i>
-                    <i class="fa-solid fa-microchip" style="font-size: 8rem; color: var(--primary); filter: drop-shadow(0 0 20px var(--primary)); animation: float 4s infinite ease-in-out;"></i>
-                </div>
+    <div id="sigma" class="page-container">
+        <div class="content-wrapper">
+            
+            <div class="project-hero">
+                <div class="tag">ROCKET LEAGUE FRAMEWORK</div>
+                <h1>Sigma SDK</h1>
+                <p>A sophisticated Reinforcement Learning integration and internal framework designed for security and performance.</p>
             </div>
-        </div>
 
-        <div class="slide">
-            <div class="card">
-                <div class="card-visual">
-                    <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/Menu/Home.png" class="showcase-img" alt="Sigma SDK Menu">
-                </div>
-                <div class="card-content">
-                    <h3>PROJECT: ROCKET LEAGUE</h3>
-                    <h1>SIGMA <span style="color:var(--primary)">SDK</span></h1>
-                    <p>
-                        A protected Reinforcement Learning framework. Designed to dominate the lobby with AI-assisted mechanics and next-gen visuals.
-                    </p>
-                    <ul class="feature-list">
-                        <li><i class="fa-solid fa-square"></i> RL Bot Integration (WIP)</li>
-                        <li><i class="fa-solid fa-square"></i> Kernel Level Injection</li>
-                        <li><i class="fa-solid fa-square"></i> ImGUI Custom Menu</li>
-                        <li><i class="fa-solid fa-square"></i> Ball Prediction ESP</li>
-                        <li><i class="fa-solid fa-square"></i> Auto-Aerial Logic</li>
-                        <li><i class="fa-solid fa-square"></i> Stream Proof</li>
-                    </ul>
-                    <div class="btn-group">
-                        <button class="btn">View Source</button>
-                        <button class="btn" style="border-color:#555; color:#aaa;">Status: Undetected</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div class="card-content">
-                    <h3>PROJECT: COUNTER-STRIKE 2</h3>
-                    <h1>CS2 <span style="color:var(--primary)">INTERNAL</span></h1>
-                    <p>
-                        Lightweight internal cheat written in C++. Features a hook-based architecture for maximum performance and minimal detection vectors.
-                    </p>
-                    <ul class="feature-list">
-                        <li><i class="fa-solid fa-square"></i> Bone-based ESP</li>
-                        <li><i class="fa-solid fa-square"></i> Silent Aim</li>
-                        <li><i class="fa-solid fa-square"></i> Skin Changer</li>
-                        <li><i class="fa-solid fa-square"></i> Backtrack</li>
-                    </ul>
-                    <div class="btn-group">
-                        <button class="btn">Watch Clips</button>
-                    </div>
-                </div>
-                <div class="card-visual">
-                    <div style="width:100%; height: 300px; background: #000; border: 1px solid #333; display:flex; align-items:center; justify-content:center; color:#333; font-family:'JetBrains Mono'">
-                        <i class="fa-solid fa-video" style="font-size: 3rem; margin-right: 15px;"></i> NO SIGNAL
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="flex-direction: column; align-items: center; text-align: center; gap: 2rem;">
-                <h3>THE TOOLKIT</h3>
-                <div class="skills-grid">
-                    <i class="devicon-cplusplus-plain text-red"></i>
-                    <i class="devicon-python-plain"></i>
-                    <i class="devicon-javascript-plain"></i>
-                    <i class="devicon-html5-plain"></i>
-                    <i class="devicon-cmake-plain"></i>
-                </div>
+            <div class="media-header">Visual Enhancement</div>
+            <div class="comparison-container" id="compare-box" onmousemove="moveSlider(event)" ontouchmove="moveSlider(event)">
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/after.png" class="comp-img" alt="After">
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/comparsion/before.png" class="comp-img img-before" id="before-img" alt="Before">
                 
-                <h3>CONNECT WITH ME</h3>
-                <div class="social-grid" style="max-width: 600px;">
-                    <a href="https://discord.com/users/747411610389446747" target="_blank" class="social-card">
-                        <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord
-                    </a>
-                    <a href="https://www.roblox.com/users/1728947656/profile" target="_blank" class="social-card">
-                        <i class="fa-solid fa-gamepad"></i> Roblox
-                    </a>
-                    <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" class="social-card">
-                        <i class="fa-brands fa-tiktok" style="color: #fe2c55;"></i> TikTok
-                    </a>
-                    <a href="https://stats.cc/siege/KAYAZ.CTRL/29032a28-cbf4-444a-ad19-3413761f3710" target="_blank" class="social-card">
-                        <i class="fa-solid fa-crosshairs" style="color: #ff5500;"></i> R6 Tracker
-                    </a>
+                <div class="slider-handle" id="slider-handle">
+                    <div class="handle-circle"><i class="fa-solid fa-arrows-left-right" style="font-size: 12px;"></i></div>
                 </div>
             </div>
-        </div>
+            <p style="text-align: center; color: #666; font-size: 0.8rem; margin-top: -40px; margin-bottom: 40px;">Interactive: Drag to compare</p>
 
+            <div class="grid-2">
+                <div class="feature-card">
+                    <i class="fa-solid fa-robot" style="color: var(--red-glow)"></i>
+                    <h3>Sigma Bot (WIP)</h3>
+                    <p>Integrating next-gen Reinforcement Learning agents to assist gameplay mechanics in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-shield-halved" style="color: var(--red-glow)"></i>
+                    <h3>Kernel Protection</h3>
+                    <p>Built with Ring-0 permission levels to ensure maximum security against anti-tamper solutions.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-layer-group" style="color: var(--red-glow)"></i>
+                    <h3>ImGui Menu</h3>
+                    <p>A fully customizable, clean internal menu for managing configurations on the fly.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-bolt" style="color: var(--red-glow)"></i>
+                    <h3>Prediction Engine</h3>
+                    <p>Advanced ball trajectory calculation and aerial logic for perfect positioning.</p>
+                </div>
+            </div>
+
+            <div class="media-header">Interface Design</div>
+            <img src="https://raw.githubusercontent.com/wowksies/SigmaSDK/main/Media/Menu/Home.png" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 40px;">
+
+            <div class="media-header">Showcase</div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/W0mwIbr6kM0" allowfullscreen></iframe>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="cs2" class="page-container">
+        <div class="content-wrapper">
+            
+            <div class="project-hero">
+                <div class="tag" style="color: #4a9eff;">COUNTER-STRIKE 2</div>
+                <h1>Internal Core</h1>
+                <p>A lightweight, hook-based internal cheat designed for invisibility and reliability.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="feature-card">
+                    <i class="fa-solid fa-eye" style="color: #4a9eff"></i>
+                    <h3>Bone ESP</h3>
+                    <p>Low-latency rendering overlay for player skeletons and information.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-crosshairs" style="color: #4a9eff"></i>
+                    <h3>Silent Aim</h3>
+                    <p>Vector manipulation to assist aim without visible snapping.</p>
+                </div>
+            </div>
+
+            <div class="media-header">Gameplay Preview</div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/pSBrc2darcs" allowfullscreen></iframe>
+            </div>
+
+        </div>
     </div>
 
     <script>
-        // --- 1. SLIDESHOW LOGIC ---
-        let currentSlide = 0;
-        const totalSlides = 4;
-        const slider = document.getElementById('slider');
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-        let isScrolling = false;
-
-        function updateSlider() {
-            // Move the container vertically (100vh per slide)
-            slider.style.transform = `translateY(-${currentSlide * 100}vh)`;
-            
-            // Update active classes for animation triggers
-            slides.forEach((s, i) => {
-                if(i === currentSlide) s.classList.add('active');
-                else s.classList.remove('active');
+        // --- 1. PAGE NAVIGATION LOGIC ---
+        function showPage(pageId, btn) {
+            // Hide all pages
+            document.querySelectorAll('.page-container').forEach(page => {
+                page.classList.remove('active');
+            });
+            // Remove active class from buttons
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('active');
             });
 
-            // Update dots
-            dots.forEach((d, i) => {
-                if(i === currentSlide) d.classList.add('active');
-                else d.classList.remove('active');
-            });
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            // Highlight button
+            if(btn) btn.classList.add('active');
         }
 
-        function goToSlide(index) {
-            currentSlide = index;
-            updateSlider();
-        }
-
-        // Scroll Wheel Support
-        window.addEventListener('wheel', (e) => {
-            if(isScrolling) return;
-            isScrolling = true;
+        // --- 2. COMPARISON SLIDER LOGIC ---
+        function moveSlider(e) {
+            if(e.type === 'touchmove') e.preventDefault(); // Stop mobile scroll
             
-            if(e.deltaY > 0) {
-                // Scroll Down
-                if(currentSlide < totalSlides - 1) currentSlide++;
-            } else {
-                // Scroll Up
-                if(currentSlide > 0) currentSlide--;
+            const container = document.getElementById('compare-box');
+            const beforeImg = document.getElementById('before-img');
+            const handle = document.getElementById('slider-handle');
+            
+            const rect = container.getBoundingClientRect();
+            // Calculate mouse position relative to container
+            let x = (e.clientX || e.touches[0].clientX) - rect.left;
+            
+            // Keep within bounds
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+            
+            const percent = (x / rect.width) * 100;
+            
+            // Apply clip-path
+            beforeImg.style.clipPath = `polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%)`;
+            handle.style.left = `${percent}%`;
+        }
+
+        // --- 3. LANYARD / DISCORD FETCH ---
+        const userId = "747411610389446747";
+        fetch(`https://lanyard.rest/v1/users/${userId}`)
+        .then(res => res.json())
+        .then(({ data }) => {
+            if(data?.discord_user) {
+                document.getElementById('discord-pfp').src = 
+                    `https://cdn.discordapp.com/avatars/${userId}/${data.discord_user.avatar}.png?size=512`;
+                
+                // Set Status Text
+                const statusDiv = document.getElementById('discord-status');
+                if(data.activities && data.activities.length > 0) {
+                    const activity = data.activities[0];
+                    statusDiv.innerText = `Playing: ${activity.name}`;
+                } else {
+                    statusDiv.innerText = `Status: ${data.discord_status}`;
+                }
             }
-            updateSlider();
-            setTimeout(() => { isScrolling = false; }, 800); // Cooldown
         });
 
-        // Keyboard Support
-        window.addEventListener('keydown', (e) => {
-            if(e.key === 'ArrowDown') {
-                if(currentSlide < totalSlides - 1) { currentSlide++; updateSlider(); }
-            } else if(e.key === 'ArrowUp') {
-                if(currentSlide > 0) { currentSlide--; updateSlider(); }
-            }
-        });
-
-        // --- 2. TRIMESH / PLEXUS BACKGROUND EFFECT ---
+        // --- 4. TRIMESH BACKGROUND (Clean Version) ---
         const canvas = document.getElementById('mesh-canvas');
         const ctx = canvas.getContext('2d');
-        
         let width, height;
         let particles = [];
-        
-        // Configuration
-        const particleCount = 70; // Number of nodes
-        const connectionDistance = 180; // Distance to draw lines
-        const mouseDistance = 250; // Mouse interaction range
-
-        let mouse = { x: null, y: null };
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-
-        window.addEventListener('resize', resize);
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
+        window.addEventListener('resize', resize);
         resize();
 
         class Particle {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 1.5; // Velocity X
-                this.vy = (Math.random() - 0.5) * 1.5; // Velocity Y
-                this.size = Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * 0.5; // Slow movement
+                this.vy = (Math.random() - 0.5) * 0.5;
             }
-
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-
-                // Bounce off edges
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-
-                // Mouse Interaction (Push away slightly)
-                if(mouse.x != null) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    if (distance < mouseDistance) {
-                        const forceDirectionX = dx / distance;
-                        const forceDirectionY = dy / distance;
-                        const force = (mouseDistance - distance) / mouseDistance;
-                        const directionX = forceDirectionX * force * 2; // Strength
-                        const directionY = forceDirectionY * force * 2;
-                        this.vx -= directionX;
-                        this.vy -= directionY;
-                    }
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = '#ff003c'; // Red Dots
-                ctx.fill();
+                if(this.x < 0 || this.x > width) this.vx *= -1;
+                if(this.y < 0 || this.y > height) this.vy *= -1;
             }
         }
 
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
+        // Create particles
+        for(let i=0; i<60; i++) particles.push(new Particle());
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
             
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                // Draw Lines (The Trimesh Effect)
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < connectionDistance) {
+            // Draw particles and lines
+            for(let i=0; i<particles.length; i++) {
+                let p = particles[i];
+                p.update();
+                
+                // Draw connections
+                for(let j=i; j<particles.length; j++) {
+                    let p2 = particles[j];
+                    let dx = p.x - p2.x;
+                    let dy = p.y - p2.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if(dist < 150) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(150, 150, 150, ${1 - distance/connectionDistance})`;
+                        // White lines, opacity based on distance
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 - (dist/150)*0.15})`;
                         ctx.lineWidth = 1;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
                         ctx.stroke();
-                        ctx.closePath();
                     }
                 }
+                
+                // Draw dot
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
+                ctx.fillStyle = "rgba(255,255,255,0.3)";
+                ctx.fill();
             }
             requestAnimationFrame(animate);
         }
-
-        initParticles();
         animate();
-
-        // --- 3. DISCORD AVATAR FETCH ---
-        const userId = "747411610389446747";
-        fetch(`https://lanyard.rest/v1/users/${userId}`)
-        .then(res => res.json())
-        .then(({ data }) => {
-            if(data?.discord_user?.avatar) {
-                document.getElementById('discord-pfp').src = 
-                `https://cdn.discordapp.com/avatars/${userId}/${data.discord_user.avatar}.png`;
-            }
-        });
-
     </script>
 </body>
 </html>
