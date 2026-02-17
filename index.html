@@ -46,7 +46,7 @@
             z-index: -1; pointer-events: none;
         }
 
-        /* --- NAVIGATION (Fixed Top Pill) --- */
+        /* --- NAVIGATION --- */
         nav {
             position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
             background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px);
@@ -175,19 +175,38 @@
         }
         .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* --- CS2 SPLIT LAYOUT (Added for Menu Image) --- */
-        .cs2-split {
-            display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; margin-bottom: 50px;
+        /* --- CS2 GALLERY LAYOUT --- */
+        .cs2-layout {
+            display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px;
         }
-        .menu-img-box {
-            position: relative; border-radius: 20px; overflow: hidden;
-            border: 1px solid var(--glass-border); box-shadow: var(--glow);
-            transition: 0.3s;
-        }
-        .menu-img-box:hover { transform: scale(1.02); border-color: var(--primary); }
-        .menu-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        .cs2-features { display: flex; flex-direction: column; gap: 15px; }
+        .gallery-wrapper {
+            background: rgba(10,10,10,0.5); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 20px;
+        }
+        
+        .main-view {
+            width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px;
+            margin-bottom: 15px; border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        .main-img {
+            width: 100%; height: 100%; object-fit: contain; /* Shows full image */
+            display: block; transition: 0.3s;
+        }
+        
+        .thumb-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        .thumb {
+            width: 100%; aspect-ratio: 16/9; object-fit: cover;
+            border-radius: 8px; border: 1px solid var(--glass-border);
+            cursor: pointer; opacity: 0.6; transition: 0.2s;
+        }
+        .thumb:hover { opacity: 1; }
+        .thumb.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 10px rgba(255, 15, 57, 0.3); }
+
+        .cs2-features { display: flex; flex-direction: column; gap: 15px; justify-content: center; }
 
         /* --- MUSIC PLAYER --- */
         .player {
@@ -222,7 +241,7 @@
             .hero-title { font-size: 3rem; }
             .social-row { justify-content: center; }
             .player { width: calc(100% - 40px); bottom: 20px; right: 20px; }
-            .cs2-split { grid-template-columns: 1fr; }
+            .cs2-layout { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -309,9 +328,18 @@
                 <iframe src="https://www.youtube.com/embed/a-Eb8PEyrkE?rel=0" allowfullscreen></iframe>
             </div>
 
-            <div class="cs2-split">
-                <div class="menu-img-box">
-                    <img src="misc.webp" class="menu-img" alt="CS2 Internal Menu">
+            <div class="cs2-layout">
+                
+                <div class="gallery-wrapper">
+                    <div class="main-view">
+                        <img id="gallery-main" src="visuals.png" class="main-img" onerror="this.src='https://via.placeholder.com/800x450?text=Image+Not+Found'">
+                    </div>
+                    <div class="thumb-row">
+                        <img src="visuals.png" class="thumb active" onclick="updateGallery(this)" onerror="this.style.display='none'">
+                        <img src="aimbot.webp" class="thumb" onclick="updateGallery(this)" onerror="this.style.display='none'">
+                        <img src="trigger.webp" class="thumb" onclick="updateGallery(this)" onerror="this.style.display='none'">
+                        <img src="misc.webp" class="thumb" onclick="updateGallery(this)" onerror="this.style.display='none'">
+                    </div>
                 </div>
                 
                 <div class="cs2-features">
@@ -356,7 +384,7 @@
             document.querySelectorAll('.page-section').forEach(p => {
                 p.classList.remove('active');
                 p.style.animation = 'none';
-                p.offsetHeight; /* Trigger reflow */
+                p.offsetHeight; 
                 p.style.animation = null; 
             });
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -366,7 +394,18 @@
             window.scrollTo(0,0);
         }
 
-        // --- 2. Comparison Slider ---
+        // --- 2. Gallery Logic ---
+        function updateGallery(thumbnail) {
+            // Update Main Image
+            const mainImg = document.getElementById('gallery-main');
+            mainImg.src = thumbnail.src;
+            
+            // Update Active State
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+
+        // --- 3. Comparison Slider ---
         function moveSlider(e) {
             if(e.type === 'touchmove') e.preventDefault();
             const box = document.getElementById('rl-compare');
@@ -381,7 +420,7 @@
             handle.style.left = `${p}%`;
         }
 
-        // --- 3. Music Player ---
+        // --- 4. Music Player ---
         const playlist = [
             { title: "Work Hard", src: "songs/music1.mp3", cover: "song_covers/music1_cover.png" },
             { title: "Runway Walk", src: "songs/music2.mp3", cover: "song_covers/music2_cover.jpg" },
@@ -420,7 +459,7 @@
         function prevSong() { cIdx = (cIdx-1+playlist.length)%playlist.length; loadSong(cIdx); togglePlay(); }
         loadSong(0);
 
-        // --- 4. Lanyard Status ---
+        // --- 5. Lanyard Status ---
         const userId = "747411610389446747";
         setInterval(async () => {
             try {
@@ -443,7 +482,7 @@
             } catch(e){}
         }, 5000);
 
-        // --- 5. Red Mesh Background ---
+        // --- 6. Red Mesh Background ---
         const canvas = document.getElementById('mesh-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, particles = [];
