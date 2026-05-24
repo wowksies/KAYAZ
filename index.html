@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kayaz</title>
-<meta name="description" content="kayaz — developer. projects, notes, etc.">
+<meta name="description" content="kayaz. dev. projects.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,14 +15,14 @@
 :root {
     --bg: #0a0a0c;
     --bg-2: #111114;
+    --bg-3: #17171c;
     --line: rgba(255, 255, 255, 0.07);
-    --line-2: rgba(255, 255, 255, 0.12);
+    --line-2: rgba(255, 255, 255, 0.13);
     --text: #ededf0;
     --dim: #8a8a93;
     --mute: #56565d;
     --accent: #ff2d4f;
     --accent-2: #ff5e7a;
-    --accent-bg: rgba(255, 45, 79, 0.08);
     --green: #46d399;
     --r: 14px;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -42,7 +42,6 @@ body {
     cursor: none;
 }
 
-/* CURSOR */
 #cur { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 10px rgba(255, 45, 79, 0.5); transition: width .12s, height .12s; }
 #cur-ring { position: fixed; top: 0; left: 0; width: 26px; height: 26px; border: 1px solid rgba(255, 94, 122, 0.3); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width .2s, height .2s, border-color .2s; }
 @media (max-width: 900px), (pointer: coarse) { body { cursor: auto; } #cur, #cur-ring { display: none; } button, a { cursor: pointer !important; } }
@@ -55,7 +54,6 @@ body {
 a { color: inherit; text-decoration: none; }
 button { cursor: none; font-family: inherit; color: inherit; background: none; border: none; }
 
-/* GRID BACKDROP */
 .grid-bg {
     position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background-image:
@@ -73,17 +71,13 @@ button { cursor: none; font-family: inherit; color: inherit; background: none; b
         radial-gradient(ellipse 50% 40% at 90% 100%, rgba(255, 45, 79, 0.06), transparent 60%);
 }
 
-/* ── LAYOUT ─────────────────────────────────────────────── */
 .shell {
     max-width: 920px;
     margin: 0 auto;
     padding: 0 28px;
 }
 
-/* ── HEADER ─────────────────────────────────────────────── */
-header {
-    padding: 38px 0 0;
-}
+header { padding: 38px 0 0; }
 .bar {
     display: flex; align-items: center; justify-content: space-between;
     padding-bottom: 18px;
@@ -102,7 +96,7 @@ header {
 
 .tabs { display: flex; gap: 4px; }
 .tab {
-    padding: 6px 12px;
+    padding: 6px 14px;
     font-family: var(--mono);
     font-size: 0.78rem;
     font-weight: 500;
@@ -113,12 +107,10 @@ header {
 .tab:hover { color: var(--text); }
 .tab.on { color: var(--text); background: var(--bg-2); }
 
-/* ── PAGE ──────────────────────────────────────────────── */
 .page { display: none; padding: 60px 0 80px; animation: in 0.45s ease forwards; }
 .page.on { display: block; }
 @keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-/* ── INTRO ─────────────────────────────────────────────── */
 .intro {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -187,13 +179,12 @@ header {
 }
 .ic:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
-/* ── SECTION ───────────────────────────────────────────── */
 section.block { padding: 56px 0; border-bottom: 1px solid var(--line); }
 section.block:last-child { border-bottom: none; }
 
 .sec-head {
     display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 .sec-title {
     font-family: var(--mono);
@@ -205,74 +196,94 @@ section.block:last-child { border-bottom: none; }
     display: flex; align-items: center; gap: 8px;
 }
 .sec-title::before { content: ''; width: 14px; height: 1px; background: var(--accent); }
-.sec-count {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--mute);
-}
+.sec-count { font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
 
-/* ── PROJECTS ──────────────────────────────────────────── */
-.projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.proj-list {
+    display: flex; flex-direction: column; gap: 14px;
+}
 .proj {
-    display: flex; flex-direction: column;
-    padding: 22px;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 22px;
     background: var(--bg-2);
     border: 1px solid var(--line);
     border-radius: var(--r);
     transition: border-color 0.22s, transform 0.22s, background 0.22s;
     position: relative;
     overflow: hidden;
-    min-height: 160px;
 }
-.proj:hover { border-color: var(--line-2); background: #15151a; transform: translateY(-2px); }
+.proj:hover { border-color: var(--line-2); background: var(--bg-3); transform: translateY(-2px); }
 .proj.featured { border-color: rgba(255, 45, 79, 0.25); background: linear-gradient(135deg, rgba(255, 45, 79, 0.06), var(--bg-2) 60%); }
-.proj.featured:hover { border-color: rgba(255, 45, 79, 0.4); }
-.proj.coming { background: transparent; }
-.proj.coming:hover { transform: none; border-color: var(--line); }
+.proj.featured:hover { border-color: rgba(255, 45, 79, 0.45); }
 
-.proj-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.proj-tag {
-    font-family: var(--mono); font-size: 0.7rem; color: var(--mute);
-    text-transform: uppercase; letter-spacing: 0.1em;
+.proj-thumb {
+    width: 64px; height: 64px;
+    border-radius: 12px;
+    background: #06060a;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
 }
-.proj-tag.live { color: var(--green); display: flex; align-items: center; gap: 6px; }
-.proj-tag.live::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 6px var(--green); }
-.proj-tag.wip { color: #f1c40f; }
+.proj-thumb img { width: 70%; height: 70%; object-fit: contain; }
+
+.proj-body { min-width: 0; }
+.proj-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 4px;
+}
+.proj-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+.proj-tag {
+    font-family: var(--mono); font-size: 0.66rem; font-weight: 500;
+    color: var(--green);
+    background: rgba(70, 211, 153, 0.08);
+    border: 1px solid rgba(70, 211, 153, 0.22);
+    padding: 2px 7px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    display: inline-flex; align-items: center; gap: 5px;
+}
+.proj-tag::before { content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%; box-shadow: 0 0 5px var(--green); }
+
+.proj-desc {
+    font-size: 0.9rem;
+    color: var(--dim);
+    margin-bottom: 8px;
+}
+.proj-meta {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--mute);
+}
+.proj-meta span { padding: 2px 7px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); border-radius: 4px; }
+
 .proj-arrow {
-    width: 28px; height: 28px;
-    border-radius: 7px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
     border: 1px solid var(--line);
     display: flex; align-items: center; justify-content: center;
     color: var(--dim);
-    font-size: 0.7rem;
+    font-size: 0.78rem;
     transition: 0.2s;
 }
 .proj:hover .proj-arrow { color: var(--accent); border-color: var(--accent); transform: rotate(-45deg); }
-.proj.coming .proj-arrow { opacity: 0; }
 
-.proj-name {
-    font-size: 1.3rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-bottom: 6px;
+.more-soon {
+    padding: 16px 22px;
+    background: transparent;
+    border: 1px dashed var(--line);
+    border-radius: var(--r);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--mute);
+    text-align: center;
 }
-.proj-desc {
-    font-size: 0.92rem;
-    color: var(--dim);
-    flex: 1;
-    margin-bottom: 14px;
-}
-.proj-meta {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    font-family: var(--mono); font-size: 0.7rem; color: var(--mute);
-}
-.proj-meta span { padding: 3px 8px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); border-radius: 5px; }
-.proj.coming .proj-name, .proj.coming .proj-desc { color: var(--mute); }
 
-/* ── STACK ─────────────────────────────────────────────── */
-.stack-row {
-    display: flex; flex-wrap: wrap; gap: 6px;
-}
+.stack-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .skill {
     font-family: var(--mono);
     font-size: 0.78rem;
@@ -285,12 +296,11 @@ section.block:last-child { border-bottom: none; }
 }
 .skill:hover { color: var(--accent); border-color: var(--accent); }
 
-/* ── NOW / NOTES ───────────────────────────────────────── */
 .now {
     background: var(--bg-2);
     border: 1px solid var(--line);
     border-radius: var(--r);
-    padding: 24px 26px;
+    padding: 22px 24px;
     position: relative;
     overflow: hidden;
 }
@@ -302,7 +312,6 @@ section.block:last-child { border-bottom: none; }
 .now p { color: var(--text); font-size: 0.98rem; }
 .now p + p { margin-top: 8px; color: var(--dim); font-size: 0.9rem; }
 
-/* ── OMNIS DETAIL PAGE ─────────────────────────────────── */
 .detail-head {
     padding-bottom: 32px;
     border-bottom: 1px solid var(--line);
@@ -318,7 +327,9 @@ section.block:last-child { border-bottom: none; }
     font-size: clamp(2.4rem, 5vw, 3.4rem);
     font-weight: 700; letter-spacing: -0.03em;
     line-height: 1.02; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px;
 }
+.detail-logo { width: 44px; height: 44px; }
 .detail-head .sub {
     color: var(--dim); font-size: 1.05rem;
     max-width: 600px;
@@ -349,10 +360,7 @@ section.block:last-child { border-bottom: none; }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
 .gallery { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-bottom: 40px; }
-.shot-wrap {
-    background: var(--bg-2); border: 1px solid var(--line);
-    border-radius: var(--r); padding: 12px;
-}
+.shot-wrap { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; }
 .shot {
     width: 100%; aspect-ratio: 16/9;
     background: #06060a; border-radius: 10px;
@@ -402,7 +410,7 @@ section.block:last-child { border-bottom: none; }
 .plan-hot { position: absolute; top: -8px; right: 12px; font-family: var(--mono); font-size: 0.62rem; font-weight: 700; color: #fff; background: var(--accent); padding: 2px 8px; border-radius: 5px; letter-spacing: 0.06em; text-transform: uppercase; }
 
 .compare {
-    width: 100%; max-width: 100%; aspect-ratio: 16/9;
+    width: 100%; aspect-ratio: 16/9;
     position: relative; border-radius: var(--r);
     border: 1px solid var(--line); overflow: hidden;
     user-select: none; touch-action: none;
@@ -428,7 +436,6 @@ section.block:last-child { border-bottom: none; }
 .c-lbl.b { left: 12px; background: rgba(0,0,0,0.6); color: var(--dim); border: 1px solid var(--line); }
 .c-lbl.a { right: 12px; background: rgba(255, 45, 79, 0.18); color: #fff; border: 1px solid rgba(255, 45, 79, 0.4); }
 
-/* ── PLAYER ─────────────────────────────────────────────── */
 .player {
     position: fixed; bottom: 18px; right: 18px;
     width: 270px;
@@ -457,11 +464,12 @@ section.block:last-child { border-bottom: none; }
 .pc:hover { color: var(--accent); }
 .pc.play { color: var(--text); }
 
-/* ── FOOTER ─────────────────────────────────────────────── */
 footer {
     padding: 30px 0 40px;
     border-top: 1px solid var(--line);
     margin-top: 20px;
+}
+footer .inner {
     font-family: var(--mono);
     font-size: 0.75rem;
     color: var(--mute);
@@ -470,14 +478,14 @@ footer {
 footer a { color: var(--dim); transition: 0.15s; }
 footer a:hover { color: var(--accent); }
 
-/* ── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 720px) {
     .shell { padding: 0 18px; }
     header { padding-top: 22px; }
     .intro { grid-template-columns: 1fr; }
     .intro-right { flex-direction: row; align-items: center; justify-content: space-between; }
     .pfp { width: 64px; height: 64px; }
-    .projects { grid-template-columns: 1fr; }
+    .proj { grid-template-columns: 56px 1fr auto; gap: 14px; padding: 16px; }
+    .proj-thumb { width: 56px; height: 56px; }
     .pricing { grid-template-columns: repeat(2, 1fr); }
     .gallery { grid-template-columns: 1fr; }
     .player { width: calc(100% - 24px); bottom: 12px; right: 12px; }
@@ -500,14 +508,12 @@ footer a:hover { color: var(--accent); }
             </a>
             <div class="tabs">
                 <button class="tab on" onclick="go('home', this)">/</button>
-                <button class="tab" onclick="go('projects', this)">projects</button>
                 <button class="tab" onclick="go('contact', this)">contact</button>
             </div>
         </div>
     </div>
 </header>
 
-<!-- ── HOME ──────────────────────────────────────────────── -->
 <section id="home" class="page on">
     <div class="shell">
 
@@ -515,8 +521,8 @@ footer a:hover { color: var(--accent); }
             <div class="intro-left">
                 <h1>kayaz<span class="dot"></span></h1>
                 <p class="bio">
-                    Self-taught dev. I work mostly low-level — game engines, drivers, things that talk to other things they're not supposed to.
-                    Right now most of my time goes into <b>Omnis CS2</b>, but i've got other stuff in the oven.
+                    Self-taught dev. I mess around with game engines, drivers, and stuff that sits close to the metal.
+                    Most of my time goes into <b>Omnis CS2</b> right now.
                 </p>
                 <div class="meta-row">
                     <span class="meta-chip"><span class="live-dot"></span>open to work</span>
@@ -539,8 +545,8 @@ footer a:hover { color: var(--accent); }
                 <div class="sec-title">currently</div>
             </div>
             <div class="now">
-                <div class="label">now · {{date}}</div>
-                <p>Shipping daily updates to Omnis CS2 — kernel rotations, menu polish, new modules.</p>
+                <div class="label">now · <span id="nowDate"></span></div>
+                <p>Shipping daily updates to Omnis CS2. Kernel rotations, menu polish, new modules.</p>
                 <p>Plotting the next project. Quiet on details for now.</p>
             </div>
         </section>
@@ -548,31 +554,22 @@ footer a:hover { color: var(--accent); }
         <section class="block">
             <div class="sec-head">
                 <div class="sec-title">projects</div>
-                <div class="sec-count">01 / live</div>
+                <div class="sec-count">01</div>
             </div>
-            <div class="projects">
+            <div class="proj-list">
                 <a href="#" onclick="go('omnis', null); return false;" class="proj featured">
-                    <div class="proj-top">
-                        <span class="proj-tag live">live</span>
-                        <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="proj-thumb"><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" alt="Omnis"></div>
+                    <div class="proj-body">
+                        <div class="proj-row">
+                            <div class="proj-name">Omnis CS2</div>
+                            <span class="proj-tag">live</span>
+                        </div>
+                        <div class="proj-desc">External CS2 cheat. Aimbot, ESP, skin and knife changer, kernel driver, daily updates.</div>
+                        <div class="proj-meta"><span>C++</span><span>external</span><span>kernel</span></div>
                     </div>
-                    <div class="proj-name">Omnis CS2</div>
-                    <div class="proj-desc">My CS2 cheat. Aimbot, ESP, skin/knife changer, kernel-level driver, daily updates.</div>
-                    <div class="proj-meta">
-                        <span>C++</span><span>kernel</span><span>source 2</span>
-                    </div>
+                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
                 </a>
-                <div class="proj coming">
-                    <div class="proj-top">
-                        <span class="proj-tag">soon</span>
-                        <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                    </div>
-                    <div class="proj-name">untitled · 02</div>
-                    <div class="proj-desc">in the works.</div>
-                    <div class="proj-meta">
-                        <span>tba</span>
-                    </div>
-                </div>
+                <div class="more-soon">more projects on the way</div>
             </div>
         </section>
 
@@ -588,7 +585,7 @@ footer a:hover { color: var(--accent); }
                 <span class="skill">Python</span>
                 <span class="skill">Win32 / NT</span>
                 <span class="skill">DirectX</span>
-                <span class="skill">Reverse Engineering</span>
+                <span class="skill">reverse engineering</span>
                 <span class="skill">IDA · Ghidra</span>
                 <span class="skill">CMake</span>
             </div>
@@ -597,65 +594,16 @@ footer a:hover { color: var(--accent); }
     </div>
 </section>
 
-<!-- ── PROJECTS PAGE ─────────────────────────────────────── -->
-<section id="projects" class="page">
-    <div class="shell">
-
-        <div class="detail-head">
-            <h1>projects</h1>
-            <p class="sub">things i've built or am building. more on the way.</p>
-        </div>
-
-        <div class="projects">
-            <a href="#" onclick="go('omnis', null); return false;" class="proj featured">
-                <div class="proj-top">
-                    <span class="proj-tag live">live</span>
-                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </div>
-                <div class="proj-name">Omnis CS2</div>
-                <div class="proj-desc">Source 2 internal framework. Aimbot, ESP, skin/knife changer, kernel-level driver.</div>
-                <div class="proj-meta"><span>C++</span><span>kernel</span><span>source 2</span></div>
-            </a>
-            <div class="proj coming">
-                <div class="proj-top">
-                    <span class="proj-tag">soon</span>
-                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </div>
-                <div class="proj-name">untitled · 02</div>
-                <div class="proj-desc">in the works.</div>
-                <div class="proj-meta"><span>tba</span></div>
-            </div>
-            <div class="proj coming">
-                <div class="proj-top">
-                    <span class="proj-tag">soon</span>
-                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </div>
-                <div class="proj-name">untitled · 03</div>
-                <div class="proj-desc">in the works.</div>
-                <div class="proj-meta"><span>tba</span></div>
-            </div>
-            <div class="proj coming">
-                <div class="proj-top">
-                    <span class="proj-tag">soon</span>
-                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </div>
-                <div class="proj-name">untitled · 04</div>
-                <div class="proj-desc">in the works.</div>
-                <div class="proj-meta"><span>tba</span></div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- ── OMNIS DETAIL PAGE ─────────────────────────────────── -->
 <section id="omnis" class="page">
     <div class="shell">
 
         <div class="detail-head">
-            <button class="crumb" onclick="go('projects', document.querySelectorAll('.tab')[1])"><i class="fa-solid fa-arrow-left"></i> projects</button>
-            <h1>Omnis CS2</h1>
-            <p class="sub">A CS2 cheat i wrote and still maintain. Aimbot, ESP, skin & knife changer, kernel-level driver. Updated daily.</p>
+            <button class="crumb" onclick="go('home', document.querySelectorAll('.tab')[0])"><i class="fa-solid fa-arrow-left"></i> back</button>
+            <h1>
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" class="detail-logo" alt="">
+                Omnis CS2
+            </h1>
+            <p class="sub">External CS2 cheat i wrote and still maintain. Aimbot, ESP, skin and knife changer. Updated daily.</p>
             <div class="detail-row">
                 <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="btn primary"><i class="fa-solid fa-arrow-up-right-from-square"></i> omniscs2.xyz</a>
                 <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> discord</a>
@@ -715,16 +663,15 @@ footer a:hover { color: var(--accent); }
             </div>
             <div class="spec-list">
                 <div class="spec"><div class="spec-name">humanised aim</div><div class="spec-d">bezier curves and smoothing so it doesn't look like a bot.</div></div>
-                <div class="spec"><div class="spec-name">clean esp</div><div class="spec-d">boxes, bones, hp, distance — no fps hit.</div></div>
+                <div class="spec"><div class="spec-name">clean esp</div><div class="spec-d">boxes, bones, hp, distance, no fps hit.</div></div>
                 <div class="spec"><div class="spec-name">kernel driver</div><div class="spec-d">ring-0 with daily signature rotation.</div></div>
-                <div class="spec"><div class="spec-name">skin + knife</div><div class="spec-d">any skin/knife/glove client-side. inventory stays clean.</div></div>
+                <div class="spec"><div class="spec-name">skin + knife</div><div class="spec-d">any skin, knife or glove client-side. inventory stays clean.</div></div>
             </div>
         </div>
 
     </div>
 </section>
 
-<!-- ── CONTACT ───────────────────────────────────────────── -->
 <section id="contact" class="page">
     <div class="shell">
         <div class="detail-head">
@@ -738,19 +685,18 @@ footer a:hover { color: var(--accent); }
 
         <div class="now">
             <div class="label">heads up</div>
-            <p>If it's about Omnis CS2 specifically (support, billing, key issues), open a ticket on omniscs2.xyz or in the Omnis discord — that gets answered fastest.</p>
+            <p>If it's about Omnis CS2 (support, billing, key issues), open a ticket on omniscs2.xyz or in the Omnis discord. That gets answered fastest.</p>
         </div>
     </div>
 </section>
 
 <footer>
-    <div class="shell" style="display: flex; justify-content: space-between; width: 100%;">
+    <div class="shell inner">
         <div>© <span id="yr"></span> kayaz</div>
         <div><a href="https://omniscs2.xyz" target="_blank" rel="noopener">omniscs2.xyz</a></div>
     </div>
 </footer>
 
-<!-- PLAYER -->
 <div class="player">
     <img src="song_covers/music1_cover.png" class="p-art" id="pArt" alt="">
     <div class="p-info">
@@ -770,17 +716,12 @@ footer a:hover { color: var(--accent); }
 
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-// today's date in the now card
 (function () {
     var d = new Date();
     var months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-    var label = months[d.getMonth()] + ' ' + d.getFullYear();
-    document.querySelectorAll('.now .label').forEach(function (el) {
-        el.innerHTML = el.innerHTML.replace('{{date}}', label);
-    });
+    document.getElementById('nowDate').textContent = months[d.getMonth()] + ' ' + d.getFullYear();
 })();
 
-// ── CURSOR
 (function () {
     if (window.matchMedia('(pointer: coarse)').matches) return;
     var cur = document.getElementById('cur'), ring = document.getElementById('cur-ring');
@@ -814,21 +755,18 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     window.__rebindCursor = bind;
 })();
 
-// ── TAB SWITCH (also handles deep links like /omnis)
 window.go = function (id, btn) {
     document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('on'); });
     document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('on'); });
     var page = document.getElementById(id);
     if (page) page.classList.add('on');
-    // sync nav tab if id matches a tab
-    var navMap = { home: 0, projects: 1, contact: 2 };
+    var navMap = { home: 0, contact: 1 };
     if (id in navMap) document.querySelectorAll('.tab')[navMap[id]].classList.add('on');
     else if (btn && btn.classList && btn.classList.contains('tab')) btn.classList.add('on');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (window.__rebindCursor) window.__rebindCursor();
 };
 
-// ── MENU TABS
 var menuImgs = {
     aimbot: 'https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/menu/aimbot.webp',
     esp: 'https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/menu/esp.webp',
@@ -844,7 +782,6 @@ window.setShot = function (el, key) {
     setTimeout(function () { img.src = menuImgs[key]; img.classList.remove('fade'); }, 160);
 };
 
-// ── BEFORE/AFTER
 (function () {
     var cmp = document.getElementById('cmp');
     if (!cmp) return;
@@ -867,7 +804,6 @@ window.setShot = function (el, key) {
     document.addEventListener('touchend', function () { dragging = false; });
 })();
 
-// ── MUSIC PLAYER
 var playlist = [
     { title: "Work Hard", src: "songs/music1.mp3", cover: "song_covers/music1_cover.png" },
     { title: "Runway Walk", src: "songs/music2.mp3", cover: "song_covers/music2_cover.jpg" },
@@ -899,7 +835,6 @@ window.prev = function () { idx = (idx - 1 + playlist.length) % playlist.length;
 audio.addEventListener('ended', window.next);
 load(0);
 
-// ── DISCORD LANYARD
 var userId = "747411610389446747";
 function fetchStatus() {
     fetch('https://api.lanyard.rest/v1/users/' + userId)
