@@ -24,6 +24,9 @@
     --accent: #ff2d4f;
     --accent-2: #ff5e7a;
     --green: #46d399;
+    --yellow: #f1c40f;
+    --spotify: #1db954;
+    --discord: #5865f2;
     --r: 14px;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
     --sans: 'Inter Tight', system-ui, sans-serif;
@@ -71,11 +74,7 @@ button { cursor: none; font-family: inherit; color: inherit; background: none; b
         radial-gradient(ellipse 50% 40% at 90% 100%, rgba(255, 45, 79, 0.06), transparent 60%);
 }
 
-.shell {
-    max-width: 920px;
-    margin: 0 auto;
-    padding: 0 28px;
-}
+.shell { max-width: 920px; margin: 0 auto; padding: 0 28px; }
 
 header { padding: 38px 0 0; }
 .bar {
@@ -84,9 +83,7 @@ header { padding: 38px 0 0; }
     border-bottom: 1px solid var(--line);
 }
 .logo {
-    font-family: var(--mono);
-    font-size: 0.82rem;
-    font-weight: 500;
+    font-family: var(--mono); font-size: 0.82rem; font-weight: 500;
     color: var(--dim);
     display: flex; align-items: center; gap: 8px;
 }
@@ -97,9 +94,7 @@ header { padding: 38px 0 0; }
 .tabs { display: flex; gap: 4px; }
 .tab {
     padding: 6px 14px;
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    font-weight: 500;
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 500;
     color: var(--dim);
     border-radius: 7px;
     transition: 0.18s;
@@ -116,7 +111,7 @@ header { padding: 38px 0 0; }
     grid-template-columns: 1fr auto;
     gap: 28px;
     align-items: start;
-    padding-bottom: 56px;
+    padding-bottom: 48px;
     border-bottom: 1px solid var(--line);
 }
 .intro-left h1 {
@@ -139,12 +134,12 @@ header { padding: 38px 0 0; }
     color: var(--dim);
     font-size: 1.05rem;
     max-width: 540px;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
 .intro-left .bio b { color: var(--text); font-weight: 600; }
 .meta-row {
-    display: flex; flex-wrap: wrap; gap: 10px;
-    font-family: var(--mono); font-size: 0.78rem; color: var(--dim);
+    display: flex; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 0.76rem; color: var(--dim);
 }
 .meta-chip {
     display: inline-flex; align-items: center; gap: 6px;
@@ -154,19 +149,29 @@ header { padding: 38px 0 0; }
     border-radius: 7px;
 }
 .meta-chip .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
-.meta-chip.discord { color: #a5b0ff; }
-.meta-chip .ddot { width: 8px; height: 8px; border-radius: 50%; background: var(--mute); }
-.meta-chip.online .ddot { background: var(--green); box-shadow: 0 0 6px var(--green); }
-.meta-chip.idle .ddot { background: #f1c40f; box-shadow: 0 0 6px #f1c40f; }
-.meta-chip.dnd .ddot { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
 
 .intro-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.pfp-wrap { position: relative; width: 88px; height: 88px; }
 .pfp {
     width: 88px; height: 88px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid var(--line-2);
+    border: 3px solid var(--bg);
+    background: var(--bg-2);
 }
+.pfp-status {
+    position: absolute; bottom: 2px; right: 2px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--mute);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--line);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.pfp-status.online { background: var(--green); box-shadow: 0 0 0 1px var(--green), 0 0 10px rgba(70, 211, 153, 0.4); }
+.pfp-status.idle { background: var(--yellow); box-shadow: 0 0 0 1px var(--yellow); }
+.pfp-status.dnd { background: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 10px rgba(255, 45, 79, 0.4); }
+
 .socials { display: flex; gap: 6px; }
 .ic {
     width: 34px; height: 34px;
@@ -179,34 +184,108 @@ header { padding: 38px 0 0; }
 }
 .ic:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
-section.block { padding: 56px 0; border-bottom: 1px solid var(--line); }
+section.block { padding: 48px 0; border-bottom: 1px solid var(--line); }
 section.block:last-child { border-bottom: none; }
 
 .sec-head {
     display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 .sec-title {
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    font-weight: 500;
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 500;
     color: var(--dim);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+    text-transform: uppercase; letter-spacing: 0.12em;
     display: flex; align-items: center; gap: 8px;
 }
 .sec-title::before { content: ''; width: 14px; height: 1px; background: var(--accent); }
 .sec-count { font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
 
-.proj-list {
-    display: flex; flex-direction: column; gap: 14px;
+/* Discord activity card */
+.activity {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 16px 18px;
+    display: flex; align-items: center; gap: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.22s;
 }
+.activity:hover { border-color: var(--line-2); }
+.activity.spotify { border-color: rgba(29, 185, 84, 0.22); }
+.activity.spotify::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+    width: 3px; background: var(--spotify);
+}
+.activity.gaming { border-color: rgba(88, 101, 242, 0.22); }
+.activity.gaming::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+    width: 3px; background: var(--discord);
+}
+.activity.idle::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+    width: 3px; background: var(--mute);
+}
+
+.act-art {
+    width: 60px; height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #06060a;
+    border: 1px solid var(--line);
+}
+.act-art.spin { animation: spinart 8s linear infinite; }
+@keyframes spinart { to { transform: rotate(360deg); } }
+
+.act-body { flex: 1; min-width: 0; }
+.act-kind {
+    font-family: var(--mono); font-size: 0.66rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--dim);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 4px;
+}
+.act-kind.spotify { color: var(--spotify); }
+.act-kind.gaming { color: #a5b0ff; }
+.act-kind i { font-size: 0.8rem; }
+.act-title {
+    font-size: 0.98rem; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.act-sub {
+    font-size: 0.82rem; color: var(--dim);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-top: 2px;
+}
+.act-progress {
+    height: 3px; background: rgba(255, 255, 255, 0.06);
+    border-radius: 2px; margin-top: 10px;
+    overflow: hidden;
+    display: none;
+}
+.activity.spotify .act-progress { display: block; }
+.act-progress-bar {
+    height: 100%; background: var(--spotify);
+    width: 0%;
+    transition: width 1s linear;
+    border-radius: 2px;
+}
+.act-time {
+    font-family: var(--mono); font-size: 0.66rem; color: var(--mute);
+    margin-top: 4px;
+    display: flex; justify-content: space-between;
+}
+.activity:not(.spotify) .act-time { display: none; }
+
+/* Project list */
+.proj-list { display: flex; flex-direction: column; gap: 12px; }
 .proj {
     display: grid;
-    grid-template-columns: 80px 1fr auto;
-    gap: 20px;
+    grid-template-columns: 64px 1fr auto;
+    gap: 18px;
     align-items: center;
-    padding: 20px 22px;
+    padding: 18px 20px;
     background: var(--bg-2);
     border: 1px solid var(--line);
     border-radius: var(--r);
@@ -217,48 +296,54 @@ section.block:last-child { border-bottom: none; }
 .proj:hover { border-color: var(--line-2); background: var(--bg-3); transform: translateY(-2px); }
 .proj.featured { border-color: rgba(255, 45, 79, 0.25); background: linear-gradient(135deg, rgba(255, 45, 79, 0.06), var(--bg-2) 60%); }
 .proj.featured:hover { border-color: rgba(255, 45, 79, 0.45); }
+.proj.wip { border-style: dashed; }
+.proj.wip:hover { border-style: solid; border-color: rgba(241, 196, 15, 0.35); }
 
 .proj-thumb {
-    width: 64px; height: 64px;
+    width: 56px; height: 56px;
     border-radius: 12px;
     background: #06060a;
     border: 1px solid var(--line);
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
+    position: relative;
 }
 .proj-thumb img { width: 70%; height: 70%; object-fit: contain; }
+.proj.wip .proj-thumb img { filter: grayscale(0.5) opacity(0.7); }
 
 .proj-body { min-width: 0; }
 .proj-row {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
     margin-bottom: 4px;
+    flex-wrap: wrap;
 }
 .proj-name {
-    font-size: 1.15rem;
-    font-weight: 700;
+    font-size: 1.1rem; font-weight: 700;
     letter-spacing: -0.01em;
 }
 .proj-tag {
-    font-family: var(--mono); font-size: 0.66rem; font-weight: 500;
-    color: var(--green);
-    background: rgba(70, 211, 153, 0.08);
-    border: 1px solid rgba(70, 211, 153, 0.22);
+    font-family: var(--mono); font-size: 0.64rem; font-weight: 600;
     padding: 2px 7px; border-radius: 4px;
     text-transform: uppercase; letter-spacing: 0.1em;
     display: inline-flex; align-items: center; gap: 5px;
 }
-.proj-tag::before { content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%; box-shadow: 0 0 5px var(--green); }
+.proj-tag.live {
+    color: var(--green);
+    background: rgba(70, 211, 153, 0.08);
+    border: 1px solid rgba(70, 211, 153, 0.22);
+}
+.proj-tag.live::before { content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%; box-shadow: 0 0 5px var(--green); }
+.proj-tag.wip {
+    color: var(--yellow);
+    background: rgba(241, 196, 15, 0.08);
+    border: 1px solid rgba(241, 196, 15, 0.22);
+}
+.proj-tag.wip::before { content: ''; width: 5px; height: 5px; background: var(--yellow); border-radius: 50%; box-shadow: 0 0 5px var(--yellow); animation: pulse 1.6s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 
-.proj-desc {
-    font-size: 0.9rem;
-    color: var(--dim);
-    margin-bottom: 8px;
-}
-.proj-meta {
-    display: flex; gap: 6px; flex-wrap: wrap;
-    font-family: var(--mono); font-size: 0.68rem; color: var(--mute);
-}
+.proj-desc { font-size: 0.88rem; color: var(--dim); margin-bottom: 8px; }
+.proj-meta { display: flex; gap: 6px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.66rem; color: var(--mute); }
 .proj-meta span { padding: 2px 7px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); border-radius: 4px; }
 
 .proj-arrow {
@@ -266,27 +351,15 @@ section.block:last-child { border-bottom: none; }
     border-radius: 8px;
     border: 1px solid var(--line);
     display: flex; align-items: center; justify-content: center;
-    color: var(--dim);
-    font-size: 0.78rem;
+    color: var(--dim); font-size: 0.78rem;
     transition: 0.2s;
+    flex-shrink: 0;
 }
 .proj:hover .proj-arrow { color: var(--accent); border-color: var(--accent); transform: rotate(-45deg); }
 
-.more-soon {
-    padding: 16px 22px;
-    background: transparent;
-    border: 1px dashed var(--line);
-    border-radius: var(--r);
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    color: var(--mute);
-    text-align: center;
-}
-
 .stack-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .skill {
-    font-family: var(--mono);
-    font-size: 0.78rem;
+    font-family: var(--mono); font-size: 0.78rem;
     padding: 6px 12px;
     background: var(--bg-2);
     border: 1px solid var(--line);
@@ -308,7 +381,10 @@ section.block:last-child { border-bottom: none; }
     content: ''; position: absolute; top: 0; left: 0; bottom: 0;
     width: 3px; background: var(--accent);
 }
-.now .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px; }
+.now .label {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px;
+}
 .now p { color: var(--text); font-size: 0.98rem; }
 .now p + p { margin-top: 8px; color: var(--dim); font-size: 0.9rem; }
 
@@ -341,14 +417,15 @@ section.block:last-child { border-bottom: none; }
     padding: 10px 18px;
     border-radius: 9px;
     font-family: var(--sans);
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.9rem; font-weight: 600;
     transition: 0.2s;
 }
 .btn.primary { background: var(--accent); color: #fff; }
 .btn.primary:hover { background: var(--accent-2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 45, 79, 0.35); }
 .btn.ghost { background: var(--bg-2); color: var(--text); border: 1px solid var(--line); }
 .btn.ghost:hover { border-color: var(--line-2); transform: translateY(-2px); }
+.btn.disabled { background: var(--bg-2); color: var(--mute); border: 1px solid var(--line); cursor: not-allowed; }
+.btn.disabled:hover { transform: none; }
 
 .video {
     width: 100%; position: relative; padding-bottom: 56.25%;
@@ -436,6 +513,26 @@ section.block:last-child { border-bottom: none; }
 .c-lbl.b { left: 12px; background: rgba(0,0,0,0.6); color: var(--dim); border: 1px solid var(--line); }
 .c-lbl.a { right: 12px; background: rgba(255, 45, 79, 0.18); color: #fff; border: 1px solid rgba(255, 45, 79, 0.4); }
 
+.wip-card {
+    padding: 28px;
+    background: var(--bg-2);
+    border: 1px dashed var(--line-2);
+    border-radius: var(--r);
+    text-align: center;
+}
+.wip-card .icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(241, 196, 15, 0.08);
+    border: 1px solid rgba(241, 196, 15, 0.22);
+    color: var(--yellow);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+}
+.wip-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+.wip-card p { color: var(--dim); font-size: 0.92rem; }
+
 .player {
     position: fixed; bottom: 18px; right: 18px;
     width: 270px;
@@ -455,7 +552,6 @@ section.block:last-child { border-bottom: none; }
     animation: spinart 8s linear infinite; animation-play-state: paused;
 }
 .p-art.spin { animation-play-state: running; }
-@keyframes spinart { to { transform: rotate(360deg); } }
 .p-info { flex: 1; overflow: hidden; }
 .p-title { font-weight: 600; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .p-status { font-family: var(--mono); font-size: 0.66rem; color: var(--dim); margin-top: 1px; }
@@ -470,9 +566,7 @@ footer {
     margin-top: 20px;
 }
 footer .inner {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--mute);
+    font-family: var(--mono); font-size: 0.75rem; color: var(--mute);
     display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
 }
 footer a { color: var(--dim); transition: 0.15s; }
@@ -483,12 +577,15 @@ footer a:hover { color: var(--accent); }
     header { padding-top: 22px; }
     .intro { grid-template-columns: 1fr; }
     .intro-right { flex-direction: row; align-items: center; justify-content: space-between; }
-    .pfp { width: 64px; height: 64px; }
-    .proj { grid-template-columns: 56px 1fr auto; gap: 14px; padding: 16px; }
-    .proj-thumb { width: 56px; height: 56px; }
+    .pfp-wrap, .pfp { width: 64px; height: 64px; }
+    .pfp-status { width: 16px; height: 16px; }
+    .proj { grid-template-columns: 48px 1fr auto; gap: 14px; padding: 16px; }
+    .proj-thumb { width: 48px; height: 48px; }
     .pricing { grid-template-columns: repeat(2, 1fr); }
     .gallery { grid-template-columns: 1fr; }
     .player { width: calc(100% - 24px); bottom: 12px; right: 12px; }
+    .activity { padding: 14px; gap: 12px; }
+    .act-art { width: 50px; height: 50px; }
 }
 </style>
 </head>
@@ -522,16 +619,18 @@ footer a:hover { color: var(--accent); }
                 <h1>kayaz<span class="dot"></span></h1>
                 <p class="bio">
                     Self-taught dev. I mess around with game engines, drivers, and stuff that sits close to the metal.
-                    Most of my time goes into <b>Omnis CS2</b> right now.
+                    Most of my time goes into <b>Omnis CS2</b> right now, with an internal build in the oven.
                 </p>
                 <div class="meta-row">
                     <span class="meta-chip"><span class="live-dot"></span>open to work</span>
-                    <span class="meta-chip discord" id="dchip"><span class="ddot"></span><span id="dtxt">offline</span></span>
                     <span class="meta-chip">based · eu</span>
                 </div>
             </div>
             <div class="intro-right">
-                <img src="https://cdn.discordapp.com/embed/avatars/0.png" id="pfp" class="pfp" alt="kayaz">
+                <div class="pfp-wrap">
+                    <img src="https://cdn.discordapp.com/embed/avatars/0.png" id="pfp" class="pfp" alt="kayaz">
+                    <div id="pfpStatus" class="pfp-status"></div>
+                </div>
                 <div class="socials">
                     <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic" title="Discord"><i class="fa-brands fa-discord"></i></a>
                     <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="ic" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
@@ -542,19 +641,36 @@ footer a:hover { color: var(--accent); }
 
         <section class="block">
             <div class="sec-head">
+                <div class="sec-title">activity</div>
+                <div class="sec-count" id="actCount">live</div>
+            </div>
+            <div class="activity idle" id="activity">
+                <img id="actArt" class="act-art" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="">
+                <div class="act-body">
+                    <div class="act-kind" id="actKind"><i class="fa-brands fa-discord"></i> offline</div>
+                    <div class="act-title" id="actTitle">not doing much</div>
+                    <div class="act-sub" id="actSub">check back in a bit</div>
+                    <div class="act-progress"><div class="act-progress-bar" id="actBar"></div></div>
+                    <div class="act-time"><span id="actElapsed">0:00</span><span id="actTotal">0:00</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="block">
+            <div class="sec-head">
                 <div class="sec-title">currently</div>
             </div>
             <div class="now">
                 <div class="label">now · <span id="nowDate"></span></div>
-                <p>Shipping daily updates to Omnis CS2. Kernel rotations, menu polish, new modules.</p>
-                <p>Plotting the next project. Quiet on details for now.</p>
+                <p>Shipping daily updates to Omnis CS2.</p>
+                <p>Building out the internal version on the side.</p>
             </div>
         </section>
 
         <section class="block">
             <div class="sec-head">
                 <div class="sec-title">projects</div>
-                <div class="sec-count">01</div>
+                <div class="sec-count">02</div>
             </div>
             <div class="proj-list">
                 <a href="#" onclick="go('omnis', null); return false;" class="proj featured">
@@ -562,14 +678,25 @@ footer a:hover { color: var(--accent); }
                     <div class="proj-body">
                         <div class="proj-row">
                             <div class="proj-name">Omnis CS2</div>
-                            <span class="proj-tag">live</span>
+                            <span class="proj-tag live">live</span>
                         </div>
                         <div class="proj-desc">External CS2 cheat. Aimbot, ESP, skin and knife changer, kernel driver, daily updates.</div>
                         <div class="proj-meta"><span>C++</span><span>external</span><span>kernel</span></div>
                     </div>
                     <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
                 </a>
-                <div class="more-soon">more projects on the way</div>
+                <a href="#" onclick="go('omnis-internal', null); return false;" class="proj wip">
+                    <div class="proj-thumb"><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" alt="Omnis Internal"></div>
+                    <div class="proj-body">
+                        <div class="proj-row">
+                            <div class="proj-name">Omnis CS2 Internal</div>
+                            <span class="proj-tag wip">in dev</span>
+                        </div>
+                        <div class="proj-desc">Internal build of Omnis. Direct game-process injection for lower latency and richer feature set.</div>
+                        <div class="proj-meta"><span>C++</span><span>internal</span><span>source 2</span></div>
+                    </div>
+                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                </a>
             </div>
         </section>
 
@@ -672,6 +799,39 @@ footer a:hover { color: var(--accent); }
     </div>
 </section>
 
+<section id="omnis-internal" class="page">
+    <div class="shell">
+
+        <div class="detail-head">
+            <button class="crumb" onclick="go('home', document.querySelectorAll('.tab')[0])"><i class="fa-solid fa-arrow-left"></i> back</button>
+            <h1>
+                <img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" class="detail-logo" alt="">
+                Omnis CS2 Internal
+            </h1>
+            <p class="sub">An internal version of Omnis CS2 that runs inside the game process. Lower latency, more direct access, much richer feature set than the external build can do.</p>
+            <div class="detail-row">
+                <span class="btn disabled"><i class="fa-solid fa-screwdriver-wrench"></i> in development</span>
+                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> follow on discord</a>
+            </div>
+        </div>
+
+        <div class="sec-head"><div class="sec-title">what it does</div></div>
+        <div class="spec-list" style="margin-bottom: 40px;">
+            <div class="spec"><div class="spec-name">runs inside cs2</div><div class="spec-d">manual mapped into the game process instead of reading memory from outside.</div></div>
+            <div class="spec"><div class="spec-name">direct hooks</div><div class="spec-d">vmt, swapchain present, midfunc. world-to-screen straight from the engine matrix.</div></div>
+            <div class="spec"><div class="spec-name">richer visuals</div><div class="spec-d">imgui menu, chams, glow, world esp. all rendered inside the game.</div></div>
+            <div class="spec"><div class="spec-name">same protections</div><div class="spec-d">shares the loader and signature rotation pipeline with the external build.</div></div>
+        </div>
+
+        <div class="wip-card">
+            <div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <h3>still cooking</h3>
+            <p>builds drop on the discord first when it's ready.</p>
+        </div>
+
+    </div>
+</section>
+
 <section id="contact" class="page">
     <div class="shell">
         <div class="detail-head">
@@ -736,7 +896,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
         requestAnimationFrame(loop);
     })();
     function bind() {
-        document.querySelectorAll('a,button,.proj,.plan,.skill,.ic').forEach(function (el) {
+        document.querySelectorAll('a,button,.proj,.plan,.skill,.ic,.activity').forEach(function (el) {
             if (el.dataset.curBound) return;
             el.dataset.curBound = '1';
             el.addEventListener('mouseenter', function () {
@@ -836,6 +996,101 @@ audio.addEventListener('ended', window.next);
 load(0);
 
 var userId = "747411610389446747";
+var spotifyState = null;
+function fmtTime(ms) {
+    if (!ms || ms < 0) ms = 0;
+    var s = Math.floor(ms / 1000);
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+function applyActivity(data) {
+    var card = document.getElementById('activity');
+    var kind = document.getElementById('actKind');
+    var title = document.getElementById('actTitle');
+    var sub = document.getElementById('actSub');
+    var art = document.getElementById('actArt');
+    var count = document.getElementById('actCount');
+
+    card.classList.remove('spotify', 'gaming', 'idle');
+    kind.classList.remove('spotify', 'gaming');
+    art.classList.remove('spin');
+    spotifyState = null;
+    count.textContent = 'live';
+
+    if (data.listening_to_spotify && data.spotify) {
+        var sp = data.spotify;
+        card.classList.add('spotify');
+        kind.classList.add('spotify');
+        kind.innerHTML = '<i class="fa-brands fa-spotify"></i> listening on spotify';
+        title.textContent = sp.song || '';
+        sub.textContent = (sp.artist || '').replace(/;/g, ',') + (sp.album ? '  ·  ' + sp.album : '');
+        if (sp.album_art_url) art.src = sp.album_art_url;
+        if (sp.timestamps) {
+            spotifyState = { start: sp.timestamps.start, end: sp.timestamps.end };
+            updateSpotifyProgress();
+        }
+        return;
+    }
+
+    var game = (data.activities || []).find(function (a) { return a.type === 0; });
+    if (game) {
+        card.classList.add('gaming');
+        kind.classList.add('gaming');
+        kind.innerHTML = '<i class="fa-solid fa-gamepad"></i> playing';
+        title.textContent = game.name || '';
+        var subTxt = '';
+        if (game.details) subTxt += game.details;
+        if (game.state) subTxt += (subTxt ? '  ·  ' + game.state : game.state);
+        sub.textContent = subTxt || 'in game';
+        if (game.assets && game.assets.large_image && game.application_id) {
+            var img = game.assets.large_image;
+            if (img.indexOf('mp:external/') === 0) {
+                art.src = 'https://media.discordapp.net/' + img.replace('mp:', '');
+            } else if (img.indexOf('spotify:') === 0) {
+                art.src = 'https://i.scdn.co/image/' + img.replace('spotify:', '');
+            } else {
+                art.src = 'https://cdn.discordapp.com/app-assets/' + game.application_id + '/' + img + '.png';
+            }
+        }
+        return;
+    }
+
+    var custom = (data.activities || []).find(function (a) { return a.type === 4; });
+    if (custom && custom.state) {
+        card.classList.add('idle');
+        kind.innerHTML = '<i class="fa-solid fa-comment"></i> custom status';
+        title.textContent = custom.state;
+        sub.textContent = data.discord_status || 'online';
+        return;
+    }
+
+    card.classList.add('idle');
+    var st = data.discord_status || 'offline';
+    if (st === 'offline') {
+        kind.innerHTML = '<i class="fa-brands fa-discord"></i> offline';
+        title.textContent = 'not around right now';
+        sub.textContent = 'i\'ll be back';
+    } else {
+        kind.innerHTML = '<i class="fa-brands fa-discord"></i> ' + st;
+        title.textContent = 'online, nothing playing';
+        sub.textContent = 'dm me';
+    }
+}
+function updateSpotifyProgress() {
+    if (!spotifyState) return;
+    var now = Date.now();
+    var total = spotifyState.end - spotifyState.start;
+    var played = now - spotifyState.start;
+    if (played < 0) played = 0;
+    if (played > total) played = total;
+    var pct = total > 0 ? (played / total) * 100 : 0;
+    document.getElementById('actBar').style.width = pct + '%';
+    document.getElementById('actElapsed').textContent = fmtTime(played);
+    document.getElementById('actTotal').textContent = fmtTime(total);
+}
+setInterval(updateSpotifyProgress, 1000);
+
 function fetchStatus() {
     fetch('https://api.lanyard.rest/v1/users/' + userId)
         .then(function (r) { return r.json(); })
@@ -845,18 +1100,12 @@ function fetchStatus() {
             if (data.discord_user && data.discord_user.avatar) {
                 document.getElementById('pfp').src = 'https://cdn.discordapp.com/avatars/' + userId + '/' + data.discord_user.avatar + '.png?size=512';
             }
-            var chip = document.getElementById('dchip');
-            var txt = document.getElementById('dtxt');
-            chip.classList.remove('online', 'idle', 'dnd');
-            if (data.activities && data.activities.length) {
-                var act = data.activities.find(function (a) { return a.type !== 4; }) || data.activities[0];
-                txt.textContent = act.name.toLowerCase();
-            } else {
-                txt.textContent = data.discord_status || 'offline';
-            }
-            if (data.discord_status === 'online') chip.classList.add('online');
-            else if (data.discord_status === 'idle') chip.classList.add('idle');
-            else if (data.discord_status === 'dnd') chip.classList.add('dnd');
+            var dot = document.getElementById('pfpStatus');
+            dot.classList.remove('online', 'idle', 'dnd');
+            if (data.discord_status === 'online') dot.classList.add('online');
+            else if (data.discord_status === 'idle') dot.classList.add('idle');
+            else if (data.discord_status === 'dnd') dot.classList.add('dnd');
+            applyActivity(data);
         })
         .catch(function () {});
 }
