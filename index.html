@@ -3,33 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>kayaz</title>
-<meta name="description" content="kayaz. dev. projects.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<title>kayaz — menu</title>
+<meta name="description" content="kayaz. low-level dev. omnis cs2.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root {
-    --bg: #0a0a0c;
-    --bg-2: #111114;
-    --bg-3: #17171c;
+    --bg: #0b0b0d;
+    --win: #1a1a1e;
+    --win-2: #202025;
+    --box: #141417;
+    --box-2: #17171b;
     --line: rgba(255, 255, 255, 0.07);
-    --line-2: rgba(255, 255, 255, 0.13);
-    --text: #ededf0;
-    --dim: #8a8a93;
-    --mute: #56565d;
-    --accent: #ff2d4f;
-    --accent-2: #ff5e7a;
+    --line-2: rgba(255, 255, 255, 0.12);
+    --inset: rgba(0, 0, 0, 0.35);
+    --text: #d4d4d9;
+    --dim: #82828b;
+    --mute: #55555d;
+    --accent: #ff3850;
+    --accent-2: #ff6076;
+    --accent-dim: rgba(255, 56, 80, 0.16);
     --green: #46d399;
     --yellow: #f1c40f;
     --spotify: #1db954;
-    --discord: #5865f2;
-    --r: 14px;
-    --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --sans: 'Inter Tight', system-ui, sans-serif;
+    --ui: Verdana, Geneva, Tahoma, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+    --emboss: 0 1px 1px rgba(0, 0, 0, 0.7);
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,835 +36,812 @@ html { scroll-behavior: smooth; }
 body {
     background: var(--bg);
     color: var(--text);
-    font-family: var(--sans);
-    font-size: 15px;
-    line-height: 1.55;
+    font-family: var(--ui);
+    font-size: 12px;
+    line-height: 1.5;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    cursor: none;
+    min-height: 100vh;
+}
+.bg {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(255, 56, 80, 0.05), transparent 60%),
+        radial-gradient(ellipse 60% 60% at 50% 120%, rgba(70, 130, 255, 0.03), transparent 60%),
+        var(--bg);
+}
+.bg::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
 }
 
-#cur { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 10px rgba(255, 45, 79, 0.5); transition: width .12s, height .12s; }
-#cur-ring { position: fixed; top: 0; left: 0; width: 26px; height: 26px; border: 1px solid rgba(255, 94, 122, 0.3); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width .2s, height .2s, border-color .2s; }
-@media (max-width: 900px), (pointer: coarse) { body { cursor: auto; } #cur, #cur-ring { display: none; } button, a { cursor: pointer !important; } }
-
-::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: #1f1f24; border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: #2a2a30; border: 2px solid var(--bg); border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 ::selection { background: var(--accent); color: #fff; }
 a { color: inherit; text-decoration: none; }
-button { cursor: none; font-family: inherit; color: inherit; background: none; border: none; }
+button { cursor: pointer; font-family: inherit; color: inherit; background: none; border: none; }
+img { display: block; }
 
-.grid-bg {
-    position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    background-image:
-        linear-gradient(to right, var(--line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--line) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 100%);
-    opacity: 0.5;
-}
-.glow-bg {
-    position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    background:
-        radial-gradient(ellipse 60% 50% at 15% 0%, rgba(255, 45, 79, 0.12), transparent 60%),
-        radial-gradient(ellipse 50% 40% at 90% 100%, rgba(255, 45, 79, 0.06), transparent 60%);
-}
-
-.shell { max-width: 920px; margin: 0 auto; padding: 0 28px; }
-
-header { padding: 38px 0 0; }
-.bar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--line);
-}
-.logo {
-    font-family: var(--mono); font-size: 0.82rem; font-weight: 500;
-    color: var(--dim);
-    display: flex; align-items: center; gap: 8px;
-}
-.logo span { color: var(--text); font-weight: 700; }
-.logo .blink { width: 7px; height: 7px; background: var(--accent); border-radius: 1px; animation: blink 1.4s steps(2, end) infinite; }
-@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.2; } }
-
-.tabs { display: flex; gap: 4px; }
-.tab {
-    padding: 6px 14px;
-    font-family: var(--mono); font-size: 0.78rem; font-weight: 500;
-    color: var(--dim);
-    border-radius: 7px;
-    transition: 0.18s;
-}
-.tab:hover { color: var(--text); }
-.tab.on { color: var(--text); background: var(--bg-2); }
-
-.page { display: none; padding: 60px 0 80px; animation: in 0.45s ease forwards; }
-.page.on { display: block; }
-@keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-
-.intro {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 28px;
-    align-items: start;
-    padding-bottom: 48px;
-    border-bottom: 1px solid var(--line);
-}
-.intro-left h1 {
-    font-size: clamp(2.4rem, 5vw, 3.4rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.02;
-    margin-bottom: 18px;
-}
-.intro-left h1 .dot {
-    display: inline-block;
-    width: 14px; height: 14px;
-    background: var(--accent);
-    border-radius: 4px;
-    transform: translateY(-2px);
-    margin-left: 4px;
-    box-shadow: 0 0 18px rgba(255, 45, 79, 0.5);
-}
-.intro-left .bio {
-    color: var(--dim);
-    font-size: 1.05rem;
-    max-width: 540px;
-    margin-bottom: 18px;
-}
-.intro-left .bio b { color: var(--text); font-weight: 600; }
-.meta-row {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    font-family: var(--mono); font-size: 0.76rem; color: var(--dim);
-}
-.meta-chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 5px 11px;
-    background: var(--bg-2);
+/* ── watermark ─────────────────────────────── */
+.watermark {
+    position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+    z-index: 600;
+    display: flex; align-items: center; gap: 0;
+    background: rgba(20, 20, 23, 0.86);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--line);
-    border-radius: 7px;
+    border-radius: 4px;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.02em;
+    color: var(--dim);
+    overflow: hidden;
+    max-width: calc(100vw - 24px);
 }
-.meta-chip .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+.watermark::before { content: ''; width: 2px; align-self: stretch; background: var(--accent); }
+.watermark > span { padding: 5px 11px; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.watermark > span + span { border-left: 1px solid var(--line); }
+.watermark .wm-name { color: var(--text); font-weight: 700; }
+.watermark .wm-name b { color: var(--accent); font-weight: 700; }
+.watermark i { font-style: normal; color: var(--text); }
+.watermark .hide-sm { display: flex; }
 
-.intro-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
-.pfp-wrap { position: relative; width: 88px; height: 88px; }
+/* ── menu window ───────────────────────────── */
+.menu {
+    width: min(960px, calc(100% - 28px));
+    margin: 72px auto 40px;
+    background: linear-gradient(180deg, var(--win-2), var(--win));
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.55),
+        0 2px 0 rgba(255, 255, 255, 0.03) inset,
+        0 0 0 1px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+.menu-head {
+    display: flex; align-items: stretch;
+    background: linear-gradient(180deg, #25252b, #1d1d22);
+    border-bottom: 1px solid var(--accent);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+.menu-head::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent 40%);
+}
+.brand {
+    display: flex; align-items: center; gap: 9px;
+    padding: 0 16px; flex-shrink: 0;
+    border-right: 1px solid var(--line);
+}
+.brand img { width: 20px; height: 20px; border-radius: 4px; }
+.brand .b-name { font-weight: 700; font-size: 13px; color: var(--text); text-shadow: var(--emboss); }
+.brand .b-name b { color: var(--accent); }
+.brand .b-ver { font-family: var(--mono); font-size: 9.5px; color: var(--mute); padding: 1px 5px; border: 1px solid var(--line); border-radius: 3px; }
+
+.tabs { display: flex; align-items: stretch; flex: 1; overflow-x: auto; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+    display: flex; align-items: center; gap: 7px;
+    padding: 12px 18px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--dim);
+    text-shadow: var(--emboss);
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, background 0.15s;
+    white-space: nowrap;
+}
+.tab i { font-size: 12px; opacity: 0.8; }
+.tab:hover { color: var(--text); background: rgba(255, 255, 255, 0.025); }
+.tab.on { color: #fff; }
+.tab.on i { color: var(--accent); opacity: 1; }
+.tab.on { box-shadow: inset 0 -2px 0 var(--accent); }
+
+.menu-stats {
+    display: flex; align-items: center; gap: 0;
+    flex-shrink: 0; border-left: 1px solid var(--line);
+    font-family: var(--mono); font-size: 10px; color: var(--dim);
+}
+.menu-stats span { padding: 0 11px; white-space: nowrap; }
+.menu-stats span + span { border-left: 1px solid var(--line); }
+.menu-stats i { font-style: normal; color: var(--text); }
+
+/* ── layout: sidebar + content ─────────────── */
+.page { display: none; }
+.page.on { display: grid; grid-template-columns: 168px 1fr; animation: fade 0.28s ease; }
+.page.full.on { grid-template-columns: 1fr; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.side {
+    border-right: 1px solid var(--line);
+    background: rgba(0, 0, 0, 0.18);
+    padding: 14px 0;
+    display: flex; flex-direction: column; gap: 1px;
+}
+.side-label {
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--mute); padding: 6px 18px; margin-top: 6px;
+}
+.side-label:first-child { margin-top: 0; }
+.subtab {
+    display: flex; align-items: center; gap: 9px;
+    padding: 9px 18px;
+    font-size: 11.5px; font-weight: 700;
+    color: var(--dim); text-shadow: var(--emboss);
+    border-left: 2px solid transparent;
+    transition: 0.15s;
+    text-align: left; width: 100%;
+}
+.subtab i { width: 14px; text-align: center; font-size: 12px; opacity: 0.75; }
+.subtab:hover { color: var(--text); background: rgba(255, 255, 255, 0.02); }
+.subtab.on {
+    color: #fff; border-left-color: var(--accent);
+    background: linear-gradient(90deg, var(--accent-dim), transparent 70%);
+}
+.subtab.on i { color: var(--accent); opacity: 1; }
+
+.content { padding: 20px; min-height: 460px; }
+.col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.span2 { grid-column: 1 / -1; }
+
+/* ── group box ─────────────────────────────── */
+.group {
+    background: var(--box);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 1px 2px rgba(0, 0, 0, 0.3);
+    margin-bottom: 16px;
+}
+.col2 .group { margin-bottom: 0; }
+.group-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 13px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+}
+.group-head .mark { width: 5px; height: 5px; background: var(--accent); border-radius: 1px; box-shadow: 0 0 5px rgba(255, 56, 80, 0.6); }
+.group-head h3 {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text); text-shadow: var(--emboss);
+}
+.group-head .ghd-right { margin-left: auto; font-family: var(--mono); font-size: 9.5px; color: var(--mute); }
+.group-body { padding: 13px; display: flex; flex-direction: column; gap: 11px; }
+
+/* ── controls ──────────────────────────────── */
+.ctl { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.ctl.check { user-select: none; }
+.ctl.check.toggleable { cursor: pointer; }
+.ctl .box {
+    width: 15px; height: 15px; flex-shrink: 0;
+    border: 1px solid var(--line-2);
+    border-radius: 3px;
+    background: var(--box-2);
+    box-shadow: inset 0 1px 2px var(--inset);
+    position: relative; transition: 0.15s;
+}
+.ctl.check.on .box {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 7px rgba(255, 56, 80, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.ctl.check.on .box::after {
+    content: ''; position: absolute; inset: 3px 4px 4px 3px;
+    border-right: 2px solid #fff; border-bottom: 2px solid #fff;
+    transform: rotate(40deg) translate(-1px, -1px);
+    width: 4px; height: 8px;
+}
+.ctl .lbl { color: var(--dim); font-weight: 700; text-shadow: var(--emboss); transition: 0.15s; }
+.ctl.check.on .lbl { color: var(--text); }
+.ctl.check:hover .lbl { color: var(--text); }
+.ctl .val { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--mute); }
+.ctl.check.on .val { color: var(--accent); }
+
+.combo { display: flex; flex-direction: column; gap: 5px; }
+.combo .lbl { color: var(--dim); font-weight: 700; font-size: 11px; text-shadow: var(--emboss); }
+.combo .field {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 11px;
+    background: var(--box-2);
+    border: 1px solid var(--line-2);
+    border-radius: 3px;
+    box-shadow: inset 0 1px 2px var(--inset);
+    font-size: 11.5px; font-weight: 700; color: var(--text);
+}
+.combo .field i { color: var(--accent); font-size: 10px; }
+
+.slider { display: flex; flex-direction: column; gap: 6px; }
+.slider .top { display: flex; justify-content: space-between; align-items: baseline; }
+.slider .lbl { color: var(--dim); font-weight: 700; font-size: 11px; text-shadow: var(--emboss); }
+.slider .num { font-family: var(--mono); font-size: 10px; color: var(--accent); }
+.slider .track {
+    height: 7px; border-radius: 4px;
+    background: var(--box-2);
+    border: 1px solid var(--line-2);
+    box-shadow: inset 0 1px 2px var(--inset);
+    overflow: hidden;
+}
+.slider .fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 8px rgba(255, 56, 80, 0.5);
+    border-radius: 4px;
+    transition: width 1s linear;
+}
+
+.key {
+    font-family: var(--mono); font-size: 10px;
+    padding: 3px 8px;
+    border: 1px solid var(--line-2);
+    border-radius: 3px;
+    background: var(--box-2);
+    color: var(--dim);
+    box-shadow: inset 0 1px 2px var(--inset);
+}
+
+/* ── operator / profile ────────────────────── */
+.operator { display: flex; align-items: center; gap: 13px; }
+.pfp-wrap { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
 .pfp {
-    width: 88px; height: 88px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--bg);
-    background: var(--bg-2);
+    width: 56px; height: 56px; border-radius: 6px; object-fit: cover;
+    border: 1px solid var(--line-2); background: var(--box-2);
 }
 .pfp-status {
-    position: absolute; bottom: 2px; right: 2px;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: var(--mute);
-    border: 3px solid var(--bg);
-    box-shadow: 0 0 0 1px var(--line);
-    transition: background 0.2s, box-shadow 0.2s;
+    position: absolute; bottom: -3px; right: -3px;
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--mute); border: 3px solid var(--win);
+    transition: 0.2s;
 }
-.pfp-status.online { background: var(--green); box-shadow: 0 0 0 1px var(--green), 0 0 10px rgba(70, 211, 153, 0.4); }
-.pfp-status.idle { background: var(--yellow); box-shadow: 0 0 0 1px var(--yellow); }
-.pfp-status.dnd { background: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 10px rgba(255, 45, 79, 0.4); }
+.pfp-status.online { background: var(--green); box-shadow: 0 0 8px rgba(70, 211, 153, 0.6); }
+.pfp-status.idle { background: var(--yellow); }
+.pfp-status.dnd { background: var(--accent); box-shadow: 0 0 8px rgba(255, 56, 80, 0.6); }
+.op-info .op-name { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: 0.01em; text-shadow: var(--emboss); }
+.op-info .op-role { font-family: var(--mono); font-size: 10.5px; color: var(--accent); margin-top: 2px; }
+.bio { color: var(--dim); font-size: 11.5px; line-height: 1.65; }
+.bio b { color: var(--text); }
 
-.socials { display: flex; gap: 6px; }
+.socials { display: flex; gap: 7px; }
 .ic {
-    width: 34px; height: 34px;
-    border-radius: 8px;
-    border: 1px solid var(--line);
+    width: 30px; height: 30px; border-radius: 4px;
+    border: 1px solid var(--line-2);
+    background: var(--box-2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
     display: flex; align-items: center; justify-content: center;
-    color: var(--dim);
-    font-size: 0.88rem;
-    transition: 0.18s;
+    color: var(--dim); font-size: 13px;
+    transition: 0.15s;
 }
-.ic:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.ic:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
 
-section.block { padding: 48px 0; border-bottom: 1px solid var(--line); }
-section.block:last-child { border-bottom: none; }
-
-.sec-head {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 22px;
-}
-.sec-title {
-    font-family: var(--mono); font-size: 0.78rem; font-weight: 500;
-    color: var(--dim);
-    text-transform: uppercase; letter-spacing: 0.12em;
-    display: flex; align-items: center; gap: 8px;
-}
-.sec-title::before { content: ''; width: 14px; height: 1px; background: var(--accent); }
-.sec-count { font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
-
-/* Discord activity card */
-.activity {
-    background: var(--bg-2);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 16px 18px;
-    display: flex; align-items: center; gap: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.22s;
-}
-.activity:hover { border-color: var(--line-2); }
-.activity.spotify { border-color: rgba(29, 185, 84, 0.22); }
-.activity.spotify::before {
-    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
-    width: 3px; background: var(--spotify);
-}
-.activity.gaming { border-color: rgba(88, 101, 242, 0.22); }
-.activity.gaming::before {
-    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
-    width: 3px; background: var(--discord);
-}
-.activity.idle::before {
-    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
-    width: 3px; background: var(--mute);
-}
-
+/* ── live activity ─────────────────────────── */
+.activity { display: flex; align-items: center; gap: 12px; }
 .act-art {
-    width: 60px; height: 60px;
-    border-radius: 10px;
-    object-fit: cover;
-    flex-shrink: 0;
-    background: #06060a;
-    border: 1px solid var(--line);
+    width: 52px; height: 52px; border-radius: 5px; object-fit: cover; flex-shrink: 0;
+    background: var(--box-2); border: 1px solid var(--line-2);
 }
-.act-art.spin { animation: spinart 8s linear infinite; }
-@keyframes spinart { to { transform: rotate(360deg); } }
-
+.act-art.spin { animation: spin 9s linear infinite; border-radius: 50%; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .act-body { flex: 1; min-width: 0; }
 .act-kind {
-    font-family: var(--mono); font-size: 0.66rem; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--dim);
-    display: flex; align-items: center; gap: 6px;
-    margin-bottom: 4px;
+    font-family: var(--mono); font-size: 9px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim);
+    display: flex; align-items: center; gap: 6px; margin-bottom: 3px;
 }
 .act-kind.spotify { color: var(--spotify); }
-.act-kind.gaming { color: #a5b0ff; }
-.act-kind i { font-size: 0.8rem; }
-.act-title {
-    font-size: 0.98rem; font-weight: 600;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.act-sub {
-    font-size: 0.82rem; color: var(--dim);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-top: 2px;
-}
-.act-progress {
-    height: 3px; background: rgba(255, 255, 255, 0.06);
-    border-radius: 2px; margin-top: 10px;
-    overflow: hidden;
-    display: none;
-}
+.act-kind.gaming { color: #98a6ff; }
+.act-title { font-size: 12.5px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.act-sub { font-size: 11px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.act-progress { height: 5px; background: var(--box-2); border: 1px solid var(--line-2); border-radius: 3px; margin-top: 9px; overflow: hidden; display: none; box-shadow: inset 0 1px 2px var(--inset); }
 .activity.spotify .act-progress { display: block; }
-.act-progress-bar {
-    height: 100%; background: var(--spotify);
-    width: 0%;
-    transition: width 1s linear;
-    border-radius: 2px;
-}
-.act-time {
-    font-family: var(--mono); font-size: 0.66rem; color: var(--mute);
-    margin-top: 4px;
-    display: flex; justify-content: space-between;
-}
+.act-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--spotify), #25e065); transition: width 1s linear; }
+.act-time { font-family: var(--mono); font-size: 9px; color: var(--mute); margin-top: 4px; display: flex; justify-content: space-between; }
 .activity:not(.spotify) .act-time { display: none; }
 
-/* Project list */
-.proj-list { display: flex; flex-direction: column; gap: 12px; }
+/* ── now / status text ─────────────────────── */
+.statline { display: flex; align-items: flex-start; gap: 9px; font-size: 11.5px; color: var(--text); }
+.statline::before { content: ''; width: 5px; height: 5px; margin-top: 6px; flex-shrink: 0; background: var(--accent); border-radius: 1px; box-shadow: 0 0 5px rgba(255, 56, 80, 0.5); }
+.statline.sub { color: var(--dim); }
+.statline.sub::before { background: var(--mute); box-shadow: none; }
+
+/* ── loadout grid ──────────────────────────── */
+.loadout { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 18px; }
+
+/* ── project rows ──────────────────────────── */
+.proj-list { display: flex; flex-direction: column; gap: 9px; }
 .proj {
-    display: grid;
-    grid-template-columns: 64px 1fr auto;
-    gap: 18px;
-    align-items: center;
-    padding: 18px 20px;
-    background: var(--bg-2);
+    display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: center;
+    padding: 13px 14px;
+    background: var(--box);
     border: 1px solid var(--line);
-    border-radius: var(--r);
-    transition: border-color 0.22s, transform 0.22s, background 0.22s;
+    border-left: 2px solid transparent;
+    border-radius: 5px;
+    transition: 0.18s;
     position: relative;
-    overflow: hidden;
 }
-.proj:hover { border-color: var(--line-2); background: var(--bg-3); transform: translateY(-2px); }
-.proj.featured { border-color: rgba(255, 45, 79, 0.25); background: linear-gradient(135deg, rgba(255, 45, 79, 0.06), var(--bg-2) 60%); }
-.proj.featured:hover { border-color: rgba(255, 45, 79, 0.45); }
-.proj.wip { border-style: dashed; }
-.proj.wip:hover { border-style: solid; border-color: rgba(241, 196, 15, 0.35); }
-
+.proj:hover { background: var(--box-2); border-color: var(--line-2); border-left-color: var(--accent); transform: translateX(2px); }
+.proj.featured { border-left-color: var(--accent); background: linear-gradient(90deg, var(--accent-dim), var(--box) 55%); }
+.proj.wip { border-style: dashed; border-left-style: solid; }
 .proj-thumb {
-    width: 56px; height: 56px;
-    border-radius: 12px;
-    background: #06060a;
-    border: 1px solid var(--line);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-    position: relative;
+    width: 46px; height: 46px; border-radius: 6px;
+    background: var(--box-2); border: 1px solid var(--line-2);
+    display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
 }
-.proj-thumb img { width: 70%; height: 70%; object-fit: contain; }
-.proj.wip .proj-thumb img { filter: grayscale(0.5) opacity(0.7); }
-
+.proj-thumb img { width: 72%; height: 72%; object-fit: contain; }
+.proj.wip .proj-thumb img { filter: grayscale(0.4) opacity(0.75); }
 .proj-body { min-width: 0; }
-.proj-row {
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 4px;
-    flex-wrap: wrap;
-}
-.proj-name {
-    font-size: 1.1rem; font-weight: 700;
-    letter-spacing: -0.01em;
-}
+.proj-row { display: flex; align-items: center; gap: 9px; margin-bottom: 3px; flex-wrap: wrap; }
+.proj-name { font-size: 13.5px; font-weight: 700; color: #fff; text-shadow: var(--emboss); }
 .proj-tag {
-    font-family: var(--mono); font-size: 0.64rem; font-weight: 600;
-    padding: 2px 7px; border-radius: 4px;
-    text-transform: uppercase; letter-spacing: 0.1em;
+    font-family: var(--mono); font-size: 8.5px; font-weight: 700;
+    padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.08em;
     display: inline-flex; align-items: center; gap: 5px;
 }
-.proj-tag.live {
-    color: var(--green);
-    background: rgba(70, 211, 153, 0.08);
-    border: 1px solid rgba(70, 211, 153, 0.22);
-}
+.proj-tag.live { color: var(--green); background: rgba(70, 211, 153, 0.1); border: 1px solid rgba(70, 211, 153, 0.28); }
 .proj-tag.live::before { content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%; box-shadow: 0 0 5px var(--green); }
-.proj-tag.wip {
-    color: var(--yellow);
-    background: rgba(241, 196, 15, 0.08);
-    border: 1px solid rgba(241, 196, 15, 0.22);
-}
-.proj-tag.wip::before { content: ''; width: 5px; height: 5px; background: var(--yellow); border-radius: 50%; box-shadow: 0 0 5px var(--yellow); animation: pulse 1.6s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
-
-.proj-desc { font-size: 0.88rem; color: var(--dim); margin-bottom: 8px; }
-.proj-meta { display: flex; gap: 6px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.66rem; color: var(--mute); }
-.proj-meta span { padding: 2px 7px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); border-radius: 4px; }
-
+.proj-tag.wip { color: var(--yellow); background: rgba(241, 196, 15, 0.1); border: 1px solid rgba(241, 196, 15, 0.28); }
+.proj-tag.wip::before { content: ''; width: 5px; height: 5px; background: var(--yellow); border-radius: 50%; animation: pulse 1.6s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.proj-desc { font-size: 11px; color: var(--dim); margin-bottom: 7px; line-height: 1.5; }
+.proj-meta { display: flex; gap: 6px; flex-wrap: wrap; font-family: var(--mono); font-size: 9px; color: var(--mute); }
+.proj-meta span { padding: 2px 6px; background: var(--box-2); border: 1px solid var(--line); border-radius: 3px; }
 .proj-arrow {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    border: 1px solid var(--line);
+    width: 28px; height: 28px; border-radius: 4px;
+    border: 1px solid var(--line); background: var(--box-2);
     display: flex; align-items: center; justify-content: center;
-    color: var(--dim); font-size: 0.78rem;
-    transition: 0.2s;
-    flex-shrink: 0;
+    color: var(--dim); font-size: 11px; transition: 0.18s; flex-shrink: 0;
 }
-.proj:hover .proj-arrow { color: var(--accent); border-color: var(--accent); transform: rotate(-45deg); }
+.proj:hover .proj-arrow { color: var(--accent); border-color: var(--accent); }
 
-.stack-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.skill {
-    font-family: var(--mono); font-size: 0.78rem;
-    padding: 6px 12px;
-    background: var(--bg-2);
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    color: var(--dim);
-    transition: 0.18s;
-}
-.skill:hover { color: var(--accent); border-color: var(--accent); }
-
-.now {
-    background: var(--bg-2);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 22px 24px;
-    position: relative;
-    overflow: hidden;
-}
-.now::before {
-    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
-    width: 3px; background: var(--accent);
-}
-.now .label {
-    font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px;
-}
-.now p { color: var(--text); font-size: 0.98rem; }
-.now p + p { margin-top: 8px; color: var(--dim); font-size: 0.9rem; }
-
-.detail-head {
-    padding-bottom: 32px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 40px;
-}
+/* ── detail pages ──────────────────────────── */
+.detail-head { margin-bottom: 18px; }
 .crumb {
-    font-family: var(--mono); font-size: 0.78rem; color: var(--dim);
-    display: flex; align-items: center; gap: 8px; margin-bottom: 22px;
-    transition: 0.15s;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: 10.5px; color: var(--dim);
+    padding: 6px 11px; border: 1px solid var(--line); border-radius: 4px; background: var(--box);
+    margin-bottom: 16px; transition: 0.15s;
 }
-.crumb:hover { color: var(--accent); }
+.crumb:hover { color: var(--accent); border-color: var(--accent); }
 .detail-head h1 {
-    font-size: clamp(2.4rem, 5vw, 3.4rem);
-    font-weight: 700; letter-spacing: -0.03em;
-    line-height: 1.02; margin-bottom: 12px;
-    display: flex; align-items: center; gap: 14px;
+    font-size: 24px; font-weight: 700; color: #fff; letter-spacing: 0.01em;
+    display: flex; align-items: center; gap: 12px; margin-bottom: 8px; text-shadow: var(--emboss);
 }
-.detail-logo { width: 44px; height: 44px; }
-.detail-head .sub {
-    color: var(--dim); font-size: 1.05rem;
-    max-width: 600px;
-    margin-bottom: 22px;
-}
-.detail-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.detail-logo { width: 34px; height: 34px; border-radius: 6px; }
+.detail-head .sub { color: var(--dim); font-size: 12px; max-width: 620px; margin-bottom: 16px; line-height: 1.6; }
+.detail-row { display: flex; gap: 9px; flex-wrap: wrap; }
 .btn {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 18px;
-    border-radius: 9px;
-    font-family: var(--sans);
-    font-size: 0.9rem; font-weight: 600;
-    transition: 0.2s;
+    padding: 9px 15px; border-radius: 4px;
+    font-family: var(--ui); font-size: 11.5px; font-weight: 700;
+    text-shadow: var(--emboss); transition: 0.16s;
+    border: 1px solid transparent;
 }
-.btn.primary { background: var(--accent); color: #fff; }
-.btn.primary:hover { background: var(--accent-2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 45, 79, 0.35); }
-.btn.ghost { background: var(--bg-2); color: var(--text); border: 1px solid var(--line); }
-.btn.ghost:hover { border-color: var(--line-2); transform: translateY(-2px); }
-.btn.disabled { background: var(--bg-2); color: var(--mute); border: 1px solid var(--line); cursor: not-allowed; }
-.btn.disabled:hover { transform: none; }
+.btn.primary { background: linear-gradient(180deg, var(--accent-2), var(--accent)); color: #fff; box-shadow: 0 0 0 1px rgba(255, 56, 80, 0.4), 0 4px 12px rgba(255, 56, 80, 0.25); }
+.btn.primary:hover { transform: translateY(-1px); box-shadow: 0 0 0 1px var(--accent), 0 8px 20px rgba(255, 56, 80, 0.4); }
+.btn.ghost { background: var(--box); color: var(--text); border-color: var(--line-2); }
+.btn.ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.btn.disabled { background: var(--box); color: var(--mute); border-color: var(--line); cursor: not-allowed; }
 
-.video {
-    width: 100%; position: relative; padding-bottom: 56.25%;
-    border-radius: var(--r); overflow: hidden;
-    border: 1px solid var(--line);
-    margin-bottom: 40px;
-    background: #000;
-}
+.video { width: 100%; position: relative; padding-bottom: 56.25%; border-radius: 5px; overflow: hidden; border: 1px solid var(--line-2); background: #000; }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-.gallery { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-bottom: 40px; }
-.shot-wrap { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; }
-.shot {
-    width: 100%; aspect-ratio: 16/9;
-    background: #06060a; border-radius: 10px;
-    overflow: hidden; border: 1px solid var(--line);
-    margin-bottom: 10px;
-}
-.shot img { width: 100%; height: 100%; object-fit: contain; transition: opacity 0.25s; }
-.shot img.fade { opacity: 0; }
-.shot-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-.shot-tab {
-    padding: 7px 4px;
-    font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
-    color: var(--dim);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    text-transform: lowercase;
-    transition: 0.15s;
-}
-.shot-tab:hover { color: var(--text); }
-.shot-tab.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-.spec-list { display: flex; flex-direction: column; gap: 10px; }
-.spec {
-    padding: 16px 18px;
-    background: var(--bg-2);
-    border: 1px solid var(--line);
-    border-radius: 11px;
-}
-.spec-name { font-weight: 600; margin-bottom: 4px; font-size: 0.96rem; }
-.spec-d { color: var(--dim); font-size: 0.85rem; line-height: 1.55; }
-
-.pricing { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 40px; }
+/* pricing */
+.pricing { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .plan {
-    padding: 20px 18px;
-    background: var(--bg-2); border: 1px solid var(--line);
-    border-radius: var(--r);
-    text-align: left; position: relative;
-    transition: 0.22s;
+    padding: 14px; border-radius: 5px; text-align: left; position: relative;
+    background: var(--box); border: 1px solid var(--line);
+    transition: 0.18s; display: block;
 }
-.plan:hover { border-color: var(--line-2); transform: translateY(-2px); }
-.plan.hot { border-color: rgba(255, 45, 79, 0.3); background: linear-gradient(135deg, rgba(255, 45, 79, 0.06), var(--bg-2) 60%); }
-.plan-dur { font-family: var(--mono); font-size: 0.72rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-.plan-price { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
-.plan-price small { font-size: 0.78rem; color: var(--mute); text-decoration: line-through; margin-left: 6px; font-weight: 400; letter-spacing: 0; }
-.plan-note { color: var(--dim); font-size: 0.82rem; margin-top: 6px; }
-.plan-hot { position: absolute; top: -8px; right: 12px; font-family: var(--mono); font-size: 0.62rem; font-weight: 700; color: #fff; background: var(--accent); padding: 2px 8px; border-radius: 5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.plan:hover { border-color: var(--accent); transform: translateY(-2px); }
+.plan.hot { border-color: rgba(255, 56, 80, 0.4); background: linear-gradient(160deg, var(--accent-dim), var(--box) 60%); }
+.plan-dur { font-family: var(--mono); font-size: 9.5px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.plan-price { font-size: 22px; font-weight: 700; color: #fff; line-height: 1; text-shadow: var(--emboss); }
+.plan-price small { font-size: 11px; color: var(--mute); text-decoration: line-through; margin-left: 6px; font-weight: 400; }
+.plan-note { color: var(--dim); font-size: 10.5px; margin-top: 6px; }
+.plan-hot { position: absolute; top: -8px; right: 10px; font-family: var(--mono); font-size: 8px; font-weight: 700; color: #fff; background: var(--accent); padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; text-transform: uppercase; box-shadow: 0 0 8px rgba(255, 56, 80, 0.5); }
 
-.compare {
-    width: 100%; aspect-ratio: 16/9;
-    position: relative; border-radius: var(--r);
-    border: 1px solid var(--line); overflow: hidden;
-    user-select: none; touch-action: none;
-    margin-bottom: 40px;
-}
+/* compare */
+.compare { width: 100%; aspect-ratio: 16/9; position: relative; border-radius: 5px; border: 1px solid var(--line-2); overflow: hidden; user-select: none; touch-action: none; }
 .c-after, .c-before { position: absolute; inset: 0; background-size: cover; background-position: center; }
 .c-before { clip-path: inset(0 50% 0 0); }
-.c-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; box-shadow: 0 0 12px rgba(255, 45, 79, 0.5); pointer-events: none; }
-.c-handle {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--accent); border: 2px solid #fff;
-    display: flex; align-items: center; justify-content: center; color: #fff;
-    pointer-events: none;
-    box-shadow: 0 4px 16px rgba(255, 45, 79, 0.5);
-}
-.c-lbl {
-    position: absolute; top: 12px;
-    font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
-    padding: 4px 9px; border-radius: 5px;
-    backdrop-filter: blur(8px);
-}
-.c-lbl.b { left: 12px; background: rgba(0,0,0,0.6); color: var(--dim); border: 1px solid var(--line); }
-.c-lbl.a { right: 12px; background: rgba(255, 45, 79, 0.18); color: #fff; border: 1px solid rgba(255, 45, 79, 0.4); }
+.c-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--accent); box-shadow: 0 0 12px rgba(255, 56, 80, 0.7); pointer-events: none; }
+.c-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; pointer-events: none; box-shadow: 0 4px 14px rgba(255, 56, 80, 0.5); font-size: 12px; }
+.c-lbl { position: absolute; top: 10px; font-family: var(--mono); font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 3px; backdrop-filter: blur(6px); }
+.c-lbl.b { left: 10px; background: rgba(0, 0, 0, 0.6); color: var(--dim); border: 1px solid var(--line); }
+.c-lbl.a { right: 10px; background: rgba(255, 56, 80, 0.2); color: #fff; border: 1px solid rgba(255, 56, 80, 0.5); }
 
-.wip-card {
-    padding: 28px;
-    background: var(--bg-2);
-    border: 1px dashed var(--line-2);
-    border-radius: var(--r);
-    text-align: center;
-}
-.wip-card .icon {
-    width: 44px; height: 44px;
-    border-radius: 12px;
-    background: rgba(241, 196, 15, 0.08);
-    border: 1px solid rgba(241, 196, 15, 0.22);
-    color: var(--yellow);
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
-    margin-bottom: 14px;
-}
-.wip-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
-.wip-card p { color: var(--dim); font-size: 0.92rem; }
+/* gallery */
+.gallery { display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; }
+.shot { width: 100%; aspect-ratio: 16/9; background: var(--box-2); border-radius: 5px; overflow: hidden; border: 1px solid var(--line-2); margin-bottom: 9px; }
+.shot img { width: 100%; height: 100%; object-fit: contain; transition: opacity 0.22s; }
+.shot img.fade { opacity: 0; }
+.shot-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+.shot-tab { padding: 7px 4px; font-family: var(--mono); font-size: 9.5px; font-weight: 600; color: var(--dim); background: var(--box-2); border: 1px solid var(--line); border-radius: 3px; text-transform: lowercase; transition: 0.15s; }
+.shot-tab:hover { color: var(--text); }
+.shot-tab.on { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 8px rgba(255, 56, 80, 0.4); }
 
+.wip-card { padding: 22px; background: var(--box); border: 1px dashed var(--line-2); border-radius: 5px; text-align: center; }
+.wip-card .icon { width: 38px; height: 38px; border-radius: 8px; background: rgba(241, 196, 15, 0.1); border: 1px solid rgba(241, 196, 15, 0.28); color: var(--yellow); display: inline-flex; align-items: center; justify-content: center; font-size: 15px; margin-bottom: 12px; }
+.wip-card h3 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 5px; text-shadow: var(--emboss); }
+.wip-card p { color: var(--dim); font-size: 11.5px; }
+
+/* ── status bar (footer) ───────────────────── */
+.menu-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 9px 16px;
+    border-top: 1px solid var(--line);
+    background: rgba(0, 0, 0, 0.22);
+    font-family: var(--mono); font-size: 9.5px; color: var(--mute);
+    flex-wrap: wrap;
+}
+.menu-foot a { color: var(--dim); transition: 0.15s; }
+.menu-foot a:hover { color: var(--accent); }
+.menu-foot .dotsep { color: var(--line-2); }
+
+/* ── music player ──────────────────────────── */
 .player {
-    position: fixed; bottom: 18px; right: 18px;
-    width: 270px;
-    background: rgba(17, 17, 20, 0.92);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 10px 12px;
-    display: flex; align-items: center; gap: 10px;
-    z-index: 500;
-    transition: 0.22s;
+    position: fixed; bottom: 16px; right: 16px; width: 250px; z-index: 500;
+    background: rgba(20, 20, 23, 0.92);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--line-2); border-radius: 5px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
 }
-.player:hover { border-color: var(--line-2); }
-.p-art {
-    width: 40px; height: 40px; border-radius: 8px; object-fit: cover;
-    animation: spinart 8s linear infinite; animation-play-state: paused;
-}
-.p-art.spin { animation-play-state: running; }
+.player::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 2px; background: var(--accent); }
+.player-head { display: flex; align-items: center; gap: 7px; padding: 6px 11px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--dim); }
+.player-head .mark { width: 5px; height: 5px; background: var(--accent); border-radius: 1px; }
+.player-body { display: flex; align-items: center; gap: 10px; padding: 10px 11px; }
+.p-art { width: 38px; height: 38px; border-radius: 5px; object-fit: cover; border: 1px solid var(--line-2); animation: spin 9s linear infinite; animation-play-state: paused; }
+.p-art.spin { animation-play-state: running; border-radius: 50%; }
 .p-info { flex: 1; overflow: hidden; }
-.p-title { font-weight: 600; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.p-status { font-family: var(--mono); font-size: 0.66rem; color: var(--dim); margin-top: 1px; }
-.p-ctrls { display: flex; gap: 5px; margin-top: 4px; }
-.pc { color: var(--dim); font-size: 0.78rem; padding: 2px 3px; transition: 0.15s; }
+.p-title { font-weight: 700; font-size: 11.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: var(--emboss); }
+.p-status { font-family: var(--mono); font-size: 9px; color: var(--dim); margin-top: 1px; }
+.p-ctrls { display: flex; gap: 4px; margin-top: 5px; }
+.pc { color: var(--dim); font-size: 11px; padding: 2px 4px; transition: 0.15s; }
 .pc:hover { color: var(--accent); }
 .pc.play { color: var(--text); }
 
-footer {
-    padding: 30px 0 40px;
-    border-top: 1px solid var(--line);
-    margin-top: 20px;
-}
-footer .inner {
-    font-family: var(--mono); font-size: 0.75rem; color: var(--mute);
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
-}
-footer a { color: var(--dim); transition: 0.15s; }
-footer a:hover { color: var(--accent); }
-
-@media (max-width: 720px) {
-    .shell { padding: 0 18px; }
-    header { padding-top: 22px; }
-    .intro { grid-template-columns: 1fr; }
-    .intro-right { flex-direction: row; align-items: center; justify-content: space-between; }
-    .pfp-wrap, .pfp { width: 64px; height: 64px; }
-    .pfp-status { width: 16px; height: 16px; }
-    .proj { grid-template-columns: 48px 1fr auto; gap: 14px; padding: 16px; }
-    .proj-thumb { width: 48px; height: 48px; }
-    .pricing { grid-template-columns: repeat(2, 1fr); }
+/* ── responsive ────────────────────────────── */
+@media (max-width: 760px) {
+    .menu { width: calc(100% - 16px); margin-top: 64px; }
+    .brand { padding: 0 12px; }
+    .brand .b-ver { display: none; }
+    .menu-stats { display: none; }
+    .tab { padding: 11px 13px; }
+    .page.on, .page.full.on { grid-template-columns: 1fr; }
+    .side { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 8px; gap: 4px; }
+    .side-label { display: none; }
+    .subtab { border-left: none; border-bottom: 2px solid transparent; padding: 7px 12px; white-space: nowrap; border-radius: 4px; }
+    .subtab.on { border-left: none; border-bottom-color: var(--accent); background: var(--accent-dim); }
+    .content { padding: 14px; }
+    .col2 { grid-template-columns: 1fr; }
+    .loadout { grid-template-columns: 1fr; }
+    .pricing { grid-template-columns: 1fr 1fr; }
     .gallery { grid-template-columns: 1fr; }
-    .player { width: calc(100% - 24px); bottom: 12px; right: 12px; }
-    .activity { padding: 14px; gap: 12px; }
-    .act-art { width: 50px; height: 50px; }
+    .watermark .hide-sm { display: none; }
+    .player { width: calc(100% - 24px); }
 }
 </style>
 </head>
 <body>
 
-<div id="cur"></div>
-<div id="cur-ring"></div>
-<div class="glow-bg"></div>
-<div class="grid-bg"></div>
+<div class="bg"></div>
 
-<header>
-    <div class="shell">
-        <div class="bar">
-            <a href="#" onclick="go('home', this); return false;" class="logo">
-                <span class="blink"></span>
-                <span>kayaz</span>/dev
-            </a>
-            <div class="tabs">
-                <button class="tab on" onclick="go('home', this)">/</button>
-                <button class="tab" onclick="go('contact', this)">contact</button>
-            </div>
+<!-- watermark -->
+<div class="watermark">
+    <span class="wm-name">kayaz<b>.dev</b></span>
+    <span class="hide-sm">welcome back</span>
+    <span>fps: <i id="fps">144</i></span>
+    <span class="hide-sm">ping: <i>12ms</i></span>
+    <span id="clock">00:00:00</span>
+</div>
+
+<main class="menu">
+
+    <!-- header / tabs -->
+    <div class="menu-head">
+        <a href="#" onclick="go('home', this); return false;" class="brand">
+            <img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" alt="">
+            <span class="b-name">kayaz<b>.</b></span>
+            <span class="b-ver">v2.0</span>
+        </a>
+        <nav class="tabs">
+            <button class="tab on" onclick="go('home', this)"><i class="fa-solid fa-house"></i> home</button>
+            <button class="tab" onclick="go('projects', this)"><i class="fa-solid fa-cube"></i> projects</button>
+            <button class="tab" onclick="go('contact', this)"><i class="fa-solid fa-paper-plane"></i> contact</button>
+        </nav>
+        <div class="menu-stats">
+            <span>uptime <i id="uptime">00:00</i></span>
         </div>
     </div>
-</header>
 
-<section id="home" class="page on">
-    <div class="shell">
+    <!-- ── HOME ─────────────────────────────── -->
+    <section id="home" class="page on">
+        <aside class="side">
+            <div class="side-label">home</div>
+            <a class="subtab on" href="#g-operator"><i class="fa-solid fa-user"></i> operator</a>
+            <a class="subtab" href="#g-activity"><i class="fa-solid fa-signal"></i> activity</a>
+            <a class="subtab" href="#g-now"><i class="fa-solid fa-bolt"></i> now</a>
+            <a class="subtab" href="#g-loadout"><i class="fa-solid fa-layer-group"></i> loadout</a>
+        </aside>
+        <div class="content">
+            <div class="col2">
 
-        <div class="intro">
-            <div class="intro-left">
-                <h1>kayaz<span class="dot"></span></h1>
-                <p class="bio">
-                    Self-taught dev. I mess around with game engines, drivers, and stuff that sits close to the metal.
-                    Most of my time goes into <b>Omnis CS2</b> right now, with an internal build in the oven.
-                </p>
-                <div class="meta-row">
-                    <span class="meta-chip"><span class="live-dot"></span>open to work</span>
-                    <span class="meta-chip">based · eu</span>
-                </div>
-            </div>
-            <div class="intro-right">
-                <div class="pfp-wrap">
-                    <img src="https://cdn.discordapp.com/embed/avatars/0.png" id="pfp" class="pfp" alt="kayaz">
-                    <div id="pfpStatus" class="pfp-status"></div>
-                </div>
-                <div class="socials">
-                    <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic" title="Discord"><i class="fa-brands fa-discord"></i></a>
-                    <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="ic" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="ic" title="GitHub"><i class="fa-brands fa-github"></i></a>
-                </div>
-            </div>
-        </div>
-
-        <section class="block">
-            <div class="sec-head">
-                <div class="sec-title">activity</div>
-                <div class="sec-count" id="actCount">live</div>
-            </div>
-            <div class="activity idle" id="activity">
-                <img id="actArt" class="act-art" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="">
-                <div class="act-body">
-                    <div class="act-kind" id="actKind"><i class="fa-brands fa-discord"></i> offline</div>
-                    <div class="act-title" id="actTitle">not doing much</div>
-                    <div class="act-sub" id="actSub">check back in a bit</div>
-                    <div class="act-progress"><div class="act-progress-bar" id="actBar"></div></div>
-                    <div class="act-time"><span id="actElapsed">0:00</span><span id="actTotal">0:00</span></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="block">
-            <div class="sec-head">
-                <div class="sec-title">currently</div>
-            </div>
-            <div class="now">
-                <div class="label">now · <span id="nowDate"></span></div>
-                <p>Shipping daily updates to Omnis CS2.</p>
-                <p>Building out the internal version on the side.</p>
-            </div>
-        </section>
-
-        <section class="block">
-            <div class="sec-head">
-                <div class="sec-title">projects</div>
-                <div class="sec-count">02</div>
-            </div>
-            <div class="proj-list">
-                <a href="#" onclick="go('omnis', null); return false;" class="proj featured">
-                    <div class="proj-thumb"><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" alt="Omnis"></div>
-                    <div class="proj-body">
-                        <div class="proj-row">
-                            <div class="proj-name">Omnis CS2</div>
-                            <span class="proj-tag live">live</span>
+                <div class="group" id="g-operator">
+                    <div class="group-head"><span class="mark"></span><h3>operator</h3><span class="ghd-right">eu</span></div>
+                    <div class="group-body">
+                        <div class="operator">
+                            <div class="pfp-wrap">
+                                <img src="https://cdn.discordapp.com/embed/avatars/0.png" id="pfp" class="pfp" alt="kayaz">
+                                <div id="pfpStatus" class="pfp-status"></div>
+                            </div>
+                            <div class="op-info">
+                                <div class="op-name">kayaz</div>
+                                <div class="op-role">low-level / reverse engineering</div>
+                            </div>
                         </div>
-                        <div class="proj-desc">External CS2 cheat. Aimbot, ESP, skin and knife changer, kernel driver, daily updates.</div>
-                        <div class="proj-meta"><span>C++</span><span>external</span><span>kernel</span></div>
-                    </div>
-                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </a>
-                <a href="#" onclick="go('omnis-internal', null); return false;" class="proj wip">
-                    <div class="proj-thumb"><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" alt="Omnis Internal"></div>
-                    <div class="proj-body">
-                        <div class="proj-row">
-                            <div class="proj-name">Omnis CS2 Internal</div>
-                            <span class="proj-tag wip">in dev</span>
+                        <p class="bio">
+                            Self-taught dev messing around with game engines, drivers and anything that sits close to the metal.
+                            Most of my time goes into <b>Omnis CS2</b> right now, with an internal build in the oven.
+                        </p>
+                        <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">open to work</span><span class="val">enabled</span></div>
+                        <div class="combo">
+                            <span class="lbl">region</span>
+                            <div class="field">europe <i class="fa-solid fa-chevron-down"></i></div>
                         </div>
-                        <div class="proj-desc">Internal build of Omnis. Direct game-process injection for lower latency and richer feature set.</div>
-                        <div class="proj-meta"><span>C++</span><span>internal</span><span>source 2</span></div>
+                        <div class="socials">
+                            <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic" title="Discord"><i class="fa-brands fa-discord"></i></a>
+                            <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="ic" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="ic" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                        </div>
                     </div>
-                    <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </a>
-            </div>
-        </section>
+                </div>
 
-        <section class="block">
-            <div class="sec-head">
-                <div class="sec-title">stack</div>
-            </div>
-            <div class="stack-row">
-                <span class="skill">C++</span>
-                <span class="skill">C</span>
-                <span class="skill">x86 asm</span>
-                <span class="skill">Rust</span>
-                <span class="skill">Python</span>
-                <span class="skill">Win32 / NT</span>
-                <span class="skill">DirectX</span>
-                <span class="skill">reverse engineering</span>
-                <span class="skill">IDA · Ghidra</span>
-                <span class="skill">CMake</span>
-            </div>
-        </section>
+                <div>
+                    <div class="group" id="g-activity">
+                        <div class="group-head"><span class="mark"></span><h3>live activity</h3><span class="ghd-right" id="actCount">live</span></div>
+                        <div class="group-body">
+                            <div class="activity idle" id="activity">
+                                <img id="actArt" class="act-art" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="">
+                                <div class="act-body">
+                                    <div class="act-kind" id="actKind"><i class="fa-brands fa-discord"></i> offline</div>
+                                    <div class="act-title" id="actTitle">not doing much</div>
+                                    <div class="act-sub" id="actSub">check back in a bit</div>
+                                    <div class="act-progress"><div class="act-progress-bar" id="actBar"></div></div>
+                                    <div class="act-time"><span id="actElapsed">0:00</span><span id="actTotal">0:00</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-    </div>
-</section>
+                    <div class="group" id="g-now" style="margin-top:16px;">
+                        <div class="group-head"><span class="mark"></span><h3>now</h3><span class="ghd-right" id="nowDate"></span></div>
+                        <div class="group-body">
+                            <div class="statline">Shipping daily updates to Omnis CS2.</div>
+                            <div class="statline sub">Building out the internal version on the side.</div>
+                        </div>
+                    </div>
+                </div>
 
-<section id="omnis" class="page">
-    <div class="shell">
+                <div class="group span2" id="g-loadout">
+                    <div class="group-head"><span class="mark"></span><h3>loadout — stack</h3><span class="ghd-right">10 / 10</span></div>
+                    <div class="group-body">
+                        <div class="loadout">
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">C++</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">C</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">x86 assembly</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">Rust</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">Python</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">Win32 / NT</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">DirectX</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">reverse engineering</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">IDA · Ghidra</span></div>
+                            <div class="ctl check on toggleable"><span class="box"></span><span class="lbl">CMake</span></div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="detail-head">
-            <button class="crumb" onclick="go('home', document.querySelectorAll('.tab')[0])"><i class="fa-solid fa-arrow-left"></i> back</button>
-            <h1>
-                <img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" class="detail-logo" alt="">
-                Omnis CS2
-            </h1>
-            <p class="sub">External CS2 cheat i wrote and still maintain. Aimbot, ESP, skin and knife changer. Updated daily.</p>
-            <div class="detail-row">
-                <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="btn primary"><i class="fa-solid fa-arrow-up-right-from-square"></i> omniscs2.xyz</a>
-                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> discord</a>
             </div>
         </div>
+    </section>
 
-        <div class="video">
-            <iframe src="https://www.youtube-nocookie.com/embed/CW8F1sCPHN8?rel=0&modestbranding=1" allowfullscreen></iframe>
-        </div>
-
-        <div class="sec-head"><div class="sec-title">pricing</div></div>
-        <div class="pricing">
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan">
-                <div class="plan-dur">4 days</div>
-                <div class="plan-price">$5<small>$7</small></div>
-                <div class="plan-note">just to try it</div>
-            </a>
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan hot">
-                <span class="plan-hot">popular</span>
-                <div class="plan-dur">1 week</div>
-                <div class="plan-price">$7<small>$10</small></div>
-                <div class="plan-note">the popular one</div>
-            </a>
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan">
-                <div class="plan-dur">1 month</div>
-                <div class="plan-price">$12<small>$15</small></div>
-                <div class="plan-note">best value</div>
-            </a>
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan">
-                <div class="plan-dur">lifetime</div>
-                <div class="plan-price">$30<small>$40</small></div>
-                <div class="plan-note">pay once</div>
-            </a>
-        </div>
-
-        <div class="sec-head"><div class="sec-title">before / after</div><div class="sec-count">drag</div></div>
-        <div class="compare" id="cmp">
-            <div class="c-after" style="background-image:url('https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/before%26after/after.webp')"></div>
-            <div class="c-before" id="cmpBefore" style="background-image:url('https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/before%26after/before.webp')"></div>
-            <div class="c-lbl b">without</div>
-            <div class="c-lbl a">with omnis</div>
-            <div class="c-line" id="cmpLine"></div>
-            <div class="c-handle" id="cmpHandle"><i class="fa-solid fa-code-compare"></i></div>
-        </div>
-
-        <div class="sec-head"><div class="sec-title">menu</div></div>
-        <div class="gallery">
-            <div class="shot-wrap">
-                <div class="shot"><img id="mImg" src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/menu/aimbot.webp" alt=""></div>
-                <div class="shot-tabs">
-                    <button class="shot-tab on" onclick="setShot(this, 'aimbot')">aimbot</button>
-                    <button class="shot-tab" onclick="setShot(this, 'esp')">esp</button>
-                    <button class="shot-tab" onclick="setShot(this, 'visuals')">visuals</button>
-                    <button class="shot-tab" onclick="setShot(this, 'skins')">skins</button>
-                    <button class="shot-tab" onclick="setShot(this, 'misc')">misc</button>
+    <!-- ── PROJECTS ─────────────────────────── -->
+    <section id="projects" class="page">
+        <aside class="side">
+            <div class="side-label">projects</div>
+            <button class="subtab on"><i class="fa-solid fa-list"></i> all</button>
+            <button class="subtab"><i class="fa-solid fa-circle-dot"></i> live</button>
+            <button class="subtab"><i class="fa-solid fa-screwdriver-wrench"></i> in dev</button>
+        </aside>
+        <div class="content">
+            <div class="group">
+                <div class="group-head"><span class="mark"></span><h3>projects</h3><span class="ghd-right">02</span></div>
+                <div class="group-body">
+                    <div class="proj-list">
+                        <a href="#" onclick="go('omnis', null); return false;" class="proj featured">
+                            <div class="proj-thumb"><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" alt="Omnis"></div>
+                            <div class="proj-body">
+                                <div class="proj-row"><div class="proj-name">Omnis CS2</div><span class="proj-tag live">live</span></div>
+                                <div class="proj-desc">External CS2 cheat. Aimbot, ESP, skin and knife changer, kernel driver, daily updates.</div>
+                                <div class="proj-meta"><span>C++</span><span>external</span><span>kernel</span></div>
+                            </div>
+                            <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                        </a>
+                        <a href="#" onclick="go('omnis-internal', null); return false;" class="proj wip">
+                            <div class="proj-thumb"><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" alt="Omnis Internal"></div>
+                            <div class="proj-body">
+                                <div class="proj-row"><div class="proj-name">Omnis CS2 Internal</div><span class="proj-tag wip">in dev</span></div>
+                                <div class="proj-desc">Internal build of Omnis. Direct game-process injection for lower latency and a richer feature set.</div>
+                                <div class="proj-meta"><span>C++</span><span>internal</span><span>source 2</span></div>
+                            </div>
+                            <div class="proj-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="spec-list">
-                <div class="spec"><div class="spec-name">humanised aim</div><div class="spec-d">bezier curves and smoothing so it doesn't look like a bot.</div></div>
-                <div class="spec"><div class="spec-name">clean esp</div><div class="spec-d">boxes, bones, hp, distance, no fps hit.</div></div>
-                <div class="spec"><div class="spec-name">kernel driver</div><div class="spec-d">ring-0 with daily signature rotation.</div></div>
-                <div class="spec"><div class="spec-name">skin + knife</div><div class="spec-d">any skin, knife or glove client-side. inventory stays clean.</div></div>
+        </div>
+    </section>
+
+    <!-- ── OMNIS detail ─────────────────────── -->
+    <section id="omnis" class="page full">
+        <div class="content">
+            <div class="detail-head">
+                <button class="crumb" onclick="go('projects', null)"><i class="fa-solid fa-arrow-left"></i> projects</button>
+                <h1><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" class="detail-logo" alt=""> Omnis CS2</h1>
+                <p class="sub">External CS2 cheat I wrote and still maintain. Aimbot, ESP, skin and knife changer. Updated daily.</p>
+                <div class="detail-row">
+                    <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="btn primary"><i class="fa-solid fa-arrow-up-right-from-square"></i> omniscs2.xyz</a>
+                    <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> discord</a>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-head"><span class="mark"></span><h3>preview</h3></div>
+                <div class="group-body">
+                    <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/CW8F1sCPHN8?rel=0&modestbranding=1" allowfullscreen></iframe></div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-head"><span class="mark"></span><h3>subscription</h3><span class="ghd-right">usd</span></div>
+                <div class="group-body">
+                    <div class="pricing">
+                        <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan">
+                            <div class="plan-dur">4 days</div><div class="plan-price">$5<small>$7</small></div><div class="plan-note">just to try it</div>
+                        </a>
+                        <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan hot">
+                            <span class="plan-hot">popular</span><div class="plan-dur">1 week</div><div class="plan-price">$7<small>$10</small></div><div class="plan-note">the popular one</div>
+                        </a>
+                        <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan">
+                            <div class="plan-dur">1 month</div><div class="plan-price">$12<small>$15</small></div><div class="plan-note">best value</div>
+                        </a>
+                        <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan">
+                            <div class="plan-dur">lifetime</div><div class="plan-price">$30<small>$40</small></div><div class="plan-note">pay once</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-head"><span class="mark"></span><h3>before / after</h3><span class="ghd-right">drag</span></div>
+                <div class="group-body">
+                    <div class="compare" id="cmp">
+                        <div class="c-after" style="background-image:url('https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/before%26after/after.webp')"></div>
+                        <div class="c-before" id="cmpBefore" style="background-image:url('https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/before%26after/before.webp')"></div>
+                        <div class="c-lbl b">without</div>
+                        <div class="c-lbl a">with omnis</div>
+                        <div class="c-line" id="cmpLine"></div>
+                        <div class="c-handle" id="cmpHandle"><i class="fa-solid fa-code-compare"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-head"><span class="mark"></span><h3>config</h3></div>
+                <div class="group-body">
+                    <div class="gallery">
+                        <div>
+                            <div class="shot"><img id="mImg" src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/menu/aimbot.webp" alt=""></div>
+                            <div class="shot-tabs">
+                                <button class="shot-tab on" onclick="setShot(this, 'aimbot')">aimbot</button>
+                                <button class="shot-tab" onclick="setShot(this, 'esp')">esp</button>
+                                <button class="shot-tab" onclick="setShot(this, 'visuals')">visuals</button>
+                                <button class="shot-tab" onclick="setShot(this, 'skins')">skins</button>
+                                <button class="shot-tab" onclick="setShot(this, 'misc')">misc</button>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:9px;">
+                            <div class="ctl check on"><span class="box"></span><span class="lbl">humanised aim</span></div>
+                            <div class="ctl check on"><span class="box"></span><span class="lbl">clean esp</span></div>
+                            <div class="ctl check on"><span class="box"></span><span class="lbl">kernel driver</span><span class="val">ring-0</span></div>
+                            <div class="ctl check on"><span class="box"></span><span class="lbl">skin + knife changer</span></div>
+                            <div class="ctl check on"><span class="box"></span><span class="lbl">daily signature rotation</span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-    </div>
-</section>
+    <!-- ── OMNIS internal ───────────────────── -->
+    <section id="omnis-internal" class="page full">
+        <div class="content">
+            <div class="detail-head">
+                <button class="crumb" onclick="go('projects', null)"><i class="fa-solid fa-arrow-left"></i> projects</button>
+                <h1><img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" class="detail-logo" alt=""> Omnis CS2 Internal</h1>
+                <p class="sub">An internal version of Omnis that runs inside the game process. Lower latency, more direct access, much richer feature set than the external build can do.</p>
+                <div class="detail-row">
+                    <span class="btn disabled"><i class="fa-solid fa-screwdriver-wrench"></i> in development</span>
+                    <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> follow on discord</a>
+                </div>
+            </div>
 
-<section id="omnis-internal" class="page">
-    <div class="shell">
+            <div class="group">
+                <div class="group-head"><span class="mark"></span><h3>features</h3><span class="ghd-right">queued</span></div>
+                <div class="group-body">
+                    <div class="loadout">
+                        <div class="ctl check on"><span class="box"></span><span class="lbl">runs inside cs2</span></div>
+                        <div class="ctl check on"><span class="box"></span><span class="lbl">direct vmt hooks</span></div>
+                        <div class="ctl check on"><span class="box"></span><span class="lbl">imgui menu</span></div>
+                        <div class="ctl check on"><span class="box"></span><span class="lbl">chams · glow · world esp</span></div>
+                        <div class="ctl check on"><span class="box"></span><span class="lbl">engine w2s matrix</span></div>
+                        <div class="ctl check on"><span class="box"></span><span class="lbl">shared loader + rotation</span></div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="detail-head">
-            <button class="crumb" onclick="go('home', document.querySelectorAll('.tab')[0])"><i class="fa-solid fa-arrow-left"></i> back</button>
-            <h1>
-                <img src="https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/omnislogo.png" class="detail-logo" alt="">
-                Omnis CS2 Internal
-            </h1>
-            <p class="sub">An internal version of Omnis CS2 that runs inside the game process. Lower latency, more direct access, much richer feature set than the external build can do.</p>
-            <div class="detail-row">
-                <span class="btn disabled"><i class="fa-solid fa-screwdriver-wrench"></i> in development</span>
-                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> follow on discord</a>
+            <div class="wip-card">
+                <div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                <h3>still cooking</h3>
+                <p>builds drop on the discord first when it's ready.</p>
             </div>
         </div>
+    </section>
 
-        <div class="sec-head"><div class="sec-title">what it does</div></div>
-        <div class="spec-list" style="margin-bottom: 40px;">
-            <div class="spec"><div class="spec-name">runs inside cs2</div><div class="spec-d">manual mapped into the game process instead of reading memory from outside.</div></div>
-            <div class="spec"><div class="spec-name">direct hooks</div><div class="spec-d">vmt, swapchain present, midfunc. world-to-screen straight from the engine matrix.</div></div>
-            <div class="spec"><div class="spec-name">richer visuals</div><div class="spec-d">imgui menu, chams, glow, world esp. all rendered inside the game.</div></div>
-            <div class="spec"><div class="spec-name">same protections</div><div class="spec-d">shares the loader and signature rotation pipeline with the external build.</div></div>
-        </div>
-
-        <div class="wip-card">
-            <div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-            <h3>still cooking</h3>
-            <p>builds drop on the discord first when it's ready.</p>
-        </div>
-
-    </div>
-</section>
-
-<section id="contact" class="page">
-    <div class="shell">
-        <div class="detail-head">
-            <h1>contact</h1>
-            <p class="sub">easiest is discord. i answer pretty fast.</p>
-            <div class="detail-row">
-                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn primary"><i class="fa-brands fa-discord"></i> join discord</a>
-                <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="btn ghost"><i class="fa-solid fa-envelope"></i> dm me</a>
+    <!-- ── CONTACT ──────────────────────────── -->
+    <section id="contact" class="page full">
+        <div class="content">
+            <div class="detail-head">
+                <h1>contact</h1>
+                <p class="sub">easiest is discord. i answer pretty fast.</p>
+                <div class="detail-row">
+                    <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn primary"><i class="fa-brands fa-discord"></i> join discord</a>
+                    <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="btn ghost"><i class="fa-solid fa-envelope"></i> dm me</a>
+                </div>
+            </div>
+            <div class="group">
+                <div class="group-head"><span class="mark"></span><h3>heads up</h3></div>
+                <div class="group-body">
+                    <div class="statline">If it's about Omnis CS2 (support, billing, key issues), open a ticket on omniscs2.xyz or in the Omnis discord — that gets answered fastest.</div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="now">
-            <div class="label">heads up</div>
-            <p>If it's about Omnis CS2 (support, billing, key issues), open a ticket on omniscs2.xyz or in the Omnis discord. That gets answered fastest.</p>
-        </div>
+    <!-- status bar -->
+    <div class="menu-foot">
+        <div>© <span id="yr"></span> kayaz <span class="dotsep">·</span> build 2026.06</div>
+        <div><a href="https://omniscs2.xyz" target="_blank" rel="noopener">omniscs2.xyz</a> <span class="dotsep">·</span> <a href="https://github.com/wowksies" target="_blank" rel="noopener">github</a></div>
     </div>
-</section>
 
-<footer>
-    <div class="shell inner">
-        <div>© <span id="yr"></span> kayaz</div>
-        <div><a href="https://omniscs2.xyz" target="_blank" rel="noopener">omniscs2.xyz</a></div>
-    </div>
-</footer>
+</main>
 
+<!-- music player -->
 <div class="player">
-    <img src="song_covers/music1_cover.png" class="p-art" id="pArt" alt="">
-    <div class="p-info">
-        <div class="p-title" id="pTitle">Work Hard</div>
-        <div class="p-status" id="pStatus">paused</div>
-        <div class="p-ctrls">
-            <button class="pc" onclick="prev()"><i class="fa-solid fa-backward-step"></i></button>
-            <button class="pc play" onclick="toggle()"><i class="fa-solid fa-play" id="pIcon"></i></button>
-            <button class="pc" onclick="next()"><i class="fa-solid fa-forward-step"></i></button>
+    <div class="player-head"><span class="mark"></span> sound</div>
+    <div class="player-body">
+        <img src="song_covers/music1_cover.png" class="p-art" id="pArt" alt="">
+        <div class="p-info">
+            <div class="p-title" id="pTitle">Work Hard</div>
+            <div class="p-status" id="pStatus">paused</div>
+            <div class="p-ctrls">
+                <button class="pc" onclick="prev()"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="pc play" onclick="toggle()"><i class="fa-solid fa-play" id="pIcon"></i></button>
+                <button class="pc" onclick="next()"><i class="fa-solid fa-forward-step"></i></button>
+            </div>
         </div>
     </div>
 </div>
@@ -882,51 +858,52 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     document.getElementById('nowDate').textContent = months[d.getMonth()] + ' ' + d.getFullYear();
 })();
 
+/* watermark: live clock, fps jitter, uptime */
 (function () {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    var cur = document.getElementById('cur'), ring = document.getElementById('cur-ring');
-    var mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', function (e) {
-        mx = e.clientX; my = e.clientY;
-        cur.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
-    });
-    (function loop() {
-        rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
-        ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
-        requestAnimationFrame(loop);
-    })();
-    function bind() {
-        document.querySelectorAll('a,button,.proj,.plan,.skill,.ic,.activity').forEach(function (el) {
-            if (el.dataset.curBound) return;
-            el.dataset.curBound = '1';
-            el.addEventListener('mouseenter', function () {
-                cur.style.width = '10px'; cur.style.height = '10px';
-                ring.style.width = '38px'; ring.style.height = '38px';
-                ring.style.borderColor = 'rgba(255, 94, 122, 0.55)';
-            });
-            el.addEventListener('mouseleave', function () {
-                cur.style.width = '6px'; cur.style.height = '6px';
-                ring.style.width = '26px'; ring.style.height = '26px';
-                ring.style.borderColor = 'rgba(255, 94, 122, 0.3)';
-            });
-        });
+    var clock = document.getElementById('clock');
+    var fps = document.getElementById('fps');
+    var uptime = document.getElementById('uptime');
+    var start = Date.now();
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function tick() {
+        var d = new Date();
+        clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+        var up = Math.floor((Date.now() - start) / 1000);
+        uptime.textContent = pad(Math.floor(up / 60)) + ':' + pad(up % 60);
     }
-    bind();
-    window.__rebindCursor = bind;
+    tick();
+    setInterval(tick, 1000);
+    setInterval(function () { fps.textContent = 138 + Math.floor(Math.random() * 28); }, 850);
 })();
 
+/* cosmetic checkbox toggles */
+document.querySelectorAll('.ctl.check.toggleable').forEach(function (el) {
+    el.addEventListener('click', function () { el.classList.toggle('on'); });
+});
+
+/* page nav */
 window.go = function (id, btn) {
     document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('on'); });
     document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('on'); });
     var page = document.getElementById(id);
     if (page) page.classList.add('on');
-    var navMap = { home: 0, contact: 1 };
+    var navMap = { home: 0, projects: 1, contact: 2 };
     if (id in navMap) document.querySelectorAll('.tab')[navMap[id]].classList.add('on');
+    else if (id === 'omnis' || id === 'omnis-internal') document.querySelectorAll('.tab')[1].classList.add('on');
     else if (btn && btn.classList && btn.classList.contains('tab')) btn.classList.add('on');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (window.__rebindCursor) window.__rebindCursor();
 };
 
+/* sub-tab highlight (home anchors) */
+document.querySelectorAll('.subtab').forEach(function (el) {
+    el.addEventListener('click', function () {
+        var sib = el.parentElement.querySelectorAll('.subtab');
+        sib.forEach(function (s) { s.classList.remove('on'); });
+        el.classList.add('on');
+    });
+});
+
+/* menu screenshots */
 var menuImgs = {
     aimbot: 'https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/menu/aimbot.webp',
     esp: 'https://raw.githubusercontent.com/wowksies/SigmaCS2AD/main/pictures/menu/esp.webp',
@@ -939,9 +916,10 @@ window.setShot = function (el, key) {
     el.classList.add('on');
     var img = document.getElementById('mImg');
     img.classList.add('fade');
-    setTimeout(function () { img.src = menuImgs[key]; img.classList.remove('fade'); }, 160);
+    setTimeout(function () { img.src = menuImgs[key]; img.classList.remove('fade'); }, 150);
 };
 
+/* before / after slider */
 (function () {
     var cmp = document.getElementById('cmp');
     if (!cmp) return;
@@ -964,6 +942,7 @@ window.setShot = function (el, key) {
     document.addEventListener('touchend', function () { dragging = false; });
 })();
 
+/* music player */
 var playlist = [
     { title: "Work Hard", src: "songs/music1.mp3", cover: "song_covers/music1_cover.png" },
     { title: "Runway Walk", src: "songs/music2.mp3", cover: "song_covers/music2_cover.jpg" },
@@ -995,6 +974,7 @@ window.prev = function () { idx = (idx - 1 + playlist.length) % playlist.length;
 audio.addEventListener('ended', window.next);
 load(0);
 
+/* discord activity via lanyard */
 var userId = "747411610389446747";
 var spotifyState = null;
 function fmtTime(ms) {

@@ -1,11 +1,23 @@
-# Discord Profile Site
+# kayaz.dev
 
-A minimalistic, red-themed website to display your Discord profile and activity.
+Personal portfolio for **kayaz** — low-level dev, maker of Omnis CS2.
 
-## How to use
-1. Open `index.html` in your browser to view your profile (static version).
-2. For HTTPS local development, use a tool like [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) (for VS Code) or [mkcert](https://github.com/FiloSottile/mkcert) to generate a local certificate and serve with HTTPS.
+The whole site is skinned as a **CS2 cheat menu** (gamesense / memesense style):
+group boxes, checkboxes, sliders, tabbed panels, and a live watermark with
+fps / ping / clock. One self-contained `index.html` — no build step.
 
-## Customization
-- Edit `index.html` and `style.css` to change the look or add more features.
-- Discord integration uses public APIs or third-party services (see script.js, to be added).
+## Features
+- Tabbed menu nav (home / projects / contact) with project detail pages
+- Live Discord activity + status via the [Lanyard](https://github.com/Phineas/lanyard) API
+- Built-in music player
+- Before / after comparison slider and config screenshot gallery for Omnis CS2
+- Live watermark: real clock, animated fps counter, session uptime
+
+## Run it
+Open `index.html` in a browser. For local HTTPS dev use something like
+[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
+
+## Customize
+Everything lives in `index.html`. Theme variables (colors, accent, fonts) are in
+the `:root` block at the top of the `<style>` section — change `--accent` to
+re-skin the whole menu.
