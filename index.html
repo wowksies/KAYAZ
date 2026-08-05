@@ -125,69 +125,81 @@ body.entered .card-wrap { opacity: 1; transform: none; }
 
 .divider { height: 1px; margin: 20px 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent); }
 
-.presence { padding: 12px 13px; display: flex; align-items: center; gap: 12px; min-height: 70px;
+.presence { padding: 13px 14px; display: flex; align-items: center; gap: 13px; min-height: 74px;
     border-left: 2px solid var(--status); transition: border-color 0.4s; }
 .presence.spotify { border-left-color: #1db954; }
 .presence.gaming { border-left-color: #ff8f6b; }
-.pr-art { width: 50px; height: 50px; border-radius: 11px; object-fit: cover; flex-shrink: 0;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); transition: transform 0.3s; }
+.pr-art { width: 52px; height: 52px; border-radius: 13px; object-fit: cover; flex-shrink: 0; display: none;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 6px 16px rgba(0,0,0,0.4); }
+.presence.spotify .pr-art, .presence.gaming .pr-art { display: block; }
 .presence.spotify .pr-art { animation: bob 3s ease-in-out infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+.pr-icon { width: 52px; height: 52px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; color: var(--status);
+    background: radial-gradient(circle at 50% 28%, color-mix(in srgb, var(--status) 32%, transparent), rgba(255,255,255,0.03));
+    border: 1px solid color-mix(in srgb, var(--status) 45%, rgba(255,255,255,0.10));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 0 18px color-mix(in srgb, var(--status) 30%, transparent);
+    transition: color 0.4s, background 0.4s, border-color 0.4s, box-shadow 0.4s; }
+.presence.spotify .pr-icon, .presence.gaming .pr-icon { display: none; }
 .pr-body { flex: 1; min-width: 0; }
-.pr-kind { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
-    color: var(--dim); display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
-.pr-kind .live { width: 6px; height: 6px; border-radius: 50%; background: var(--status); box-shadow: 0 0 6px var(--status); }
+.pr-kind { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--dim); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.pr-kind .live { width: 6px; height: 6px; border-radius: 50%; background: var(--status); box-shadow: 0 0 6px var(--status);
+    animation: livepulse 2s ease-in-out infinite; }
+@keyframes livepulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(1.35); } }
 .presence.spotify .pr-kind { color: #1db954; } .presence.spotify .pr-kind .live { background: #1db954; box-shadow: 0 0 6px #1db954; }
 .presence.gaming .pr-kind { color: #ff8f6b; } .presence.gaming .pr-kind .live { background: #ff8f6b; box-shadow: 0 0 6px #ff8f6b; }
-.pr-title { font-size: 0.92rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pr-title { font-size: 0.95rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pr-sub { font-size: 0.78rem; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 .pr-bar { height: 4px; border-radius: 3px; background: rgba(255,255,255,0.12); overflow: hidden; margin-top: 8px; display: none; }
 .presence.spotify .pr-bar { display: block; }
 .pr-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #1db954, #25e065); transition: width 1s linear; }
 .pr-time { display: none; justify-content: space-between; font-family: var(--mono); font-size: 0.6rem; color: var(--mute); margin-top: 4px; }
 .presence.spotify .pr-time { display: flex; }
-.eq { display: none; align-items: flex-end; gap: 2px; height: 22px; flex-shrink: 0; }
+.eq { display: none; align-items: flex-end; gap: 2px; height: 24px; flex-shrink: 0; }
 .presence.spotify .eq, .presence.gaming .eq { display: flex; }
 .eq span { width: 3px; border-radius: 2px; background: currentColor; color: #1db954; height: 30%; animation: eq 0.9s ease-in-out infinite; }
 .presence.gaming .eq span { color: #ff8f6b; }
 .eq span:nth-child(2) { animation-delay: 0.2s; } .eq span:nth-child(3) { animation-delay: 0.4s; } .eq span:nth-child(4) { animation-delay: 0.15s; }
 @keyframes eq { 0%,100% { height: 25%; } 50% { height: 95%; } }
 
-.socials { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
-.social { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-    font-size: 1.15rem; color: var(--text);
-    background: linear-gradient(135deg, rgba(255,255,255,0.11), rgba(255,255,255,0.03));
-    border: 1px solid rgba(255,255,255,0.13);
+.socials { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
+.social { position: relative; width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; color: var(--text);
+    background: linear-gradient(160deg, rgba(255,255,255,0.13), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.14);
     backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.22), inset -1px -1px 0 rgba(0,0,0,0.2), 0 6px 16px rgba(0,0,0,0.3);
-    transition: transform 0.2s, color 0.2s, box-shadow 0.2s; }
-.social:hover { transform: translateY(-4px) scale(1.05); color: var(--accent);
-    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3), 0 10px 24px rgba(255,45,70,0.3); }
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.28), inset -1px -1px 0 rgba(0,0,0,0.28), 0 6px 18px rgba(0,0,0,0.35);
+    transition: transform 0.22s cubic-bezier(.2,.8,.2,1), color 0.22s, border-color 0.22s, box-shadow 0.22s; }
+.social i { position: relative; z-index: 1; transition: transform 0.22s; }
+.social::before { content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity 0.22s;
+    background: radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--bc) 35%, transparent), transparent 70%); }
+.social::after { content: attr(data-label); position: absolute; bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%) translateY(4px);
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim);
+    background: rgba(12,6,8,0.92); border: 1px solid rgba(255,255,255,0.12); padding: 4px 9px; border-radius: 7px; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity 0.18s, transform 0.18s; }
+.social:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+.social:hover::before { opacity: 1; }
+.social:hover { transform: translateY(-6px); color: var(--bc); border-color: color-mix(in srgb, var(--bc) 60%, transparent);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.32), 0 12px 28px var(--bc-glow); }
+.social:hover i { transform: scale(1.12); }
+.social.s-discord { --bc: #98a2ff; --bc-glow: rgba(88,101,242,0.42); }
+.social.s-tiktok  { --bc: #34ffee; --bc-glow: rgba(255,0,80,0.38); }
+.social.s-github  { --bc: #ffffff; --bc-glow: rgba(255,255,255,0.24); }
 
-.player { margin-top: 18px; padding: 12px 13px; }
-.pl-top { display: flex; align-items: center; gap: 12px; }
-.pl-art { width: 46px; height: 46px; border-radius: 11px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: #fff;
-    background: linear-gradient(135deg, var(--accent), #b3111f); box-shadow: 0 6px 16px rgba(255,45,70,0.4); }
-.pl-info { flex: 1; min-width: 0; }
-.pl-title { font-size: 0.9rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pl-sub { font-size: 0.72rem; color: var(--mute); font-family: var(--mono); margin-top: 1px; }
-.pl-btn { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    box-shadow: 0 4px 14px rgba(255,45,70,0.4); transition: transform 0.16s; }
-.pl-btn:hover { transform: scale(1.07); }
-.pl-progress { display: flex; align-items: center; gap: 9px; margin-top: 11px; font-family: var(--mono); font-size: 0.62rem; color: var(--mute); }
-.pl-track { flex: 1; height: 5px; border-radius: 4px; background: rgba(255,255,255,0.14); position: relative; cursor: pointer; }
-.pl-fill { position: absolute; inset: 0 auto 0 0; width: 0%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
-.pl-fill::after { content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 10px; height: 10px;
-    border-radius: 50%; background: #fff; box-shadow: 0 0 8px rgba(255,45,70,0.7); opacity: 0; transition: opacity 0.15s; }
-.pl-track:hover .pl-fill::after { opacity: 1; }
-.pl-vol { display: flex; align-items: center; gap: 8px; margin-top: 10px; color: var(--mute); font-size: 0.72rem; }
-.pl-vol input { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 3px; background: rgba(255,255,255,0.14); outline: none; cursor: pointer; }
-.pl-vol input::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px rgba(255,45,70,0.6); cursor: pointer; }
-.pl-vol input::-moz-range-thumb { width: 12px; height: 12px; border: none; border-radius: 50%; background: var(--accent); cursor: pointer; }
+.mute { position: fixed; bottom: 18px; right: 18px; z-index: 30; width: 42px; height: 42px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center; color: var(--dim); font-size: 0.9rem;
+    background: rgba(20,10,12,0.5); border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.15), 0 6px 16px rgba(0,0,0,0.4);
+    opacity: 0; visibility: hidden; transition: opacity 0.4s, transform 0.18s, color 0.18s, border-color 0.18s; }
+body.entered .mute { opacity: 1; visibility: visible; }
+.mute:hover { color: var(--accent); border-color: rgba(255,45,70,0.4); transform: scale(1.07); }
 
-.foot { text-align: center; margin-top: 18px; font-family: var(--mono); font-size: 0.66rem; color: var(--mute); letter-spacing: 0.04em; }
+.badge { transition: transform 0.18s, background 0.18s, color 0.18s, border-color 0.18s; }
+.badge:hover { color: #fff; background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+.foot { text-align: center; margin-top: 20px; font-family: var(--mono); font-size: 0.66rem; color: var(--mute); letter-spacing: 0.04em; }
 .foot a { color: var(--dim); transition: 0.15s; } .foot a:hover { color: var(--accent); }
 
 @media (max-width: 420px) {
@@ -236,7 +248,7 @@ body.entered .card-wrap { opacity: 1; transform: none; }
                 <div class="uname">kayaz</div>
                 <div class="badges">
                     <span class="badge" title="developer"><i class="fa-solid fa-code"></i></span>
-                    <span class="badge" title="omnis"><i class="fa-solid fa-crown"></i></span>
+                    <span class="badge" title="reverse engineering"><i class="fa-solid fa-microchip"></i></span>
                 </div>
             </div>
             <div class="tagline" id="tagline"><span class="cursor">&#9611;</span></div>
@@ -248,6 +260,7 @@ body.entered .card-wrap { opacity: 1; transform: none; }
             <div class="divider"></div>
 
             <div class="presence pane" id="presence">
+                <div class="pr-icon" id="prIcon"><i class="fa-solid fa-power-off"></i></div>
                 <img id="prArt" class="pr-art" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="">
                 <div class="pr-body">
                     <div class="pr-kind" id="prKind"><span class="live"></span> status</div>
@@ -260,37 +273,17 @@ body.entered .card-wrap { opacity: 1; transform: none; }
             </div>
 
             <div class="socials">
-                <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="social" title="Discord"><i class="fa-brands fa-discord"></i></a>
-                <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="social" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="social" title="GitHub"><i class="fa-brands fa-github"></i></a>
-                <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="social" title="Omnis"><i class="fa-solid fa-crosshairs"></i></a>
+                <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="social s-discord" data-label="discord"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="social s-tiktok" data-label="tiktok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="social s-github" data-label="github"><i class="fa-brands fa-github"></i></a>
             </div>
 
-            <div class="player pane">
-                <div class="pl-top">
-                    <div class="pl-art"><i class="fa-solid fa-music"></i></div>
-                    <div class="pl-info">
-                        <div class="pl-title">September</div>
-                        <div class="pl-sub" id="plSub">paused</div>
-                    </div>
-                    <button class="pl-btn" onclick="pmToggle()" title="play"><i class="fa-solid fa-play" id="plIcon"></i></button>
-                </div>
-                <div class="pl-progress">
-                    <span id="plCur">0:00</span>
-                    <div class="pl-track" id="plTrack"><div class="pl-fill" id="plFill"></div></div>
-                    <span id="plDur">0:00</span>
-                </div>
-                <div class="pl-vol">
-                    <i class="fa-solid fa-volume-low" id="volIcon"></i>
-                    <input type="range" id="vol" min="0" max="100" value="55">
-                </div>
-            </div>
-
-            <div class="foot">&copy; <span id="yr"></span> kayaz &middot; <a href="https://omniscs2.xyz" target="_blank" rel="noopener">omniscs2.xyz</a></div>
+            <div class="foot">&copy; <span id="yr"></span> &middot; kayaz</div>
         </section>
     </div>
 </main>
 
+<button class="mute" id="mute" title="mute music" aria-label="mute music"><i class="fa-solid fa-volume-high" id="muteIcon"></i></button>
 <audio id="audio" loop src="assets/September_spotdown.org.mp3"></audio>
 
 <script id="frag" type="x-shader/x-fragment">
@@ -344,15 +337,19 @@ void main(){
 document.getElementById('yr').textContent = new Date().getFullYear();
 
 (function () {
-    var n = parseInt(localStorage.getItem('kv_views') || '0', 10);
-    n = n ? n + 1 : 1200 + Math.floor(Math.random() * 60);
-    localStorage.setItem('kv_views', n);
-    document.getElementById('views').textContent = n.toLocaleString();
+    var el = document.getElementById('views');
+    var base = 'https://api.counterapi.dev/v1/kayaz-bio-x7q/views';
+    var counted = sessionStorage.getItem('kv_counted');
+    var url = counted ? base + '/' : base + '/up';
+    fetch(url).then(function (r) { return r.json(); }).then(function (d) {
+        if (d && typeof d.count === 'number') { el.textContent = d.count.toLocaleString(); sessionStorage.setItem('kv_counted', '1'); }
+        else el.textContent = '—';
+    }).catch(function () { el.textContent = '—'; });
 })();
 
 (function () {
     var el = document.getElementById('tagline');
-    var lines = ['low-level developer', 'i build omnis', 'cs2 · rainbow six', 'close to the metal'];
+    var lines = ['low-level developer', 'reverse engineering', 'game internals', 'close to the metal'];
     var li = 0, ci = 0, deleting = false;
     function tick() {
         var full = lines[li];
@@ -439,26 +436,13 @@ var video = document.getElementById('bgv');
 })();
 
 var audio = document.getElementById('audio');
-var plIcon = document.getElementById('plIcon'), plSub = document.getElementById('plSub');
-var plFill = document.getElementById('plFill'), plCur = document.getElementById('plCur'), plDur = document.getElementById('plDur');
-function fmt(s) { s = Math.floor(s || 0); var m = Math.floor(s / 60); var x = s % 60; return m + ':' + (x < 10 ? '0' : '') + x; }
-window.pmToggle = function () {
-    if (audio.paused) { audio.play().catch(function () {}); plIcon.classList.replace('fa-play', 'fa-pause'); plSub.textContent = 'now playing'; }
-    else { audio.pause(); plIcon.classList.replace('fa-pause', 'fa-play'); plSub.textContent = 'paused'; }
-};
-audio.addEventListener('timeupdate', function () {
-    var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
-    plFill.style.width = pct + '%'; plCur.textContent = fmt(audio.currentTime); plDur.textContent = fmt(audio.duration);
-});
-document.getElementById('plTrack').addEventListener('click', function (e) {
-    var r = this.getBoundingClientRect();
-    if (audio.duration) audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
-});
-var vol = document.getElementById('vol'), volIcon = document.getElementById('volIcon');
 audio.volume = 0.55;
-vol.addEventListener('input', function () {
-    audio.volume = this.value / 100;
-    volIcon.className = this.value == 0 ? 'fa-solid fa-volume-xmark' : this.value < 50 ? 'fa-solid fa-volume-low' : 'fa-solid fa-volume-high';
+function fmt(s) { s = Math.floor(s || 0); var m = Math.floor(s / 60); var x = s % 60; return m + ':' + (x < 10 ? '0' : '') + x; }
+
+var muteIcon = document.getElementById('muteIcon');
+document.getElementById('mute').addEventListener('click', function () {
+    audio.muted = !audio.muted;
+    muteIcon.className = audio.muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
 });
 
 var entered = false;
@@ -467,17 +451,23 @@ function doEnter() {
     document.getElementById('enter').classList.add('gone');
     document.body.classList.add('entered');
     video.play().catch(function () {});
-    audio.play().then(function () { plIcon.classList.replace('fa-play', 'fa-pause'); plSub.textContent = 'now playing'; }).catch(function () {});
+    audio.play().catch(function () {});
 }
 document.getElementById('enter').addEventListener('click', doEnter);
 
 var userId = '747411610389446747';
 var statusColors = { online: '#3ba55d', idle: '#faa61a', dnd: '#ff2d46', offline: '#8a777b' };
 var spState = null;
+var statusMeta = {
+    online:  { icon: 'fa-solid fa-circle-check', label: 'Online',          sub: 'available — dm me' },
+    idle:    { icon: 'fa-solid fa-moon',         label: 'Idle',            sub: 'away from keyboard' },
+    dnd:     { icon: 'fa-solid fa-ban',          label: 'Do Not Disturb',  sub: 'busy right now' },
+    offline: { icon: 'fa-solid fa-power-off',    label: 'Offline',         sub: 'not around right now' }
+};
 function applyPresence(data) {
     var card = document.getElementById('presence');
     var kind = document.getElementById('prKind'), title = document.getElementById('prTitle'),
-        sub = document.getElementById('prSub'), art = document.getElementById('prArt');
+        sub = document.getElementById('prSub'), art = document.getElementById('prArt'), icon = document.getElementById('prIcon');
     card.classList.remove('spotify', 'gaming'); spState = null;
     if (data.listening_to_spotify && data.spotify) {
         var sp = data.spotify;
@@ -492,7 +482,7 @@ function applyPresence(data) {
     var game = (data.activities || []).find(function (a) { return a.type === 0; });
     if (game) {
         card.classList.add('gaming');
-        kind.innerHTML = '<span class="live"></span> playing';
+        kind.innerHTML = '<span class="live"></span> playing a game';
         title.textContent = game.name || '';
         sub.textContent = game.details || game.state || 'in game';
         if (game.assets && game.assets.large_image && game.application_id) {
@@ -502,12 +492,20 @@ function applyPresence(data) {
         }
         return;
     }
-    var custom = (data.activities || []).find(function (a) { return a.type === 4; });
     var st = data.discord_status || 'offline';
-    if (custom && custom.state) { kind.innerHTML = '<span class="live"></span> status'; title.textContent = custom.state; sub.textContent = st === 'dnd' ? 'do not disturb' : st; return; }
-    kind.innerHTML = '<span class="live"></span> discord';
-    title.textContent = st === 'offline' ? 'offline' : (st === 'dnd' ? 'do not disturb' : (st === 'idle' ? 'away' : 'online'));
-    sub.textContent = st === 'offline' ? 'not around right now' : 'dm me';
+    var m = statusMeta[st] || statusMeta.offline;
+    icon.innerHTML = '<i class="' + m.icon + '"></i>';
+    var custom = (data.activities || []).find(function (a) { return a.type === 4; });
+    if (custom && custom.state) {
+        var emoji = custom.emoji && custom.emoji.name && !custom.emoji.id ? custom.emoji.name + ' ' : '';
+        kind.innerHTML = '<span class="live"></span> ' + m.label;
+        title.textContent = emoji + custom.state;
+        sub.textContent = m.sub;
+        return;
+    }
+    kind.innerHTML = '<span class="live"></span> status';
+    title.textContent = m.label;
+    sub.textContent = m.sub;
 }
 function updateSp() {
     if (!spState) return;
