@@ -3,778 +3,455 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>kayaz — low-level developer · Omnis</title>
-<meta name="description" content="kayaz — self-taught low-level developer. Creator of Omnis, external cheats for CS2 and R6.">
+<title>kayaz</title>
+<meta name="description" content="kayaz">
+<meta property="og:title" content="kayaz">
+<meta property="og:description" content="low-level dev · omnis">
+<meta name="theme-color" content="#ff2d46">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root {
-    --bg: #08080a;
-    --bg-2: #0d0d10;
-    --surface: #131317;
-    --surface-2: #191920;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-2: rgba(255, 255, 255, 0.16);
-    --text: #f4f4f6;
-    --dim: #9a9aa4;
-    --mute: #63636d;
-    --accent: #8b3df5;
-    --accent-2: #c06bff;
-    --accent-soft: rgba(139, 61, 245, 0.14);
-    --green: #3ddc91;
-    --yellow: #f5c451;
-    --spotify: #1db954;
-    --display: 'Space Grotesk', system-ui, sans-serif;
+    --bg: #070406;
+    --accent: #ff2d46;
+    --accent-2: #ff5d6e;
+    --accent-deep: #b3111f;
+    --text: #f6eef0;
+    --dim: #b39ba0;
+    --mute: #7c6a6e;
+    --glass-tint: rgba(255, 45, 70, 0.06);
     --sans: 'Inter', system-ui, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --container: 1140px;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+html { scroll-behavior: smooth; }
 body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow: hidden;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
 }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 img { display: block; max-width: 100%; }
 ::selection { background: var(--accent); color: #fff; }
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: #26262d; border: 2px solid var(--bg); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-.wrap { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+/* ── animated red background ───────────────── */
+.bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; background:
+    radial-gradient(120% 120% at 50% -10%, #1a060a 0%, #0a0406 45%, #050304 100%); }
+.blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.65; mix-blend-mode: screen; will-change: transform; }
+.blob.b1 { width: 46vw; height: 46vw; background: radial-gradient(circle, #ff2d46, transparent 66%); top: -8%; left: -6%; animation: drift1 18s ease-in-out infinite; }
+.blob.b2 { width: 40vw; height: 40vw; background: radial-gradient(circle, #ff5d3a, transparent 66%); bottom: -10%; right: -6%; animation: drift2 22s ease-in-out infinite; }
+.blob.b3 { width: 34vw; height: 34vw; background: radial-gradient(circle, #d61a5e, transparent 66%); top: 40%; left: 45%; animation: drift3 26s ease-in-out infinite; }
+@keyframes drift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(14vw, 10vh) scale(1.15); } }
+@keyframes drift2 { 0%,100% { transform: translate(0,0) scale(1.1); } 50% { transform: translate(-12vw, -8vh) scale(0.95); } }
+@keyframes drift3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-10vw, 8vh) scale(1.2); } }
+.grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); }
+.vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%); }
 
-/* ── ambient background ───────────────────── */
-.ambient { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; background: var(--bg); }
-.ambient .blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.5; }
-.ambient .b1 { width: 620px; height: 620px; top: -260px; left: -120px; background: radial-gradient(circle, rgba(139, 61, 245, 0.5), transparent 70%); }
-.ambient .b2 { width: 520px; height: 520px; top: -180px; right: -120px; background: radial-gradient(circle, rgba(192, 107, 255, 0.28), transparent 70%); }
-.ambient .b3 { width: 700px; height: 700px; bottom: -360px; left: 30%; background: radial-gradient(circle, rgba(90, 70, 220, 0.18), transparent 70%); }
-.grain {
-    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.6;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+/* hidden SVG holding the liquid-glass distortion filter */
+.lg-svg { position: absolute; width: 0; height: 0; }
+
+/* ── liquid glass ─────────────────────────── */
+.lg { position: relative; isolation: isolate; border-radius: 26px; overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 2px 12px rgba(255,45,70,0.12); }
+.lg::before {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    backdrop-filter: blur(5px) saturate(150%); -webkit-backdrop-filter: blur(5px) saturate(150%);
+    filter: url(#glass-distortion);
+}
+.lg::after {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.03) 42%, rgba(255,45,70,0.05));
+    box-shadow: inset 1.5px 1.5px 1px rgba(255,255,255,0.55), inset -1px -1px 1px rgba(255,255,255,0.16), inset 0 0 30px rgba(255,45,70,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+}
+.lg > * { position: relative; z-index: 2; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .lg::before { background: rgba(24, 12, 15, 0.72); }
 }
 
-/* ── nav ──────────────────────────────────── */
-.nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
-    border-bottom: 1px solid transparent;
-}
-.nav.scrolled { background: rgba(8, 8, 10, 0.72); backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); border-bottom-color: var(--border); }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-.brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
-.brand .badge { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; box-shadow: 0 4px 14px rgba(139, 61, 245, 0.35); }
-.brand b { color: var(--accent); }
-.nav-links { display: flex; align-items: center; gap: 4px; }
-.nav-links a { padding: 8px 14px; font-size: 0.92rem; font-weight: 500; color: var(--dim); border-radius: 8px; transition: 0.18s; }
-.nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
-.nav-cta { display: flex; align-items: center; gap: 10px; }
-.icon-link { width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--dim); transition: 0.18s; }
-.icon-link:hover { color: var(--text); border-color: var(--border-2); transform: translateY(-1px); }
-.nav-toggle { display: none; font-size: 1.2rem; color: var(--text); width: 40px; height: 40px; }
+/* frosted inner panel (glass-on-glass) */
+.pane { position: relative; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.18), inset -1px -1px 0 rgba(0,0,0,0.15); }
 
-/* ── buttons ──────────────────────────────── */
-.btn { display: inline-flex; align-items: center; gap: 9px; font-family: var(--sans); font-weight: 600; font-size: 0.95rem; padding: 12px 22px; border-radius: 11px; transition: 0.2s; white-space: nowrap; border: 1px solid transparent; }
-.btn.sm { padding: 9px 16px; font-size: 0.88rem; }
-.btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; box-shadow: 0 8px 24px rgba(139, 61, 245, 0.3); }
-.btn.primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(139, 61, 245, 0.45); }
-.btn.ghost { border-color: var(--border-2); color: var(--text); background: rgba(255, 255, 255, 0.02); }
-.btn.ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-.btn.disabled { border-color: var(--border); color: var(--mute); cursor: not-allowed; }
-.btn.disabled:hover { transform: none; }
+/* ── enter screen ─────────────────────────── */
+.enter { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
+    background: rgba(5,3,4,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    cursor: pointer; transition: opacity 0.7s ease, visibility 0.7s; text-align: center; }
+.enter.gone { opacity: 0; visibility: hidden; }
+.enter-inner { transform: translateY(0); transition: transform 0.4s; }
+.enter:hover .enter-inner { transform: translateY(-4px); }
+.enter .halo { width: 96px; height: 96px; margin: 0 auto 26px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,45,70,0.35), transparent 70%);
+    display: flex; align-items: center; justify-content: center; animation: pulse 2.4s ease-in-out infinite; }
+.enter .halo i { font-size: 2rem; color: var(--accent); filter: drop-shadow(0 0 14px rgba(255,45,70,0.6)); }
+@keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.08); opacity: 0.7; } }
+.enter .lead { font-family: var(--mono); font-size: 0.86rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--text);
+    padding-left: 0.42em; animation: fadeblink 2.4s ease-in-out infinite; }
+.enter .hint { margin-top: 10px; font-size: 0.74rem; color: var(--mute); letter-spacing: 0.06em; }
+@keyframes fadeblink { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
 
-/* ── section scaffolding ──────────────────── */
-section { position: relative; padding: 100px 0; }
-.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
-.eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent); }
-.sec-title { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4vw, 2.9rem); letter-spacing: -0.03em; line-height: 1.04; }
-.sec-lead { color: var(--dim); font-size: 1.08rem; max-width: 560px; margin-top: 16px; }
-.sec-head { margin-bottom: 52px; }
+/* ── stage / card ─────────────────────────── */
+.stage { position: relative; z-index: 2; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.card-wrap { width: 100%; max-width: 392px; opacity: 0; transform: translateY(20px) scale(0.98); transition: opacity 0.8s ease 0.15s, transform 0.8s cubic-bezier(.2,.8,.2,1) 0.15s; will-change: transform; }
+body.entered .card-wrap { opacity: 1; transform: none; }
+.card { padding: 30px 26px 24px; }
 
-/* ── hero ─────────────────────────────────── */
-.hero { padding: 150px 0 90px; }
-.hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
-.hero-status { display: inline-flex; align-items: center; gap: 9px; padding: 6px 14px 6px 10px; border: 1px solid var(--border); border-radius: 100px; background: rgba(255, 255, 255, 0.03); font-size: 0.84rem; color: var(--dim); margin-bottom: 26px; }
-.hero-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mute); transition: 0.2s; }
-.hero-status .dot.online { background: var(--green); box-shadow: 0 0 0 4px rgba(61, 220, 145, 0.16); }
-.hero-status .dot.idle { background: var(--yellow); box-shadow: 0 0 0 4px rgba(245, 196, 81, 0.16); }
-.hero-status .dot.dnd { background: var(--accent); box-shadow: 0 0 0 4px rgba(139, 61, 245, 0.16); }
-.hero-status b { color: var(--text); font-weight: 600; }
-.hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.7rem, 6vw, 4.6rem); line-height: 0.98; letter-spacing: -0.035em; }
-.hero h1 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.hero p.lead { color: var(--dim); font-size: 1.15rem; max-width: 480px; margin: 24px 0 34px; line-height: 1.6; }
-.hero p.lead b { color: var(--text); font-weight: 600; }
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-.hero-stats { display: flex; gap: 30px; margin-top: 44px; flex-wrap: wrap; }
-.hero-stat .num { font-family: var(--display); font-weight: 700; font-size: 1.6rem; letter-spacing: -0.02em; }
-.hero-stat .lbl { font-family: var(--mono); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-top: 2px; }
-
-/* hero visual */
-.showcase { position: relative; }
-.frame {
-    border-radius: 16px; overflow: hidden;
-    border: 1px solid var(--border-2);
-    background: var(--surface);
-    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 80px rgba(139, 61, 245, 0.08);
-    transform: perspective(1400px) rotateY(-8deg) rotateX(3deg);
-    transition: transform 0.5s ease;
-}
-.showcase:hover .frame { transform: perspective(1400px) rotateY(-4deg) rotateX(1deg); }
-.frame-bar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
-.frame-bar .d { width: 11px; height: 11px; border-radius: 50%; }
-.frame-bar .d:nth-child(1) { background: #ff5f57; } .frame-bar .d:nth-child(2) { background: #febc2e; } .frame-bar .d:nth-child(3) { background: #28c840; }
-.frame-bar .url { margin-left: 10px; flex: 1; font-family: var(--mono); font-size: 0.74rem; color: var(--mute); background: var(--bg); padding: 5px 11px; border-radius: 7px; border: 1px solid var(--border); }
-.frame img { width: 100%; display: block; background: var(--bg); }
-.float-card {
-    position: absolute; bottom: -26px; left: -34px; z-index: 3;
-    width: 270px; padding: 13px 15px; border-radius: 14px;
-    background: rgba(19, 19, 23, 0.86); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-2);
-    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
-    display: flex; align-items: center; gap: 12px;
-}
-.float-card .art { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: var(--surface-2); border: 1px solid var(--border); }
-.float-card .art.spin { animation: spin 9s linear infinite; border-radius: 50%; }
+/* avatar */
+.pfp-wrap { position: relative; width: 104px; height: 104px; margin: 0 auto 16px; }
+.pfp-ring { position: absolute; inset: -4px; border-radius: 50%; padding: 3px;
+    background: conic-gradient(from 0deg, var(--accent), var(--accent-2), var(--accent-deep), var(--accent));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    animation: spin 6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.float-card .fc-kind { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
-.float-card .fc-kind.spotify { color: var(--spotify); } .float-card .fc-kind.gaming { color: #98a6ff; }
-.float-card .fc-title { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.float-card .fc-sub { font-size: 0.78rem; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.float-badge { position: absolute; top: -16px; right: -14px; z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 100px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; font-size: 0.78rem; font-weight: 600; box-shadow: 0 12px 30px rgba(139, 61, 245, 0.4); }
-.float-badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: pulse 1.6s infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.pfp { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(10,6,8,0.9);
+    background: #150a0d; box-shadow: 0 8px 26px rgba(0,0,0,0.5); }
+.pfp-status { position: absolute; bottom: 5px; right: 5px; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--mute); border: 4px solid #0b0608; transition: 0.25s; }
+.pfp-status.online { background: #3ba55d; box-shadow: 0 0 10px rgba(59,165,93,0.7); }
+.pfp-status.idle { background: #faa61a; box-shadow: 0 0 10px rgba(250,166,26,0.6); }
+.pfp-status.dnd { background: var(--accent); box-shadow: 0 0 10px rgba(255,45,70,0.7); }
 
-/* marquee strip */
-.strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(255, 255, 255, 0.015); }
-.strip-inner { display: flex; flex-wrap: wrap; gap: 14px 48px; justify-content: center; padding: 26px 24px; }
-.strip-item { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 0.82rem; color: var(--dim); }
-.strip-item i { color: var(--accent); }
+/* name + badges */
+.name-row { display: flex; align-items: center; justify-content: center; gap: 9px; }
+.uname { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+.badges { display: flex; gap: 5px; }
+.badge { width: 25px; height: 25px; border-radius: 7px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; color: var(--accent);
+    background: rgba(255,45,70,0.12); border: 1px solid rgba(255,45,70,0.28);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
+.tagline { text-align: center; color: var(--dim); font-size: 0.92rem; margin-top: 8px; min-height: 1.3em; font-family: var(--mono); letter-spacing: 0.01em; }
+.tagline .cursor { color: var(--accent); animation: fadeblink 1.1s steps(2) infinite; }
 
-/* ── work cards ───────────────────────────── */
-.work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-.card {
-    position: relative; border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
-    background: linear-gradient(180deg, var(--surface), var(--bg-2));
-    transition: 0.25s; display: flex; flex-direction: column;
-}
-.card:hover { border-color: var(--border-2); transform: translateY(-4px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); }
-.card.feature { border-color: rgba(139, 61, 245, 0.28); }
-.card.feature:hover { border-color: rgba(139, 61, 245, 0.5); box-shadow: 0 30px 60px rgba(139, 61, 245, 0.12); }
-.card-banner { position: relative; aspect-ratio: 16 / 8.5; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
-.card-banner.cs2 { background: radial-gradient(circle at 30% 25%, rgba(139, 61, 245, 0.28), transparent 60%), linear-gradient(135deg, #1a1216, #0c0c0f); }
-.card-banner.r6 { background: radial-gradient(circle at 70% 25%, rgba(150, 92, 240, 0.22), transparent 60%), linear-gradient(135deg, #181410, #0c0c0f); }
-.card-banner::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px); background-size: 26px 26px; mask-image: radial-gradient(circle at center, #000, transparent 75%); -webkit-mask-image: radial-gradient(circle at center, #000, transparent 75%); }
-.card-banner img { height: 46%; max-width: 60%; object-fit: contain; position: relative; z-index: 1; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.55)); }
-.card-banner.cover img { height: 100%; width: 100%; max-width: none; object-fit: cover; filter: none; }
-.card-banner.cover::after { opacity: 0; }
-.status-tag { position: absolute; top: 14px; left: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 100px; font-family: var(--mono); font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; backdrop-filter: blur(8px); }
-.status-tag.live { color: var(--green); background: rgba(61, 220, 145, 0.12); border: 1px solid rgba(61, 220, 145, 0.3); }
-.status-tag.live .d { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
-.status-tag.dev { color: var(--yellow); background: rgba(245, 196, 81, 0.12); border: 1px solid rgba(245, 196, 81, 0.3); }
-.status-tag.dev .d { width: 6px; height: 6px; border-radius: 50%; background: var(--yellow); animation: pulse 1.6s infinite; }
-.card-body { padding: 24px 26px 26px; flex: 1; display: flex; flex-direction: column; }
-.card-title { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; }
-.card-desc { color: var(--dim); font-size: 0.98rem; margin: 10px 0 16px; flex: 1; }
-.tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
-.tag { font-family: var(--mono); font-size: 0.72rem; color: var(--dim); padding: 4px 10px; border: 1px solid var(--border); border-radius: 7px; background: rgba(255, 255, 255, 0.02); }
-.card-foot { display: flex; gap: 10px; align-items: center; }
+.meta { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.76rem; color: var(--mute); font-family: var(--mono); }
+.meta span { display: inline-flex; align-items: center; gap: 6px; }
+.meta i { color: var(--accent); opacity: 0.85; }
 
-/* ── omnis deep dive ──────────────────────── */
-.omnis-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 44px; }
-.omnis-logo-row { display: flex; align-items: center; gap: 16px; }
-.omnis-logo { width: 56px; height: 56px; border-radius: 14px; }
-.video { width: 100%; position: relative; padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-2); background: #000; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5); }
-.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.divider { height: 1px; margin: 20px 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
 
-.feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 56px; }
-.feat { padding: 24px 22px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); transition: 0.22s; }
-.feat:hover { border-color: var(--border-2); transform: translateY(-3px); background: var(--surface-2); }
-.feat .fi { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: var(--accent); background: var(--accent-soft); border: 1px solid rgba(139, 61, 245, 0.22); margin-bottom: 16px; }
-.feat h4 { font-family: var(--display); font-weight: 600; font-size: 1.08rem; margin-bottom: 6px; }
-.feat p { color: var(--dim); font-size: 0.9rem; line-height: 1.55; }
+/* discord presence */
+.presence { padding: 12px 13px; display: flex; align-items: center; gap: 12px; min-height: 68px; }
+.pr-art { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); }
+.pr-art.spin { animation: spin 9s linear infinite; border-radius: 50%; }
+.pr-body { flex: 1; min-width: 0; }
+.pr-kind { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--dim); display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.pr-kind.spotify { color: #1db954; } .pr-kind.gaming { color: #ff8f6b; }
+.pr-title { font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pr-sub { font-size: 0.78rem; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.pr-bar { height: 4px; border-radius: 3px; background: rgba(255,255,255,0.10); overflow: hidden; margin-top: 8px; display: none; }
+.presence.spotify .pr-bar { display: block; }
+.pr-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #1db954, #25e065); transition: width 1s linear; }
+.pr-time { display: none; justify-content: space-between; font-family: var(--mono); font-size: 0.6rem; color: var(--mute); margin-top: 4px; }
+.presence.spotify .pr-time { display: flex; }
 
-.dual { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; align-items: start; }
-.panel { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
-.panel-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
-.panel-head h4 { font-family: var(--display); font-weight: 600; font-size: 1.05rem; }
-.panel-head .hint { font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
-.panel-body { padding: 18px 20px; }
-
-/* compare */
-.compare { width: 100%; aspect-ratio: 16/10; position: relative; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; user-select: none; touch-action: none; }
-.c-after, .c-before { position: absolute; inset: 0; background-size: cover; background-position: center; }
-.c-before { clip-path: inset(0 50% 0 0); }
-.c-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; box-shadow: 0 0 14px rgba(139, 61, 245, 0.6); pointer-events: none; }
-.c-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; pointer-events: none; box-shadow: 0 6px 20px rgba(139, 61, 245, 0.5); }
-.c-lbl { position: absolute; top: 12px; font-family: var(--mono); font-size: 0.7rem; padding: 4px 9px; border-radius: 6px; backdrop-filter: blur(6px); }
-.c-lbl.b { left: 12px; background: rgba(0,0,0,0.55); color: var(--dim); border: 1px solid var(--border); }
-.c-lbl.a { right: 12px; background: rgba(139, 61, 245, 0.2); color: #fff; border: 1px solid rgba(139, 61, 245, 0.45); }
-
-/* gallery */
-.shot { width: 100%; aspect-ratio: 16/10; background: var(--bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 12px; }
-.shot img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.22s; }
-.shot img.fade { opacity: 0; }
-.shot-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-.shot-tab { padding: 9px 6px; font-family: var(--mono); font-size: 0.78rem; color: var(--dim); background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; transition: 0.16s; text-transform: lowercase; }
-.shot-tab:hover { color: var(--text); border-color: var(--border-2); }
-.shot-tab.on { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; color: #fff; }
-
-/* pricing */
-.pricing { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 56px; }
-.plan { position: relative; padding: 26px 22px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); transition: 0.22s; display: flex; flex-direction: column; }
-.plan:hover { border-color: var(--border-2); transform: translateY(-3px); }
-.plan.hot { border-color: rgba(139, 61, 245, 0.4); background: linear-gradient(180deg, rgba(139, 61, 245, 0.07), var(--surface)); box-shadow: 0 20px 50px rgba(139, 61, 245, 0.1); }
-.plan-tag { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); padding: 4px 12px; border-radius: 100px; box-shadow: 0 6px 16px rgba(139, 61, 245, 0.4); }
-.plan-dur { font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); }
-.plan-price { font-family: var(--display); font-weight: 700; font-size: 2.4rem; letter-spacing: -0.03em; line-height: 1.1; margin: 12px 0 4px; }
-.plan-price small { font-size: 1rem; color: var(--mute); text-decoration: line-through; margin-left: 7px; font-weight: 400; }
-.plan-note { color: var(--dim); font-size: 0.86rem; margin-bottom: 20px; flex: 1; }
-
-/* cta banner */
-.cta-banner { margin-top: 64px; padding: 48px; border-radius: 20px; border: 1px solid rgba(139, 61, 245, 0.25); background: radial-gradient(ellipse at 20% 0%, rgba(139, 61, 245, 0.16), transparent 60%), linear-gradient(135deg, var(--surface), var(--bg-2)); display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; }
-.cta-banner h3 { font-family: var(--display); font-weight: 700; font-size: 1.9rem; letter-spacing: -0.02em; }
-.cta-banner p { color: var(--dim); margin-top: 8px; }
-
-/* ── r6 section ───────────────────────────── */
-.r6 { background: linear-gradient(180deg, transparent, rgba(192, 107, 255, 0.03), transparent); }
-.r6-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; align-items: center; }
-.r6-visual { position: relative; border: 1px solid var(--border-2); border-radius: 18px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 35%, rgba(150, 92, 240, 0.18), transparent 60%), linear-gradient(135deg, #16120e, #0b0b0e); overflow: hidden; }
-.r6-visual::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px); background-size: 30px 30px; mask-image: radial-gradient(circle, #000, transparent 72%); -webkit-mask-image: radial-gradient(circle, #000, transparent 72%); }
-.r6-visual img { width: 44%; position: relative; z-index: 1; filter: drop-shadow(0 14px 36px rgba(0,0,0,.6)); }
-.r6-visual img.r6-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: none; }
-.r6-visual:has(.r6-cover)::after { display: none; }
-.r6-checklist { list-style: none; margin-top: 26px; display: flex; flex-direction: column; gap: 12px; }
-.r6-checklist li { display: flex; align-items: flex-start; gap: 12px; color: var(--dim); }
-.r6-checklist .ck { width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; background: var(--accent-soft); border: 1px solid rgba(139, 61, 245, 0.25); color: var(--accent); margin-top: 2px; }
-.r6-checklist b { color: var(--text); font-weight: 600; }
-
-/* ── about ────────────────────────────────── */
-.about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; align-items: start; }
-.about p { color: var(--dim); font-size: 1.05rem; line-height: 1.7; }
-.about p + p { margin-top: 16px; }
-.about p b { color: var(--text); font-weight: 600; }
-.skills { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
-.skill { font-family: var(--mono); font-size: 0.84rem; padding: 8px 14px; border: 1px solid var(--border); border-radius: 9px; color: var(--dim); background: var(--surface); transition: 0.16s; }
-.skill:hover { color: var(--accent); border-color: var(--accent); }
-
-/* ── contact ──────────────────────────────── */
-.contact-card { border: 1px solid var(--border); border-radius: 20px; background: linear-gradient(135deg, var(--surface), var(--bg-2)); padding: 56px 48px; text-align: center; }
-.contact-card h2 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: -0.03em; }
-.contact-card p { color: var(--dim); font-size: 1.1rem; max-width: 480px; margin: 16px auto 32px; }
-.contact-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.contact-socials { display: flex; gap: 12px; justify-content: center; margin-top: 30px; }
-
-/* ── footer ───────────────────────────────── */
-footer { border-top: 1px solid var(--border); padding: 36px 0; }
-.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 0.88rem; color: var(--mute); }
-.footer-inner a { color: var(--dim); transition: 0.15s; }
-.footer-inner a:hover { color: var(--accent); }
+/* socials */
+.socials { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+.social { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: var(--text);
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.22), inset -1px -1px 0 rgba(0,0,0,0.2), 0 6px 16px rgba(0,0,0,0.3);
+    transition: transform 0.2s, color 0.2s, box-shadow 0.2s; }
+.social:hover { transform: translateY(-4px) scale(1.05); color: var(--accent);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3), 0 10px 24px rgba(255,45,70,0.28); }
 
 /* ── music player ─────────────────────────── */
-.player { position: fixed; bottom: 18px; right: 18px; z-index: 200; width: 256px; border-radius: 14px; overflow: hidden; background: rgba(15, 15, 18, 0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--border-2); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); }
-.player-body { display: flex; align-items: center; gap: 11px; padding: 11px 12px; }
-.p-art { width: 42px; height: 42px; border-radius: 9px; object-fit: cover; border: 1px solid var(--border); animation: spin 9s linear infinite; animation-play-state: paused; }
-.p-art.spin { animation-play-state: running; border-radius: 50%; }
-.p-info { flex: 1; overflow: hidden; }
-.p-title { font-weight: 600; font-size: 0.86rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.p-status { font-family: var(--mono); font-size: 0.66rem; color: var(--dim); margin-top: 1px; }
-.p-ctrls { display: flex; gap: 6px; margin-top: 5px; }
-.pc { color: var(--dim); font-size: 0.82rem; padding: 2px 4px; transition: 0.15s; }
-.pc:hover { color: var(--accent); }
-.pc.play { color: var(--text); }
+.player { margin-top: 18px; padding: 12px 13px; }
+.pl-top { display: flex; align-items: center; gap: 12px; }
+.pl-art { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+.pl-info { flex: 1; min-width: 0; }
+.pl-title { font-size: 0.88rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-sub { font-size: 0.72rem; color: var(--mute); font-family: var(--mono); margin-top: 1px; }
+.pl-ctrls { display: flex; align-items: center; gap: 6px; }
+.pl-btn { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--dim); transition: 0.16s; }
+.pl-btn:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+.pl-btn.main { width: 36px; height: 36px; font-size: 0.9rem; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 4px 14px rgba(255,45,70,0.4); }
+.pl-btn.main:hover { transform: scale(1.06); color: #fff; }
+.pl-progress { display: flex; align-items: center; gap: 9px; margin-top: 11px; font-family: var(--mono); font-size: 0.62rem; color: var(--mute); }
+.pl-track { flex: 1; height: 5px; border-radius: 4px; background: rgba(255,255,255,0.12); position: relative; cursor: pointer; }
+.pl-fill { position: absolute; inset: 0 auto 0 0; width: 0%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.pl-fill::after { content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px rgba(255,45,70,0.7); opacity: 0; transition: opacity 0.15s; }
+.pl-track:hover .pl-fill::after { opacity: 1; }
+.pl-vol { display: flex; align-items: center; gap: 8px; margin-top: 10px; color: var(--mute); font-size: 0.72rem; }
+.pl-vol input { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 3px; background: rgba(255,255,255,0.12); outline: none; cursor: pointer; }
+.pl-vol input::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px rgba(255,45,70,0.6); cursor: pointer; }
+.pl-vol input::-moz-range-thumb { width: 12px; height: 12px; border: none; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-/* ── reveal ───────────────────────────────── */
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.reveal.in { opacity: 1; transform: none; }
+.foot { text-align: center; margin-top: 18px; font-family: var(--mono); font-size: 0.66rem; color: var(--mute); letter-spacing: 0.04em; }
+.foot a { color: var(--dim); transition: 0.15s; } .foot a:hover { color: var(--accent); }
 
-/* ── responsive ───────────────────────────── */
-@media (max-width: 980px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 60px; }
-    .showcase { max-width: 520px; }
-    .work-grid, .dual, .r6-grid, .about-grid { grid-template-columns: 1fr; }
-    .feat-grid { grid-template-columns: repeat(2, 1fr); }
-    .pricing { grid-template-columns: repeat(2, 1fr); }
-    .r6-grid .r6-visual { order: -1; }
+@media (max-width: 420px) {
+    .card { padding: 26px 20px 22px; }
+    .uname { font-size: 1.5rem; }
+    .social { width: 42px; height: 42px; }
 }
-@media (max-width: 680px) {
-    .nav-links { display: none; }
-    .nav-toggle { display: flex; align-items: center; justify-content: center; }
-    .nav.open .nav-links { display: flex; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; align-items: stretch; padding: 12px; gap: 4px; background: rgba(8, 8, 10, 0.96); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    section { padding: 72px 0; }
-    .hero { padding: 124px 0 72px; }
-    .feat-grid, .pricing { grid-template-columns: 1fr; }
-    .cta-banner, .contact-card { padding: 32px 24px; }
-    .float-card { left: 0; bottom: -20px; width: 230px; }
-    .player { width: calc(100% - 24px); right: 12px; bottom: 12px; }
-    .hero-stats { gap: 22px; }
+@media (prefers-reduced-motion: reduce) {
+    .blob, .pfp-ring, .pr-art.spin { animation: none !important; }
 }
 </style>
 </head>
 <body>
 
-<div class="ambient"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<!-- liquid-glass distortion filter -->
+<svg class="lg-svg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <filter id="glass-distortion" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="17" result="noise"/>
+        <feGaussianBlur in="noise" stdDeviation="2.2" result="softNoise"/>
+        <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="78" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+</svg>
+
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div class="grain"></div>
+<div class="vignette"></div>
 
-<!-- nav -->
-<nav class="nav" id="nav">
-    <div class="wrap nav-inner">
-        <a href="#top" class="brand"><span class="badge"><i class="fa-solid fa-terminal"></i></span>kayaz<b>.</b></a>
-        <div class="nav-links">
-            <a href="#work">Work</a>
-            <a href="#omnis">Omnis CS2</a>
-            <a href="#r6">Omnis R6</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </div>
-        <div class="nav-cta">
-            <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="icon-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="btn primary sm">Get Omnis <i class="fa-solid fa-arrow-right"></i></a>
-            <button class="nav-toggle" id="navToggle" aria-label="menu"><i class="fa-solid fa-bars"></i></button>
-        </div>
-    </div>
-</nav>
-
-<!-- hero -->
-<header class="hero" id="top">
-    <div class="wrap hero-grid">
-        <div class="hero-left">
-            <div class="hero-status">
-                <span class="dot" id="heroDot"></span>
-                <span id="heroState">connecting…</span>
-            </div>
-            <h1>Low-level dev.<br>I build <span class="grad">Omnis</span>.</h1>
-            <p class="lead">
-                Self-taught developer working close to the metal — game engines, kernel drivers and anti-cheat research.
-                I make <b>Omnis</b>: external cheats for <b>CS2</b> and <b>Rainbow Six</b>.
-            </p>
-            <div class="hero-actions">
-                <a href="#work" class="btn primary">View my work <i class="fa-solid fa-arrow-down"></i></a>
-                <a href="#contact" class="btn ghost">Get in touch</a>
-            </div>
-            <div class="hero-stats">
-                <div class="hero-stat"><div class="num">2</div><div class="lbl">products</div></div>
-                <div class="hero-stat"><div class="num">Ring-0</div><div class="lbl">kernel driver</div></div>
-                <div class="hero-stat"><div class="num">Daily</div><div class="lbl">updates</div></div>
-                <div class="hero-stat"><div class="num">EU</div><div class="lbl">based</div></div>
-            </div>
-        </div>
-
-        <div class="hero-right">
-            <div class="showcase">
-                <span class="float-badge"><span class="pulse"></span> Live</span>
-                <div class="frame">
-                    <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">omniscs2.xyz</span></div>
-                    <img src="assets/hero.webp" alt="Omnis CS2">
-                </div>
-                <div class="float-card" id="activity">
-                    <img id="actArt" class="art" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="">
-                    <div style="min-width:0;">
-                        <div class="fc-kind" id="actKind"><i class="fa-brands fa-discord"></i> status</div>
-                        <div class="fc-title" id="actTitle">offline</div>
-                        <div class="fc-sub" id="actSub">check back soon</div>
-                        <span style="display:none;" id="actElapsed"></span><span style="display:none;" id="actTotal"></span><span style="display:none;" id="actBar"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-<!-- strip -->
-<div class="strip">
-    <div class="strip-inner">
-        <div class="strip-item"><i class="fa-solid fa-shield-halved"></i> kernel-level driver</div>
-        <div class="strip-item"><i class="fa-solid fa-crosshairs"></i> humanised aimbot</div>
-        <div class="strip-item"><i class="fa-solid fa-eye"></i> clean ESP &amp; visuals</div>
-        <div class="strip-item"><i class="fa-solid fa-wand-magic-sparkles"></i> skin &amp; knife changer</div>
-        <div class="strip-item"><i class="fa-solid fa-rotate"></i> daily signature rotation</div>
+<!-- click to enter -->
+<div class="enter" id="enter">
+    <div class="enter-inner">
+        <div class="halo"><i class="fa-solid fa-fingerprint"></i></div>
+        <div class="lead">click to enter</div>
+        <div class="hint">sound on · tap anywhere</div>
     </div>
 </div>
 
-<!-- work -->
-<section id="work">
-    <div class="wrap">
-        <div class="sec-head reveal">
-            <div class="eyebrow">selected work</div>
-            <h2 class="sec-title">The Omnis line-up</h2>
-            <p class="sec-lead">Two external cheats under the Omnis brand — one shipping daily, one in active development.</p>
-        </div>
-        <div class="work-grid">
-            <div class="card feature reveal" onclick="location.hash='#omnis'" style="cursor:pointer;">
-                <div class="card-banner cs2 cover">
-                    <span class="status-tag live"><span class="d"></span> Live</span>
-                    <img src="assets/cs2-banner.jpg" alt="Omnis CS2">
+<!-- profile card -->
+<main class="stage">
+    <div class="card-wrap">
+        <section class="card lg">
+
+            <div class="pfp-wrap">
+                <div class="pfp-ring"></div>
+                <img id="pfp" class="pfp" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="kayaz">
+                <div id="pfpStatus" class="pfp-status"></div>
+            </div>
+
+            <div class="name-row">
+                <div class="uname">kayaz</div>
+                <div class="badges">
+                    <span class="badge" title="developer"><i class="fa-solid fa-code"></i></span>
+                    <span class="badge" title="omnis"><i class="fa-solid fa-crown"></i></span>
                 </div>
-                <div class="card-body">
-                    <div class="card-title">Omnis CS2</div>
-                    <p class="card-desc">My flagship — a fully developed external cheat for Counter-Strike 2. Humanised aimbot, ESP, a client-side skin &amp; knife changer, all backed by a kernel driver and daily updates.</p>
-                    <div class="tags"><span class="tag">C++</span><span class="tag">external</span><span class="tag">kernel</span><span class="tag">source 2</span></div>
-                    <div class="card-foot">
-                        <a href="#omnis" class="btn primary sm" onclick="event.stopPropagation();">Explore <i class="fa-solid fa-arrow-right"></i></a>
-                        <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="btn ghost sm" onclick="event.stopPropagation();">omniscs2.xyz</a>
+            </div>
+            <div class="tagline" id="tagline"><span class="cursor">▋</span></div>
+
+            <div class="meta">
+                <span><i class="fa-solid fa-location-dot"></i> europe</span>
+                <span><i class="fa-solid fa-eye"></i> <b id="views">—</b> views</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="presence pane" id="presence">
+                <img id="prArt" class="pr-art" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="">
+                <div class="pr-body">
+                    <div class="pr-kind" id="prKind"><i class="fa-brands fa-discord"></i> status</div>
+                    <div class="pr-title" id="prTitle">offline</div>
+                    <div class="pr-sub" id="prSub">not around right now</div>
+                    <div class="pr-bar"><div class="pr-fill" id="prFill"></div></div>
+                    <div class="pr-time"><span id="prCur">0:00</span><span id="prDur">0:00</span></div>
+                </div>
+            </div>
+
+            <div class="socials">
+                <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="social" title="Discord"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="social" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="social" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="social" title="Omnis"><i class="fa-solid fa-crosshairs"></i></a>
+            </div>
+
+            <div class="player pane">
+                <div class="pl-top">
+                    <img class="pl-art" id="plArt" src="song_covers/music1_cover.png" alt="">
+                    <div class="pl-info">
+                        <div class="pl-title" id="plTitle">Work Hard</div>
+                        <div class="pl-sub" id="plSub">paused</div>
+                    </div>
+                    <div class="pl-ctrls">
+                        <button class="pl-btn" onclick="pmPrev()" title="previous"><i class="fa-solid fa-backward-step"></i></button>
+                        <button class="pl-btn main" onclick="pmToggle()" title="play"><i class="fa-solid fa-play" id="plIcon"></i></button>
+                        <button class="pl-btn" onclick="pmNext()" title="next"><i class="fa-solid fa-forward-step"></i></button>
                     </div>
                 </div>
-            </div>
-            <div class="card reveal" onclick="location.hash='#r6'" style="cursor:pointer;">
-                <div class="card-banner r6 cover">
-                    <span class="status-tag dev"><span class="d"></span> In development</span>
-                    <img src="assets/r6-banner.jpg" alt="Omnis R6">
+                <div class="pl-progress">
+                    <span id="plCur">0:00</span>
+                    <div class="pl-track" id="plTrack"><div class="pl-fill" id="plFill"></div></div>
+                    <span id="plDur">0:00</span>
                 </div>
-                <div class="card-body">
-                    <div class="card-title">Omnis R6</div>
-                    <p class="card-desc">Bringing the Omnis toolset to Rainbow Six Siege — an external build currently in development, using the same loader and protection pipeline as Omnis CS2.</p>
-                    <div class="tags"><span class="tag">C++</span><span class="tag">external</span><span class="tag">siege</span><span class="tag">wip</span></div>
-                    <div class="card-foot">
-                        <a href="#r6" class="btn ghost sm" onclick="event.stopPropagation();">See progress <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
+                <div class="pl-vol">
+                    <i class="fa-solid fa-volume-low" id="volIcon"></i>
+                    <input type="range" id="vol" min="0" max="100" value="55">
                 </div>
             </div>
-        </div>
+
+            <div class="foot">© <span id="yr"></span> kayaz · <a href="https://omniscs2.xyz" target="_blank" rel="noopener">omniscs2.xyz</a></div>
+
+        </section>
     </div>
-</section>
+</main>
 
-<!-- omnis cs2 deep dive -->
-<section id="omnis">
-    <div class="wrap">
-        <div class="omnis-head reveal">
-            <div>
-                <div class="eyebrow">flagship · live</div>
-                <div class="omnis-logo-row">
-                    <img src="assets/omnis-logo.png" class="omnis-logo" alt="">
-                    <h2 class="sec-title">Omnis CS2</h2>
-                </div>
-                <p class="sec-lead">A complete, fully developed external for Counter-Strike 2. Updated daily.</p>
-            </div>
-            <div class="hero-actions">
-                <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="btn primary">Get Omnis CS2 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> Discord</a>
-            </div>
-        </div>
-
-        <div class="video reveal"><iframe src="https://www.youtube-nocookie.com/embed/CW8F1sCPHN8?rel=0&modestbranding=1" allowfullscreen></iframe></div>
-
-        <div class="feat-grid">
-            <div class="feat reveal"><div class="fi"><i class="fa-solid fa-crosshairs"></i></div><h4>Humanised aim</h4><p>Bézier curves and smoothing so it never reads like a bot.</p></div>
-            <div class="feat reveal"><div class="fi"><i class="fa-solid fa-eye"></i></div><h4>Clean ESP</h4><p>Boxes, bones, HP and distance with no FPS hit.</p></div>
-            <div class="feat reveal"><div class="fi"><i class="fa-solid fa-microchip"></i></div><h4>Kernel driver</h4><p>Ring-0 access with daily signature rotation.</p></div>
-            <div class="feat reveal"><div class="fi"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h4>Skin &amp; knife</h4><p>Any skin, knife or glove client-side. Inventory stays clean.</p></div>
-        </div>
-
-        <div class="dual">
-            <div class="panel reveal">
-                <div class="panel-head"><h4>Before / After</h4><span class="hint">drag the slider</span></div>
-                <div class="panel-body">
-                    <div class="compare" id="cmp">
-                        <div class="c-after" style="background-image:url('assets/after.webp')"></div>
-                        <div class="c-before" id="cmpBefore" style="background-image:url('assets/before.webp')"></div>
-                        <div class="c-lbl b">without</div>
-                        <div class="c-lbl a">with omnis</div>
-                        <div class="c-line" id="cmpLine"></div>
-                        <div class="c-handle" id="cmpHandle"><i class="fa-solid fa-arrows-left-right"></i></div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel reveal">
-                <div class="panel-head"><h4>Inside the menu</h4><span class="hint" id="shotName">aimbot</span></div>
-                <div class="panel-body">
-                    <div class="shot"><img id="mImg" src="assets/menu/aimbot.webp" alt="Omnis menu"></div>
-                    <div class="shot-tabs">
-                        <button class="shot-tab on" onclick="setShot(this, 'aimbot')">aimbot</button>
-                        <button class="shot-tab" onclick="setShot(this, 'esp')">esp</button>
-                        <button class="shot-tab" onclick="setShot(this, 'visuals')">visuals</button>
-                        <button class="shot-tab" onclick="setShot(this, 'skins')">skins</button>
-                        <button class="shot-tab" onclick="setShot(this, 'misc')">misc</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pricing">
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan reveal">
-                <div class="plan-dur">4 days</div><div class="plan-price">$5<small>$7</small></div><div class="plan-note">just to try it out</div>
-                <span class="btn ghost sm">Choose</span>
-            </a>
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan hot reveal">
-                <span class="plan-tag">Popular</span>
-                <div class="plan-dur">1 week</div><div class="plan-price">$7<small>$10</small></div><div class="plan-note">the one most people get</div>
-                <span class="btn primary sm">Choose</span>
-            </a>
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan reveal">
-                <div class="plan-dur">1 month</div><div class="plan-price">$12<small>$15</small></div><div class="plan-note">best value for regulars</div>
-                <span class="btn ghost sm">Choose</span>
-            </a>
-            <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="plan reveal">
-                <div class="plan-dur">lifetime</div><div class="plan-price">$30<small>$40</small></div><div class="plan-note">pay once, done</div>
-                <span class="btn ghost sm">Choose</span>
-            </a>
-        </div>
-
-        <div class="cta-banner reveal">
-            <div>
-                <h3>Ready to run Omnis CS2?</h3>
-                <p>Grab a key, join the Discord, and you're in within minutes.</p>
-            </div>
-            <div class="hero-actions">
-                <a href="https://omniscs2.xyz" target="_blank" rel="noopener" class="btn primary">omniscs2.xyz <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn ghost"><i class="fa-brands fa-discord"></i> Join Discord</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- omnis r6 -->
-<section id="r6" class="r6">
-    <div class="wrap r6-grid">
-        <div class="r6-visual reveal">
-            <span class="status-tag dev" style="top:16px;left:16px;z-index:2;"><span class="d"></span> In development</span>
-            <img class="r6-cover" src="assets/r6-banner.jpg" alt="Omnis R6">
-        </div>
-        <div class="reveal">
-            <div class="eyebrow">in development</div>
-            <h2 class="sec-title">Omnis R6</h2>
-            <p class="sec-lead">The next Omnis product — an external cheat for Rainbow Six Siege, built on everything I learned shipping CS2.</p>
-            <ul class="r6-checklist">
-                <li><span class="ck"><i class="fa-solid fa-check"></i></span><span><b>Same protection pipeline</b> — shares the loader and signature rotation with Omnis CS2.</span></li>
-                <li><span class="ck"><i class="fa-solid fa-check"></i></span><span><b>External by design</b> — reads game state from outside the process to stay safe.</span></li>
-                <li><span class="ck"><i class="fa-solid fa-check"></i></span><span><b>Aim &amp; visuals</b> — tuned for Siege's slower, lethal gunfights.</span></li>
-                <li><span class="ck"><i class="fa-solid fa-check"></i></span><span><b>Early access soon</b> — first builds drop on the Discord.</span></li>
-            </ul>
-            <div class="hero-actions" style="margin-top:28px;">
-                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn primary"><i class="fa-brands fa-discord"></i> Follow on Discord</a>
-                <span class="btn disabled">Coming soon</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- about -->
-<section id="about">
-    <div class="wrap about-grid">
-        <div class="about reveal">
-            <div class="eyebrow">about</div>
-            <h2 class="sec-title" style="margin-bottom:22px;">Close to the metal</h2>
-            <p>I'm <b>kayaz</b> — a self-taught developer who got pulled into the deep end of game internals and never left. Most of what I do lives a layer below the game: memory, drivers, and the cat-and-mouse of anti-cheat.</p>
-            <p>The <b>Omnis</b> brand is where that work ships. Omnis CS2 is fully developed and updated daily; <b>Omnis R6</b> is what I'm building now. If it runs in ring-0 or talks to a game's memory, it's probably my idea of a good time.</p>
-        </div>
-        <div class="reveal">
-            <div class="eyebrow">stack</div>
-            <div class="skills">
-                <span class="skill">C++</span><span class="skill">C</span><span class="skill">x86 asm</span>
-                <span class="skill">Rust</span><span class="skill">Python</span><span class="skill">Win32 / NT</span>
-                <span class="skill">DirectX</span><span class="skill">reverse engineering</span>
-                <span class="skill">IDA · Ghidra</span><span class="skill">CMake</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- contact -->
-<section id="contact">
-    <div class="wrap">
-        <div class="contact-card reveal">
-            <div class="eyebrow" style="justify-content:center;">contact</div>
-            <h2>Let's talk</h2>
-            <p>Easiest is Discord — I answer pretty fast. For Omnis support, billing or key issues, a ticket gets you sorted quickest.</p>
-            <div class="contact-actions">
-                <a href="https://discord.gg/5qZ4PN5FTx" target="_blank" rel="noopener" class="btn primary"><i class="fa-brands fa-discord"></i> Join the Discord</a>
-                <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="btn ghost"><i class="fa-solid fa-envelope"></i> Direct message</a>
-            </div>
-            <div class="contact-socials">
-                <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="icon-link" title="Discord"><i class="fa-brands fa-discord"></i></a>
-                <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="icon-link" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="icon-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<footer>
-    <div class="wrap footer-inner">
-        <div>© <span id="yr"></span> kayaz · built close to the metal</div>
-        <div><a href="https://omniscs2.xyz" target="_blank" rel="noopener">omniscs2.xyz</a> &nbsp;·&nbsp; <a href="https://github.com/wowksies" target="_blank" rel="noopener">github</a></div>
-    </div>
-</footer>
-
-<!-- music player -->
-<div class="player">
-    <div class="player-body">
-        <img src="song_covers/music1_cover.png" class="p-art" id="pArt" alt="">
-        <div class="p-info">
-            <div class="p-title" id="pTitle">Work Hard</div>
-            <div class="p-status" id="pStatus">paused</div>
-            <div class="p-ctrls">
-                <button class="pc" onclick="prev()"><i class="fa-solid fa-backward-step"></i></button>
-                <button class="pc play" onclick="toggle()"><i class="fa-solid fa-play" id="pIcon"></i></button>
-                <button class="pc" onclick="next()"><i class="fa-solid fa-forward-step"></i></button>
-            </div>
-        </div>
-    </div>
-</div>
 <audio id="audio"></audio>
 
 <script>
 'use strict';
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-/* nav: scrolled state + mobile toggle */
-var nav = document.getElementById('nav');
-window.addEventListener('scroll', function () { nav.classList.toggle('scrolled', window.scrollY > 20); });
-document.getElementById('navToggle').addEventListener('click', function () { nav.classList.toggle('open'); });
-document.querySelectorAll('.nav-links a').forEach(function (a) { a.addEventListener('click', function () { nav.classList.remove('open'); }); });
-
-/* reveal on scroll */
+/* ── view counter (per browser) ───────────── */
 (function () {
-    if (!('IntersectionObserver' in window)) { document.querySelectorAll('.reveal').forEach(function (e) { e.classList.add('in'); }); return; }
-    var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(function (e) { io.observe(e); });
+    var base = 1240;
+    var n = parseInt(localStorage.getItem('kv_views') || '0', 10);
+    n = n ? n + 1 : base + Math.floor(Math.random() * 40);
+    localStorage.setItem('kv_views', n);
+    document.getElementById('views').textContent = n.toLocaleString();
 })();
 
-/* menu gallery */
-var menuImgs = {
-    aimbot: 'assets/menu/aimbot.webp',
-    esp: 'assets/menu/esp.webp',
-    visuals: 'assets/menu/visuals.webp',
-    skins: 'assets/menu/skins.webp',
-    misc: 'assets/menu/misc.webp'
-};
-window.setShot = function (el, key) {
-    document.querySelectorAll('.shot-tab').forEach(function (t) { t.classList.remove('on'); });
-    el.classList.add('on');
-    document.getElementById('shotName').textContent = key;
-    var img = document.getElementById('mImg');
-    img.classList.add('fade');
-    setTimeout(function () { img.src = menuImgs[key]; img.classList.remove('fade'); }, 150);
-};
-
-/* before / after slider */
+/* ── typewriter tagline ───────────────────── */
 (function () {
-    var cmp = document.getElementById('cmp');
-    if (!cmp) return;
-    var cmpBefore = document.getElementById('cmpBefore');
-    var cmpLine = document.getElementById('cmpLine');
-    var cmpHandle = document.getElementById('cmpHandle');
-    var dragging = false;
-    function setPct(p) {
-        p = Math.max(0, Math.min(100, p));
-        cmpBefore.style.clipPath = 'inset(0 ' + (100 - p) + '% 0 0)';
-        cmpLine.style.left = p + '%';
-        cmpHandle.style.left = p + '%';
+    var el = document.getElementById('tagline');
+    var lines = ['low-level developer', 'i build omnis', 'cs2 · rainbow six', 'close to the metal'];
+    var li = 0, ci = 0, deleting = false;
+    function tick() {
+        var full = lines[li];
+        ci += deleting ? -1 : 1;
+        el.innerHTML = full.slice(0, ci) + '<span class="cursor">▋</span>';
+        if (!deleting && ci === full.length) { deleting = true; return setTimeout(tick, 1600); }
+        if (deleting && ci === 0) { deleting = false; li = (li + 1) % lines.length; return setTimeout(tick, 240); }
+        setTimeout(tick, deleting ? 45 : 78);
     }
-    function pctX(x) { var r = cmp.getBoundingClientRect(); return ((x - r.left) / r.width) * 100; }
-    cmp.addEventListener('mousedown', function (e) { dragging = true; setPct(pctX(e.clientX)); });
-    cmp.addEventListener('touchstart', function (e) { dragging = true; setPct(pctX(e.touches[0].clientX)); }, { passive: true });
-    document.addEventListener('mousemove', function (e) { if (dragging) setPct(pctX(e.clientX)); });
-    document.addEventListener('touchmove', function (e) { if (dragging) setPct(pctX(e.touches[0].clientX)); }, { passive: true });
-    document.addEventListener('mouseup', function () { dragging = false; });
-    document.addEventListener('touchend', function () { dragging = false; });
+    tick();
 })();
 
-/* music player */
+/* ── subtle tilt parallax ─────────────────── */
+(function () {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    var wrap = document.querySelector('.card-wrap');
+    document.addEventListener('mousemove', function (e) {
+        var rx = (e.clientY / window.innerHeight - 0.5) * -6;
+        var ry = (e.clientX / window.innerWidth - 0.5) * 6;
+        wrap.style.transform = 'perspective(1200px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+    });
+})();
+
+/* ── music player ─────────────────────────── */
+/* add more songs here — they'll show up in the player automatically */
 var playlist = [
-    { title: "Work Hard", src: "songs/music1.mp3", cover: "song_covers/music1_cover.png" },
-    { title: "Runway Walk", src: "songs/music2.mp3", cover: "song_covers/music2_cover.jpg" },
-    { title: "Borderline", src: "songs/music3.mp3", cover: "song_covers/music3_cover.jpg" }
+    { title: "Work Hard",    artist: "unknown", src: "songs/music1.mp3", cover: "song_covers/music1_cover.png" },
+    { title: "Runway Walk",  artist: "unknown", src: "songs/music2.mp3", cover: "song_covers/music2_cover.jpg" },
+    { title: "Borderline",   artist: "unknown", src: "songs/music3.mp3", cover: "song_covers/music3_cover.jpg" }
 ];
-var idx = 0;
+var pi = 0;
 var audio = document.getElementById('audio');
-var pTitle = document.getElementById('pTitle');
-var pArt = document.getElementById('pArt');
-var pIcon = document.getElementById('pIcon');
-var pStatus = document.getElementById('pStatus');
-function load(i) { audio.src = playlist[i].src; pTitle.textContent = playlist[i].title; pArt.src = playlist[i].cover; }
-window.toggle = function () {
-    if (audio.paused) { audio.play().catch(function () {}); pIcon.classList.replace('fa-play', 'fa-pause'); pArt.classList.add('spin'); pStatus.textContent = 'playing'; }
-    else { audio.pause(); pIcon.classList.replace('fa-pause', 'fa-play'); pArt.classList.remove('spin'); pStatus.textContent = 'paused'; }
+var plTitle = document.getElementById('plTitle'), plSub = document.getElementById('plSub');
+var plArt = document.getElementById('plArt'), plIcon = document.getElementById('plIcon');
+var plFill = document.getElementById('plFill'), plCur = document.getElementById('plCur'), plDur = document.getElementById('plDur');
+function fmt(s) { s = Math.floor(s || 0); var m = Math.floor(s / 60); var x = s % 60; return m + ':' + (x < 10 ? '0' : '') + x; }
+function pmLoad(i) { var t = playlist[i]; audio.src = t.src; plTitle.textContent = t.title; plArt.src = t.cover; plSub.textContent = 'paused'; }
+window.pmToggle = function () {
+    if (audio.paused) { audio.play().catch(function(){}); plIcon.classList.replace('fa-play','fa-pause'); plArt.classList.add('spin'); plSub.textContent = 'now playing'; }
+    else { audio.pause(); plIcon.classList.replace('fa-pause','fa-play'); plArt.classList.remove('spin'); plSub.textContent = 'paused'; }
 };
-function playNow() { audio.play().then(function () { pIcon.classList.replace('fa-play', 'fa-pause'); pArt.classList.add('spin'); pStatus.textContent = 'playing'; }).catch(function () {}); }
-window.next = function () { idx = (idx + 1) % playlist.length; load(idx); playNow(); };
-window.prev = function () { idx = (idx - 1 + playlist.length) % playlist.length; load(idx); playNow(); };
-audio.addEventListener('ended', window.next);
-load(0);
+function pmPlay() { audio.play().then(function(){ plIcon.classList.replace('fa-play','fa-pause'); plArt.classList.add('spin'); plSub.textContent = 'now playing'; }).catch(function(){}); }
+window.pmNext = function () { pi = (pi + 1) % playlist.length; pmLoad(pi); pmPlay(); };
+window.pmPrev = function () { pi = (pi - 1 + playlist.length) % playlist.length; pmLoad(pi); pmPlay(); };
+audio.addEventListener('ended', window.pmNext);
+audio.addEventListener('timeupdate', function () {
+    var p = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+    plFill.style.width = p + '%'; plCur.textContent = fmt(audio.currentTime); plDur.textContent = fmt(audio.duration);
+});
+document.getElementById('plTrack').addEventListener('click', function (e) {
+    var r = this.getBoundingClientRect();
+    if (audio.duration) audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+});
+var vol = document.getElementById('vol'), volIcon = document.getElementById('volIcon');
+audio.volume = 0.55;
+vol.addEventListener('input', function () {
+    audio.volume = this.value / 100;
+    volIcon.className = this.value == 0 ? 'fa-solid fa-volume-xmark' : this.value < 50 ? 'fa-solid fa-volume-low' : 'fa-solid fa-volume-high';
+});
+pmLoad(0);
 
-/* discord presence (lanyard) */
+/* ── enter screen ─────────────────────────── */
+var entered = false;
+function doEnter() {
+    if (entered) return; entered = true;
+    document.getElementById('enter').classList.add('gone');
+    document.body.classList.add('entered');
+    pmPlay();
+}
+document.getElementById('enter').addEventListener('click', doEnter);
+
+/* ── discord presence (lanyard) ───────────── */
 var userId = "747411610389446747";
-var spotifyState = null;
-function applyActivity(data) {
-    var kind = document.getElementById('actKind');
-    var title = document.getElementById('actTitle');
-    var sub = document.getElementById('actSub');
-    var art = document.getElementById('actArt');
-    kind.classList.remove('spotify', 'gaming');
-    art.classList.remove('spin');
-    spotifyState = null;
-
-    /* hero status pill */
-    var heroState = document.getElementById('heroState');
-    var st = data.discord_status || 'offline';
-    var heroTxt = { online: 'online now', idle: 'away', dnd: 'do not disturb', offline: 'offline' }[st] || st;
+var spState = null;
+function applyPresence(data) {
+    var card = document.getElementById('presence');
+    var kind = document.getElementById('prKind'), title = document.getElementById('prTitle'),
+        sub = document.getElementById('prSub'), art = document.getElementById('prArt');
+    card.classList.remove('spotify', 'gaming'); kind.classList.remove('spotify','gaming');
+    art.classList.remove('spin'); spState = null;
 
     if (data.listening_to_spotify && data.spotify) {
         var sp = data.spotify;
-        kind.classList.add('spotify');
+        card.classList.add('spotify'); kind.classList.add('spotify');
         kind.innerHTML = '<i class="fa-brands fa-spotify"></i> listening on spotify';
-        title.textContent = sp.song || '';
-        sub.textContent = (sp.artist || '').replace(/;/g, ', ');
-        if (sp.album_art_url) art.src = sp.album_art_url;
-        art.classList.add('spin');
-        heroState.innerHTML = 'listening to <b>' + (sp.song || 'spotify') + '</b>';
+        title.textContent = sp.song || ''; sub.textContent = (sp.artist || '').replace(/;/g, ', ');
+        if (sp.album_art_url) art.src = sp.album_art_url; art.classList.add('spin');
+        if (sp.timestamps) { spState = { start: sp.timestamps.start, end: sp.timestamps.end }; updateSp(); }
         return;
     }
     var game = (data.activities || []).find(function (a) { return a.type === 0; });
     if (game) {
-        kind.classList.add('gaming');
+        card.classList.add('gaming'); kind.classList.add('gaming');
         kind.innerHTML = '<i class="fa-solid fa-gamepad"></i> playing';
-        title.textContent = game.name || '';
-        sub.textContent = game.details || game.state || 'in game';
+        title.textContent = game.name || ''; sub.textContent = game.details || game.state || 'in game';
         if (game.assets && game.assets.large_image && game.application_id) {
             var img = game.assets.large_image;
             if (img.indexOf('mp:external/') === 0) art.src = 'https://media.discordapp.net/' + img.replace('mp:', '');
-            else if (img.indexOf('spotify:') === 0) art.src = 'https://i.scdn.co/image/' + img.replace('spotify:', '');
             else art.src = 'https://cdn.discordapp.com/app-assets/' + game.application_id + '/' + img + '.png';
         }
-        heroState.innerHTML = 'playing <b>' + (game.name || 'a game') + '</b>';
         return;
     }
     var custom = (data.activities || []).find(function (a) { return a.type === 4; });
-    if (custom && custom.state) {
-        kind.innerHTML = '<i class="fa-solid fa-comment"></i> status';
-        title.textContent = custom.state;
-        sub.textContent = heroTxt;
-        heroState.innerHTML = '<b>' + heroTxt + '</b>';
-        return;
-    }
+    var st = data.discord_status || 'offline';
+    if (custom && custom.state) { kind.innerHTML = '<i class="fa-solid fa-comment"></i> status'; title.textContent = custom.state; sub.textContent = st; return; }
     kind.innerHTML = '<i class="fa-brands fa-discord"></i> discord';
-    title.textContent = st === 'offline' ? 'offline' : 'online, nothing playing';
-    sub.textContent = st === 'offline' ? 'back soon' : 'dm me';
-    heroState.innerHTML = '<b>' + heroTxt + '</b>';
+    title.textContent = st === 'offline' ? 'offline' : (st === 'dnd' ? 'do not disturb' : st);
+    sub.textContent = st === 'offline' ? 'not around right now' : 'dm me';
 }
+function updateSp() {
+    if (!spState) return;
+    var now = Date.now(), total = spState.end - spState.start, played = Math.max(0, Math.min(total, now - spState.start));
+    document.getElementById('prFill').style.width = (total > 0 ? (played / total) * 100 : 0) + '%';
+    document.getElementById('prCur').textContent = fmt(played / 1000);
+    document.getElementById('prDur').textContent = fmt(total / 1000);
+}
+setInterval(updateSp, 1000);
 function fetchStatus() {
-    fetch('https://api.lanyard.rest/v1/users/' + userId)
-        .then(function (r) { return r.json(); })
-        .then(function (json) {
-            var data = json.data;
-            if (!data) return;
-            var dot = document.getElementById('heroDot');
-            dot.classList.remove('online', 'idle', 'dnd');
-            if (['online', 'idle', 'dnd'].indexOf(data.discord_status) >= 0) dot.classList.add(data.discord_status);
-            applyActivity(data);
-        })
-        .catch(function () {});
+    fetch('https://api.lanyard.rest/v1/users/' + userId).then(function (r) { return r.json(); }).then(function (json) {
+        var data = json.data; if (!data) return;
+        if (data.discord_user && data.discord_user.avatar) {
+            var u = 'https://cdn.discordapp.com/avatars/' + userId + '/' + data.discord_user.avatar + '.png?size=256';
+            document.getElementById('pfp').src = u;
+        }
+        var dot = document.getElementById('pfpStatus'); dot.classList.remove('online','idle','dnd');
+        if (['online','idle','dnd'].indexOf(data.discord_status) >= 0) dot.classList.add(data.discord_status);
+        applyPresence(data);
+    }).catch(function () {});
 }
 fetchStatus();
 setInterval(fetchStatus, 15000);
