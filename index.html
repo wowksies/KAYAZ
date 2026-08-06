@@ -375,6 +375,7 @@ var video = document.getElementById('bgv');
     var card = document.querySelector('.card.lg');
     var canvas = document.getElementById('cardGlass');
     if (!card || !canvas) return;
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 720) { canvas.style.display = 'none'; return; }
     var gl = canvas.getContext('webgl', { premultipliedAlpha: false, alpha: true });
     if (!gl) { canvas.style.display = 'none'; return; }
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
