@@ -509,22 +509,40 @@ function updateSp() {
     document.getElementById('prDur').textContent = fmt(total / 1000);
 }
 setInterval(updateSp, 1000);
-function fetchStatus() {
-    fetch('https://api.lanyard.rest/v1/users/' + userId).then(function (r) { return r.json(); }).then(function (json) {
-        var data = json.data; if (!data) return;
-        if (data.discord_user && data.discord_user.avatar) {
-            document.getElementById('pfp').src = 'https://cdn.discordapp.com/avatars/' + userId + '/' + data.discord_user.avatar + '.png?size=256';
-        }
-        var st = data.discord_status || 'offline';
-        var col = statusColors[st] || statusColors.offline;
-        document.documentElement.style.setProperty('--status', col);
-        document.getElementById('pfpStatus').style.background = col;
-        document.getElementById('pfpStatus').style.boxShadow = '0 0 10px ' + col;
-        applyPresence(data);
-    }).catch(function () {});
+function render(data) {
+    if (!data) return;
+    if (data.discord_user && data.discord_user.avatar) {
+        document.getElementById('pfp').src = 'https://cdn.discordapp.com/avatars/' + userId + '/' + data.discord_user.avatar + '.png?size=256';
+    }
+    var st = data.discord_status || 'offline';
+    var col = statusColors[st] || statusColors.offline;
+    document.documentElement.style.setProperty('--status', col);
+    var dot = document.getElementById('pfpStatus');
+    dot.style.background = col;
+    dot.style.boxShadow = '0 0 10px ' + col;
+    applyPresence(data);
 }
-fetchStatus();
-setInterval(fetchStatus, 15000);
+(function () {
+    var ws, hb, restTimer;
+    function startRest() {
+        if (restTimer) return;
+        function poll() { fetch('https://api.lanyard.rest/v1/users/' + userId).then(function (r) { return r.json(); }).then(function (j) { if (j && j.data) render(j.data); }).catch(function () {}); }
+        poll(); restTimer = setInterval(poll, 10000);
+    }
+    function connect() {
+        try { ws = new WebSocket('wss://api.lanyard.rest/socket'); } catch (e) { startRest(); return; }
+        ws.onmessage = function (ev) {
+            var msg; try { msg = JSON.parse(ev.data); } catch (e) { return; }
+            if (msg.op === 1) {
+                ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: userId } }));
+                hb = setInterval(function () { if (ws.readyState === 1) ws.send(JSON.stringify({ op: 3 })); }, msg.d.heartbeat_interval);
+            } else if (msg.op === 0 && msg.d) { render(msg.d); }
+        };
+        ws.onclose = function () { if (hb) clearInterval(hb); startRest(); };
+        ws.onerror = function () { try { ws.close(); } catch (e) {} };
+    }
+    if ('WebSocket' in window) connect(); else startRest();
+})();
 </script>
 </body>
 </html>
