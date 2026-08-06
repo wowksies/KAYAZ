@@ -116,6 +116,7 @@ body.entered .card-wrap { opacity: 1; transform: none; }
 .tagline { text-align: center; color: var(--dim); font-size: 0.94rem; margin-top: 9px;
     font-family: var(--mono); letter-spacing: 0.02em; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
 .tagline .heart { color: var(--accent); text-shadow: 0 0 10px rgba(255,45,70,0.6); }
+.tagline .tz { color: var(--mute); }
 .meta { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px;
     font-size: 0.76rem; color: var(--mute); font-family: var(--mono); }
 .meta span { display: inline-flex; align-items: center; gap: 6px; }
@@ -235,7 +236,7 @@ body.entered .mute { opacity: 1; visibility: visible; }
             <div class="name-row">
                 <div class="uname">kayaz</div>
             </div>
-            <div class="tagline">Externals <span class="heart">&#10084;</span></div>
+            <div class="tagline"><i class="fa-regular fa-clock heart"></i> <span id="clock">--:--:--</span> <span class="tz">· ireland</span></div>
             <div class="meta">
                 <span><i class="fa-solid fa-location-dot"></i> europe</span>
                 <span><i class="fa-solid fa-eye"></i> <b id="views">&mdash;</b> views</span>
@@ -322,13 +323,22 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 
 (function () {
     var el = document.getElementById('views');
-    var base = 'https://api.counterapi.dev/v1/kayaz-bio-x7q/views';
     var counted = sessionStorage.getItem('kv_counted');
-    var url = counted ? base + '/' : base + '/up';
+    var url = 'https://abacus.jasoncameron.dev/' + (counted ? 'get' : 'hit') + '/kayaz-bio/pageviews';
     fetch(url).then(function (r) { return r.json(); }).then(function (d) {
-        if (d && typeof d.count === 'number') { el.textContent = d.count.toLocaleString(); sessionStorage.setItem('kv_counted', '1'); }
-        else el.textContent = '—';
-    }).catch(function () { el.textContent = '—'; });
+        if (d && typeof d.value === 'number') { el.textContent = d.value.toLocaleString(); sessionStorage.setItem('kv_counted', '1'); }
+    }).catch(function () {});
+})();
+
+(function () {
+    var el = document.getElementById('clock');
+    function tick() {
+        try {
+            el.textContent = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+        } catch (e) { el.textContent = new Date().toLocaleTimeString(); }
+    }
+    tick();
+    setInterval(tick, 1000);
 })();
 
 (function () {
