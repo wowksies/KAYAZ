@@ -236,7 +236,7 @@ body.entered .mute { opacity: 1; visibility: visible; }
             <div class="name-row">
                 <div class="uname">kayaz</div>
             </div>
-            <div class="tagline"><i class="fa-regular fa-clock heart"></i> <span id="clock">--:--:--</span> <span class="tz">· ireland</span></div>
+            <div class="tagline"><i class="fa-regular fa-clock heart"></i> <span class="tz">my time:</span> <span id="clock">--:--</span></div>
             <div class="meta">
                 <span><i class="fa-solid fa-location-dot"></i> europe</span>
                 <span><i class="fa-solid fa-eye"></i> <b id="views">&mdash;</b> views</span>
@@ -334,7 +334,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     var el = document.getElementById('clock');
     function tick() {
         try {
-            el.textContent = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+            el.textContent = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date());
         } catch (e) { el.textContent = new Date().toLocaleTimeString(); }
     }
     tick();
