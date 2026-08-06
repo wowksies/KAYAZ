@@ -43,7 +43,6 @@ img { display: block; max-width: 100%; }
     object-fit: cover; z-index: 0; pointer-events: none;
     filter: saturate(1.05) brightness(0.9);
 }
-#glass { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 .tint { position: fixed; inset: 0; z-index: 1; pointer-events: none;
     background: radial-gradient(120% 100% at 50% 40%, transparent 40%, rgba(5,2,3,0.5) 100%),
                 linear-gradient(180deg, rgba(80,6,16,0.12), transparent 40%, rgba(5,2,3,0.35)); }
@@ -220,7 +219,6 @@ body.entered .mute { opacity: 1; visibility: visible; }
 <video id="bgv" autoplay muted loop playsinline preload="auto">
     <source src="dp.mp4" type="video/mp4">
 </video>
-<canvas id="glass"></canvas>
 <div class="tint"></div>
 
 <div class="enter" id="enter">
@@ -275,52 +273,6 @@ body.entered .mute { opacity: 1; visibility: visible; }
 <button class="mute" id="mute" title="mute music" aria-label="mute music"><i class="fa-solid fa-volume-high" id="muteIcon"></i></button>
 <audio id="audio" loop src="assets/September_spotdown.org.mp3"></audio>
 
-<script id="frag" type="x-shader/x-fragment">
-precision mediump float;
-uniform vec3 iResolution;
-uniform vec4 iMouse;
-uniform vec2 iTexRes;
-uniform sampler2D iChannel0;
-vec2 coverUV(vec2 uv){
-  vec2 s = iResolution.xy;
-  vec2 i = iTexRes;
-  if (i.x < 1.0 || i.y < 1.0) return uv;
-  float rs = s.x / s.y;
-  float ri = i.x / i.y;
-  vec2 newSize = rs < ri ? vec2(i.x * s.y / i.y, s.y) : vec2(s.x, i.y * s.x / i.x);
-  vec2 offset = (rs < ri ? vec2((newSize.x - s.x) * 0.5, 0.0) : vec2(0.0, (newSize.y - s.y) * 0.5)) / newSize;
-  return uv * s / newSize + offset;
-}
-void main(){
-  vec2 fragCoord = gl_FragCoord.xy;
-  vec2 uv = fragCoord / iResolution.xy;
-  vec2 mouse = iMouse.xy;
-  if (length(mouse) < 1.0) mouse = iResolution.xy * 0.5;
-  vec2 m2 = uv - mouse / iResolution.xy;
-  float roundedBox = pow(abs(m2.x * iResolution.x / iResolution.y), 6.0) + pow(abs(m2.y), 6.0);
-  float rb1 = clamp((1.0 - roundedBox * 9000.0) * 8.0, 0.0, 1.0);
-  float rb2 = clamp((0.95 - roundedBox * 8600.0) * 16.0, 0.0, 1.0) - clamp((0.9 - roundedBox * 8600.0) * 16.0, 0.0, 1.0);
-  float rb3 = clamp((1.5 - roundedBox * 10000.0) * 2.0, 0.0, 1.0) - clamp((1.0 - roundedBox * 10000.0) * 2.0, 0.0, 1.0);
-  float transition = smoothstep(0.0, 1.0, rb1 + rb2);
-  if (transition <= 0.0) { gl_FragColor = vec4(0.0); return; }
-  vec2 lens = ((uv - 0.5) * (1.0 - roundedBox * 4600.0) + 0.5);
-  vec4 col = vec4(0.0);
-  float total = 0.0;
-  for (float x = -4.0; x <= 4.0; x++) {
-    for (float y = -4.0; y <= 4.0; y++) {
-      vec2 off = vec2(x, y) * 0.5 / iResolution.xy;
-      col += texture2D(iChannel0, coverUV(off + lens));
-      total += 1.0;
-    }
-  }
-  col /= total;
-  float gradient = clamp((clamp(m2.y, 0.0, 0.2) + 0.1) / 2.0, 0.0, 1.0) + clamp((clamp(-m2.y, -1000.0, 0.2) * rb3 + 0.1) / 2.0, 0.0, 1.0);
-  vec3 rim = vec3(rb2) * vec3(0.4, 0.06, 0.12);
-  vec4 lighting = clamp(col + vec4(rb1) * gradient + vec4(rb2) * 0.3, 0.0, 1.0);
-  gl_FragColor = vec4(lighting.rgb + rim, transition);
-}
-</script>
-
 <script>
 'use strict';
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -356,68 +308,6 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 })();
 
 var video = document.getElementById('bgv');
-(function () {
-    var canvas = document.getElementById('glass');
-    if (window.matchMedia('(pointer: coarse)').matches) { canvas.style.display = 'none'; return; }
-    var gl = canvas.getContext('webgl', { premultipliedAlpha: false, alpha: true });
-    if (!gl) { canvas.style.display = 'none'; return; }
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
-
-    var vs = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vs, 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }');
-    gl.compileShader(vs);
-    var fs = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fs, document.getElementById('frag').textContent);
-    gl.compileShader(fs);
-    if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) { canvas.style.display = 'none'; return; }
-    var prog = gl.createProgram();
-    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog); gl.useProgram(prog);
-
-    var buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-    var p = gl.getAttribLocation(prog, 'p');
-    gl.enableVertexAttribArray(p);
-    gl.vertexAttribPointer(p, 2, gl.FLOAT, false, 0, 0);
-
-    var uRes = gl.getUniformLocation(prog, 'iResolution');
-    var uMouse = gl.getUniformLocation(prog, 'iMouse');
-    var uTex = gl.getUniformLocation(prog, 'iChannel0');
-    var uTexRes = gl.getUniformLocation(prog, 'iTexRes');
-
-    var mouse = [window.innerWidth / 2, window.innerHeight / 2];
-    window.addEventListener('mousemove', function (e) { mouse = [e.clientX, window.innerHeight - e.clientY]; });
-
-    var tex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.clearColor(0, 0, 0, 0);
-
-    var ready = false;
-    function render() {
-        if (video.readyState >= 2) {
-            gl.bindTexture(gl.TEXTURE_2D, tex);
-            try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video); ready = true; } catch (e) {}
-        }
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        if (ready) {
-            gl.uniform3f(uRes, canvas.width, canvas.height, 1.0);
-            gl.uniform4f(uMouse, mouse[0], mouse[1], 0, 0);
-            gl.uniform2f(uTexRes, video.videoWidth || 1920, video.videoHeight || 1080);
-            gl.uniform1i(uTex, 0);
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        }
-        requestAnimationFrame(render);
-    }
-    render();
-})();
 
 var audio = document.getElementById('audio');
 audio.volume = 0.55;
@@ -468,6 +358,14 @@ function gameArtUrl(game) {
     for (var i = 0; i < gameLogos.length; i++) if (name.indexOf(gameLogos[i].m) >= 0) return gameLogos[i].src;
     return null;
 }
+var appIconCache = {};
+function fetchAppIcon(appId, cb) {
+    if (appIconCache[appId] !== undefined) { cb(appIconCache[appId]); return; }
+    fetch('https://discord.com/api/v10/applications/' + appId + '/rpc').then(function (r) { return r.json(); }).then(function (d) {
+        var url = d && d.icon ? 'https://cdn.discordapp.com/app-icons/' + appId + '/' + d.icon + '.png' : null;
+        appIconCache[appId] = url; cb(url);
+    }).catch(function () { appIconCache[appId] = null; cb(null); });
+}
 function applyPresence(data) {
     var card = document.getElementById('presence');
     var kind = document.getElementById('prKind'), title = document.getElementById('prTitle'), sub = document.getElementById('prSub');
@@ -496,10 +394,18 @@ function applyPresence(data) {
         card.classList.add('gaming');
         var verb = game.type === 2 ? 'listening to' : game.type === 3 ? 'watching' : 'playing';
         kind.innerHTML = '<span class="live"></span> ' + verb;
-        title.textContent = game.name || '';
+        var gname = game.name || '';
+        title.textContent = gname;
         sub.textContent = game.details || game.state || customText || 'in game';
         var url = gameArtUrl(game);
-        if (url) setArt(url); else setIcon('<i class="fa-solid fa-gamepad"></i>', '#ff8f6b');
+        if (url) { setArt(url); }
+        else {
+            setIcon('<i class="fa-solid fa-gamepad"></i>', '#ff8f6b');
+            if (game.application_id) fetchAppIcon(game.application_id, function (iconUrl) {
+                var pc = document.getElementById('presence');
+                if (iconUrl && pc.classList.contains('gaming') && document.getElementById('prTitle').textContent === gname) setArt(iconUrl);
+            });
+        }
         return;
     }
 
