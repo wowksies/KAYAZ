@@ -195,14 +195,20 @@ body.entered .card-wrap { opacity: 1; transform: none; }
 .social.s-tiktok  { --bc: #34ffee; --bc-glow: rgba(255,0,80,0.38); }
 .social.s-github  { --bc: #ffffff; --bc-glow: rgba(255,255,255,0.24); }
 
-.mute { position: fixed; bottom: 18px; right: 18px; z-index: 30; width: 42px; height: 42px; border-radius: 13px;
-    display: flex; align-items: center; justify-content: center; color: var(--dim); font-size: 0.9rem;
-    background: rgba(20,10,12,0.5); border: 1px solid rgba(255,255,255,0.12);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.15), 0 6px 16px rgba(0,0,0,0.4);
-    opacity: 0; visibility: hidden; transition: opacity 0.4s, transform 0.18s, color 0.18s, border-color 0.18s; }
-body.entered .mute { opacity: 1; visibility: visible; }
-.mute:hover { color: var(--accent); border-color: rgba(255,45,70,0.4); transform: scale(1.07); }
+.vol { position: fixed; bottom: 18px; right: 18px; z-index: 30; display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px 7px 8px; border-radius: 16px;
+    background: rgba(20,10,12,0.55); border: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(12px) saturate(140%); -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.16), 0 6px 18px rgba(0,0,0,0.42);
+    opacity: 0; visibility: hidden; transition: opacity 0.4s, visibility 0.4s; }
+body.entered .vol { opacity: 1; visibility: visible; }
+.vol-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    color: var(--dim); font-size: 0.95rem; transition: color 0.15s, transform 0.15s; }
+.vol-btn:hover { color: var(--accent); transform: scale(1.1); }
+.vol input[type=range] { width: 104px; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 4px; outline: none; cursor: pointer;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent) var(--p, 55%), rgba(255,255,255,0.18) var(--p, 55%), rgba(255,255,255,0.18) 100%); }
+.vol input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px rgba(255,45,70,0.7); cursor: pointer; }
+.vol input[type=range]::-moz-range-thumb { width: 15px; height: 15px; border: none; border-radius: 50%; background: #fff; box-shadow: 0 0 8px rgba(255,45,70,0.7); cursor: pointer; }
 
 .badge { transition: transform 0.18s, background 0.18s, color 0.18s, border-color 0.18s; }
 .badge:hover { color: #fff; background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
@@ -277,7 +283,10 @@ body.entered .mute { opacity: 1; visibility: visible; }
     </div>
 </main>
 
-<button class="mute" id="mute" title="mute music" aria-label="mute music"><i class="fa-solid fa-volume-high" id="muteIcon"></i></button>
+<div class="vol" id="vol">
+    <button class="vol-btn" id="volBtn" aria-label="mute"><i class="fa-solid fa-volume-high" id="muteIcon"></i></button>
+    <input type="range" id="volRange" min="0" max="100" value="55" aria-label="volume">
+</div>
 <audio id="audio" loop src="Yasuha - Fly-day Chinatown.mp3"></audio>
 
 <script id="prGlassFrag" type="x-shader/x-fragment">
@@ -434,11 +443,26 @@ var audio = document.getElementById('audio');
 audio.volume = 0.55;
 function fmt(s) { s = Math.floor(s || 0); var m = Math.floor(s / 60); var x = s % 60; return m + ':' + (x < 10 ? '0' : '') + x; }
 
-var muteIcon = document.getElementById('muteIcon');
-document.getElementById('mute').addEventListener('click', function () {
-    audio.muted = !audio.muted;
-    muteIcon.className = audio.muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+var muteIcon = document.getElementById('muteIcon'), volRange = document.getElementById('volRange'), volBtn = document.getElementById('volBtn');
+var lastVol = 0.55;
+function applyVol(v) {
+    v = Math.max(0, Math.min(1, v));
+    audio.volume = v; audio.muted = v === 0;
+    volRange.value = Math.round(v * 100);
+    volRange.style.setProperty('--p', Math.round(v * 100) + '%');
+    muteIcon.className = v === 0 ? 'fa-solid fa-volume-xmark' : v < 0.5 ? 'fa-solid fa-volume-low' : 'fa-solid fa-volume-high';
+}
+volRange.addEventListener('input', function () { applyVol(this.value / 100); });
+volBtn.addEventListener('click', function () {
+    if (audio.volume > 0) { lastVol = audio.volume; applyVol(0); }
+    else { applyVol(lastVol || 0.55); }
 });
+applyVol(0.55);
+
+(function () {
+    var s = 'kayaz - flip u dude · ';
+    setInterval(function () { s = s.slice(1) + s.charAt(0); document.title = s; }, 220);
+})();
 
 var entered = false;
 function doEnter() {
@@ -587,7 +611,7 @@ function render(data) {
 </script>
 
 <script type="module">
-import * as THREE from './assets/three.module.js';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
 const vertexShader = `
 varying vec2 vUv;
