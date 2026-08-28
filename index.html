@@ -171,6 +171,63 @@ body.entered .card-wrap { opacity: 1; transform: none; }
 .eq span:nth-child(2) { animation-delay: 0.2s; } .eq span:nth-child(3) { animation-delay: 0.4s; } .eq span:nth-child(4) { animation-delay: 0.15s; }
 @keyframes eq { 0%,100% { height: 25%; } 50% { height: 95%; } }
 
+.proj-btn { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; margin-top: 16px;
+    padding: 13px 18px; border-radius: 16px;
+    font-family: var(--sans); font-size: 0.92rem; font-weight: 700; color: var(--text); letter-spacing: 0.01em;
+    background: linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3), inset -1px -1px 0 rgba(0,0,0,0.25), 0 6px 20px rgba(0,0,0,0.36);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+    transition: transform 0.2s cubic-bezier(.2,.8,.2,1), border-color 0.2s, box-shadow 0.2s, color 0.2s; }
+.proj-btn i { color: var(--accent); }
+.proj-btn:hover { transform: translateY(-3px); border-color: rgba(255,45,70,0.55); color: #fff;
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.34), 0 12px 30px rgba(255,45,70,0.28); }
+.proj-btn:active { transform: translateY(-1px); }
+.proj-count { font-family: var(--mono); font-size: 0.66rem; padding: 2px 7px; border-radius: 100px; color: var(--accent);
+    background: rgba(255,45,70,0.16); border: 1px solid rgba(255,45,70,0.34); }
+
+.modal { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: rgba(4,2,3,0.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    opacity: 0; visibility: hidden; transition: opacity 0.32s ease, visibility 0.32s; }
+.modal.open { opacity: 1; visibility: visible; }
+.modal-card { width: 100%; max-width: 560px; max-height: 86vh; display: flex; flex-direction: column;
+    transform: translateY(16px) scale(0.985); transition: transform 0.36s cubic-bezier(.2,.8,.2,1); }
+.modal.open .modal-card { transform: none; }
+.modal-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.12); }
+.modal-title { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 1rem; text-shadow: 0 1px 6px rgba(0,0,0,0.6); }
+.modal-title i { color: var(--accent); }
+.modal-x { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    color: var(--dim); background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); transition: 0.16s; }
+.modal-x:hover { color: #fff; background: rgba(255,45,70,0.3); border-color: rgba(255,45,70,0.5); }
+.modal-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+.modal-body::-webkit-scrollbar { width: 8px; }
+.modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 8px; }
+
+.pcard { display: block; border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.16), 0 6px 18px rgba(0,0,0,0.3);
+    transition: transform 0.22s cubic-bezier(.2,.8,.2,1), border-color 0.22s, box-shadow 0.22s; }
+a.pcard:hover { transform: translateY(-4px); border-color: rgba(255,45,70,0.5); box-shadow: 0 14px 32px rgba(255,45,70,0.24); }
+.pcard-shot { width: 100%; aspect-ratio: 16 / 7.2; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.1); background: #0b0709; }
+.pcard-shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+a.pcard:hover .pcard-shot img { transform: scale(1.04); }
+.pcard-info { padding: 14px 15px 15px; }
+.pcard-top { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.pcard-name { font-size: 1.02rem; font-weight: 700; text-shadow: 0 1px 6px rgba(0,0,0,0.6); }
+.pill { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 3px 8px; border-radius: 100px; }
+.pill.open { color: #6ee7a8; background: rgba(61,220,145,0.14); border: 1px solid rgba(61,220,145,0.36); }
+.pill.closed { color: #ffa48c; background: rgba(255,143,107,0.14); border: 1px solid rgba(255,143,107,0.36); }
+.pcard-desc { font-size: 0.84rem; color: var(--dim); margin-top: 7px; line-height: 1.55; text-shadow: 0 1px 6px rgba(0,0,0,0.6); }
+.pcard-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.pcard-tags span { font-family: var(--mono); font-size: 0.64rem; color: var(--mute);
+    padding: 3px 8px; border-radius: 7px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); }
+.pcard-link { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--accent); }
+.pcard-link.muted { color: var(--mute); }
+
 .socials { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
 .social { position: relative; width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
     font-size: 1.25rem; color: var(--text);
@@ -278,10 +335,47 @@ body.entered .vol { opacity: 1; visibility: visible; }
                 <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="social s-github" data-label="github"><i class="fa-brands fa-github"></i></a>
             </div>
 
+            <button class="proj-btn" id="projBtn"><i class="fa-solid fa-folder-open"></i> projects <span class="proj-count">2</span></button>
+
             <div class="foot">&copy; <span id="yr"></span> &middot; kayaz</div>
         </section>
     </div>
 </main>
+
+<div class="modal" id="projModal">
+    <div class="modal-card lg" role="dialog" aria-label="projects">
+        <div class="modal-head">
+            <div class="modal-title"><i class="fa-solid fa-folder-open"></i> projects</div>
+            <button class="modal-x" id="projClose" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <a class="pcard" href="https://github.com/wowksies/Omnis-CS2-External" target="_blank" rel="noopener">
+                <div class="pcard-shot"><img src="projects/cs2.png" alt="Omnis CS2 External" loading="lazy"></div>
+                <div class="pcard-info">
+                    <div class="pcard-top">
+                        <div class="pcard-name">Omnis CS2 External</div>
+                        <span class="pill open">open source</span>
+                    </div>
+                    <div class="pcard-desc">Full external for CS2 — aimbot, ESP, visuals and a complete skin, knife &amp; glove changer.</div>
+                    <div class="pcard-tags"><span>C++</span><span>external</span><span>skinchanger</span></div>
+                    <div class="pcard-link"><i class="fa-brands fa-github"></i> view source <i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </div>
+            </a>
+            <div class="pcard">
+                <div class="pcard-shot"><img src="projects/r6.png" alt="Omnis R6 External" loading="lazy"></div>
+                <div class="pcard-info">
+                    <div class="pcard-top">
+                        <div class="pcard-name">Omnis R6 External</div>
+                        <span class="pill closed">closed source</span>
+                    </div>
+                    <div class="pcard-desc">Fully external, read-only R6 Siege cheat — no memory writes, ESP and glow rendered outside the game.</div>
+                    <div class="pcard-tags"><span>C++</span><span>read-only</span><span>siege</span></div>
+                    <div class="pcard-link muted"><i class="fa-solid fa-lock"></i> source not public</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="vol" id="vol">
     <button class="vol-btn" id="volBtn" aria-label="mute"><i class="fa-solid fa-volume-high" id="muteIcon"></i></button>
@@ -462,6 +556,19 @@ applyVol(0.55);
 (function () {
     var s = 'kayaz - flip u dude · ';
     setInterval(function () { s = s.slice(1) + s.charAt(0); document.title = s; }, 220);
+})();
+
+(function () {
+    var modal = document.getElementById('projModal');
+    var open = document.getElementById('projBtn');
+    var close = document.getElementById('projClose');
+    if (!modal || !open) return;
+    function show() { modal.classList.add('open'); }
+    function hide() { modal.classList.remove('open'); }
+    open.addEventListener('click', show);
+    close.addEventListener('click', hide);
+    modal.addEventListener('click', function (e) { if (e.target === modal) hide(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
 })();
 
 var entered = false;
