@@ -102,6 +102,14 @@ tr:last-child td { border-bottom: none; }
 .st.used::before { background: var(--mute); } .st.used { color: var(--mute); }
 .st.rev::before { background: var(--warn); } .st.rev { color: var(--warn); }
 
+.edit-row td { background: var(--surface-2); }
+.edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 4px 0 10px; }
+.edit-grid .full { grid-column: 1 / -1; }
+.edit-grid .f { margin-bottom: 0; }
+.edit-actions { display: flex; gap: 8px; align-items: center; padding-bottom: 10px; flex-wrap: wrap; }
+.edit-actions .chk { margin-bottom: 0; }
+@media (max-width: 700px) { .edit-grid { grid-template-columns: 1fr; } }
+
 .msg { padding: 11px 14px; border-radius: 9px; font-size: 0.85rem; margin-bottom: 14px; display: none; }
 .msg.on { display: block; }
 .msg.err { background: #2a1216; border: 1px solid #4d1f28; color: #ff9aa6; }
@@ -351,13 +359,54 @@ function loadGames() {
                 '<td><strong>' + esc(g.title) + '</strong>' + (g.kb ? ' <span class="tag">keys</span>' : '') + '</td>' +
                 '<td class="hide-s"><span class="tag">' + esc(g.cat || '') + '</span></td>' +
                 '<td class="hide-s mono" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(g.url) + '</td>' +
-                '<td style="text-align:right"><button class="btn sm d" data-del="' + esc(g.id) + '">delete</button></td></tr>';
+                '<td style="text-align:right;white-space:nowrap"><button class="btn sm" data-edit="' + esc(g.id) + '">edit</button> ' +
+                '<button class="btn sm d" data-del="' + esc(g.id) + '">delete</button></td></tr>' +
+                '<tr class="edit-row" id="er-' + esc(g.id) + '" style="display:none"><td colspan="5">' +
+                '<div class="edit-grid">' +
+                '<div><label>title</label><input class="f" data-f="title" value="' + esc(g.title) + '"></div>' +
+                '<div><label>tag</label><input class="f" data-f="cat" value="' + esc(g.cat || '') + '"></div>' +
+                '<div class="full"><label>game link</label><input class="f" data-f="url" value="' + esc(g.url) + '"></div>' +
+                '<div class="full"><label>thumbnail link</label><input class="f" data-f="img" value="' + esc(/^data:/.test(g.img || '') ? '' : (g.img || '')) + '" placeholder="' + (/^data:/.test(g.img || '') ? 'uploaded image kept unless you type a link' : '') + '"></div>' +
+                '</div>' +
+                '<div class="edit-actions">' +
+                '<div class="chk"><input type="checkbox" data-f="kb"' + (g.kb ? ' checked' : '') + '><span style="color:var(--dim);font-size:0.85rem">needs keyboard</span></div>' +
+                '<div class="spacer"></div>' +
+                '<button class="btn sm" data-cancel="' + esc(g.id) + '">cancel</button>' +
+                '<button class="btn sm p" data-save="' + esc(g.id) + '">save changes</button>' +
+                '</div></td></tr>';
         }).join('');
         document.getElementById('gList').innerHTML = '<div style="overflow-x:auto"><table><thead><tr><th></th><th>title</th><th class="hide-s">tag</th><th class="hide-s">link</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
         [].forEach.call(document.querySelectorAll('[data-del]'), function (b) {
             b.addEventListener('click', function () {
                 if (!confirm('delete this game?')) return;
                 api('games', { method: 'DELETE', body: { id: b.dataset.del } }).then(loadGames);
+            });
+        });
+        [].forEach.call(document.querySelectorAll('[data-edit]'), function (b) {
+            b.addEventListener('click', function () {
+                var r = document.getElementById('er-' + b.dataset.edit);
+                r.style.display = r.style.display === 'none' ? '' : 'none';
+            });
+        });
+        [].forEach.call(document.querySelectorAll('[data-cancel]'), function (b) {
+            b.addEventListener('click', function () { document.getElementById('er-' + b.dataset.cancel).style.display = 'none'; });
+        });
+        [].forEach.call(document.querySelectorAll('[data-save]'), function (b) {
+            b.addEventListener('click', function () {
+                var id = b.dataset.save, row = document.getElementById('er-' + id);
+                var body = { id: id };
+                [].forEach.call(row.querySelectorAll('[data-f]'), function (i) {
+                    if (i.type === 'checkbox') body[i.dataset.f] = i.checked;
+                    else if (i.dataset.f === 'img') { if (i.value.trim()) body.img = i.value.trim(); }
+                    else body[i.dataset.f] = i.value;
+                });
+                b.disabled = true; b.textContent = 'saving...';
+                api('games', { method: 'PATCH', body: body }).then(function (r) {
+                    b.disabled = false; b.textContent = 'save changes';
+                    if (!r.ok) return msg(document.getElementById('gMsg'), r.data.error || 'save failed');
+                    msg(document.getElementById('gMsg'), 'saved', 'ok');
+                    loadGames();
+                }).catch(function () { b.disabled = false; b.textContent = 'save changes'; });
             });
         });
     });

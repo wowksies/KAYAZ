@@ -45,6 +45,33 @@ export default async function handler(req, res) {
     return send(res, 200, { id: r && r.name, game: g });
   }
 
+  if (req.method === 'PATCH') {
+    const body = await readBody(req);
+    const id = body.id;
+    if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) return send(res, 400, { error: 'bad id' });
+    const s = v => String(v || '').slice(0, 400);
+    const patch = {};
+    if (typeof body.title === 'string') {
+      const t = s(body.title).trim();
+      if (!t) return send(res, 400, { error: 'title cannot be empty' });
+      patch.title = t;
+    }
+    if (typeof body.url === 'string') {
+      const u = s(body.url).trim();
+      if (!/^https?:\/\//i.test(u)) return send(res, 400, { error: 'link must start with http' });
+      patch.url = u;
+    }
+    if (typeof body.cat === 'string') patch.cat = (s(body.cat).trim() || 'Game').slice(0, 40);
+    if (typeof body.img === 'string') {
+      const i = body.img.trim();
+      patch.img = /^(https?:\/\/|data:image\/)/i.test(i) ? i.slice(0, 400000) : '';
+    }
+    if (typeof body.kb === 'boolean') patch.kb = body.kb;
+    if (!Object.keys(patch).length) return send(res, 400, { error: 'nothing to change' });
+    try { await db.patch('games/' + id, patch); } catch (e) { return send(res, 500, { error: 'server error' }); }
+    return send(res, 200, { ok: true, patch });
+  }
+
   if (req.method === 'DELETE') {
     const { id } = await readBody(req);
     if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) return send(res, 400, { error: 'bad id' });
