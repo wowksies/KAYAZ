@@ -205,6 +205,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
         <div class="pbar-title" id="pTitle">game</div>
         <div style="display:flex;gap:8px;">
             <button class="pbtn" id="padBtn" onclick="togglePad()"><i class="fa-solid fa-gamepad"></i> <span class="lbl">controls</span></button>
+            <button class="pbtn" onclick="reloadDirect()" title="reload the game directly if it will not load"><i class="fa-solid fa-rotate"></i> <span class="lbl">fix</span></button>
             <button class="pbtn" onclick="goFull()"><i class="fa-solid fa-expand"></i> <span class="lbl">full</span></button>
         </div>
     </div>
@@ -347,8 +348,22 @@ function showNote(msg, ms) {
     showNote.t = setTimeout(function () { note.classList.remove('on'); }, ms || 3200);
 }
 
-function openGame(g) {
+var currentGame = null;
+
+function loadDirect(g, my) {
+    padAvailable = false;
+    padBtn.classList.remove('on');
+    frame.removeAttribute('srcdoc');
+    frame.src = g.url;
+    frame.onload = function () {
+        if (my !== token) return;
+        loading.style.display = 'none';
+    };
+}
+
+function openGame(g, forceDirect) {
     var my = ++token;
+    currentGame = g;
     document.getElementById('pTitle').textContent = g.title;
     player.classList.add('on');
     document.body.style.overflow = 'hidden';
@@ -359,35 +374,40 @@ function openGame(g) {
     frame.removeAttribute('srcdoc');
     frame.src = 'about:blank';
 
+    if (forceDirect || !isTouch || !g.kb) { loadDirect(g, my); return; }
+
     fetch(g.url).then(function (r) {
         if (!r.ok) throw new Error('bad');
         return r.text();
     }).then(function (html) {
         if (my !== token) return;
+        if (/type=['"]?module|\.wasm|serviceWorker|new\s+Worker|importmap|SharedArrayBuffer/i.test(html)) {
+            loadDirect(g, my);
+            showNote('this game runs on its own, on-screen controls are off for it');
+            return;
+        }
         var base = g.url.replace(/[^/]*$/, '');
         var doc = html;
         if (!/<base\s/i.test(doc)) doc = doc.replace(/<head([^>]*)>/i, '<head$1><base href="' + base + '">');
         if (!/<head/i.test(doc)) doc = '<head><base href="' + base + '"></head>' + doc;
-        doc += '\n<script>' + PAD_SRC + '<\/script>';
+        doc += '\n<' + 'script>' + PAD_SRC + '<\/' + 'script>';
         padAvailable = true;
         frame.srcdoc = doc;
         frame.onload = function () {
             if (my !== token) return;
             loading.style.display = 'none';
-            if (isTouch) { setPad(true); showNote('touch controls on — tap the controls button to hide'); }
+            setPad(true);
+            showNote('touch controls on, tap the controls button to hide');
         };
     }).catch(function () {
         if (my !== token) return;
-        padAvailable = false;
-        frame.removeAttribute('srcdoc');
-        frame.src = g.url;
-        frame.onload = function () {
-            if (my !== token) return;
-            loading.style.display = 'none';
-            if (isTouch) showNote('this game loads direct, on-screen controls are not available for it');
-        };
+        loadDirect(g, my);
     });
 }
+
+window.reloadDirect = function () {
+    if (currentGame) { showNote('reloading without controls'); openGame(currentGame, true); }
+};
 
 function closeGame() {
     token++;
@@ -404,7 +424,7 @@ function setPad(on) {
     if (frame.contentWindow) frame.contentWindow.postMessage({ kayaz: 'pad', on: on }, '*');
 }
 function togglePad() {
-    if (!padAvailable) { showNote('on-screen controls are not available for this game'); return; }
+    if (!padAvailable) { showNote('this game runs on its own, on-screen controls are not available for it'); return; }
     setPad(!padOn);
 }
 function goFull() {
