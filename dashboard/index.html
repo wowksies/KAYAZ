@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>kayaz — dashboard</title>
+<meta name="theme-color" content="#0c0709">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --accent: #e0293f;
+    --bg: #0a0709;
+    --surface: #120d0f;
+    --surface-2: #171012;
+    --line: #241a1d;
+    --text: #f2ecee;
+    --dim: #b9a9ad;
+    --mute: #7d6d71;
+    --ok: #35c07a;
+    --warn: #d9a441;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; font-size: 15px;
+    -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2b1f22; border-radius: 6px; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+.gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.gate-box { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; padding: 28px; }
+.gate-box h1 { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+.gate-box p { color: var(--mute); font-size: 0.86rem; margin-bottom: 22px; }
+
+label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--dim); margin-bottom: 6px; }
+.f { width: 100%; padding: 11px 13px; border-radius: 9px; font-size: 0.92rem; color: var(--text);
+    background: var(--bg); border: 1px solid var(--line); outline: none; margin-bottom: 14px; }
+.f:focus { border-color: var(--accent); }
+.f::placeholder { color: var(--mute); }
+select.f { appearance: none; background-image: none; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px;
+    border-radius: 9px; font-size: 0.9rem; font-weight: 700; color: var(--text);
+    background: var(--surface-2); border: 1px solid var(--line); transition: background 0.15s, border-color 0.15s; }
+.btn:hover { background: #1f1518; border-color: #33262a; }
+.btn.p { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.p:hover { background: #c72235; border-color: #c72235; }
+.btn.d { color: #ff8b98; }
+.btn.d:hover { background: #2a1417; border-color: #4a2026; }
+.btn.sm { padding: 7px 11px; font-size: 0.8rem; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn.w { width: 100%; }
+
+.top { border-bottom: 1px solid var(--line); background: var(--surface); position: sticky; top: 0; z-index: 20; }
+.top-in { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 12px; }
+.logo { font-weight: 800; font-size: 1.05rem; display: flex; align-items: center; gap: 9px; }
+.logo .d { width: 8px; height: 8px; border-radius: 2px; background: var(--accent); }
+.logo span { color: var(--mute); font-weight: 600; font-size: 0.88rem; }
+
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); margin: 22px 0 24px; }
+.tab { padding: 10px 16px; font-size: 0.9rem; font-weight: 700; color: var(--mute);
+    background: none; border: none; border-bottom: 2px solid transparent; }
+.tab:hover { color: var(--dim); }
+.tab.on { color: var(--text); border-bottom-color: var(--accent); }
+
+.panel { display: none; padding-bottom: 60px; }
+.panel.on { display: block; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 18px; }
+.card h2 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.card .sub { color: var(--mute); font-size: 0.82rem; margin-bottom: 18px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.chk { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; color: var(--dim); font-size: 0.88rem; }
+.chk input { width: 17px; height: 17px; accent-color: var(--accent); }
+
+.thumb-pick { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+.thumb-prev { width: 76px; height: 76px; border-radius: 9px; background: var(--bg); border: 1px solid var(--line);
+    object-fit: cover; flex-shrink: 0; }
+.thumb-side { flex: 1; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+th { text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--mute);
+    font-weight: 600; padding: 0 10px 9px; border-bottom: 1px solid var(--line); }
+td { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+.tt { width: 40px; height: 40px; border-radius: 7px; object-fit: cover; background: var(--bg); border: 1px solid var(--line); }
+.mono { font-family: var(--mono); font-size: 0.8rem; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 0.68rem; padding: 3px 8px; border-radius: 5px;
+    background: var(--surface-2); border: 1px solid var(--line); color: var(--dim); }
+.st { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; }
+.st::before { content: ''; width: 7px; height: 7px; border-radius: 50%; }
+.st.free::before { background: var(--ok); } .st.free { color: var(--ok); }
+.st.used::before { background: var(--mute); } .st.used { color: var(--mute); }
+.st.rev::before { background: var(--warn); } .st.rev { color: var(--warn); }
+
+.msg { padding: 11px 14px; border-radius: 9px; font-size: 0.85rem; margin-bottom: 14px; display: none; }
+.msg.on { display: block; }
+.msg.err { background: #2a1216; border: 1px solid #4d1f28; color: #ff9aa6; }
+.msg.ok { background: #10251a; border: 1px solid #1e4733; color: #7ee2ab; }
+
+.codes-out { background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 14px;
+    font-family: var(--mono); font-size: 0.9rem; line-height: 1.9; display: none; margin-bottom: 14px; word-break: break-all; }
+.codes-out.on { display: block; }
+.codes-out div { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.empty { color: var(--mute); font-size: 0.86rem; padding: 22px 0; text-align: center; }
+.bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.spacer { flex: 1; }
+.hint { color: var(--mute); font-size: 0.78rem; margin-top: -6px; margin-bottom: 14px; }
+
+@media (max-width: 700px) {
+    .row { grid-template-columns: 1fr; }
+    .hide-s { display: none; }
+    .top-in { height: 56px; }
+}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+    <form class="gate-box" id="loginForm">
+        <h1>dashboard</h1>
+        <p>admin access only</p>
+        <div class="msg err" id="loginMsg"></div>
+        <label for="em">email</label>
+        <input class="f" type="email" id="em" autocomplete="username" required>
+        <label for="pw">password</label>
+        <input class="f" type="password" id="pw" autocomplete="current-password" required>
+        <button class="btn p w" type="submit" id="loginBtn">sign in</button>
+    </form>
+</div>
+
+<div id="app" style="display:none">
+    <div class="top">
+        <div class="wrap top-in">
+            <div class="logo"><span class="d"></span>kayaz<span>/dashboard</span></div>
+            <div style="display:flex;gap:8px">
+                <a class="btn sm" href="/games"><i class="fa-solid fa-gamepad"></i> games</a>
+                <button class="btn sm" id="out">sign out</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="tabs">
+            <button class="tab on" data-p="g">games</button>
+            <button class="tab" data-p="k">invite keys</button>
+        </div>
+
+        <div class="panel on" id="p-g">
+            <div class="card">
+                <h2>add a game</h2>
+                <div class="sub">thumbnail can be a link or an upload, uploads get resized down automatically</div>
+                <div class="msg" id="gMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="gt">title</label>
+                        <input class="f" id="gt" placeholder="Retro Bowl">
+                    </div>
+                    <div>
+                        <label for="gc">tag</label>
+                        <input class="f" id="gc" placeholder="Sports" list="cats">
+                        <datalist id="cats"></datalist>
+                    </div>
+                </div>
+                <label for="gu">game link</label>
+                <input class="f" id="gu" placeholder="https://...">
+                <div class="thumb-pick">
+                    <img class="thumb-prev" id="gPrev" alt="">
+                    <div class="thumb-side">
+                        <label for="gi">thumbnail link</label>
+                        <input class="f" id="gi" placeholder="https://... (or upload below)">
+                        <input type="file" id="gf" accept="image/*" style="display:none">
+                        <button class="btn sm" id="gUp"><i class="fa-solid fa-upload"></i> upload image</button>
+                    </div>
+                </div>
+                <div class="chk"><input type="checkbox" id="gk"><label for="gk" style="margin:0">needs keyboard (shows touch controls on mobile)</label></div>
+                <button class="btn p" id="gAdd">add game</button>
+            </div>
+
+            <div class="card">
+                <div class="bar">
+                    <h2 style="margin:0">library</h2>
+                    <span class="tag" id="gCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm" id="gSeed">import built-in 75</button>
+                    <button class="btn sm" id="gRefresh"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+                <div id="gList"></div>
+            </div>
+        </div>
+
+        <div class="panel" id="p-k">
+            <div class="card">
+                <h2>generate invite keys</h2>
+                <div class="sub">each key locks to the first browser that uses it</div>
+                <div class="msg" id="kMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="kn">how many</label>
+                        <input class="f" id="kn" type="number" min="1" max="50" value="5">
+                    </div>
+                    <div>
+                        <label for="kl">label (optional)</label>
+                        <input class="f" id="kl" placeholder="friends">
+                    </div>
+                </div>
+                <button class="btn p" id="kGen">generate</button>
+                <div class="hint" style="margin-top:10px">copy these now, they are only shown once</div>
+                <div class="codes-out" id="kOut"></div>
+            </div>
+
+            <div class="card">
+                <div class="bar">
+                    <h2 style="margin:0">keys</h2>
+                    <span class="tag" id="kCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm d" id="kPrune">delete unused</button>
+                    <button class="btn sm" id="kRefresh"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+                <div id="kList"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/seed-games.js"></script>
+<script>
+'use strict';
+var TK = 'kz_admin';
+var token = localStorage.getItem(TK) || '';
+var gate = document.getElementById('gate'), app = document.getElementById('app');
+
+function msg(el, text, kind) {
+    el.textContent = text;
+    el.className = 'msg ' + (kind || 'err') + (text ? ' on' : '');
+}
+function api(path, opts) {
+    opts = opts || {};
+    var h = { 'content-type': 'application/json' };
+    if (token) h.authorization = 'Bearer ' + token;
+    return fetch('/api/' + path, { method: opts.method || 'GET', headers: h, body: opts.body ? JSON.stringify(opts.body) : undefined })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, data: j }; }); });
+}
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
+
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var b = document.getElementById('loginBtn');
+    b.disabled = true; b.textContent = 'checking...';
+    api('login', { method: 'POST', body: { email: document.getElementById('em').value, password: document.getElementById('pw').value } })
+        .then(function (r) {
+            b.disabled = false; b.textContent = 'sign in';
+            if (!r.ok) return msg(document.getElementById('loginMsg'), r.data.error || 'login failed');
+            token = r.data.token; localStorage.setItem(TK, token);
+            boot();
+        }).catch(function () { b.disabled = false; b.textContent = 'sign in'; msg(document.getElementById('loginMsg'), 'network error'); });
+});
+
+document.getElementById('out').addEventListener('click', function () {
+    localStorage.removeItem(TK); token = ''; app.style.display = 'none'; gate.style.display = 'flex';
+});
+
+[].forEach.call(document.querySelectorAll('.tab'), function (t) {
+    t.addEventListener('click', function () {
+        [].forEach.call(document.querySelectorAll('.tab'), function (x) { x.classList.remove('on'); });
+        [].forEach.call(document.querySelectorAll('.panel'), function (x) { x.classList.remove('on'); });
+        t.classList.add('on');
+        document.getElementById('p-' + t.dataset.p).classList.add('on');
+    });
+});
+
+var gf = document.getElementById('gf'), gPrev = document.getElementById('gPrev'), gi = document.getElementById('gi');
+var uploadData = '';
+document.getElementById('gUp').addEventListener('click', function () { gf.click(); });
+gi.addEventListener('input', function () { uploadData = ''; gPrev.src = gi.value.trim(); });
+gf.addEventListener('change', function () {
+    var f = gf.files && gf.files[0];
+    if (!f) return;
+    var fr = new FileReader();
+    fr.onload = function () {
+        var img = new Image();
+        img.onload = function () {
+            var max = 400, w = img.width, h = img.height;
+            var s = Math.min(1, max / Math.max(w, h));
+            var c = document.createElement('canvas');
+            c.width = Math.round(w * s); c.height = Math.round(h * s);
+            c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+            uploadData = c.toDataURL('image/jpeg', 0.78);
+            gPrev.src = uploadData;
+            gi.value = '';
+            msg(document.getElementById('gMsg'), 'image ready (' + Math.round(uploadData.length / 1024) + ' kb)', 'ok');
+        };
+        img.src = fr.result;
+    };
+    fr.readAsDataURL(f);
+});
+
+document.getElementById('gAdd').addEventListener('click', function () {
+    var b = this;
+    var body = {
+        title: document.getElementById('gt').value.trim(),
+        cat: document.getElementById('gc').value.trim(),
+        url: document.getElementById('gu').value.trim(),
+        img: uploadData || gi.value.trim(),
+        kb: document.getElementById('gk').checked
+    };
+    if (!body.title || !body.url) return msg(document.getElementById('gMsg'), 'title and game link are required');
+    b.disabled = true;
+    api('games', { method: 'POST', body: body }).then(function (r) {
+        b.disabled = false;
+        if (!r.ok) return msg(document.getElementById('gMsg'), r.data.error || 'failed');
+        msg(document.getElementById('gMsg'), 'added ' + body.title, 'ok');
+        document.getElementById('gt').value = ''; document.getElementById('gu').value = '';
+        gi.value = ''; uploadData = ''; gPrev.removeAttribute('src'); document.getElementById('gk').checked = false;
+        loadGames();
+    }).catch(function () { b.disabled = false; msg(document.getElementById('gMsg'), 'network error'); });
+});
+
+document.getElementById('gSeed').addEventListener('click', function () {
+    if (!window.SEED_GAMES || !window.SEED_GAMES.length) return msg(document.getElementById('gMsg'), 'seed list missing');
+    if (!confirm('import ' + window.SEED_GAMES.length + ' built-in games?')) return;
+    var b = this; b.disabled = true; b.textContent = 'importing...';
+    api('games', { method: 'POST', body: { bulk: window.SEED_GAMES } }).then(function (r) {
+        b.disabled = false; b.textContent = 'import built-in 75';
+        msg(document.getElementById('gMsg'), r.ok ? ('imported ' + r.data.added) : (r.data.error || 'failed'), r.ok ? 'ok' : 'err');
+        loadGames();
+    }).catch(function () { b.disabled = false; b.textContent = 'import built-in 75'; });
+});
+document.getElementById('gRefresh').addEventListener('click', loadGames);
+
+function loadGames() {
+    api('games').then(function (r) {
+        if (!r.ok) { document.getElementById('gList').innerHTML = '<div class="empty">' + esc(r.data.error || 'failed') + '</div>'; return; }
+        var list = r.data.games || [];
+        document.getElementById('gCount').textContent = list.length;
+        var cats = {};
+        list.forEach(function (g) { if (g.cat) cats[g.cat] = 1; });
+        document.getElementById('cats').innerHTML = Object.keys(cats).sort().map(function (c) { return '<option value="' + esc(c) + '">'; }).join('');
+        if (!list.length) { document.getElementById('gList').innerHTML = '<div class="empty">no games yet</div>'; return; }
+        var rows = list.map(function (g) {
+            return '<tr><td><img class="tt" src="' + esc(g.img || '') + '" alt="" onerror="this.style.visibility=\'hidden\'"></td>' +
+                '<td><strong>' + esc(g.title) + '</strong>' + (g.kb ? ' <span class="tag">keys</span>' : '') + '</td>' +
+                '<td class="hide-s"><span class="tag">' + esc(g.cat || '') + '</span></td>' +
+                '<td class="hide-s mono" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(g.url) + '</td>' +
+                '<td style="text-align:right"><button class="btn sm d" data-del="' + esc(g.id) + '">delete</button></td></tr>';
+        }).join('');
+        document.getElementById('gList').innerHTML = '<div style="overflow-x:auto"><table><thead><tr><th></th><th>title</th><th class="hide-s">tag</th><th class="hide-s">link</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+        [].forEach.call(document.querySelectorAll('[data-del]'), function (b) {
+            b.addEventListener('click', function () {
+                if (!confirm('delete this game?')) return;
+                api('games', { method: 'DELETE', body: { id: b.dataset.del } }).then(loadGames);
+            });
+        });
+    });
+}
+
+document.getElementById('kGen').addEventListener('click', function () {
+    var b = this; b.disabled = true;
+    api('keys', { method: 'POST', body: { count: document.getElementById('kn').value, label: document.getElementById('kl').value } })
+        .then(function (r) {
+            b.disabled = false;
+            if (!r.ok) return msg(document.getElementById('kMsg'), r.data.error || 'failed');
+            var out = document.getElementById('kOut');
+            out.className = 'codes-out on';
+            out.innerHTML = (r.data.codes || []).map(function (c) {
+                return '<div><span>' + esc(c) + '</span><button class="btn sm" data-cp="' + esc(c) + '">copy</button></div>';
+            }).join('');
+            [].forEach.call(out.querySelectorAll('[data-cp]'), function (x) {
+                x.addEventListener('click', function () {
+                    navigator.clipboard.writeText(x.dataset.cp).then(function () { x.textContent = 'copied'; setTimeout(function () { x.textContent = 'copy'; }, 1200); });
+                });
+            });
+            msg(document.getElementById('kMsg'), 'generated ' + (r.data.codes || []).length, 'ok');
+            loadKeys();
+        }).catch(function () { b.disabled = false; msg(document.getElementById('kMsg'), 'network error'); });
+});
+document.getElementById('kRefresh').addEventListener('click', loadKeys);
+document.getElementById('kPrune').addEventListener('click', function () {
+    if (!confirm('delete every key that has not been used?')) return;
+    api('keys', { method: 'DELETE', body: { all: 'unused' } }).then(function (r) {
+        msg(document.getElementById('kMsg'), r.ok ? ('removed ' + r.data.removed) : 'failed', r.ok ? 'ok' : 'err');
+        loadKeys();
+    });
+});
+
+function loadKeys() {
+    api('keys').then(function (r) {
+        if (!r.ok) { document.getElementById('kList').innerHTML = '<div class="empty">' + esc(r.data.error || 'failed') + '</div>'; return; }
+        var list = r.data.keys || [];
+        document.getElementById('kCount').textContent = list.length;
+        if (!list.length) { document.getElementById('kList').innerHTML = '<div class="empty">no keys yet</div>'; return; }
+        var rows = list.map(function (k) {
+            var st = k.revoked ? '<span class="st rev">revoked</span>' : (k.used ? '<span class="st used">in use</span>' : '<span class="st free">unused</span>');
+            return '<tr><td class="mono">' + esc(k.shown || '••••') + '</td>' +
+                '<td>' + st + '</td>' +
+                '<td class="hide-s">' + esc(k.label || '') + '</td>' +
+                '<td class="hide-s mono" style="color:var(--mute)">' + (k.created ? new Date(k.created).toLocaleDateString() : '') + '</td>' +
+                '<td style="text-align:right;white-space:nowrap">' +
+                (k.used ? '<button class="btn sm" data-reset="' + k.h + '">unbind</button> ' : '') +
+                '<button class="btn sm" data-rev="' + k.h + '" data-on="' + (k.revoked ? '0' : '1') + '">' + (k.revoked ? 'restore' : 'revoke') + '</button> ' +
+                '<button class="btn sm d" data-kdel="' + k.h + '">delete</button></td></tr>';
+        }).join('');
+        document.getElementById('kList').innerHTML = '<div style="overflow-x:auto"><table><thead><tr><th>key</th><th>status</th><th class="hide-s">label</th><th class="hide-s">made</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+        [].forEach.call(document.querySelectorAll('[data-kdel]'), function (b) {
+            b.addEventListener('click', function () { if (confirm('delete this key?')) api('keys', { method: 'DELETE', body: { h: b.dataset.kdel } }).then(loadKeys); });
+        });
+        [].forEach.call(document.querySelectorAll('[data-rev]'), function (b) {
+            b.addEventListener('click', function () { api('keys', { method: 'PATCH', body: { h: b.dataset.rev, revoked: b.dataset.on === '1' } }).then(loadKeys); });
+        });
+        [].forEach.call(document.querySelectorAll('[data-reset]'), function (b) {
+            b.addEventListener('click', function () { if (confirm('unbind this key from its device?')) api('keys', { method: 'PATCH', body: { h: b.dataset.reset, reset: true } }).then(loadKeys); });
+        });
+    });
+}
+
+function boot() {
+    gate.style.display = 'none';
+    app.style.display = '';
+    loadGames();
+    loadKeys();
+}
+
+if (token) {
+    api('session').then(function (r) {
+        if (r.ok && r.data.admin) boot();
+        else { localStorage.removeItem(TK); token = ''; }
+    }).catch(function () {});
+}
+</script>
+</body>
+</html>
