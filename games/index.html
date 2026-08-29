@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>kayaz — games</title>
+<meta name="description" content="kayaz games">
+<meta name="theme-color" content="#ff2d46">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --accent: #ff2d46;
+    --accent-2: #ff5d6e;
+    --bg: #070406;
+    --text: #f8f2f3;
+    --dim: #e4dadd;
+    --mute: #b7a5a9;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh;
+    -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0b0709; }
+::-webkit-scrollbar-thumb { background: #2a1519; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.bg { position: fixed; inset: 0; z-index: -2; background:
+    radial-gradient(120% 90% at 50% -10%, #2a0810 0%, #12060a 45%, #070406 100%); }
+.bg::after { content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, #000 30%, transparent 100%); }
+.glow { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.5; z-index: -1; pointer-events: none; }
+.g1 { width: 40vw; height: 40vw; background: radial-gradient(circle, #ff2d46, transparent 65%); top: -12%; left: -8%; }
+.g2 { width: 34vw; height: 34vw; background: radial-gradient(circle, #b3111f, transparent 65%); bottom: -14%; right: -6%; }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+header { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%); background: rgba(9,5,7,0.72);
+    border-bottom: 1px solid rgba(255,255,255,0.09); }
+.hd { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 68px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.16rem; letter-spacing: -0.02em; }
+.brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.brand b { color: var(--accent); }
+.hd-right { display: flex; align-items: center; gap: 8px; }
+.ic { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    color: var(--dim); font-size: 1rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.16);
+    transition: transform 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s; }
+.ic:hover { transform: translateY(-2px); color: var(--bc, var(--accent)); border-color: color-mix(in srgb, var(--bc, var(--accent)) 55%, transparent);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--bc, var(--accent)) 28%, transparent); }
+.ic.s-discord { --bc: #98a2ff; } .ic.s-tiktok { --bc: #34ffee; } .ic.s-github { --bc: #fff; }
+.ic.home { color: var(--accent); }
+
+.hero { padding: 46px 0 26px; text-align: center; }
+.hero .kicker { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+    padding: 6px 14px; border-radius: 100px; background: rgba(255,45,70,0.1); border: 1px solid rgba(255,45,70,0.28); }
+.hero h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin: 16px 0 10px; }
+.hero h1 span { color: var(--accent); }
+.hero p { color: var(--mute); font-size: 0.98rem; }
+
+.tools { display: flex; align-items: center; gap: 10px; margin: 22px 0 18px; flex-wrap: wrap; }
+.search { flex: 1; min-width: 220px; position: relative; }
+.search i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--mute); font-size: 0.9rem; }
+.search input { width: 100%; padding: 13px 16px 13px 40px; border-radius: 14px; font-family: var(--sans); font-size: 0.94rem;
+    color: var(--text); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); outline: none; transition: border-color 0.18s, box-shadow 0.18s; }
+.search input::placeholder { color: var(--mute); }
+.search input:focus { border-color: rgba(255,45,70,0.55); box-shadow: 0 0 0 3px rgba(255,45,70,0.14); }
+.count { font-family: var(--mono); font-size: 0.76rem; color: var(--mute); white-space: nowrap; }
+
+.cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px; scrollbar-width: none; }
+.cats::-webkit-scrollbar { display: none; }
+.cat { flex-shrink: 0; padding: 8px 15px; border-radius: 100px; font-size: 0.82rem; font-weight: 600; color: var(--mute);
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.16s; white-space: nowrap; }
+.cat:hover { color: var(--text); }
+.cat.on { color: #fff; background: linear-gradient(135deg, var(--accent), #b3111f); border-color: transparent;
+    box-shadow: 0 5px 16px rgba(255,45,70,0.34); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 14px; padding-bottom: 60px; }
+.tile { border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12);
+    transition: transform 0.22s cubic-bezier(.2,.8,.2,1), border-color 0.22s, box-shadow 0.22s; text-align: left; width: 100%; }
+.tile:hover { transform: translateY(-5px); border-color: rgba(255,45,70,0.5); box-shadow: 0 14px 30px rgba(255,45,70,0.22); }
+.tile-img { position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #120a0c; }
+.tile-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.tile:hover .tile-img img { transform: scale(1.06); }
+.tile-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(8,4,5,0.75)); }
+.kb-tag { position: absolute; top: 8px; right: 8px; z-index: 2; font-family: var(--mono); font-size: 0.55rem;
+    padding: 3px 7px; border-radius: 100px; color: #fff; background: rgba(255,45,70,0.85); letter-spacing: 0.06em; }
+.tile-body { padding: 11px 12px 13px; }
+.tile-name { font-size: 0.9rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile-cat { font-family: var(--mono); font-size: 0.65rem; color: var(--mute); margin-top: 3px; }
+.empty { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--mute); }
+.empty i { font-size: 2rem; color: rgba(255,45,70,0.5); margin-bottom: 12px; }
+
+footer { border-top: 1px solid rgba(255,255,255,0.08); padding: 26px 0 34px; text-align: center;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
+footer a { color: var(--dim); } footer a:hover { color: var(--accent); }
+
+/* player */
+.player { position: fixed; inset: 0; z-index: 100; background: #000; display: none; flex-direction: column; }
+.player.on { display: flex; }
+.pbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px;
+    padding-top: max(10px, env(safe-area-inset-top)); background: rgba(10,5,7,0.9);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+.pbar-title { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pbtn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; border-radius: 12px; font-size: 0.84rem; font-weight: 700;
+    color: var(--text); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); transition: 0.16s; white-space: nowrap; }
+.pbtn:hover { background: rgba(255,45,70,0.25); border-color: rgba(255,45,70,0.5); }
+.pbtn.on { background: linear-gradient(135deg, var(--accent), #b3111f); border-color: transparent; color: #fff; }
+.pwrap { flex: 1; position: relative; background: #000; min-height: 0; }
+.pwrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+.ploading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; color: var(--mute); font-family: var(--mono); font-size: 0.82rem; background: #000; }
+.spin { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(255,45,70,0.25); border-top-color: var(--accent);
+    animation: sp 0.8s linear infinite; }
+@keyframes sp { to { transform: rotate(360deg); } }
+.note { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 5;
+    padding: 9px 15px; border-radius: 12px; font-size: 0.78rem; color: var(--dim);
+    background: rgba(10,5,7,0.92); border: 1px solid rgba(255,255,255,0.14); max-width: 90%; text-align: center;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.note.on { opacity: 1; }
+
+@media (max-width: 640px) {
+    .hero { padding: 32px 0 18px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 11px; }
+    .hd { height: 60px; }
+    .brand { font-size: 1.02rem; }
+    .ic { width: 34px; height: 34px; font-size: 0.9rem; }
+    .pbar-title { font-size: 0.85rem; }
+    .pbtn { padding: 8px 11px; font-size: 0.78rem; }
+    .pbtn .lbl { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="glow g1"></div><div class="glow g2"></div>
+
+<header>
+    <div class="wrap hd">
+        <a href="/" class="brand"><span class="dot"></span>kayaz<b>.</b><span style="color:var(--mute);font-weight:600;font-size:0.9rem;">/games</span></a>
+        <div class="hd-right">
+            <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic s-discord" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="ic s-tiktok" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="ic s-github" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="/" class="ic home" title="back to kayaz.xyz"><i class="fa-solid fa-house"></i></a>
+        </div>
+    </div>
+</header>
+
+<main class="wrap">
+    <section class="hero">
+        <div class="kicker"><i class="fa-solid fa-gamepad"></i> <span id="total">0</span> games</div>
+        <h1>play <span>anything</span></h1>
+        <p>no signup, no keys, just pick one and go</p>
+    </section>
+
+    <div class="tools">
+        <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" id="q" placeholder="search games..." autocomplete="off">
+        </div>
+        <div class="count"><span id="shown">0</span> shown</div>
+    </div>
+
+    <div class="cats" id="cats"></div>
+    <div class="grid" id="grid"></div>
+</main>
+
+<footer>&copy; <span id="yr"></span> kayaz &middot; <a href="/">kayaz.xyz</a></footer>
+
+<div class="player" id="player">
+    <div class="pbar">
+        <button class="pbtn" onclick="closeGame()"><i class="fa-solid fa-arrow-left"></i> <span class="lbl">back</span></button>
+        <div class="pbar-title" id="pTitle">game</div>
+        <div style="display:flex;gap:8px;">
+            <button class="pbtn" id="padBtn" onclick="togglePad()"><i class="fa-solid fa-gamepad"></i> <span class="lbl">controls</span></button>
+            <button class="pbtn" onclick="goFull()"><i class="fa-solid fa-expand"></i> <span class="lbl">full</span></button>
+        </div>
+    </div>
+    <div class="pwrap" id="pwrap">
+        <iframe id="frame" allowfullscreen allow="autoplay; fullscreen; gamepad; pointer-lock"
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals"></iframe>
+        <div class="ploading" id="loading"><div class="spin"></div><span>loading...</span></div>
+        <div class="note" id="note"></div>
+    </div>
+</div>
+
+<script>
+'use strict';
+document.getElementById('yr').textContent = new Date().getFullYear();
+var GAMES = [{"title":"2048","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/2048.png","url":"https://kivro-game-library-9d7913.gitlab.io//2048/index.html"},{"title":"BTD4","cat":"Strategy","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/BTD4.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//btd4/index.html"},{"title":"Bitlife","cat":"Simulation","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Bitlife.webp","url":"https://kivro-game-library-9d7913.gitlab.io//bitlife/index.html"},{"title":"Chess","cat":"Strategy","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/chess.jpg","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/chess/index.html"},{"title":"Cookie Clicker","cat":"Clicker","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Cookie-Clicker.jpg","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/cookieclicker/index.html"},{"title":"Drive Mad","cat":"Racing","kb":true,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Drive-Mad.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//drivemad/index.html"},{"title":"Flappy Bird","cat":"Arcade","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Flappy-Bird.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//flappybird/index.html"},{"title":"Geo Dash","cat":"Rhythm","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Geometry-Dash.webp","url":"https://geometryite.vercel.app/"},{"title":"Google Snake","cat":"Arcade","kb":true,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Google-Snake.jpg","url":"https://raw.githack.com/KAYAZzz/kivro-library/main/Snake/index.html"},{"title":"Monkey Mart","cat":"Simulation","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Monkey-Mart.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//monkeymart/index.html"},{"title":"PacMan","cat":"Arcade","kb":true,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Pacman.jpg","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/pacman/index.html"},{"title":"Retro Bowl","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Retro-Ball.webp","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/retrobowl/index.html"},{"title":"Slope","cat":"Runner","kb":true,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/slope.png","url":"https://kivro-game-library-9d7913.gitlab.io//Slope/index.html"},{"title":"Snow Battle","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Snow-Battle.png","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/snowbattle/index.html"},{"title":"Stack","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Stack.webp","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/stack/index.html"},{"title":"Drift Boss","cat":"Racing","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Drift1.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//DriftBoss/index.html"},{"title":"Subway Surfers","cat":"Runner","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Subway-Surfers.jpg","url":"https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html"},{"title":"Baldi's Basics","cat":"Horror","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/BaldisBasics.webp","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/baldisbasics/index.html"},{"title":"Dino Runner","cat":"Arcade","kb":true,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Dino.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//chromedino/index.html"},{"title":"Stickman Hook","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/stickman-hook.png","url":"https://kivro-game-library-9d7913.gitlab.io//StickmanHook/index.html"},{"title":"Block Blast","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/block-blast.jpeg","url":"https://kivro-game-library-9d7913.gitlab.io//blockblast/index.html"},{"title":"Merge Rot","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/merge-rot.png","url":"https://kivro-game-library-9d7913.gitlab.io//MergeRot/index.html"},{"title":"Hole.io","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Hole.png","url":"https://kivro-game-library-9d7913.gitlab.io//HoleIO/index.html"},{"title":"Sausage Flip","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/sausage-flip.png","url":"https://kivro-game-library-9d7913.gitlab.io//sausage-flip/index.html"},{"title":"YoHoHo.io","cat":"IO","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Yohoho.jpg","url":"https://kivro-game-library-9d7913.gitlab.io/yohohoio/index.html"},{"title":"Mr.Bullet","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Bullet.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//MrBullet/index.html"},{"title":"Impossible Quiz","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Impossible.png","url":"https://raw.githack.com/selenite-cc/selenite-old/main/theimpossiblequiz/index.html"},{"title":"Paper.io","cat":"IO","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/paper-io.png","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/paperio/index.html"},{"title":"Hill Climb","cat":"Racing","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/HillClimb.png","url":"https://kivro-game-library-9d7913.gitlab.io//HillClimbRacing/index.html"},{"title":"Bottle Flip","cat":"Skill","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/bottleflip.png","url":"https://kivro-game-library-9d7913.gitlab.io//BottleFlip2/index.html"},{"title":"Penalty Kicks","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/penalty.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//PenaltyKicks/index.html"},{"title":"Gun Spin","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/gunspin.png","url":"https://kivro-game-library-9d7913.gitlab.io//Gunspin/index.html"},{"title":"SandBoxel","cat":"Simulation","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Sandboxel.png","url":"https://raw.githack.com/R74nCom/sandboxels/main/index.html"},{"title":"Ballistic","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/ballistic.png","url":"https://kivro-game-library-9d7913.gitlab.io//Ballistic/index.html"},{"title":"Stacktris","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/stacktris.jpeg","url":"https://kivro-game-library-9d7913.gitlab.io//stacktris/index.html"},{"title":"Tomb of Mask","cat":"Action","kb":true,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/TofM.jpg","url":"https://raw.githack.com/HTML5GameArchive/gfiles/master/games/tombofthemask/index.html"},{"title":"Paper Plane","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Planef.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//PaperFlight1/index.html"},{"title":"Curve Rush","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/curve-rush.webp","url":"https://curverush.com/curve-rush.embed"},{"title":"Burrito Bison","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Bb.png","url":"https://burrito-bison-cnm.vercel.app/"},{"title":"Golf Orbit","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/golf-orbit.png","url":"https://golf-orbit-k8ue.vercel.app/"},{"title":"Ragdoll Archers","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/ragdoll-archers.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//Ragdoll-Archers/index.html"},{"title":"Helix Jump","cat":"Arcade","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/HelixJ.webp","url":"https://kivro-game-library-9d7913.gitlab.io//helixjump/index.html"},{"title":"PolyTrack","cat":"Racing","kb":true,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Polyt.webp","url":"https://polytrack-gilt-nine.vercel.app/"},{"title":"Gobble","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Gobble.png","url":"https://kivro-game-library-9d7913.gitlab.io//Gobble/gobble/index.html"},{"title":"Swingo","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/swingo.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//Swingo/index.html"},{"title":"Spiral Roll","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Spiralr.png","url":"https://kivro-game-library-9d7913.gitlab.io//spralr/index.html"},{"title":"Wordle","cat":"Word","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0829.jpeg","url":"https://wordle-actual.vercel.app"},{"title":"Unicycle Heroes","cat":"Physics","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0832.jpeg","url":"https://unicycleh.vercel.app"},{"title":"Sheep Sheep","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Sheep.jpeg","url":"https://kivro-game-library-9d7913.gitlab.io//sheepsheep/index.html"},{"title":"Game In Game","cat":"Meta","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/GameInsideGame.png","url":"https://kivro-game-library-9d7913.gitlab.io//game-inside/index.html"},{"title":"Black Jack","cat":"Card","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Blackjack.png","url":"https://blackjack-self.vercel.app/"},{"title":"Raft Wars","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Raftwars.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//raft-war/index.html"},{"title":"Small World Cup","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Asworldc.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//a-smallwc/index.html"},{"title":"BowMasters","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0856.png","url":"https://wowksies-github-io-6e3122.gitlab.io///bowmasters/index.html"},{"title":"State.io","cat":"Strategy","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0862.png","url":"https://stateactual.vercel.app/rvvASMiM/1701b2232f8c4f7689394f229bda07d7/index.html"},{"title":"Day of Meat","cat":"Defense","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Deathofmeat.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//DayOfMeat/index.html"},{"title":"Knife Hit","cat":"Skill","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Knifehit.png","url":"https://kivro-game-library-9d7913.gitlab.io//knifehit/index.html"},{"title":"Solar Smash","cat":"Simulation","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0868.png","url":"https://wowksies-github-io-6e3122.gitlab.io///solar-smash/index.html"},{"title":"Bridge Race","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0870.jpeg","url":"https://wowksies-github-io-6e3122.gitlab.io///bridge-race/index.html"},{"title":"Papa's Pizzeria","cat":"Cooking","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/papaspiz.webp","url":"https://kivro-game-library-9d7913.gitlab.io//papsp/index.html"},{"title":"Little Alchemy","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/littleA.png","url":"https://kivro-game-library-9d7913.gitlab.io//little-alchemy/index.html"},{"title":"8 Ball Pool","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/8ballpool.webp","url":"https://kivro-game-library-9d7913.gitlab.io//pool-pixijs/index.html"},{"title":"Stealth Master","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/stealthmaster.jpg","url":"https://wowksies-github-io-6e3122.gitlab.io///stealth-master/index.html"},{"title":"Hide and Seek","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/hideandseek.webp","url":"https://kivro-game-library-9d7913.gitlab.io//hideandseek/8328750458724478102.playables.usercontent.goog/v/assets/index.html"},{"title":"Slice it All","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/sliceitall.png","url":"https://wowksies-github-io-6e3122.gitlab.io///slice-it-all/index.html"},{"title":"Bus Out","cat":"Puzzle","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/busout.webp","url":"https://gamesbun.github.io/busout-school/"},{"title":"Blumgi Racers","cat":"Racing","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/br.webp","url":"https://kivro-game-library-9d7913.gitlab.io//blumgir/index.html"},{"title":"Hills Of Steel","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/hills%20of%20steel.webp","url":"https://hillofsteele.vercel.app/"},{"title":"Rooftop Snipers","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/rooftop-snipers.webp","url":"https://kivro-game-library-9d7913.gitlab.io//rooftopsnipers/index.html"},{"title":"Blumgi Ball","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/blumgiball.webp","url":"https://kivro-game-library-9d7913.gitlab.io//blumgiball/index.html"},{"title":"Draw Joust","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0959.png","url":"https://kivro-game-library-9d7913.gitlab.io//DrawJoustindex.html"},{"title":"Basket Legends","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0963.jpeg","url":"https://kivro-game-library-9d7913.gitlab.io//basketball-legends-main/index.html"},{"title":"Soccer Legends","cat":"Sports","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/Football-Legends.jpg","url":"https://kivro-game-library-9d7913.gitlab.io//football-legends/index.html"},{"title":"Crossy Road","cat":"Fun","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/CrossyR.jpg","url":"https://wowksies-github-io-6e3122.gitlab.io///crossy-road/index.html"},{"title":"Getaway Shoot","cat":"Action","kb":false,"img":"https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/IMG_0980.jpeg","url":"https://kivro-game-library-9d7913.gitlab.io/getaway-shootout/index.html"}];
+
+var grid = document.getElementById('grid'), catsEl = document.getElementById('cats'),
+    q = document.getElementById('q'), shownEl = document.getElementById('shown');
+document.getElementById('total').textContent = GAMES.length;
+var activeCat = 'All';
+
+var cats = ['All'].concat(Object.keys(GAMES.reduce(function (a, g) { a[g.cat] = 1; return a; }, {})).sort());
+cats.forEach(function (c) {
+    var b = document.createElement('button');
+    b.className = 'cat' + (c === 'All' ? ' on' : '');
+    b.textContent = c.toLowerCase();
+    b.onclick = function () {
+        activeCat = c;
+        [].forEach.call(catsEl.children, function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        render();
+    };
+    catsEl.appendChild(b);
+});
+
+function render() {
+    var term = q.value.trim().toLowerCase();
+    var list = GAMES.filter(function (g) {
+        return (activeCat === 'All' || g.cat === activeCat) && (!term || g.title.toLowerCase().indexOf(term) >= 0);
+    });
+    shownEl.textContent = list.length;
+    grid.innerHTML = '';
+    if (!list.length) {
+        grid.innerHTML = '<div class="empty"><i class="fa-solid fa-ghost"></i><div>nothing found</div></div>';
+        return;
+    }
+    var frag = document.createDocumentFragment();
+    list.forEach(function (g) {
+        var b = document.createElement('button');
+        b.className = 'tile';
+        b.innerHTML = '<div class="tile-img">' + (g.kb ? '<span class="kb-tag">keys</span>' : '') +
+            '<img loading="lazy" src="' + g.img + '" alt="" onerror="this.style.opacity=0"></div>' +
+            '<div class="tile-body"><div class="tile-name"></div><div class="tile-cat"></div></div>';
+        b.querySelector('.tile-name').textContent = g.title;
+        b.querySelector('.tile-cat').textContent = g.cat.toLowerCase();
+        b.onclick = function () { openGame(g); };
+        frag.appendChild(b);
+    });
+    grid.appendChild(frag);
+}
+q.addEventListener('input', render);
+render();
+
+var isTouch = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+var frame = document.getElementById('frame'), player = document.getElementById('player'),
+    loading = document.getElementById('loading'), note = document.getElementById('note'),
+    padBtn = document.getElementById('padBtn');
+var token = 0, padOn = false, padAvailable = false;
+
+function showNote(msg, ms) {
+    note.textContent = msg; note.classList.add('on');
+    clearTimeout(showNote.t);
+    showNote.t = setTimeout(function () { note.classList.remove('on'); }, ms || 3200);
+}
+
+function openGame(g) {
+    var my = ++token;
+    document.getElementById('pTitle').textContent = g.title;
+    player.classList.add('on');
+    document.body.style.overflow = 'hidden';
+    loading.style.display = 'flex';
+    padOn = false; padAvailable = false;
+    padBtn.classList.remove('on');
+    padBtn.style.display = isTouch ? '' : 'none';
+    frame.removeAttribute('srcdoc');
+    frame.src = 'about:blank';
+
+    fetch(g.url).then(function (r) {
+        if (!r.ok) throw new Error('bad');
+        return r.text();
+    }).then(function (html) {
+        if (my !== token) return;
+        var base = g.url.replace(/[^/]*$/, '');
+        var doc = html;
+        if (!/<base\s/i.test(doc)) doc = doc.replace(/<head([^>]*)>/i, '<head$1><base href="' + base + '">');
+        if (!/<head/i.test(doc)) doc = '<head><base href="' + base + '"></head>' + doc;
+        doc += '\n<script>' + PAD_SRC + '<\/script>';
+        padAvailable = true;
+        frame.srcdoc = doc;
+        frame.onload = function () {
+            if (my !== token) return;
+            loading.style.display = 'none';
+            if (isTouch) { setPad(true); showNote('touch controls on — tap the controls button to hide'); }
+        };
+    }).catch(function () {
+        if (my !== token) return;
+        padAvailable = false;
+        frame.removeAttribute('srcdoc');
+        frame.src = g.url;
+        frame.onload = function () {
+            if (my !== token) return;
+            loading.style.display = 'none';
+            if (isTouch) showNote('this game loads direct, on-screen controls are not available for it');
+        };
+    });
+}
+
+function closeGame() {
+    token++;
+    player.classList.remove('on');
+    document.body.style.overflow = '';
+    frame.removeAttribute('srcdoc');
+    frame.src = 'about:blank';
+    if (document.fullscreenElement) { try { document.exitFullscreen(); } catch (e) {} }
+}
+
+function setPad(on) {
+    padOn = on;
+    padBtn.classList.toggle('on', on);
+    if (frame.contentWindow) frame.contentWindow.postMessage({ kayaz: 'pad', on: on }, '*');
+}
+function togglePad() {
+    if (!padAvailable) { showNote('on-screen controls are not available for this game'); return; }
+    setPad(!padOn);
+}
+function goFull() {
+    var el = document.getElementById('pwrap');
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    var r = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (r) r.call(el).catch(function () {});
+}
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && player.classList.contains('on')) closeGame(); });
+
+var PAD_SRC = "(function () {\n  if (window.__kayazPad) return;\n  window.__kayazPad = true;\n  var K = {\n    up:    [{k:'ArrowUp',c:'ArrowUp',n:38},{k:'w',c:'KeyW',n:87}],\n    down:  [{k:'ArrowDown',c:'ArrowDown',n:40},{k:'s',c:'KeyS',n:83}],\n    left:  [{k:'ArrowLeft',c:'ArrowLeft',n:37},{k:'a',c:'KeyA',n:65}],\n    right: [{k:'ArrowRight',c:'ArrowRight',n:39},{k:'d',c:'KeyD',n:68}],\n    space: [{k:' ',c:'Space',n:32}],\n    enter: [{k:'Enter',c:'Enter',n:13}],\n    r:     [{k:'r',c:'KeyR',n:82}]\n  };\n  function targets() {\n    var t = [];\n    var c = document.querySelector('canvas');\n    if (c) t.push(c);\n    if (document.body) t.push(document.body);\n    t.push(document);\n    return t;\n  }\n  function fire(type, d, repeat) {\n    var opts = { key: d.k, code: d.c, bubbles: true, cancelable: true, repeat: !!repeat, view: window };\n    var t = targets()[0];\n    var e;\n    try { e = new KeyboardEvent(type, opts); }\n    catch (err) { e = document.createEvent('Events'); e.initEvent(type, true, true); e.key = d.k; e.code = d.c; }\n    try {\n      Object.defineProperty(e, 'keyCode', { get: function () { return d.n; } });\n      Object.defineProperty(e, 'which', { get: function () { return d.n; } });\n    } catch (err) {}\n    try { t.dispatchEvent(e); } catch (err) {}\n  }\n  var held = {};\n  function down(name) {\n    if (held[name]) return;\n    try { window.focus(); } catch (e) {}\n    K[name].forEach(function (d) { fire('keydown', d, false); });\n    held[name] = setInterval(function () {\n      K[name].forEach(function (d) { fire('keydown', d, true); });\n    }, 90);\n  }\n  function up(name) {\n    if (!held[name]) return;\n    clearInterval(held[name]);\n    held[name] = null;\n    K[name].forEach(function (d) { fire('keyup', d); });\n  }\n  var st = document.createElement('style');\n  st.textContent =\n    '#kayaz-pad{position:fixed;left:0;right:0;bottom:0;top:0;z-index:2147483647;pointer-events:none;font-family:system-ui,-apple-system,sans-serif;display:none}' +\n    '#kayaz-pad.on{display:block}' +\n    '#kayaz-pad .z{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom))}' +\n    '#kayaz-pad .dp{left:16px;display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(3,60px);gap:6px}' +\n    '#kayaz-pad .u{grid-area:1/2}#kayaz-pad .l{grid-area:2/1}#kayaz-pad .d{grid-area:2/2}#kayaz-pad .r{grid-area:3/2}' +\n    '#kayaz-pad .d{opacity:0}' +\n    '#kayaz-pad .ac{right:16px;display:flex;flex-direction:column;gap:10px;align-items:flex-end}' +\n    '#kayaz-pad .sp{width:132px;height:60px;font-size:13px;letter-spacing:2px}' +\n    '#kayaz-pad .sq{width:60px;height:60px}' +\n    '#kayaz-pad .b{pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;' +\n    'border:1px solid rgba(255,255,255,.28);background:rgba(16,8,10,.55);color:#fff;font-size:20px;font-weight:800;' +\n    'border-radius:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;' +\n    'justify-content:center;box-shadow:inset 1px 1px 0 rgba(255,255,255,.2),0 6px 16px rgba(0,0,0,.45);transition:transform .08s,background .08s}' +\n    '#kayaz-pad .b.hit{background:rgba(255,45,70,.75);border-color:rgba(255,45,70,.95);transform:scale(.94)}';\n  (document.head || document.documentElement).appendChild(st);\n  var pad = document.createElement('div');\n  pad.id = 'kayaz-pad';\n  pad.innerHTML =\n    '<div class=\"z dp\">' +\n      '<button class=\"b sq u\" data-k=\"up\">\u25b2</button>' +\n      '<button class=\"b sq l\" data-k=\"left\">\u25c0</button>' +\n      '<button class=\"b sq d\" data-k=\"down\">\u25bc</button>' +\n      '<button class=\"b sq r\" data-k=\"right\">\u25ba</button>' +\n    '</div>' +\n    '<div class=\"z ac\">' +\n      '<button class=\"b sq\" data-k=\"r\">R</button>' +\n      '<button class=\"b sq\" data-k=\"enter\">\u21b5</button>' +\n      '<button class=\"b sp\" data-k=\"space\">SPACE</button>' +\n    '</div>';\n  function attach() {\n    if (!document.body) { setTimeout(attach, 60); return; }\n    document.body.appendChild(pad);\n    [].forEach.call(pad.querySelectorAll('.b'), function (b) {\n      var name = b.getAttribute('data-k');\n      function on(e) { e.preventDefault(); e.stopPropagation(); b.classList.add('hit'); down(name); }\n      function off(e) { if (e) { e.preventDefault(); e.stopPropagation(); } b.classList.remove('hit'); up(name); }\n      b.addEventListener('pointerdown', on, { passive: false });\n      b.addEventListener('pointerup', off, { passive: false });\n      b.addEventListener('pointercancel', off, { passive: false });\n      b.addEventListener('pointerleave', off, { passive: false });\n      b.addEventListener('touchstart', on, { passive: false });\n      b.addEventListener('touchend', off, { passive: false });\n      b.addEventListener('contextmenu', function (e) { e.preventDefault(); });\n    });\n  }\n  attach();\n  var dpad = pad.querySelector('.dp');\n  window.addEventListener('message', function (e) {\n    var d = e.data;\n    if (!d || d.kayaz !== 'pad') return;\n    pad.classList.toggle('on', !!d.on);\n    if (!d.on) { Object.keys(held).forEach(up); }\n  });\n  document.addEventListener('gesturestart', function (e) { e.preventDefault(); });\n})();\n";
+</script>
+</body>
+</html>
