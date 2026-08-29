@@ -33,10 +33,16 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const body = await readBody(req);
     if (Array.isArray(body.bulk)) {
+      let existing = {};
+      try { existing = (await db.get('games')) || {}; } catch (e) {}
+      const have = new Set(Object.values(existing).map(g => String(g && g.title || '').trim().toLowerCase()));
       const items = body.bulk.map(clean).filter(Boolean).slice(0, 400);
-      let n = 0;
-      for (const it of items) { try { await db.push('games', it); n++; } catch (e) {} }
-      return send(res, 200, { added: n });
+      let n = 0, skipped = 0;
+      for (const it of items) {
+        if (have.has(it.title.trim().toLowerCase())) { skipped++; continue; }
+        try { await db.push('games', it); have.add(it.title.trim().toLowerCase()); n++; } catch (e) {}
+      }
+      return send(res, 200, { added: n, skipped });
     }
     const g = clean(body);
     if (!g) return send(res, 400, { error: 'title and a valid http(s) url are required' });

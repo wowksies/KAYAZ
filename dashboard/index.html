@@ -103,6 +103,10 @@ tr:last-child td { border-bottom: none; }
 .st.rev::before { background: var(--warn); } .st.rev { color: var(--warn); }
 
 .edit-row td { background: var(--surface-2); }
+.row-msg { font-size: 0.82rem; padding: 0 0 10px; display: none; }
+.row-msg.bad { display: block; color: #ff9aa6; }
+.row-msg.good { display: block; color: #7ee2ab; }
+.tag.dup { color: #ffc07a; border-color: #5a3a1c; background: #2a1c10; }
 .edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 4px 0 10px; }
 .edit-grid .full { grid-column: 1 / -1; }
 .edit-grid .f { margin-bottom: 0; }
@@ -195,6 +199,7 @@ tr:last-child td { border-bottom: none; }
             </div>
 
             <div class="card">
+                <div class="msg err" id="dupWarn"></div>
                 <div class="bar">
                     <h2 style="margin:0">library</h2>
                     <span class="tag" id="gCount">0</span>
@@ -339,7 +344,7 @@ document.getElementById('gSeed').addEventListener('click', function () {
     var b = this; b.disabled = true; b.textContent = 'importing...';
     api('games', { method: 'POST', body: { bulk: window.SEED_GAMES } }).then(function (r) {
         b.disabled = false; b.textContent = 'import built-in 75';
-        msg(document.getElementById('gMsg'), r.ok ? ('imported ' + r.data.added) : (r.data.error || 'failed'), r.ok ? 'ok' : 'err');
+        msg(document.getElementById('gMsg'), r.ok ? ('imported ' + r.data.added + (r.data.skipped ? ', skipped ' + r.data.skipped + ' already there' : '')) : (r.data.error || 'failed'), r.ok ? 'ok' : 'err');
         loadGames();
     }).catch(function () { b.disabled = false; b.textContent = 'import built-in 75'; });
 });
@@ -350,13 +355,20 @@ function loadGames() {
         if (!r.ok) { document.getElementById('gList').innerHTML = '<div class="empty">' + esc(r.data.error || 'failed') + '</div>'; return; }
         var list = r.data.games || [];
         document.getElementById('gCount').textContent = list.length;
+        var dupes = {};
+        list.forEach(function (g) { var k = String(g.title).trim().toLowerCase(); dupes[k] = (dupes[k] || 0) + 1; });
+        var dupCount = Object.keys(dupes).filter(function (k) { return dupes[k] > 1; }).length;
+        var warn = document.getElementById('dupWarn');
+        warn.textContent = dupCount ? (dupCount + ' game name' + (dupCount > 1 ? 's appear' : ' appears') + ' more than once, editing one will not change the other') : '';
+        warn.className = 'msg err' + (dupCount ? ' on' : '');
         var cats = {};
         list.forEach(function (g) { if (g.cat) cats[g.cat] = 1; });
         document.getElementById('cats').innerHTML = Object.keys(cats).sort().map(function (c) { return '<option value="' + esc(c) + '">'; }).join('');
         if (!list.length) { document.getElementById('gList').innerHTML = '<div class="empty">no games yet</div>'; return; }
         var rows = list.map(function (g) {
             return '<tr><td><img class="tt" src="' + esc(g.img || '') + '" alt="" onerror="this.style.visibility=\'hidden\'"></td>' +
-                '<td><strong>' + esc(g.title) + '</strong>' + (g.kb ? ' <span class="tag">keys</span>' : '') + '</td>' +
+                '<td><strong>' + esc(g.title) + '</strong>' + (g.kb ? ' <span class="tag">keys</span>' : '') +
+                (dupes[String(g.title).trim().toLowerCase()] > 1 ? ' <span class="tag dup">duplicate</span>' : '') + '</td>' +
                 '<td class="hide-s"><span class="tag">' + esc(g.cat || '') + '</span></td>' +
                 '<td class="hide-s mono" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(g.url) + '</td>' +
                 '<td style="text-align:right;white-space:nowrap"><button class="btn sm" data-edit="' + esc(g.id) + '">edit</button> ' +
@@ -373,7 +385,7 @@ function loadGames() {
                 '<div class="spacer"></div>' +
                 '<button class="btn sm" data-cancel="' + esc(g.id) + '">cancel</button>' +
                 '<button class="btn sm p" data-save="' + esc(g.id) + '">save changes</button>' +
-                '</div></td></tr>';
+                '</div><div class="row-msg" id="rm-' + esc(g.id) + '"></div></td></tr>';
         }).join('');
         document.getElementById('gList').innerHTML = '<div style="overflow-x:auto"><table><thead><tr><th></th><th>title</th><th class="hide-s">tag</th><th class="hide-s">link</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
         [].forEach.call(document.querySelectorAll('[data-del]'), function (b) {
@@ -400,13 +412,18 @@ function loadGames() {
                     else if (i.dataset.f === 'img') { if (i.value.trim()) body.img = i.value.trim(); }
                     else body[i.dataset.f] = i.value;
                 });
+                var rm = document.getElementById('rm-' + id);
                 b.disabled = true; b.textContent = 'saving...';
+                rm.className = 'row-msg'; rm.textContent = '';
                 api('games', { method: 'PATCH', body: body }).then(function (r) {
                     b.disabled = false; b.textContent = 'save changes';
-                    if (!r.ok) return msg(document.getElementById('gMsg'), r.data.error || 'save failed');
-                    msg(document.getElementById('gMsg'), 'saved', 'ok');
-                    loadGames();
-                }).catch(function () { b.disabled = false; b.textContent = 'save changes'; });
+                    if (!r.ok) { rm.className = 'row-msg bad'; rm.textContent = r.data.error || 'save failed'; return; }
+                    rm.className = 'row-msg good'; rm.textContent = 'saved';
+                    setTimeout(loadGames, 700);
+                }).catch(function () {
+                    b.disabled = false; b.textContent = 'save changes';
+                    rm.className = 'row-msg bad'; rm.textContent = 'network error';
+                });
             });
         });
     });
