@@ -317,9 +317,7 @@ body.entered .vol { opacity: 1; visibility: visible; }
 </head>
 <body>
 
-<video id="bgv" autoplay muted loop playsinline preload="auto">
-    <source src="Airbrush-IMAGE-ENHANCER-1788728816910-1788728816911.png" type="video/mp4">
-</video>
+<img id="bgv" src="Airbrush-IMAGE-ENHANCER-1788728816910-1788728816911.png" alt="" decoding="async">
 <div class="tint"></div>
 
 <div class="enter" id="enter">
@@ -548,16 +546,31 @@ var video = document.getElementById('bgv');
     if ('ResizeObserver' in window) new ResizeObserver(size).observe(card);
     window.addEventListener('resize', size);
     var ready = false;
+    function srcReady() {
+        if (video.tagName === 'IMG') return video.complete && video.naturalWidth > 0;
+        return video.readyState >= 2;
+    }
+    function srcSize() {
+        if (video.tagName === 'IMG') return [video.naturalWidth || 1920, video.naturalHeight || 1080];
+        return [video.videoWidth || 1920, video.videoHeight || 1080];
+    }
+    function upload() {
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video); ready = true; } catch (e) {}
+    }
+    if (video.tagName === 'IMG') {
+        if (srcReady()) upload(); else video.addEventListener('load', upload, { once: true });
+    }
     function frame(t) {
-        if (video.readyState >= 2) {
-            gl.bindTexture(gl.TEXTURE_2D, tex);
-            try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video); ready = true; } catch (e) {}
+        if (!ready || video.tagName !== 'IMG') {
+            if (srcReady()) upload();
         }
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
         if (ready) {
+            var ts = srcSize();
             gl.uniform2f(uRes, canvas.width, canvas.height);
-            gl.uniform2f(uTexRes, video.videoWidth || 1920, video.videoHeight || 1080);
+            gl.uniform2f(uTexRes, ts[0], ts[1]);
             gl.uniform1f(uRad, 26 * dpr);
             gl.uniform1f(uT, t * 0.001);
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -610,7 +623,7 @@ function doEnter() {
     if (entered) return; entered = true;
     document.getElementById('enter').classList.add('gone');
     document.body.classList.add('entered');
-    video.play().catch(function () {});
+    if (video && typeof video.play === 'function') video.play().catch(function () {});
     audio.play().catch(function () {});
 }
 document.getElementById('enter').addEventListener('click', doEnter);
