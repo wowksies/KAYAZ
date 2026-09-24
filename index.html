@@ -664,7 +664,7 @@ applyVol(0.55);
     modal.addEventListener('click', function (e) { if (e.target === modal) hide(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
 
-    var EXTS = ['png', 'jpg', 'jpeg', 'webp'];
+    var EXTS = ['webp', 'png', 'jpg', 'jpeg'];
     var MAX_SHOTS = 12;
 
     function probe(src) {
@@ -677,10 +677,12 @@ applyVol(0.55);
     }
 
     function findAt(base, i) {
-        var k = 0;
+        var names = [base + '-' + i, base + i], k = 0;
         return (function next() {
-            if (k >= EXTS.length) return Promise.resolve(null);
-            return probe(base + '-' + i + '.' + EXTS[k++]).then(function (r) { return r || next(); });
+            if (k >= names.length * EXTS.length) return Promise.resolve(null);
+            var src = names[k % names.length] + '.' + EXTS[Math.floor(k / names.length)];
+            k++;
+            return probe(src).then(function (r) { return r || next(); });
         })();
     }
 
