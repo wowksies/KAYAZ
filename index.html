@@ -236,6 +236,36 @@ a.pcard:hover .pcard-shot img { transform: scale(1.04); }
 .pcard-link { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
     font-family: var(--mono); font-size: 0.72rem; color: var(--accent); }
 .pcard-link.muted { color: var(--mute); }
+.pill.be::before { background: #6cc7ff; box-shadow: 0 0 6px rgba(108,199,255,0.7); }
+
+.shots { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.1); background: #0b0709; touch-action: pan-y; }
+.shots::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0.12), transparent 30%, rgba(10,4,6,0.45)); }
+.shots-track { display: flex; height: 100%; will-change: transform;
+    transition: transform 0.45s cubic-bezier(.2,.8,.2,1); }
+.shots-track.drag { transition: none; }
+.shots-slide { flex: 0 0 100%; width: 100%; height: 100%; }
+.shots-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center 42%;
+    display: block; -webkit-user-drag: none; user-select: none; }
+.shots-ph { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 9px; color: var(--mute); font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.05em; background:
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 10px, transparent 10px 20px), #0d080a; }
+.shots-ph i { font-size: 1.4rem; color: rgba(255,45,70,0.55); }
+.shots-nav { position: absolute; top: 50%; z-index: 3; transform: translateY(-50%);
+    width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 0.8rem; background: rgba(12,6,8,0.55); border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; transition: 0.18s; }
+.shots:hover .shots-nav, .shots-nav:focus-visible { opacity: 1; }
+.shots-nav:hover { background: rgba(255,45,70,0.65); border-color: rgba(255,45,70,0.85); }
+.shots-nav.prev { left: 10px; } .shots-nav.next { right: 10px; }
+.shots-dots { position: absolute; left: 50%; bottom: 10px; z-index: 3; transform: translateX(-50%);
+    display: flex; gap: 6px; }
+.shots-dots button { width: 7px; height: 7px; border-radius: 50%; padding: 0;
+    background: rgba(255,255,255,0.35); border: none; transition: 0.18s; }
+.shots-dots button.on { background: var(--accent); box-shadow: 0 0 8px rgba(255,45,70,0.8); width: 18px; border-radius: 4px; }
+@media (hover: none) { .shots-nav { opacity: 1; } }
 
 @media (max-width: 620px) {
     .rail { left: 50%; right: auto; top: auto; bottom: calc(16px + env(safe-area-inset-bottom));
@@ -252,7 +282,8 @@ a.pcard:hover .pcard-shot img { transform: scale(1.04); }
     .modal-title { font-size: 0.92rem; }
     .modal-body { padding: 12px; gap: 12px; }
     .pcard { border-radius: 14px; }
-    .pcard-shot { aspect-ratio: 16 / 10; }
+    .pcard-shot, .shots { aspect-ratio: 16 / 10; }
+    .shots-nav { width: 30px; height: 30px; font-size: 0.72rem; }
     .pcard-info { padding: 12px 13px 13px; }
     .pcard-name { font-size: 0.94rem; }
     .pcard-desc { font-size: 0.79rem; line-height: 1.5; }
@@ -405,6 +436,19 @@ body.entered .vol { opacity: 1; visibility: visible; }
                     </div>
                     <div class="pcard-desc">Fully external read only cheat for Siege. Nothing gets written to the game, everything is read from outside. Player ESP, skeletons, glow and gadget info.</div>
                     <div class="pcard-tags"><span>C++</span><span>read-only</span><span>siege</span></div>
+                    <div class="pcard-link muted"><i class="fa-solid fa-lock"></i> source not public</div>
+                </div>
+            </div>
+            <div class="pcard">
+                <div class="shots" data-shots="projects/r6int" data-alt="Omnis R6 Internal"></div>
+                <div class="pcard-info">
+                    <div class="pcard-top">
+                        <div class="pcard-name">Omnis R6 Internal</div>
+                        <span class="pill closed">closed source</span>
+                        <span class="pill be">works with BE</span>
+                    </div>
+                    <div class="pcard-desc">Internal for Siege, drawn from inside the game. Skeleton ESP and health ESP on every player, plus chams you can switch on or leave off.</div>
+                    <div class="pcard-tags"><span>C++</span><span>internal</span><span>siege</span><span>skeleton esp</span><span>health esp</span><span>chams</span><span>battleye</span></div>
                     <div class="pcard-link muted"><i class="fa-solid fa-lock"></i> source not public</div>
                 </div>
             </div>
@@ -613,12 +657,135 @@ applyVol(0.55);
     var open = document.getElementById('projBtn');
     var close = document.getElementById('projClose');
     if (!modal || !open) return;
-    function show() { modal.classList.add('open'); }
+    var built = false;
+    function show() { modal.classList.add('open'); if (!built) { built = true; buildShots(); } }
     function hide() { modal.classList.remove('open'); }
     open.addEventListener('click', show);
     close.addEventListener('click', hide);
     modal.addEventListener('click', function (e) { if (e.target === modal) hide(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+
+    var EXTS = ['png', 'jpg', 'jpeg', 'webp'];
+    var MAX_SHOTS = 12;
+
+    function probe(src) {
+        return new Promise(function (res) {
+            var im = new Image();
+            im.onload = function () { res(src); };
+            im.onerror = function () { res(null); };
+            im.src = src;
+        });
+    }
+
+    function findAt(base, i) {
+        var k = 0;
+        return (function next() {
+            if (k >= EXTS.length) return Promise.resolve(null);
+            return probe(base + '-' + i + '.' + EXTS[k++]).then(function (r) { return r || next(); });
+        })();
+    }
+
+    function collect(base) {
+        var found = [];
+        return (function step(i) {
+            if (i > MAX_SHOTS) return Promise.resolve(found);
+            return findAt(base, i).then(function (src) {
+                if (!src) return found;
+                found.push(src);
+                return step(i + 1);
+            });
+        })(1);
+    }
+
+    function placeholder(box) {
+        box.innerHTML = '<div class="shots-ph"><i class="fa-solid fa-image"></i><span>screenshots coming soon</span></div>';
+    }
+
+    function mount(box, srcs, alt) {
+        var n = srcs.length, at = 0;
+        var track = document.createElement('div');
+        track.className = 'shots-track';
+        srcs.forEach(function (s, i) {
+            var sl = document.createElement('div');
+            sl.className = 'shots-slide';
+            var im = document.createElement('img');
+            im.src = s; im.alt = alt + ' screenshot ' + (i + 1);
+            im.draggable = false;
+            if (i) im.loading = 'lazy';
+            sl.appendChild(im);
+            track.appendChild(sl);
+        });
+        box.innerHTML = '';
+        box.appendChild(track);
+        if (n < 2) return;
+
+        var dots = document.createElement('div');
+        dots.className = 'shots-dots';
+        var dotEls = srcs.map(function (s, i) {
+            var d = document.createElement('button');
+            d.type = 'button';
+            d.setAttribute('aria-label', 'screenshot ' + (i + 1));
+            d.addEventListener('click', function () { go(i); });
+            dots.appendChild(d);
+            return d;
+        });
+
+        function nav(dir, cls, icon) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'shots-nav ' + cls;
+            b.setAttribute('aria-label', cls === 'prev' ? 'previous screenshot' : 'next screenshot');
+            b.innerHTML = '<i class="fa-solid fa-chevron-' + icon + '"></i>';
+            b.addEventListener('click', function () { go(at + dir); });
+            return b;
+        }
+
+        function go(i) {
+            at = (i % n + n) % n;
+            track.style.transform = 'translateX(' + (-at * 100) + '%)';
+            dotEls.forEach(function (d, k) { d.classList.toggle('on', k === at); });
+        }
+
+        box.appendChild(nav(-1, 'prev', 'left'));
+        box.appendChild(nav(1, 'next', 'right'));
+        box.appendChild(dots);
+        go(0);
+
+        var x0 = null, dx = 0, pid = null;
+        box.addEventListener('pointerdown', function (e) {
+            if (e.target.closest('.shots-nav, .shots-dots')) return;
+            x0 = e.clientX; dx = 0; pid = e.pointerId;
+            track.classList.add('drag');
+            try { box.setPointerCapture(pid); } catch (err) {}
+            e.preventDefault();
+        });
+        box.addEventListener('pointermove', function (e) {
+            if (x0 === null || e.pointerId !== pid) return;
+            dx = e.clientX - x0;
+            track.style.transform = 'translateX(calc(' + (-at * 100) + '% + ' + dx + 'px))';
+        });
+        function release(e) {
+            if (x0 === null || (e && e.pointerId !== pid)) return;
+            track.classList.remove('drag');
+            try { box.releasePointerCapture(pid); } catch (err) {}
+            var step = Math.abs(dx) > Math.max(40, box.clientWidth * 0.18) ? (dx < 0 ? 1 : -1) : 0;
+            x0 = null; pid = null;
+            go(at + step);
+        }
+        box.addEventListener('pointerup', release);
+        box.addEventListener('pointercancel', release);
+    }
+
+    function buildShots() {
+        [].forEach.call(document.querySelectorAll('.shots[data-shots]'), function (box) {
+            var base = box.getAttribute('data-shots');
+            var alt = box.getAttribute('data-alt') || 'screenshot';
+            placeholder(box);
+            collect(base).then(function (srcs) {
+                if (srcs.length) mount(box, srcs, alt);
+            });
+        });
+    }
 })();
 
 var entered = false;
