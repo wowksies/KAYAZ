@@ -1,9 +1,18 @@
 import { db, requireAdmin, requireUser, readBody, send, guardConfig } from './_lib.js';
 
+const HOST_MOVES = [
+  [/^https?:\/\/kivro-game-library-9d7913\.gitlab\.io\/+/i, 'https://kivrhdhdhd.vercel.app/']
+];
+
+function moveHost(u) {
+  for (const [re, to] of HOST_MOVES) if (re.test(u)) return u.replace(re, to);
+  return u;
+}
+
 function clean(g) {
   const s = v => String(v || '').slice(0, 400);
   const title = s(g.title).trim();
-  const url = s(g.url).trim();
+  const url = moveHost(s(g.url).trim());
   if (!title || !/^https?:\/\//i.test(url)) return null;
   const img = s(g.img).trim();
   return {
@@ -23,6 +32,13 @@ export default async function handler(req, res) {
     if (!requireUser(req)) return send(res, 401, { error: 'unauthorized' });
     let all;
     try { all = await db.get('games'); } catch (e) { return send(res, 500, { error: 'server error' }); }
+    const moved = {};
+    for (const [id, g] of Object.entries(all || {})) {
+      if (!g || typeof g.url !== 'string') continue;
+      const m = moveHost(g.url);
+      if (m !== g.url) { moved[id + '/url'] = m; g.url = m; }
+    }
+    if (Object.keys(moved).length) { try { await db.patch('games', moved); } catch (e) {} }
     const list = Object.entries(all || {}).map(([id, g]) => ({ id, ...g }))
       .sort((a, b) => String(a.title).localeCompare(String(b.title)));
     return send(res, 200, { games: list });
@@ -65,7 +81,7 @@ export default async function handler(req, res) {
     if (typeof body.url === 'string') {
       const u = s(body.url).trim();
       if (!/^https?:\/\//i.test(u)) return send(res, 400, { error: 'link must start with http' });
-      patch.url = u;
+      patch.url = moveHost(u);
     }
     if (typeof body.cat === 'string') patch.cat = (s(body.cat).trim() || 'Game').slice(0, 40);
     if (typeof body.img === 'string') {
