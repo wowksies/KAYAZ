@@ -15,64 +15,90 @@
     --accent: #ff4b3e;
     --accent-2: #ff8a5c;
     --accent-rgb: 255, 75, 62;
-    --bg: #0b0807;
     --text: #fbf6f2;
     --dim: #efe6e0;
     --mute: #cdbfb7;
-    --line: rgba(255,255,255,0.12);
-    --glass: rgba(255,255,255,0.05);
     --sans: 'Inter', system-ui, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
     --ease: cubic-bezier(.2,.8,.2,1);
 }
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; min-height: 100vh;
+body { background: #07050a; color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; min-height: 100vh;
     -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 img { display: block; max-width: 100%; }
 ::selection { background: var(--accent); color: #fff; }
 ::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-track { background: #0b0807; }
 ::-webkit-scrollbar-thumb { background: #2b1f1c; border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-.bg { position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    background: radial-gradient(70% 50% at 15% 0%, rgba(var(--accent-rgb),0.16), transparent 70%),
-                radial-gradient(60% 45% at 100% 30%, rgba(255,138,92,0.08), transparent 70%), var(--bg); }
+/* same background as the main page */
+#bgv { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none;
+    filter: saturate(1.05) brightness(0.9); }
+.tint { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(115% 95% at 50% 45%, transparent 38%, rgba(6,4,3,0.55) 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.14), transparent 32%, transparent 62%, rgba(4,3,2,0.45)); }
+
+/* liquid glass, same recipe as the main page card */
+.lg { position: relative; isolation: isolate; border-radius: 26px; overflow: hidden;
+    box-shadow: 0 34px 80px -24px rgba(0,0,0,0.7), 0 10px 28px rgba(0,0,0,0.3); }
+.lg::before { content: ''; position: absolute; inset: 0; z-index: 0;
+    backdrop-filter: blur(24px) saturate(150%) brightness(0.86); -webkit-backdrop-filter: blur(24px) saturate(150%) brightness(0.86);
+    background: rgba(16,11,10,0.36); }
+.lg::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
+    background: linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0) 36%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.34), inset 0 0 0 1px rgba(255,255,255,0.11); }
+.lg.dense::before { background: rgba(14,10,9,0.5); }
+.lg.gl-on::before { backdrop-filter: none; -webkit-backdrop-filter: none; background: none; }
+.lg.gl-on::after { background: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
+.lg > * { position: relative; z-index: 2; }
+.lg > .panel-glass { position: absolute; left: 0; top: 0; width: 100%; z-index: 0; pointer-events: none; display: block; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .lg::before { background: rgba(18,12,11,0.78); }
+}
+.pane { position: relative; border-radius: 18px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 26px -14px rgba(0,0,0,0.55); }
+.glass-pill { background: rgba(22,15,13,0.48); border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), 0 14px 32px -10px rgba(0,0,0,0.6); }
 
 .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
-main.wrap { overflow-x: hidden; }
 
-header { position: sticky; top: 0; z-index: 40; background: rgba(11,8,7,0.72); border-bottom: 1px solid rgba(255,255,255,0.07);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-.hd { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 64px; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.12rem; letter-spacing: -0.02em; min-width: 0; }
+header { position: sticky; top: 12px; z-index: 40; margin-top: 12px; }
+.hd { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 60px; padding: 0 10px 0 18px; border-radius: 18px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; min-width: 0; }
 .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); flex-shrink: 0; }
 .brand b { color: var(--accent); }
-.brand .path { color: var(--mute); font-weight: 600; font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand .path { color: var(--mute); font-weight: 600; font-size: 0.86rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hd-right { display: flex; align-items: center; gap: 8px; }
 .ic { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--dim);
-    background: var(--glass); border: 1px solid var(--line); transition: 0.16s; }
-.ic:hover { color: #fff; background: rgba(var(--accent-rgb),0.3); border-color: rgba(var(--accent-rgb),0.55); }
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); transition: 0.16s; }
+.ic:hover { color: #fff; background: rgba(var(--accent-rgb),0.32); border-color: rgba(var(--accent-rgb),0.55); }
 
-.hero { padding: 54px 0 30px; }
+main.wrap { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 18px; padding-top: 22px; padding-bottom: 20px; }
+.panel { padding: 28px 30px 30px; }
+.chapters { display: flex; flex-direction: column; gap: 14px; }
+
 .back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.74rem; color: var(--mute); transition: color 0.15s; }
 .back:hover { color: var(--accent-2); }
-.kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-2); margin-top: 26px; }
+.kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-2); margin-top: 22px; }
 h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; margin-top: 10px; }
 h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .lead { font-size: 1.05rem; color: var(--dim); max-width: 640px; margin-top: 16px; }
 .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .pill { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: 999px;
-    font-family: var(--mono); font-size: 0.7rem; color: var(--dim); background: var(--glass); border: 1px solid var(--line); }
+    font-family: var(--mono); font-size: 0.7rem; color: var(--dim); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16); }
 .pill i { font-size: 0.72rem; }
-.pill.dev { color: #ffd08a; border-color: rgba(255,190,90,0.35); background: rgba(255,190,90,0.08); }
-.pill.be { color: #9fe8b0; border-color: rgba(90,220,130,0.35); background: rgba(90,220,130,0.08); }
+.pill.dev { color: #ffd08a; border-color: rgba(255,190,90,0.38); background: rgba(255,190,90,0.1); }
+.pill.be { color: #9fe8b0; border-color: rgba(90,220,130,0.38); background: rgba(90,220,130,0.1); }
 
-.gallery { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; margin: 10px 0 8px; }
-.shot { position: relative; border-radius: 18px; overflow: hidden; background: #140e0c; border: 1px solid var(--line); aspect-ratio: 16 / 9; padding: 0; }
+.gallery { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; margin-top: 26px; }
+.shot { position: relative; border-radius: 16px; overflow: hidden; background: rgba(0,0,0,0.3); aspect-ratio: 16 / 9; padding: 0;
+    border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 26px -14px rgba(0,0,0,0.6); }
 .shot.big { grid-row: 1 / 3; aspect-ratio: auto; }
 .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
 .shot:hover img { transform: scale(1.04); }
@@ -81,43 +107,65 @@ h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -w
     background: rgba(0,0,0,0.5); color: #fff; opacity: 0; transition: opacity 0.2s; }
 .shot:hover::after { opacity: 1; }
 
-section { padding: 38px 0 0; }
 h2 { display: flex; align-items: center; gap: 11px; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
 h2 i { color: var(--accent-2); font-size: 1rem; }
 .sec-sub { color: var(--mute); font-size: 0.9rem; margin-top: 4px; }
 .prose { color: var(--dim); margin-top: 14px; max-width: 720px; }
 .prose p + p { margin-top: 12px; }
 
-.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 18px; }
-.feat { padding: 18px; border-radius: 18px; background: var(--glass); border: 1px solid var(--line);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); transition: transform 0.2s var(--ease), border-color 0.2s; }
-.feat:hover { transform: translateY(-2px); border-color: rgba(var(--accent-rgb),0.45); }
+.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin-top: 18px; }
+.feat { padding: 18px; transition: transform 0.2s var(--ease), border-color 0.2s; }
+.feat:hover { transform: translateY(-2px); border-color: rgba(var(--accent-rgb),0.5); }
 .feat-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .feat-ic { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-    color: var(--accent-2); background: rgba(var(--accent-rgb),0.14); border: 1px solid rgba(var(--accent-rgb),0.3); }
+    color: var(--accent-2); background: rgba(var(--accent-rgb),0.16); border: 1px solid rgba(var(--accent-rgb),0.34); }
 .tag { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 7px; }
-.tag.done { color: #9fe8b0; background: rgba(90,220,130,0.1); }
-.tag.wip { color: #ffd08a; background: rgba(255,190,90,0.1); }
+.tag.done { color: #9fe8b0; background: rgba(90,220,130,0.12); }
+.tag.wip { color: #ffd08a; background: rgba(255,190,90,0.12); }
 .feat h3 { font-size: 1rem; font-weight: 700; margin-top: 12px; }
 .feat p { font-size: 0.86rem; color: var(--mute); margin-top: 4px; }
 
-.specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 18px;
-    border-radius: 18px; overflow: hidden; background: var(--line); border: 1px solid var(--line); }
-.spec { padding: 16px 18px; background: #110c0b; }
+.specs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 18px; overflow: hidden; }
+.spec { padding: 16px 18px; border-right: 1px solid rgba(255,255,255,0.09); border-bottom: 1px solid rgba(255,255,255,0.09); }
+.spec:nth-child(3n) { border-right: 0; }
+.spec:nth-last-child(-n+3) { border-bottom: 0; }
 .spec-k { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); }
 .spec-v { font-weight: 700; margin-top: 4px; }
 
-.log { margin-top: 18px; border-left: 2px solid rgba(var(--accent-rgb),0.35); padding-left: 22px; display: flex; flex-direction: column; gap: 18px; }
+.log { margin-top: 18px; border-left: 2px solid rgba(var(--accent-rgb),0.4); padding-left: 22px; display: flex; flex-direction: column; gap: 18px; }
 .entry { position: relative; }
 .entry::before { content: ''; position: absolute; left: -29px; top: 7px; width: 12px; height: 12px; border-radius: 50%;
-    background: var(--bg); border: 2px solid var(--accent); }
+    background: #1a1110; border: 2px solid var(--accent); }
 .entry.now::before { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
 .entry-meta { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-2); }
 .entry h3 { font-size: 1rem; font-weight: 700; margin-top: 2px; }
 .entry p { font-size: 0.88rem; color: var(--mute); margin-top: 3px; }
 
-.cta { margin: 48px 0 60px; padding: 26px; border-radius: 22px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
-    background: linear-gradient(120deg, rgba(var(--accent-rgb),0.18), rgba(255,138,92,0.06)); border: 1px solid rgba(var(--accent-rgb),0.3); }
+.writeup { max-width: none; font-size: 0.94rem; line-height: 1.72; color: var(--dim); }
+.writeup > * + * { margin-top: 14px; }
+.writeup h3 { font-size: 1.28rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+.writeup h4 { font-size: 1.02rem; font-weight: 700; color: var(--text); margin-top: 22px; letter-spacing: -0.01em; }
+.writeup p { max-width: 78ch; }
+.writeup strong { color: var(--text); font-weight: 700; }
+.writeup ul, .writeup ol { margin-left: 22px; }
+.writeup li { margin-top: 6px; }
+.writeup li > ul, .writeup li > ol { margin-top: 6px; }
+.writeup code { font-family: var(--mono); font-size: 0.84em; padding: 1px 6px; border-radius: 6px;
+    background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.12); color: #ffd7cf; white-space: nowrap; }
+.writeup pre { max-width: 100%; padding: 16px 18px; border-radius: 16px; overflow-x: auto; font-size: 0.82rem; line-height: 1.55; color: var(--dim);
+    background: rgba(8,5,4,0.42); border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); }
+.writeup pre code { background: none; border: 0; padding: 0; color: inherit; font-size: inherit; white-space: pre; border-radius: 0; }
+.tbl-wrap { max-width: 100%; overflow-x: auto; border-radius: 16px; background: rgba(8,5,4,0.42);
+    border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); }
+.writeup table { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 420px; }
+.writeup th, .writeup td { text-align: left; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: top; }
+.writeup thead th { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); background: rgba(255,255,255,0.04); }
+.writeup tbody tr:last-child td { border-bottom: 0; }
+.writeup-intro { margin-top: 14px; }
+
+.cta { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+.lg > .glow { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(120deg, rgba(var(--accent-rgb),0.22), rgba(255,138,92,0.04) 70%); }
 .cta h3 { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
 .cta p { color: var(--mute); font-size: 0.88rem; margin-top: 2px; }
 .btn { display: inline-flex; align-items: center; gap: 9px; height: 42px; padding: 0 18px; border-radius: 12px; font-weight: 700; font-size: 0.86rem;
@@ -125,48 +173,14 @@ h2 i { color: var(--accent-2); font-size: 1rem; }
     transition: transform 0.2s var(--ease); }
 .btn:hover { transform: translateY(-2px); }
 
-footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-size: 0.7rem; color: var(--mute); }
+footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: center; font-family: var(--mono); font-size: 0.7rem; color: var(--mute); }
 
 .lb { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 20px;
-    background: rgba(6,4,3,0.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    background: rgba(6,4,3,0.6); backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%);
     opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; }
 .lb.open { opacity: 1; visibility: visible; }
-.lb img { max-width: 100%; max-height: 88vh; border-radius: 14px; box-shadow: 0 30px 80px -20px #000; }
+.lb img { max-width: 100%; max-height: 88vh; border-radius: 16px; box-shadow: 0 30px 80px -20px #000; }
 .lb-x { position: absolute; top: 16px; right: 16px; }
-
-
-.writeup { max-width: none; margin-top: 18px; font-size: 0.94rem; line-height: 1.72; color: var(--dim); }
-.writeup > * + * { margin-top: 14px; }
-.writeup h3 { font-size: 1.28rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text); margin-top: 34px;
-    padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.08); scroll-margin-top: 80px; }
-.writeup h3:first-child { margin-top: 22px; padding-top: 0; border-top: 0; }
-.writeup h4 { font-size: 1.02rem; font-weight: 700; color: var(--text); margin-top: 22px; letter-spacing: -0.01em; }
-.writeup h5 { font-size: 0.92rem; font-weight: 700; color: var(--accent-2); margin-top: 18px; }
-.writeup p { max-width: 78ch; }
-.writeup strong { color: var(--text); font-weight: 700; }
-.writeup a { color: var(--accent-2); border-bottom: 1px dashed rgba(var(--accent-rgb),0.4); }
-.writeup a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-.writeup ul, .writeup ol { margin-left: 22px; }
-.writeup li { margin-top: 6px; }
-.writeup li > ul, .writeup li > ol { margin-top: 6px; }
-.writeup code { font-family: var(--mono); font-size: 0.84em; padding: 1px 6px; border-radius: 5px;
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.09); color: #ffd7cf; white-space: nowrap; }
-.writeup pre { max-width: 100%; padding: 16px 18px; border-radius: 14px; overflow-x: auto; background: #0e0908;
-    border: 1px solid rgba(255,255,255,0.09); font-size: 0.82rem; line-height: 1.55; color: var(--dim);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
-.writeup pre code { background: none; border: 0; padding: 0; color: inherit; font-size: inherit; white-space: pre; border-radius: 0; }
-.writeup hr { border: 0; height: 1px; background: rgba(255,255,255,0.08); margin: 30px 0; }
-.tbl-wrap { max-width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.09); background: #0e0908; }
-.writeup table { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 420px; }
-.writeup th, .writeup td { text-align: left; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
-.writeup thead th { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--mute); background: rgba(255,255,255,0.03); }
-.writeup tbody tr:last-child td { border-bottom: 0; }
-@media (max-width: 640px) {
-    .writeup { font-size: 0.9rem; }
-    .writeup pre { font-size: 0.76rem; padding: 12px 14px; border-radius: 10px; }
-    .writeup h3 { font-size: 1.15rem; }
-}
 
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
 .reveal.in { opacity: 1; transform: none; }
@@ -176,20 +190,32 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
     .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
     .shot.big { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 9; }
     .specs { grid-template-columns: 1fr 1fr; }
-    .hero { padding-top: 34px; }
+    .spec:nth-child(3n) { border-right: 1px solid rgba(255,255,255,0.09); }
+    .spec:nth-child(2n) { border-right: 0; }
+    .spec:nth-last-child(-n+3) { border-bottom: 1px solid rgba(255,255,255,0.09); }
+    .spec:nth-last-child(-n+2) { border-bottom: 0; }
 }
 @media (max-width: 480px) {
-    .wrap { padding: 0 16px; }
+    .wrap { padding: 0 12px; }
+    .hd { padding: 0 8px 0 14px; }
     .hd-right .ic.social { display: none; }
-    .cta { padding: 20px; }
+    .lg { border-radius: 22px; }
+    .panel { padding: 20px 16px 22px; }
+    .writeup { font-size: 0.9rem; }
+    .writeup pre { font-size: 0.76rem; padding: 12px 14px; border-radius: 12px; }
+    .writeup h3 { font-size: 1.15rem; }
 }
 </style>
 </head>
 <body>
-<div class="bg"></div>
 
-<header>
-    <div class="wrap hd">
+<video id="bgv" autoplay muted loop playsinline preload="auto">
+    <source src="/g.mp4" type="video/mp4">
+</video>
+<div class="tint"></div>
+
+<header class="wrap">
+    <div class="hd glass-pill">
         <a href="/" class="brand"><span class="dot"></span>kayaz<b>.</b><span class="path">/r6-internal</span></a>
         <div class="hd-right">
             <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic social" title="Discord"><i class="fa-brands fa-discord"></i></a>
@@ -200,7 +226,7 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
 </header>
 
 <main class="wrap">
-    <div class="hero">
+    <div class="lg panel hero">
         <a href="/" class="back"><i class="fa-solid fa-arrow-left"></i> back home</a>
         <div class="kicker">rainbow six siege</div>
         <h1>Omnis <span>R6 Internal</span></h1>
@@ -211,15 +237,14 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
             <span class="pill"><i class="fa-solid fa-lock"></i> closed source</span>
             <span class="pill"><i class="fa-solid fa-microchip"></i> C++</span>
         </div>
+        <div class="gallery">
+            <button class="shot big" type="button"><img src="/projects/r6int1.webp" alt="Omnis R6 Internal screenshot 1"></button>
+            <button class="shot" type="button"><img src="/projects/r6int2.webp" alt="Omnis R6 Internal screenshot 2" loading="lazy"></button>
+            <button class="shot" type="button"><img src="/projects/r6int3.webp" alt="Omnis R6 Internal screenshot 3" loading="lazy"></button>
+        </div>
     </div>
 
-    <div class="gallery reveal">
-        <button class="shot big" type="button"><img src="/projects/r6int1.webp" alt="Omnis R6 Internal screenshot 1"></button>
-        <button class="shot" type="button"><img src="/projects/r6int2.webp" alt="Omnis R6 Internal screenshot 2" loading="lazy"></button>
-        <button class="shot" type="button"><img src="/projects/r6int3.webp" alt="Omnis R6 Internal screenshot 3" loading="lazy"></button>
-    </div>
-
-    <section class="reveal">
+    <section class="lg panel reveal">
         <h2><i class="fa-solid fa-circle-info"></i> what it is</h2>
         <div class="prose">
             <p>Omnis R6 Internal is the internal version of Omnis for Rainbow Six Siege. The R6 External reads everything from outside the game, but this one runs inside it, so it has direct access to the game's data.</p>
@@ -227,26 +252,26 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
         </div>
     </section>
 
-    <section class="reveal">
+    <section class="lg panel reveal">
         <h2><i class="fa-solid fa-bolt"></i> features</h2>
         <div class="sec-sub">what's in it right now, plus what's coming</div>
         <div class="features">
-            <div class="feat">
+            <div class="feat pane">
                 <div class="feat-top"><div class="feat-ic"><i class="fa-solid fa-heart-pulse"></i></div><span class="tag done">done</span></div>
                 <h3>Health ESP</h3>
                 <p>Health bars on every player so you can see who's low at a glance.</p>
             </div>
-            <div class="feat">
+            <div class="feat pane">
                 <div class="feat-top"><div class="feat-ic"><i class="fa-regular fa-square"></i></div><span class="tag done">done</span></div>
                 <h3>Box ESP</h3>
                 <p>Clean boxes around every player, through walls and across the map.</p>
             </div>
-            <div class="feat">
+            <div class="feat pane">
                 <div class="feat-top"><div class="feat-ic"><i class="fa-solid fa-person"></i></div><span class="tag done">done</span></div>
                 <h3>Skeleton ESP</h3>
                 <p>Full bone skeletons so you can read player stance and where they're looking.</p>
             </div>
-            <div class="feat">
+            <div class="feat pane">
                 <div class="feat-top"><div class="feat-ic"><i class="fa-solid fa-palette"></i></div><span class="tag wip">in progress</span></div>
                 <h3>Chams</h3>
                 <p>Coloured player models, being added now.</p>
@@ -254,9 +279,9 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
         </div>
     </section>
 
-    <section class="reveal">
+    <section class="lg panel reveal">
         <h2><i class="fa-solid fa-list"></i> details</h2>
-        <div class="specs">
+        <div class="specs pane">
             <div class="spec"><div class="spec-k">game</div><div class="spec-v">Rainbow Six Siege</div></div>
             <div class="spec"><div class="spec-k">type</div><div class="spec-v">Internal</div></div>
             <div class="spec"><div class="spec-k">language</div><div class="spec-v">C++</div></div>
@@ -266,7 +291,7 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
         </div>
     </section>
 
-    <section class="reveal">
+    <section class="lg panel reveal">
         <h2><i class="fa-solid fa-clock-rotate-left"></i> dev log</h2>
         <div class="sec-sub">newest first</div>
         <!-- add a new update: copy an .entry block and put it at the top -->
@@ -289,13 +314,16 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
         </div>
     </section>
 
-
-            <section class="reveal">
-        <h2 id="how-it-works"><i class="fa-solid fa-diagram-project"></i> How the internal works, camera to skeleton</h2>
-        <div class="writeup prose">
+    <div class="chapters">
+        <section class="lg panel reveal" id="how-it-works">
+            <h2><i class="fa-solid fa-diagram-project"></i> How the internal works, camera to skeleton</h2>
+            <div class="writeup writeup-intro">
 <p>Written 2026-09-24, when the internal was working end to end: camera, boxes that move every frame, health bars, dead check, and skeletons on every operator in a real match. <strong>Last updated 2026-09-27</strong>: own overlay window instead of the DX12 hook (§7), the binding fix for crowded scenes (§6.5), aimbot and menu written up (§8, §9).</p>
 <p>Addresses, offsets and anchors move around per build and per account, so this writeup only talks about the shape of the thing. No bytes, no offsets, no anchors.</p>
-<hr>
+            </div>
+        </section>
+        <section class="lg dense panel reveal">
+            <div class="writeup">
 <h3>0. The pipeline at a glance</h3>
 <pre><code>inject at main menu
    │
@@ -322,20 +350,32 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
 <h4>Threads</h4>
 <div class="tbl-wrap"><table><thead><tr><th>thread</th><th>started by</th><th>does</th></tr></thead><tbody><tr><td>startup</td><td><code>DllMain</code> → <code>StartupThread</code></td><td>console, log, backend attach, config load, starts the rest, then waits for END</td></tr><tr><td>overlay</td><td><code>GameOverlay::Start</code></td><td>window, D3D11, ImGui; each frame calls <code>GameOverlay::OnFrame</code> (menu, ESP, aimbot)</td></tr><tr><td>camera scan</td><td><code>ViewScan::ScanThread</code></td><td>finds and re-finds the view block</td></tr><tr><td>entity cache</td><td><code>EntityState::CachePlayers</code></td><td>builds <code>ActorEntry</code>s for the ESP, starts the three below</td></tr><tr><td>entity list</td><td><code>EntityList::Start</code></td><td>class discovery, periodic sweep, fast reader</td></tr><tr><td>skeleton</td><td><code>BotSkeleton::StartThread</code></td><td>palettes, templates, binding (idles while Skeleton is off)</td></tr><tr><td>old palettes</td><td><code>BonePalette::StartThread</code></td><td>the pre-character-mode path, parked in character mode</td></tr></tbody></table></div>
 <p>Startup order matters. The overlay starts first, and its <strong>first drawn frame</strong> tells everyone else R6 is past startup. Only then do the scans begin. Scanning while R6 is still paging in and compiling shaders hit uncommitted pages and crashed uncatchably. The legacy <code>GetGameState</code> thread (EntityCache's old round-state system) is <strong>off</strong>. Every early crash died in its discovery pass, and the ESP needs nothing from it.</p>
-<hr>
+            </div>
+        </section>
+        <section class="lg dense panel reveal">
+            <div class="writeup">
 <h3>1. Build, inject, logs, eject</h3>
 <ul><li>Build <strong>only</strong> <code>Dominate.vcxproj /p:Configuration=Internal /p:Platform=x64</code> (PowerShell MSBuild). <code>Release|x64</code> is the external. Never build it. Output: <code>build\Omnis_R6.dll</code>. Pipe MSBuild to a file, never to <code>Select-Object -First</code> (that orphans <code>cl.exe</code> and the build "hangs"). The Internal configuration defines <code>OMNIS_INTERNAL</code> and force-includes an internal-compat header into every file, which turns the external's process-handle calls (OpenProcess, ReadProcessMemory, VirtualQueryEx) into in-process ones.</li><li><code>OMNIS_INJECT_STAGE</code> at the top of <code>dllmain.cpp</code> widens the startup for bisecting a crash: 1 = beep only, 2 = + backend/config, 3 = + entity threads, <strong>4 = everything</strong> (normal).</li><li><strong>Inject at the main menu only.</strong> R6 must run <strong>borderless or windowed</strong> (§7).</li><li><strong>Logs</strong> (both in <code>build\</code>, previous run kept as <code>.prev.log</code>):<ul><li><code>omnis_internal.log</code>, every <code>printf</code>. Written through a pipe tee so it can be read while the game runs, but <strong>it loses its last lines if the game dies</strong>.</li><li><code>omnis_crash.log</code>, raw <code>WriteFile</code>. Survives a crash. The vectored exception handler logs every exception with <code>module+offset</code> and thread id, and the one that killed the process is marked <code>*** UNHANDLED … THIS killed the process</code>. The overlay's first-time steps (<code>GameOverlay::Mark</code>) go here too, with thread ids, so a crash names the step it died in.</li></ul></li><li><strong>Eject: END.</strong> The overlay closes its window and D3D11/ImGui (<code>GameOverlay::Stop</code>), then the DLL frees itself.</li><li><strong>Settings</strong>: <code>&lt;game exe folder&gt;\configs\&lt;name&gt;.ini</code>. <code>last.txt</code> there names the one to load at inject. Changes <strong>autosave</strong> into the loaded config at most every 5 s, and only when something actually changed (FNV hash over the settings structs). At load, <code>ForceInternalSafe</code> switches off what the internal cannot do (Team Check, Operator Names, Strict Filter, Require Skeleton, bone editor) so a saved "on" cannot act with no menu switch. Radar is forced off.</li></ul>
-<hr>
+            </div>
+        </section>
+        <section class="lg dense panel reveal">
+            <div class="writeup">
 <h3>2. Build identity, discovery, the dumper</h3>
 <ul><li><code>ReadBuildId()</code> reads the running module's <code>TimeDateStamp</code> and <code>SizeOfImage</code>. Hard-coded RVAs only get used when the build matches (<code>RvasTrusted()</code>). On any other build it logs <code>*** UNSUPPORTED BUILD ***</code> instead of reading random memory.</li><li>Values come from three places in this order: the dumper's cfg for this exact build, the built-in discovery pass, and last the values compiled into the source. Nothing was removed when the cfg arrived. A build with no dump still runs on discovery and built-ins, and any single value the cfg lacks (or that fails its check where it is used) falls through. The log says which source won (<code>[dumpcfg] … from dumper cfg</code>).</li><li>Discovery finds <em>classes</em>, not addresses. Addresses are never trusted blindly. Every candidate is resolved to a vtable, run through a sanity check on the first slots, deduplicated, and rejected outright if candidates disagree.</li></ul>
 <h4>Why there is a dumper</h4>
 <p>The internal has to run on more than one build. Two accounts already run two different builds, and every game update creates another one. Any offset or signature compiled into the source can stop matching between one launch and the next. Rewriting the source and shipping a new DLL each time is not a workflow.</p>
 <p>The dumper is a tiny separate exe that runs in the shooting range. It reads the game only. What it produces is a per-build config file the internal loads at inject. When the game updates and something the internal relies on has moved, you run the dumper once in the range, and the internal picks up the new values on next inject. The source stays the same.</p>
 <p>Two accounts means two builds, so the dumper writes both a generic <code>dumper.cfg</code> and a per-stamp <code>dumper_&lt;stamp&gt;.cfg</code>. The internal only accepts a cfg whose <code>build_stamp</code> and <code>build_image</code> match the running module.</p>
-<hr>
+            </div>
+        </section>
+        <section class="lg dense panel reveal">
+            <div class="writeup">
 <h3>3. Camera</h3>
 <ul><li>The game's own render camera lives in a heap "view block". Once found, it gives the camera position and the world→clip matrix (row-vector, translation baked in, so world coordinates go straight in).</li><li>Data anchors outlive recompiles that shift a lot of code around, when a code-based finder for the same value dies. Prefer data anchors on this game.</li><li>The dumper re-checks the anchor every run. If it has died, the dumper's cfg carries a new one and the internal switches to it (<code>ViewScan::ApplyDumpCfg</code>). The old one is used while the cfg says it is still valid.</li><li>The last hit address is remembered. If the block goes stale it checks that address first (about 1 ms) before a full heap scan (1 to 5 s).</li><li>Per frame, <code>Players::PlayersRender</code> reads the matrix and eye itself (<code>ViewScan::read_camera_batched</code>) rather than trusting a copy another thread wrote. A 64-byte matrix copied without a lock can be read half-written, which showed as boxes jerking on mouse turns.</li><li>Proving a matrix is the camera, with no screen: the camera's own position maps to <code>w = 0</code>, and <code>w == dot(pos − eye, forward)</code> for every character. <strong>Trap</strong>: an all-zero float window also gives <code>w = 0</code> exactly. Storing every such hit once ran the machine out of memory and crashed the game. Always require a second, non-degenerate point in the same pass.</li></ul>
-<hr>
+            </div>
+        </section>
+        <section class="lg dense panel reveal">
+            <div class="writeup">
 <h3>4. Entity list, "character mode"</h3>
 <h4>The object graph</h4>
 <p>An <strong>ENTITY</strong> carries a facing quaternion (pure yaw, updated every frame) and owns a <strong>component array</strong>. Components are identified by vtable, never by the allocator's chunk header. That fooled us twice. The three components that matter:</p>
@@ -356,10 +396,16 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
 <p>The ESP reads the list through <code>EntityList::Get</code>, which skips dead characters.</p>
 <h4>Why per-frame matters</h4>
 <p>Some replicated fields the old code chased change only about 3.3 times a second. No read rate beats that. The CHARACTER's own feet field changes every frame, so boxes need no prediction (<code>per_frame = true</code> bypasses the lerp).</p>
-<hr>
+            </div>
+        </section>
+        <section class="lg dense panel reveal">
+            <div class="writeup">
 <h3>5. Dead or alive (Dead Check)</h3>
 <ul><li>The damage-component vtable flipping is certain death. Dropped immediately.</li><li>Otherwise, with Dead Check on:<ul><li>Dead when health is 0 and the body is not standing, or when facing and position are perfectly still for 4 s and the body is lying. Living players' facing changes 20 to 120 times a second. Corpses do 0.1.</li><li>It stays dead until a revive. The body stands again 2.5 s after health hit 0 (range dummies "never die", revives), or it moves 0.5 m. A revive with health 0 resets the health baseline so the bar reads full.</li><li>"Lying" and "standing" come from the skeleton worker (<code>EntityList::g_pose</code>, rig top under about 0.7 m and over about 1.2 m). Skeletons off, health 0 alone decides.</li></ul></li><li>Dead characters stay on the list, flagged. The ESP skips them, and the skeleton worker keeps their rig bound to their own corpse. That is what stops a dead player's skeleton being handed to someone alive.</li><li>Health "before − dealt" is not capped at 300 damage (headshots and explosions exceed it). Capping turned kills into "unknown".</li></ul>
-<hr>
+            </div>
+        </section>
+        <section class="lg dense panel reveal">
+            <div class="writeup">
 <h3>6. Skeletons</h3>
 <h4>6.1 What the bone data is</h4>
 <ul><li>Every character's collision rig is a run of 4×4 float matrices, one per bone. Model space: origin at the feet, +x is the body's right, +y is forward, +z is up. Each row is a bone axis. The axis of interest points at the child.</li><li>No names, no owner pointer, and a new address every tick. Never cache one. Old copies stay in memory until reused.</li><li>Rigs differ per operator. A 10-character session saw counts spread across a range. Range bots and your own rig sit inside that range too.</li><li>The rest-pose palette reachable from each character (§4) gives that character's bone count only. Its matrices are identities, so it can't tell two same-count operators apart.</li><li>Named render skeletons exist in CPU memory only for the local player (value finder, 2026-09-23). Bone name hashes are <code>crc32(name)</code> and never change, but they don't apply to this rig.</li></ul>
@@ -370,10 +416,12 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
 <h4>6.4 The clean skeleton (the lines you see)</h4>
 <p>Raw axis links look wrong on this rig (spine bones are sideways capsules, so no spine, chest diagonals, flat pelvis). They are never drawn.</p>
 <ul><li>Exact maps for known rigs, labelled by hand from renders. Each map is a named per-joint list (head, neck, pelvis, arms, legs) for one specific bone count. New rigs get a new map as they show up.</li><li>Maps are attached to a template by Hungarian assignment on positions, accepted when enough rigid lengths hold within tolerance and the mean position error is small.</li><li>Generic 17-joint map for every other rig. Canonical joints (head, neck, pelvis, shoulders, elbows, hands, hips, knees, ankles, toes), each mapped to the nearest b</li></ul>
-        </div>
-    </section>
+            </div>
+        </section>
+    </div>
 
-    <div class="cta reveal">
+    <div class="lg panel cta reveal">
+        <span class="glow"></span>
         <div>
             <h3>Want updates?</h3>
             <p>Hit me up on Discord for questions or news on the internal.</p>
@@ -388,6 +436,79 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
     <button class="ic lb-x" id="lbX" type="button" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
     <img id="lbImg" alt="">
 </div>
+
+<script id="glassFrag" type="x-shader/x-fragment">
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform vec2 uBuf;
+uniform float uDpr;
+uniform vec2 uView;
+uniform vec2 uScreen;
+uniform vec2 uPanel;
+uniform vec2 uRegion;
+uniform vec2 uTexRes;
+uniform float uRadius;
+uniform float uShade;
+uniform sampler2D uTex;
+float sdRound(vec2 p, vec2 b, float r){
+  vec2 q = abs(p) - b + r;
+  return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r;
+}
+vec2 toTex(vec2 s){
+  float sc = max(uView.x / uTexRes.x, uView.y / uTexRes.y);
+  vec2 dsz = uTexRes * sc;
+  vec2 t = (s - (uView - dsz) * 0.5) / dsz;
+  return vec2(t.x, 1.0 - t.y);
+}
+vec3 tap(vec2 s){ return texture2D(uTex, toTex(s)).rgb; }
+float ign(vec2 p){ return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715)))); }
+void main(){
+  vec2 frag = gl_FragCoord.xy;
+  vec2 local = uRegion + vec2(frag.x, uBuf.y - frag.y) / uDpr;
+  vec2 size = uPanel;
+  vec2 hs = size * 0.5;
+  vec2 p = local - hs;
+  float d = sdRound(p, hs, uRadius);
+  float inside = 1.0 - smoothstep(-0.75, 0.75, d);
+  if (inside <= 0.001) { gl_FragColor = vec4(0.0); return; }
+  float dist = -d;
+  vec2 e = vec2(1.0, 0.0);
+  vec2 n = normalize(vec2(sdRound(p + e.xy, hs, uRadius) - sdRound(p - e.xy, hs, uRadius),
+                          sdRound(p + e.yx, hs, uRadius) - sdRound(p - e.yx, hs, uRadius)) + 1e-6);
+  float t = clamp(1.0 - dist / 26.0, 0.0, 1.0);
+  float bend = t * t * (3.0 - 2.0 * t);
+  vec2 s = uScreen + local + n * bend * 30.0;
+  float R = mix(15.0, 5.0, bend);
+  float rot = ign(frag) * 6.2831853;
+  vec2 ca = n * bend * 2.4;
+  bool edge = bend > 0.02;
+  vec3 col = vec3(0.0);
+  for (int i = 0; i < 16; i++) {
+    float fi = float(i) + 0.5;
+    float a = fi * 2.3999632 + rot;
+    vec2 q = s + vec2(cos(a), sin(a)) * sqrt(fi / 16.0) * R;
+    if (edge) col += vec3(tap(q + ca).r, tap(q).g, tap(q - ca).b);
+    else col += tap(q);
+  }
+  col = col / 16.0 * 0.9;
+  float lum = dot(col, vec3(0.299, 0.587, 0.114));
+  col = mix(vec3(lum), col, 0.9);
+  float vy = local.y / size.y;
+  col = mix(col, vec3(0.055, 0.04, 0.035), uShade + 0.12 * vy);
+  float sy = local.y / min(size.y, 520.0);
+  col += smoothstep(0.55, 0.0, (local.x / size.x) * 0.6 + sy) * 0.07;
+  vec2 L = normalize(vec2(-0.6, -0.8));
+  float lit = clamp(dot(n, L), 0.0, 1.0);
+  float rim = smoothstep(1.6, 0.0, abs(dist - 0.9));
+  col += rim * (0.10 + 0.55 * lit);
+  col += bend * bend * (0.03 + 0.07 * lit);
+  col -= rim * clamp(dot(n, -L), 0.0, 1.0) * 0.04;
+  gl_FragColor = vec4(col, inside);
+}
+</script>
 
 <script>
 (function () {
@@ -407,8 +528,122 @@ footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-s
     if (!('IntersectionObserver' in window)) { [].forEach.call(els, function (el) { el.classList.add('in'); }); return; }
     var io = new IntersectionObserver(function (list) {
         list.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.05 });
     [].forEach.call(els, function (el) { io.observe(el); });
+})();
+
+// WebGL liquid glass for every .lg panel, same shader as the main page card.
+// One GL context renders offscreen, then each panel gets its slice through its own 2D canvas,
+// so the rims scroll with the panel instead of lagging behind it.
+(function () {
+    var video = document.getElementById('bgv');
+    var panels = [].slice.call(document.querySelectorAll('.lg'));
+    if (!panels.length || !video) return;
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 720) return;
+    var glc = document.createElement('canvas');
+    var gl = glc.getContext('webgl', { premultipliedAlpha: false, alpha: true, antialias: false, preserveDrawingBuffer: true });
+    if (!gl) return;
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }');
+    gl.compileShader(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, document.getElementById('glassFrag').textContent);
+    gl.compileShader(fs);
+    if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) return;
+    var prog = gl.createProgram();
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    gl.useProgram(prog);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var pl = gl.getAttribLocation(prog, 'p');
+    gl.enableVertexAttribArray(pl); gl.vertexAttribPointer(pl, 2, gl.FLOAT, false, 0, 0);
+    var U = {};
+    ['uBuf', 'uDpr', 'uView', 'uScreen', 'uPanel', 'uRegion', 'uTexRes', 'uRadius', 'uShade'].forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
+    var tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.disable(gl.BLEND);
+
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+    var MARGIN = 260;              // css px rendered beyond the viewport, hides one frame of scroll
+    var P = panels.map(function (el) {
+        var c = document.createElement('canvas');
+        c.className = 'panel-glass';
+        el.insertBefore(c, el.firstChild);
+        return { el: el, c: c, ctx: c.getContext('2d'), top: -1, h: 0, w: 0,
+                 shade: el.classList.contains('dense') ? 0.55 : 0.40 };
+    });
+
+    var ready = false, lastT = -1, dirty = true;
+    function markDirty() { dirty = true; }
+    window.addEventListener('scroll', markDirty, { passive: true });
+    window.addEventListener('resize', markDirty);
+    if ('ResizeObserver' in window) { var ro = new ResizeObserver(markDirty); panels.forEach(function (el) { ro.observe(el); }); }
+
+    function upload() {
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        try {
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+            if (!ready) { ready = true; panels.forEach(function (el) { el.classList.add('gl-on'); }); }
+        } catch (e) {}
+    }
+
+    function drawPanel(o, vw, vh) {
+        var el = o.el, r = el.getBoundingClientRect();
+        var pw = el.offsetWidth, ph = el.offsetHeight;
+        if (r.bottom < -MARGIN || r.top > vh + MARGIN || !pw || !ph) return;
+        // the panel's own canvas covers the part near the viewport (tall panels would be too big otherwise)
+        var winH = Math.min(ph, vh + MARGIN * 2 + 400);
+        var need0 = Math.max(0, -r.top - MARGIN), need1 = Math.min(ph, -r.top + vh + MARGIN);
+        if (o.top < 0 || o.h !== winH || o.w !== pw || need0 < o.top || need1 > o.top + o.h) {
+            o.top = Math.max(0, Math.min(ph - winH, -r.top - MARGIN - 200));
+            o.h = winH; o.w = pw;
+            var cw = Math.round(pw * dpr), ch = Math.round(winH * dpr);
+            if (o.c.width !== cw || o.c.height !== ch) { o.c.width = cw; o.c.height = ch; }
+            else o.ctx.clearRect(0, 0, cw, ch);
+            o.c.style.top = o.top + 'px';
+            o.c.style.height = winH + 'px';
+        }
+        // render only the slice of that canvas that is on screen (plus margin)
+        var y0 = Math.max(o.top, need0), y1 = Math.min(o.top + o.h, need1);
+        if (y1 <= y0) return;
+        var rw = Math.round(pw * dpr), rh = Math.round((y1 - y0) * dpr);
+        if (glc.width < rw || glc.height < rh) {
+            glc.width = Math.max(glc.width, rw); glc.height = Math.max(glc.height, rh);
+        }
+        var ts = [video.videoWidth || 1920, video.videoHeight || 1080];
+        gl.viewport(0, glc.height - rh, rw, rh);
+        gl.uniform2f(U.uBuf, glc.width, glc.height);
+        gl.uniform1f(U.uDpr, dpr);
+        gl.uniform2f(U.uView, vw, vh);
+        gl.uniform2f(U.uScreen, r.left, r.top);
+        gl.uniform2f(U.uPanel, pw, ph);
+        gl.uniform2f(U.uRegion, 0, y0);
+        gl.uniform2f(U.uTexRes, ts[0], ts[1]);
+        gl.uniform1f(U.uRadius, parseFloat(getComputedStyle(el).borderTopLeftRadius) || 26);
+        gl.uniform1f(U.uShade, o.shade);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        var dy = Math.round((y0 - o.top) * dpr);
+        o.ctx.clearRect(0, dy, rw, rh);
+        o.ctx.drawImage(glc, 0, 0, rw, rh, 0, dy, rw, rh);
+    }
+
+    function frame() {
+        if (video.readyState >= 2 && video.currentTime !== lastT) { lastT = video.currentTime; upload(); dirty = true; }
+        if (ready && dirty) {
+            dirty = false;
+            var vw = window.innerWidth, vh = window.innerHeight;
+            for (var i = 0; i < P.length; i++) drawPanel(P[i], vw, vh);
+        }
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
 })();
 </script>
 </body>
