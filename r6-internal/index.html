@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>kayaz — Omnis R6 Internal</title>
+<meta name="description" content="Omnis R6 Internal, an internal for Rainbow Six Siege by kayaz">
+<meta name="theme-color" content="#140e0c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --accent: #ff4b3e;
+    --accent-2: #ff8a5c;
+    --accent-rgb: 255, 75, 62;
+    --bg: #0b0807;
+    --text: #fbf6f2;
+    --dim: #efe6e0;
+    --mute: #cdbfb7;
+    --line: rgba(255,255,255,0.12);
+    --glass: rgba(255,255,255,0.05);
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --ease: cubic-bezier(.2,.8,.2,1);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; min-height: 100vh;
+    -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2b1f1c; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.bg { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(70% 50% at 15% 0%, rgba(var(--accent-rgb),0.16), transparent 70%),
+                radial-gradient(60% 45% at 100% 30%, rgba(255,138,92,0.08), transparent 70%), var(--bg); }
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+header { position: sticky; top: 0; z-index: 40; background: rgba(11,8,7,0.72); border-bottom: 1px solid rgba(255,255,255,0.07);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.hd { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.12rem; letter-spacing: -0.02em; min-width: 0; }
+.brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); flex-shrink: 0; }
+.brand b { color: var(--accent); }
+.brand .path { color: var(--mute); font-weight: 600; font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hd-right { display: flex; align-items: center; gap: 8px; }
+.ic { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--dim);
+    background: var(--glass); border: 1px solid var(--line); transition: 0.16s; }
+.ic:hover { color: #fff; background: rgba(var(--accent-rgb),0.3); border-color: rgba(var(--accent-rgb),0.55); }
+
+.hero { padding: 54px 0 30px; }
+.back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.74rem; color: var(--mute); transition: color 0.15s; }
+.back:hover { color: var(--accent-2); }
+.kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-2); margin-top: 26px; }
+h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; margin-top: 10px; }
+h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { font-size: 1.05rem; color: var(--dim); max-width: 640px; margin-top: 16px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: 999px;
+    font-family: var(--mono); font-size: 0.7rem; color: var(--dim); background: var(--glass); border: 1px solid var(--line); }
+.pill i { font-size: 0.72rem; }
+.pill.dev { color: #ffd08a; border-color: rgba(255,190,90,0.35); background: rgba(255,190,90,0.08); }
+.pill.be { color: #9fe8b0; border-color: rgba(90,220,130,0.35); background: rgba(90,220,130,0.08); }
+
+.gallery { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; margin: 10px 0 8px; }
+.shot { position: relative; border-radius: 18px; overflow: hidden; background: #140e0c; border: 1px solid var(--line); aspect-ratio: 16 / 9; padding: 0; }
+.shot.big { grid-row: 1 / 3; aspect-ratio: auto; }
+.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
+.shot:hover img { transform: scale(1.04); }
+.shot::after { content: '\f065'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 10px; bottom: 10px;
+    width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+    background: rgba(0,0,0,0.5); color: #fff; opacity: 0; transition: opacity 0.2s; }
+.shot:hover::after { opacity: 1; }
+
+section { padding: 38px 0 0; }
+h2 { display: flex; align-items: center; gap: 11px; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+h2 i { color: var(--accent-2); font-size: 1rem; }
+.sec-sub { color: var(--mute); font-size: 0.9rem; margin-top: 4px; }
+.prose { color: var(--dim); margin-top: 14px; max-width: 720px; }
+.prose p + p { margin-top: 12px; }
+
+.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 18px; }
+.feat { padding: 18px; border-radius: 18px; background: var(--glass); border: 1px solid var(--line);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); transition: transform 0.2s var(--ease), border-color 0.2s; }
+.feat:hover { transform: translateY(-2px); border-color: rgba(var(--accent-rgb),0.45); }
+.feat-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.feat-ic { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    color: var(--accent-2); background: rgba(var(--accent-rgb),0.14); border: 1px solid rgba(var(--accent-rgb),0.3); }
+.tag { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 7px; }
+.tag.done { color: #9fe8b0; background: rgba(90,220,130,0.1); }
+.tag.wip { color: #ffd08a; background: rgba(255,190,90,0.1); }
+.feat h3 { font-size: 1rem; font-weight: 700; margin-top: 12px; }
+.feat p { font-size: 0.86rem; color: var(--mute); margin-top: 4px; }
+
+.specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 18px;
+    border-radius: 18px; overflow: hidden; background: var(--line); border: 1px solid var(--line); }
+.spec { padding: 16px 18px; background: #110c0b; }
+.spec-k { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); }
+.spec-v { font-weight: 700; margin-top: 4px; }
+
+.log { margin-top: 18px; border-left: 2px solid rgba(var(--accent-rgb),0.35); padding-left: 22px; display: flex; flex-direction: column; gap: 18px; }
+.entry { position: relative; }
+.entry::before { content: ''; position: absolute; left: -29px; top: 7px; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--accent); }
+.entry.now::before { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.entry-meta { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-2); }
+.entry h3 { font-size: 1rem; font-weight: 700; margin-top: 2px; }
+.entry p { font-size: 0.88rem; color: var(--mute); margin-top: 3px; }
+
+.cta { margin: 48px 0 60px; padding: 26px; border-radius: 22px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+    background: linear-gradient(120deg, rgba(var(--accent-rgb),0.18), rgba(255,138,92,0.06)); border: 1px solid rgba(var(--accent-rgb),0.3); }
+.cta h3 { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
+.cta p { color: var(--mute); font-size: 0.88rem; margin-top: 2px; }
+.btn { display: inline-flex; align-items: center; gap: 9px; height: 42px; padding: 0 18px; border-radius: 12px; font-weight: 700; font-size: 0.86rem;
+    color: #fff; background: var(--accent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 10px 24px -8px rgba(var(--accent-rgb),0.7);
+    transition: transform 0.2s var(--ease); }
+.btn:hover { transform: translateY(-2px); }
+
+footer { padding: 0 0 36px; text-align: center; font-family: var(--mono); font-size: 0.7rem; color: var(--mute); }
+
+.lb { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: rgba(6,4,3,0.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; }
+.lb.open { opacity: 1; visibility: visible; }
+.lb img { max-width: 100%; max-height: 88vh; border-radius: 14px; box-shadow: 0 30px 80px -20px #000; }
+.lb-x { position: absolute; top: 16px; right: 16px; }
+
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+@media (max-width: 700px) {
+    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .shot.big { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 9; }
+    .specs { grid-template-columns: 1fr 1fr; }
+    .hero { padding-top: 34px; }
+}
+@media (max-width: 480px) {
+    .wrap { padding: 0 16px; }
+    .hd-right .ic.social { display: none; }
+    .cta { padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+    <div class="wrap hd">
+        <a href="/" class="brand"><span class="dot"></span>kayaz<b>.</b><span class="path">/r6-internal</span></a>
+        <div class="hd-right">
+            <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic social" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            <a href="https://github.com/wowksies" target="_blank" rel="noopener" class="ic social" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="/" class="ic" title="back to kayaz"><i class="fa-solid fa-house"></i></a>
+        </div>
+    </div>
+</header>
+
+<main class="wrap">
+    <div class="hero">
+        <a href="/" class="back"><i class="fa-solid fa-arrow-left"></i> back home</a>
+        <div class="kicker">rainbow six siege</div>
+        <h1>Omnis <span>R6 Internal</span></h1>
+        <p class="lead">An internal for Siege that runs inside the game process. It's still in development, but it already runs on all QB's with full player ESP, and chams are on the way.</p>
+        <div class="pills">
+            <span class="pill dev"><i class="fa-solid fa-code"></i> in development</span>
+            <span class="pill be"><i class="fa-solid fa-shield-halved"></i> works with BE</span>
+            <span class="pill"><i class="fa-solid fa-lock"></i> closed source</span>
+            <span class="pill"><i class="fa-solid fa-microchip"></i> C++</span>
+        </div>
+    </div>
+
+    <div class="gallery reveal">
+        <button class="shot big" type="button"><img src="/projects/r6int1.webp" alt="Omnis R6 Internal screenshot 1"></button>
+        <button class="shot" type="button"><img src="/projects/r6int2.webp" alt="Omnis R6 Internal screenshot 2" loading="lazy"></button>
+        <button class="shot" type="button"><img src="/projects/r6int3.webp" alt="Omnis R6 Internal screenshot 3" loading="lazy"></button>
+    </div>
+
+    <section class="reveal">
+        <h2><i class="fa-solid fa-circle-info"></i> what it is</h2>
+        <div class="prose">
+            <p>Omnis R6 Internal is the internal version of Omnis for Rainbow Six Siege. The R6 External reads everything from outside the game, but this one runs inside it, so it has direct access to the game's data.</p>
+            <p>It works with BattlEye running and on all QB's. Right now the focus is visuals: health, box and skeleton ESP on every player, and chams are being worked on next.</p>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2><i class="fa-solid fa-bolt"></i> features</h2>
+        <div class="sec-sub">what's in it right now, plus what's coming</div>
+        <div class="features">
+            <div class="feat">
+                <div class="feat-top"><div class="feat-ic"><i class="fa-solid fa-heart-pulse"></i></div><span class="tag done">done</span></div>
+                <h3>Health ESP</h3>
+                <p>Health bars on every player so you can see who's low at a glance.</p>
+            </div>
+            <div class="feat">
+                <div class="feat-top"><div class="feat-ic"><i class="fa-regular fa-square"></i></div><span class="tag done">done</span></div>
+                <h3>Box ESP</h3>
+                <p>Clean boxes around every player, through walls and across the map.</p>
+            </div>
+            <div class="feat">
+                <div class="feat-top"><div class="feat-ic"><i class="fa-solid fa-person"></i></div><span class="tag done">done</span></div>
+                <h3>Skeleton ESP</h3>
+                <p>Full bone skeletons so you can read player stance and where they're looking.</p>
+            </div>
+            <div class="feat">
+                <div class="feat-top"><div class="feat-ic"><i class="fa-solid fa-palette"></i></div><span class="tag wip">in progress</span></div>
+                <h3>Chams</h3>
+                <p>Coloured player models, being added now.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2><i class="fa-solid fa-list"></i> details</h2>
+        <div class="specs">
+            <div class="spec"><div class="spec-k">game</div><div class="spec-v">Rainbow Six Siege</div></div>
+            <div class="spec"><div class="spec-k">type</div><div class="spec-v">Internal</div></div>
+            <div class="spec"><div class="spec-k">language</div><div class="spec-v">C++</div></div>
+            <div class="spec"><div class="spec-k">anti-cheat</div><div class="spec-v">Works with BattlEye</div></div>
+            <div class="spec"><div class="spec-k">playlists</div><div class="spec-v">All QB's</div></div>
+            <div class="spec"><div class="spec-k">source</div><div class="spec-v">Closed</div></div>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> dev log</h2>
+        <div class="sec-sub">newest first</div>
+        <!-- add a new update: copy an .entry block and put it at the top -->
+        <div class="log">
+            <div class="entry now">
+                <div class="entry-meta">now</div>
+                <h3>Working on chams</h3>
+                <p>ESP is in a good place, so chams are next.</p>
+            </div>
+            <div class="entry">
+                <div class="entry-meta">done</div>
+                <h3>Health, box and skeleton ESP</h3>
+                <p>Player ESP works on every player in the match.</p>
+            </div>
+            <div class="entry">
+                <div class="entry-meta">done</div>
+                <h3>Running with BattlEye</h3>
+                <p>Got it working with BE on and running on all QB's.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="cta reveal">
+        <div>
+            <h3>Want updates?</h3>
+            <p>Hit me up on Discord for questions or news on the internal.</p>
+        </div>
+        <a class="btn" href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> message me</a>
+    </div>
+</main>
+
+<footer>kayaz · omnis r6 internal</footer>
+
+<div class="lb" id="lb" role="dialog" aria-label="screenshot">
+    <button class="ic lb-x" id="lbX" type="button" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <img id="lbImg" alt="">
+</div>
+
+<script>
+(function () {
+    var lb = document.getElementById('lb'), img = document.getElementById('lbImg');
+    function hide() { lb.classList.remove('open'); }
+    [].forEach.call(document.querySelectorAll('.shot'), function (b) {
+        b.addEventListener('click', function () {
+            var src = b.querySelector('img');
+            img.src = src.src; img.alt = src.alt;
+            lb.classList.add('open');
+        });
+    });
+    lb.addEventListener('click', function (e) { if (e.target !== img) hide(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { [].forEach.call(els, function (el) { el.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function (list) {
+        list.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    [].forEach.call(els, function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
