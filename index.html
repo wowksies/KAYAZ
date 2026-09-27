@@ -317,6 +317,15 @@ a.pcard:hover .pcard-cta .arr { transform: translate(2px, -2px); }
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .shots-dots button { width: 6px; height: 6px; border-radius: 50%; padding: 0; background: rgba(255,255,255,0.45); border: none; transition: 0.2s var(--ease); }
 .shots-dots button.on { background: #fff; width: 16px; border-radius: 4px; }
+.pcard-foot.split { justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.pcard-read { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 15px; border-radius: 12px;
+    font-weight: 700; font-size: 0.82rem; color: #fff; background: var(--accent);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 10px 24px -8px rgba(var(--accent-rgb),0.7);
+    transition: transform 0.2s var(--ease), box-shadow 0.2s; }
+.pcard-read .arr { font-size: 0.72rem; opacity: 0.85; transition: transform 0.2s var(--ease); }
+.pcard-read:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 14px 30px -8px rgba(var(--accent-rgb),0.85); }
+.pcard-read:hover .arr { transform: translateX(3px); }
+
 @media (hover: none) { .shots-nav { opacity: 1; } }
 
 @media (max-width: 780px) {
@@ -470,7 +479,10 @@ a.pcard:hover .pcard-cta .arr { transform: translate(2px, -2px); }
                     <div class="pcard-pills"><span class="pill closed">closed source</span><span class="pill be">works with BE</span></div>
                     <div class="pcard-desc">Internal for Siege, still in development, working on all QB's. Health, box and skeleton ESP on every player, with chams being added.</div>
                     <div class="pcard-tags"><span>C++</span><span>internal</span><span>siege</span><span>health esp</span><span>box esp</span><span>skeleton esp</span><span>chams</span><span>battleye</span></div>
-                    <div class="pcard-foot"><span class="pcard-private"><i class="fa-solid fa-lock"></i> source not public</span></div>
+                    <div class="pcard-foot split">
+                        <span class="pcard-private"><i class="fa-solid fa-lock"></i> source not public</span>
+                        <a class="pcard-read" href="/r6-internal"><i class="fa-solid fa-book-open"></i> read more <i class="fa-solid fa-arrow-right arr"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
