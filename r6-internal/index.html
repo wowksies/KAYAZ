@@ -113,7 +113,7 @@ h2 i { color: var(--accent-2); font-size: 1rem; }
 .prose { color: var(--dim); margin-top: 14px; max-width: 720px; }
 .prose p + p { margin-top: 12px; }
 
-.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin-top: 18px; }
+.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-top: 18px; }
 .feat { padding: 18px; transition: transform 0.2s var(--ease), border-color 0.2s; }
 .feat:hover { transform: translateY(-2px); border-color: rgba(var(--accent-rgb),0.5); }
 .feat-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -163,6 +163,33 @@ h2 i { color: var(--accent-2); font-size: 1rem; }
 .writeup tbody tr:last-child td { border-bottom: 0; }
 .writeup-intro { margin-top: 14px; }
 
+.fig { margin-top: 18px; }
+.fig figcaption { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--mute); margin-top: 8px; }
+.zoom { display: block; width: 100%; padding: 0; border-radius: 16px; overflow: hidden; cursor: zoom-in; background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 26px -14px rgba(0,0,0,0.6); }
+.zoom img { width: 100%; height: auto; transition: transform 0.5s var(--ease); }
+.zoom:hover img { transform: scale(1.02); }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+.duo .fig { margin-top: 0; }
+.writeup .duo { margin-top: 18px; }
+
+.compare { position: relative; margin-top: 18px; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; cursor: ew-resize;
+    touch-action: pan-y; user-select: none; -webkit-user-select: none; --pos: 50%;
+    border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 26px -14px rgba(0,0,0,0.6); }
+.compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.compare .cmp-before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.cmp-line { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: rgba(255,255,255,0.9);
+    box-shadow: 0 0 12px rgba(0,0,0,0.6); pointer-events: none; }
+.cmp-knob { position: absolute; top: 50%; left: var(--pos); width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; gap: 4px; color: #fff; font-size: 0.72rem; pointer-events: none;
+    background: rgba(22,15,13,0.55); border: 1px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(10px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px -6px rgba(0,0,0,0.7); }
+.compare:focus-visible .cmp-knob { border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(var(--accent-rgb),0.45); }
+.cmp-tag { position: absolute; top: 12px; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 999px; color: #fff; background: rgba(12,8,7,0.6); border: 1px solid rgba(255,255,255,0.2); pointer-events: none; }
+.cmp-tag.l { left: 12px; } .cmp-tag.r { right: 12px; color: #ffd7cf; border-color: rgba(var(--accent-rgb),0.5); }
+
 .cta { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
 .lg > .glow { position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(120deg, rgba(var(--accent-rgb),0.22), rgba(255,138,92,0.04) 70%); }
@@ -190,6 +217,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
     .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
     .shot.big { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 9; }
     .specs { grid-template-columns: 1fr 1fr; }
+    .duo { grid-template-columns: 1fr; }
     .spec:nth-child(3n) { border-right: 1px solid rgba(255,255,255,0.09); }
     .spec:nth-child(2n) { border-right: 0; }
     .spec:nth-last-child(-n+3) { border-bottom: 1px solid rgba(255,255,255,0.09); }
@@ -250,6 +278,23 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
             <p>Kayaz R6 Internal is my internal for Rainbow Six Siege. The R6 External reads everything from outside the game, but this one runs inside it, so it has direct access to the game's data.</p>
             <p>It works with BattlEye running and on all QB's. Right now the focus is visuals: health, box and skeleton ESP on every player, and chams are being worked on next.</p>
         </div>
+        <figure class="fig">
+            <button class="zoom" type="button"><img src="/projects/r6int-online.webp" alt="Kayaz R6 Internal ESP in an online match" loading="lazy"></button>
+            <figcaption>in a real online match, BattlEye on: boxes, skeletons, health bars and distance on every player</figcaption>
+        </figure>
+    </section>
+
+    <section class="lg panel reveal">
+        <h2><i class="fa-solid fa-left-right"></i> before and after</h2>
+        <div class="sec-sub">same spot in the range, internal off and on. drag the slider</div>
+        <div class="compare" id="compare" tabindex="0" role="slider" aria-label="before and after comparison" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <img class="cmp-after" src="/projects/r6int-after.webp" alt="Shooting range with the internal on" loading="lazy">
+            <img class="cmp-before" src="/projects/r6int-before.webp" alt="Shooting range with the internal off" loading="lazy">
+            <span class="cmp-tag l">before</span>
+            <span class="cmp-tag r">after</span>
+            <span class="cmp-line"></span>
+            <span class="cmp-knob"><i class="fa-solid fa-chevron-left"></i><i class="fa-solid fa-chevron-right"></i></span>
+        </div>
     </section>
 
     <section class="lg panel reveal">
@@ -276,6 +321,26 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
                 <h3>Chams</h3>
                 <p>Coloured player models, being added now.</p>
             </div>
+            <div class="feat pane">
+                <div class="feat-top"><div class="feat-ic"><i class="fa-solid fa-crosshairs"></i></div><span class="tag done">done</span></div>
+                <h3>Aimbot</h3>
+                <p>Smoothness, FOV with a visible ring, and an aim line to the target.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lg panel reveal">
+        <h2><i class="fa-solid fa-sliders"></i> the menu</h2>
+        <div class="sec-sub">INSERT to show or hide it in game</div>
+        <div class="duo" style="margin-top:18px">
+            <figure class="fig">
+                <button class="zoom" type="button"><img src="/projects/r6int-menu-esp.webp" alt="Kayaz R6 Internal menu, ESP tab" loading="lazy"></button>
+                <figcaption>ESP tab: boxes, skeleton with glow, health bar, snaplines, dead check</figcaption>
+            </figure>
+            <figure class="fig">
+                <button class="zoom" type="button"><img src="/projects/r6int-menu-aim.webp" alt="Kayaz R6 Internal menu, aimbot tab" loading="lazy"></button>
+                <figcaption>Aimbot tab: smoothness, FOV and the FOV ring</figcaption>
+            </figure>
         </div>
     </section>
 
@@ -365,6 +430,10 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
 <h4>Why there is a dumper</h4>
 <p>The internal has to run on more than one build. Two accounts already run two different builds, and every game update creates another one. Any offset or signature compiled into the source can stop matching between one launch and the next. Rewriting the source and shipping a new DLL each time is not a workflow.</p>
 <p>The dumper is a tiny separate exe that runs in the shooting range. It reads the game only. What it produces is a per-build config file the internal loads at inject. When the game updates and something the internal relies on has moved, you run the dumper once in the range, and the internal picks up the new values on next inject. The source stays the same.</p>
+<div class="duo">
+<figure class="fig"><button class="zoom" type="button"><img src="/projects/r6int-dump-start.webp" alt="Kayaz dumper starting up" loading="lazy"></button><figcaption>the dumper starting in the shooting range</figcaption></figure>
+<figure class="fig"><button class="zoom" type="button"><img src="/projects/r6int-dump-end.webp" alt="Kayaz dumper finished, every step OK" loading="lazy"></button><figcaption>every step OK, config written for the internal</figcaption></figure>
+</div>
 <p>Two accounts means two builds, so the dumper writes both a generic <code>dumper.cfg</code> and a per-stamp <code>dumper_&lt;stamp&gt;.cfg</code>. The internal only accepts a cfg whose <code>build_stamp</code> and <code>build_image</code> match the running module.</p>
             </div>
         </section>
@@ -514,7 +583,7 @@ void main(){
 (function () {
     var lb = document.getElementById('lb'), img = document.getElementById('lbImg');
     function hide() { lb.classList.remove('open'); }
-    [].forEach.call(document.querySelectorAll('.shot'), function (b) {
+    [].forEach.call(document.querySelectorAll('.shot, .zoom'), function (b) {
         b.addEventListener('click', function () {
             var src = b.querySelector('img');
             img.src = src.src; img.alt = src.alt;
@@ -523,6 +592,31 @@ void main(){
     });
     lb.addEventListener('click', function (e) { if (e.target !== img) hide(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+
+    var cmp = document.getElementById('compare');
+    if (cmp) {
+        var pos = 50, dragging = false;
+        function setPos(v) {
+            pos = Math.max(0, Math.min(100, v));
+            cmp.style.setProperty('--pos', pos + '%');
+            cmp.setAttribute('aria-valuenow', Math.round(pos));
+        }
+        function fromEvent(e) { var r = cmp.getBoundingClientRect(); setPos((e.clientX - r.left) / r.width * 100); }
+        cmp.addEventListener('pointerdown', function (e) {
+            dragging = true; fromEvent(e);
+            try { cmp.setPointerCapture(e.pointerId); } catch (err) {}
+        });
+        cmp.addEventListener('pointermove', function (e) { if (dragging) fromEvent(e); });
+        function stop() { dragging = false; }
+        cmp.addEventListener('pointerup', stop);
+        cmp.addEventListener('pointercancel', stop);
+        cmp.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft') { setPos(pos - 5); e.preventDefault(); }
+            else if (e.key === 'ArrowRight') { setPos(pos + 5); e.preventDefault(); }
+            else if (e.key === 'Home') { setPos(0); e.preventDefault(); }
+            else if (e.key === 'End') { setPos(100); e.preventDefault(); }
+        });
+    }
 
     var els = document.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window)) { [].forEach.call(els, function (el) { el.classList.add('in'); }); return; }
