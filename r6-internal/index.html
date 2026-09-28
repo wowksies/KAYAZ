@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="/assets/peek-rating.css">
 <style>
 :root {
     --accent: #ff4b3e;
@@ -65,9 +66,9 @@ img { display: block; max-width: 100%; }
     backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), 0 14px 32px -10px rgba(0,0,0,0.6); }
 
-.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 20px; }
 
-header { position: sticky; top: 12px; z-index: 40; margin-top: 12px; }
+header.wrap { position: sticky; top: 12px; z-index: 40; margin-top: 12px; }
 .hd { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 60px; padding: 0 10px 0 18px; border-radius: 18px; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; min-width: 0; }
 .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); flex-shrink: 0; }
@@ -78,7 +79,23 @@ header { position: sticky; top: 12px; z-index: 40; margin-top: 12px; }
     background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); transition: 0.16s; }
 .ic:hover { color: #fff; background: rgba(var(--accent-rgb),0.32); border-color: rgba(var(--accent-rgb),0.55); }
 
-main.wrap { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 18px; padding-top: 22px; padding-bottom: 20px; }
+.layout { position: relative; z-index: 2; display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 22px; align-items: start;
+    padding-top: 22px; padding-bottom: 20px; }
+main.content { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.lg[id] { scroll-margin-top: 90px; }
+
+/* chapters sidebar */
+.toc { position: sticky; top: 90px; max-height: calc(100vh - 110px); overflow-y: auto; padding: 16px 10px 14px; border-radius: 20px;
+    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+.toc-title { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); padding: 0 10px 10px; }
+.toc a { display: flex; align-items: baseline; gap: 8px; padding: 6px 10px; border-radius: 10px; font-size: 0.82rem; color: var(--mute);
+    line-height: 1.35; transition: background 0.15s, color 0.15s; }
+.toc a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+.toc a.on { color: #fff; background: rgba(var(--accent-rgb),0.2); box-shadow: inset 2px 0 0 var(--accent); }
+.toc a .n { font-family: var(--mono); font-size: 0.66rem; color: var(--accent-2); min-width: 16px; }
+.toc a.sub { padding-left: 14px; font-size: 0.78rem; }
+.toc-sep { height: 1px; margin: 8px 10px; background: rgba(255,255,255,0.1); }
+.toc-btn { display: none; }
 .panel { padding: 28px 30px 30px; }
 .chapters { display: flex; flex-direction: column; gap: 14px; }
 
@@ -86,7 +103,28 @@ main.wrap { position: relative; z-index: 2; display: flex; flex-direction: colum
 .back:hover { color: var(--accent-2); }
 .kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-2); margin-top: 22px; }
 h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; margin-top: 10px; }
-h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.warp-title { position: relative; height: clamp(100px, 11vw, 132px); margin-top: 4px; }
+.warp-title.on + h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
+.warp-text { position: relative; display: block; width: 100%; overflow: hidden; isolation: isolate; border-radius: inherit; }
+.warp-text canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero { text-align: center; }
+.hero .back { position: absolute; left: 30px; top: 26px; }
+.hero .kicker { margin-top: 30px; }
+.hero .lead { margin-left: auto; margin-right: auto; }
+.hero .pills { justify-content: center; }
+
+/* rating */
+.rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 26px; margin: 24px auto 0; padding: 14px 22px 16px;
+    max-width: 620px; }
+.rate-avg { display: flex; align-items: baseline; gap: 8px; }
+.rate-avg b { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
+.rate-avg .of { font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
+.rate-avg .star { color: #ff8a5c; font-size: 1.1rem; }
+.rate-avg .count { display: block; font-family: var(--mono); font-size: 0.68rem; color: var(--mute); text-align: left; }
+.rate-you { display: flex; flex-direction: column; align-items: center; }
+.rate-you .lbl { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-bottom: -18px; transition: opacity 0.18s; }
+.rate-you.peeking .lbl { opacity: 0; }
+.rate-note { font-family: var(--mono); font-size: 0.66rem; color: var(--mute); min-height: 1em; margin-top: 2px; }
 .lead { font-size: 1.05rem; color: var(--dim); max-width: 640px; margin-top: 16px; }
 .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .pill { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: 999px;
@@ -96,16 +134,6 @@ h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -w
 .pill.dev { color: #ffd08a; border-color: rgba(255,190,90,0.38); background: rgba(255,190,90,0.1); }
 .pill.be { color: #9fe8b0; border-color: rgba(90,220,130,0.38); background: rgba(90,220,130,0.1); }
 
-.gallery { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; margin-top: 26px; }
-.shot { position: relative; border-radius: 16px; overflow: hidden; background: rgba(0,0,0,0.3); aspect-ratio: 16 / 9; padding: 0;
-    border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 26px -14px rgba(0,0,0,0.6); }
-.shot.big { grid-row: 1 / 3; aspect-ratio: auto; }
-.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
-.shot:hover img { transform: scale(1.04); }
-.shot::after { content: '\f065'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 10px; bottom: 10px;
-    width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
-    background: rgba(0,0,0,0.5); color: #fff; opacity: 0; transition: opacity 0.2s; }
-.shot:hover::after { opacity: 1; }
 
 h2 { display: flex; align-items: center; gap: 11px; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
 h2 i { color: var(--accent-2); font-size: 1rem; }
@@ -172,6 +200,8 @@ h2 i { color: var(--accent-2); font-size: 1rem; }
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
 .duo .fig { margin-top: 0; }
 .writeup .duo { margin-top: 18px; }
+.log-shots { margin-top: 12px; max-width: 720px; }
+.log-shot { margin-top: 12px; max-width: 520px; }
 
 .compare { position: relative; margin-top: 18px; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; cursor: ew-resize;
     touch-action: pan-y; user-select: none; -webkit-user-select: none; --pos: 50%;
@@ -213,9 +243,18 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
 
+@media (max-width: 1000px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .toc { position: fixed; top: auto; left: 12px; right: 12px; bottom: calc(76px + env(safe-area-inset-bottom)); max-height: 60vh; z-index: 60;
+        opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity 0.2s, transform 0.2s, visibility 0.2s; }
+    .toc.open { opacity: 1; visibility: visible; transform: none; }
+    .toc-btn { display: inline-flex; align-items: center; gap: 8px; position: fixed; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom));
+        z-index: 61; height: 48px; padding: 0 16px; border-radius: 16px; font-family: var(--mono); font-size: 0.78rem; color: var(--text); }
+    .toc-btn i { color: var(--accent-2); }
+}
 @media (max-width: 700px) {
-    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-    .shot.big { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 9; }
+    .hero .back { position: relative; left: auto; top: auto; }
+    .hero .kicker { margin-top: 18px; }
     .specs { grid-template-columns: 1fr 1fr; }
     .duo { grid-template-columns: 1fr; }
     .spec:nth-child(3n) { border-right: 1px solid rgba(255,255,255,0.09); }
@@ -224,7 +263,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
     .spec:nth-last-child(-n+2) { border-bottom: 0; }
 }
 @media (max-width: 480px) {
-    .wrap { padding: 0 12px; }
+    .wrap { padding-left: 12px; padding-right: 12px; }
     .hd { padding: 0 8px 0 14px; }
     .hd-right .ic.social { display: none; }
     .lg { border-radius: 22px; }
@@ -253,11 +292,18 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
     </div>
 </header>
 
-<main class="wrap">
-    <div class="lg panel hero">
+<div class="wrap layout">
+<aside class="toc glass-pill" id="toc" aria-label="chapters">
+    <div class="toc-title">chapters</div>
+    <nav id="tocList"></nav>
+</aside>
+<button class="toc-btn glass-pill" id="tocBtn" type="button" aria-controls="toc" aria-expanded="false"><i class="fa-solid fa-list-ul"></i> chapters</button>
+<main class="content">
+    <div class="lg panel hero" id="overview" data-toc="Overview">
         <a href="/" class="back"><i class="fa-solid fa-arrow-left"></i> back home</a>
         <div class="kicker">rainbow six siege</div>
-        <h1>Kayaz <span>R6 Internal</span></h1>
+        <div class="warp-title" id="warpTitle"></div>
+        <h1>Kayaz R6 Internal</h1>
         <p class="lead">An internal for Siege that runs inside the game process. It's still in development, but it already runs on all QB's with full player ESP, and chams are on the way.</p>
         <div class="pills">
             <span class="pill dev"><i class="fa-solid fa-code"></i> in development</span>
@@ -265,14 +311,20 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
             <span class="pill"><i class="fa-solid fa-lock"></i> closed source</span>
             <span class="pill"><i class="fa-solid fa-microchip"></i> C++</span>
         </div>
-        <div class="gallery">
-            <button class="shot big" type="button"><img src="/projects/r6int1.webp" alt="Kayaz R6 Internal screenshot 1"></button>
-            <button class="shot" type="button"><img src="/projects/r6int2.webp" alt="Kayaz R6 Internal screenshot 2" loading="lazy"></button>
-            <button class="shot" type="button"><img src="/projects/r6int3.webp" alt="Kayaz R6 Internal screenshot 3" loading="lazy"></button>
+        <div class="rate pane" id="rate">
+            <div class="rate-avg">
+                <span class="star"><i class="fa-solid fa-star"></i></span>
+                <div><b id="rateAvg">&ndash;</b> <span class="of">/ 5</span><span class="count" id="rateCount">loading ratings</span></div>
+            </div>
+            <div class="rate-you">
+                <span class="lbl">rate this blog</span>
+                <div id="rater"></div>
+                <span class="rate-note" id="rateNote"></span>
+            </div>
         </div>
     </div>
 
-    <section class="lg panel reveal">
+    <section class="lg panel reveal" id="what-it-is" data-toc="What it is">
         <h2><i class="fa-solid fa-circle-info"></i> what it is</h2>
         <div class="prose">
             <p>Kayaz R6 Internal is my internal for Rainbow Six Siege. The R6 External reads everything from outside the game, but this one runs inside it, so it has direct access to the game's data.</p>
@@ -284,7 +336,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
         </figure>
     </section>
 
-    <section class="lg panel reveal">
+    <section class="lg panel reveal" id="before-after" data-toc="Before and after">
         <h2><i class="fa-solid fa-left-right"></i> before and after</h2>
         <div class="sec-sub">same spot in the range, internal off and on. drag the slider</div>
         <div class="compare" id="compare" tabindex="0" role="slider" aria-label="before and after comparison" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
@@ -297,7 +349,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
         </div>
     </section>
 
-    <section class="lg panel reveal">
+    <section class="lg panel reveal" id="features" data-toc="Features">
         <h2><i class="fa-solid fa-bolt"></i> features</h2>
         <div class="sec-sub">what's in it right now, plus what's coming</div>
         <div class="features">
@@ -329,7 +381,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
         </div>
     </section>
 
-    <section class="lg panel reveal">
+    <section class="lg panel reveal" id="menu" data-toc="The menu">
         <h2><i class="fa-solid fa-sliders"></i> the menu</h2>
         <div class="sec-sub">INSERT to show or hide it in game</div>
         <div class="duo" style="margin-top:18px">
@@ -344,7 +396,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
         </div>
     </section>
 
-    <section class="lg panel reveal">
+    <section class="lg panel reveal" id="details" data-toc="Details">
         <h2><i class="fa-solid fa-list"></i> details</h2>
         <div class="specs pane">
             <div class="spec"><div class="spec-k">game</div><div class="spec-v">Rainbow Six Siege</div></div>
@@ -356,7 +408,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
         </div>
     </section>
 
-    <section class="lg panel reveal">
+    <section class="lg panel reveal" id="dev-log" data-toc="Dev log">
         <h2><i class="fa-solid fa-clock-rotate-left"></i> dev log</h2>
         <div class="sec-sub">newest first</div>
         <!-- add a new update: copy an .entry block and put it at the top -->
@@ -364,12 +416,17 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
             <div class="entry now">
                 <div class="entry-meta">now</div>
                 <h3>Working on chams</h3>
-                <p>ESP is in a good place, so chams are next.</p>
+                <p>ESP is in a good place, so chams are next. Early tests draw models as wireframe, here on the viewmodel and on a shield.</p>
+                <div class="duo log-shots">
+                    <figure class="fig"><button class="zoom" type="button"><img src="/projects/r6int1.webp" alt="Wireframe test on the weapon viewmodel" loading="lazy"></button><figcaption>wireframe on the viewmodel</figcaption></figure>
+                    <figure class="fig"><button class="zoom" type="button"><img src="/projects/r6int2.webp" alt="Wireframe test on a shield and viewmodel" loading="lazy"></button><figcaption>wireframe on a shield</figcaption></figure>
+                </div>
             </div>
             <div class="entry">
                 <div class="entry-meta">done</div>
                 <h3>Health, box and skeleton ESP</h3>
                 <p>Player ESP works on every player in the match.</p>
+                <figure class="fig log-shot"><button class="zoom" type="button"><img src="/projects/r6int3.webp" alt="Early box and skeleton ESP on the range bots" loading="lazy"></button><figcaption>early boxes and skeletons on the range bots</figcaption></figure>
             </div>
             <div class="entry">
                 <div class="entry-meta">done</div>
@@ -380,14 +437,14 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
     </section>
 
     <div class="chapters">
-        <section class="lg panel reveal" id="how-it-works">
+        <section class="lg panel reveal" id="how-it-works" data-toc="How it works">
             <h2><i class="fa-solid fa-diagram-project"></i> How the internal works, camera to skeleton</h2>
             <div class="writeup writeup-intro">
 <p>Written 2026-09-24, when the internal was working end to end: camera, boxes that move every frame, health bars, dead check, and skeletons on every operator in a real match. <strong>Last updated 2026-09-27</strong>: own overlay window instead of the DX12 hook (§7), the binding fix for crowded scenes (§6.5), aimbot and menu written up (§8, §9).</p>
 <p>Addresses, offsets and anchors move around per build and per account, so this writeup only talks about the shape of the thing. No bytes, no offsets, no anchors.</p>
             </div>
         </section>
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-0">
             <div class="writeup">
 <h3>0. The pipeline at a glance</h3>
 <pre><code>inject at main menu
@@ -417,13 +474,13 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
 <p>Startup order matters. The overlay starts first, and its <strong>first drawn frame</strong> tells everyone else R6 is past startup. Only then do the scans begin. Scanning while R6 is still paging in and compiling shaders hit uncommitted pages and crashed uncatchably. The legacy <code>GetGameState</code> thread (EntityCache's old round-state system) is <strong>off</strong>. Every early crash died in its discovery pass, and the ESP needs nothing from it.</p>
             </div>
         </section>
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-1">
             <div class="writeup">
 <h3>1. Build, inject, eject</h3>
 <ul><li>Build <strong>only</strong> <code>Dominate.vcxproj /p:Configuration=Internal /p:Platform=x64</code> (PowerShell MSBuild). <code>Release|x64</code> is the external. Never build it. Output: <code>build\Omnis_R6.dll</code>. Pipe MSBuild to a file, never to <code>Select-Object -First</code> (that orphans <code>cl.exe</code> and the build "hangs"). The Internal configuration defines <code>OMNIS_INTERNAL</code> and force-includes an internal-compat header into every file, which turns the external's process-handle calls (OpenProcess, ReadProcessMemory, VirtualQueryEx) into in-process ones.</li><li><code>OMNIS_INJECT_STAGE</code> at the top of <code>dllmain.cpp</code> widens the startup for bisecting a crash: 1 = beep only, 2 = + backend/config, 3 = + entity threads, <strong>4 = everything</strong> (normal).</li><li><strong>Inject at the main menu only.</strong> R6 must run <strong>borderless or windowed</strong> (§7).</li><li><strong>Eject: END.</strong> The overlay closes its window and D3D11/ImGui (<code>GameOverlay::Stop</code>), then the DLL frees itself.</li><li><strong>Settings</strong>: <code>&lt;game exe folder&gt;\configs\&lt;name&gt;.ini</code>. <code>last.txt</code> there names the one to load at inject. Changes <strong>autosave</strong> into the loaded config at most every 5 s, and only when something actually changed (FNV hash over the settings structs). At load, <code>ForceInternalSafe</code> switches off what the internal cannot do (Team Check, Operator Names, Strict Filter, Require Skeleton, bone editor) so a saved "on" cannot act with no menu switch. Radar is forced off.</li></ul>
             </div>
         </section>
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-2">
             <div class="writeup">
 <h3>2. Build identity, discovery, the dumper</h3>
 <ul><li><code>ReadBuildId()</code> reads the running module's <code>TimeDateStamp</code> and <code>SizeOfImage</code>. Hard-coded RVAs only get used when the build matches (<code>RvasTrusted()</code>). On any other build it logs <code>*** UNSUPPORTED BUILD ***</code> instead of reading random memory.</li><li>Values come from three places in this order: the dumper's cfg for this exact build, the built-in discovery pass, and last the values compiled into the source. Nothing was removed when the cfg arrived. A build with no dump still runs on discovery and built-ins, and any single value the cfg lacks (or that fails its check where it is used) falls through.</li><li>Discovery finds <em>classes</em>, not addresses. Addresses are never trusted blindly. Every candidate is resolved to a vtable, run through a sanity check on the first slots, deduplicated, and rejected outright if candidates disagree.</li></ul>
@@ -437,13 +494,13 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
 <p>Two accounts means two builds, so the dumper writes both a generic <code>dumper.cfg</code> and a per-stamp <code>dumper_&lt;stamp&gt;.cfg</code>. The internal only accepts a cfg whose <code>build_stamp</code> and <code>build_image</code> match the running module.</p>
             </div>
         </section>
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-3">
             <div class="writeup">
 <h3>3. Camera</h3>
 <ul><li>The game's own render camera lives in a heap "view block". Once found, it gives the camera position and the world→clip matrix (row-vector, translation baked in, so world coordinates go straight in).</li><li>Data anchors outlive recompiles that shift a lot of code around, when a code-based finder for the same value dies. Prefer data anchors on this game.</li><li>The dumper re-checks the anchor every run. If it has died, the dumper's cfg carries a new one and the internal switches to it (<code>ViewScan::ApplyDumpCfg</code>). The old one is used while the cfg says it is still valid.</li><li>The last hit address is remembered. If the block goes stale it checks that address first (about 1 ms) before a full heap scan (1 to 5 s).</li><li>Per frame, <code>Players::PlayersRender</code> reads the matrix and eye itself (<code>ViewScan::read_camera_batched</code>) rather than trusting a copy another thread wrote. A 64-byte matrix copied without a lock can be read half-written, which showed as boxes jerking on mouse turns.</li><li>Proving a matrix is the camera, with no screen: the camera's own position maps to <code>w = 0</code>, and <code>w == dot(pos − eye, forward)</code> for every character. <strong>Trap</strong>: an all-zero float window also gives <code>w = 0</code> exactly. Storing every such hit once ran the machine out of memory and crashed the game. Always require a second, non-degenerate point in the same pass.</li></ul>
             </div>
         </section>
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-4">
             <div class="writeup">
 <h3>4. Entity list, "character mode"</h3>
 <h4>The object graph</h4>
@@ -467,13 +524,13 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
 <p>Some replicated fields the old code chased change only about 3.3 times a second. No read rate beats that. The CHARACTER's own feet field changes every frame, so boxes need no prediction (<code>per_frame = true</code> bypasses the lerp).</p>
             </div>
         </section>
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-5">
             <div class="writeup">
 <h3>5. Dead or alive (Dead Check)</h3>
 <ul><li>The damage-component vtable flipping is certain death. Dropped immediately.</li><li>Otherwise, with Dead Check on:<ul><li>Dead when health is 0 and the body is not standing, or when facing and position are perfectly still for 4 s and the body is lying. Living players' facing changes 20 to 120 times a second. Corpses do 0.1.</li><li>It stays dead until a revive. The body stands again 2.5 s after health hit 0 (range dummies "never die", revives), or it moves 0.5 m. A revive with health 0 resets the health baseline so the bar reads full.</li><li>"Lying" and "standing" come from the skeleton worker (<code>EntityList::g_pose</code>, rig top under about 0.7 m and over about 1.2 m). Skeletons off, health 0 alone decides.</li></ul></li><li>Dead characters stay on the list, flagged. The ESP skips them, and the skeleton worker keeps their rig bound to their own corpse. That is what stops a dead player's skeleton being handed to someone alive.</li><li>Health "before − dealt" is not capped at 300 damage (headshots and explosions exceed it). Capping turned kills into "unknown".</li></ul>
             </div>
         </section>
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-6">
             <div class="writeup">
 <h3>6. Skeletons</h3>
 <h4>6.1 What the bone data is</h4>
@@ -494,7 +551,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
             </div>
         </section>
 
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-7">
             <div class="writeup">
 <h3>7. Rendering, our own overlay window</h3>
 <p>Since 2026-09-27 nothing of R6's is hooked. No Present hook, no queue hooks, no WndProc subclass. The DLL imports <code>d3d11.dll</code> and <code>dwmapi.dll</code>, and no <code>d3d12.dll</code>, MinHook or kiero.</p>
@@ -509,7 +566,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
             </div>
         </section>
 
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-8">
             <div class="writeup">
 <h3>8. Menu and keys</h3>
 <p><strong>Keys</strong>: INSERT menu, END eject, mouse buttons for the aimbot (§9).</p>
@@ -519,21 +576,21 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
             </div>
         </section>
 
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-9">
             <div class="writeup">
 <h3>9. Aimbot</h3>
 <ul><li><strong>Target</strong>: every live character within Max Distance. Its aim point is the head circle's centre, found the same way the circle finds it: the bound skeleton's head point, or if there's no skeleton, a fixed-height guess (box top plus one head radius). Whichever is nearest the screen centre within <strong>FOV</strong> pixels wins.</li><li><strong>Only fires while right and left mouse are both held</strong>, so aiming down sights and shooting. <code>Aimbot.AimKey</code> is saved in the config but this check doesn't use it.</li><li><strong>Movement</strong>: relative mouse moves with <code>SendInput</code>, with frame-rate independent exponential smoothing. The time constant is Smoothness × 13 ms (1 is about instant, 100 is about 1.3 s), plus a small dead zone once it's on the head so it doesn't buzz.</li><li><strong>Unlock Y-Axis</strong>: despite the name, <strong>on means no vertical movement</strong>. The code zeroes the vertical step when it's set, so it's horizontal-only aim.</li><li>Aim Line draws a line from the screen centre to the current target, and the FOV ring shows the FOV radius.</li></ul>
             </div>
         </section>
 
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-10">
             <div class="writeup">
 <h3>10. After a game update</h3>
 <p>Run the dumper in the shooting range first (§2). If every step passes, the internal picks up the new cfg by itself and there's usually nothing else to do. Skeletons need nothing, since everything in §6 is found at runtime. The overlay needs nothing either, it doesn't use any game data. If it doesn't show up, check R6 is running borderless or windowed.</p>
             </div>
         </section>
 
-        <section class="lg dense panel reveal">
+        <section class="lg dense panel reveal" id="ch-11">
             <div class="writeup">
 <h3>11. Traps that cost real time</h3>
 <ul><li>Old copies and stale addresses. Palettes move every tick, never cache one.</li><li>Pooled objects keep their vtable when they're reused, so a vtable check doesn't prove it's the same object. Gate motion on a plausible speed.</li><li>The u16 "type id" right before an object is just the allocator's chunk header.</li><li>Check how often the source actually updates before optimising anything downstream (the 3.3 Hz field).</li><li>History has to advance on change, not on a clock.</li><li>A one-frame decision (retiring a link, locking a template) needs a rate or sustained evidence, not one sample. The 3 cm one-instant lock rule proved it again in a 10-player scene (§6.5).</li><li>"First match wins" is not "best match wins". <code>NearFeet</code> handed one player's points to a neighbour for months because the range never put two bodies close together.</li><li>Ranking candidates and only looking at the top N loses the right one.</li><li>Before trusting "nothing moved", confirm something could move.</li><li><code>GetAsyncKeyState(k) &amp; 1</code> gets consumed by the first reader. Use the high bit.</li><li>Standing-only tests (taller than 0.9 m and so on) silently drop prone bodies.</li><li>Anything started only in the external's render loop never runs in the DLL. The triggerbot thread, config autosave and a debug hotkey all sat dead there. Per-frame work goes in <code>GameOverlay::OnFrame</code>.</li><li>A watchdog that stops the overlay for good on a 3 s frame stall kills the menu and ESP on every map load and alt-tab. Pause and resume instead.</li><li>No COM from the DLL (CoCreateInstance, WIC, WinRT). The shim engine in apphelp.dll looks up the caller's loader entry, a manually mapped DLL doesn't have one, and R6 dies.</li><li>DX11: build the font atlas before the first frame. Rebuilt mid-frame, the old font texture is freed while that frame's draw lists still point at it.</li><li>Anything polling a list the game rewrites every frame (1 ms poll vs a 7 ms frame) sees it empty or half-written. The archived triggerbot shot through walls that way. Confirm across frames, and re-read the size after the data.</li></ul>
@@ -550,6 +607,7 @@ footer { position: relative; z-index: 2; padding: 16px 0 36px; text-align: cente
         <a class="btn" href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> message me</a>
     </div>
 </main>
+</div>
 
 <footer>kayaz · r6 internal</footer>
 
@@ -635,7 +693,7 @@ void main(){
 (function () {
     var lb = document.getElementById('lb'), img = document.getElementById('lbImg');
     function hide() { lb.classList.remove('open'); }
-    [].forEach.call(document.querySelectorAll('.shot, .zoom'), function (b) {
+    [].forEach.call(document.querySelectorAll('.zoom'), function (b) {
         b.addEventListener('click', function () {
             var src = b.querySelector('img');
             img.src = src.src; img.alt = src.alt;
@@ -790,6 +848,130 @@ void main(){
         requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+})();
+</script>
+
+<script src="/assets/warp-text.js"></script>
+<script src="/assets/peek-rating.js"></script>
+<script>
+// title
+(function () {
+    var el = document.getElementById('warpTitle');
+    if (!el || !window.WarpText) return;
+    var narrow = window.innerWidth < 560;
+    var inst = null;
+    try {
+        inst = WarpText(el, {
+            text: narrow ? 'Kayaz\nR6 Internal' : 'Kayaz R6 Internal',
+            color: '#fbf6f2',
+            fontSize: narrow ? '3.2rem' : 'clamp(3rem, 7vw, 5.4rem)',
+            fontWeight: 800,
+            fontFamily: "'Inter', system-ui, sans-serif",
+            letterSpacing: '-0.045em',
+            lineHeight: 0.95,
+            warpStrength: 0.08, warpScale: 1.7, speed: 0.55,
+            pointerInfluence: 0.42, pointerStrength: 0.38, refraction: 0.018, ripple: true
+        });
+    } catch (e) { inst = null; }
+    if (inst) el.classList.add('on'); else el.style.display = 'none';
+    if (narrow) el.style.height = '140px';
+})();
+
+// rating: one vote per device, average from the server
+(function () {
+    var PAGE = 'r6-internal', KEY = 'kz-rating-' + PAGE;
+    var box = document.getElementById('rater');
+    if (!box || !window.PeekRating) return;
+    var avgEl = document.getElementById('rateAvg'), countEl = document.getElementById('rateCount'), noteEl = document.getElementById('rateNote');
+    function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function store(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+    var device = load('kz-device');
+    if (!device || !/^[A-Za-z0-9-]{16,64}$/.test(device)) {
+        device = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+            : Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+        store('kz-device', device);
+    }
+    var mine = parseInt(load(KEY) || '0', 10) || 0;
+    function show(d) {
+        if (!d || !d.count) { avgEl.textContent = '–'; countEl.textContent = 'no ratings yet, be the first'; return; }
+        avgEl.textContent = Number(d.avg).toFixed(1);
+        countEl.textContent = 'from ' + d.count + (d.count === 1 ? ' rating' : ' ratings');
+    }
+    function fail() { countEl.textContent = 'ratings unavailable right now'; }
+    fetch('/api/rating?page=' + PAGE).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(show, fail);
+    if (mine) noteEl.textContent = 'you rated it ' + mine + ', tap to change';
+    PeekRating(box, {
+        defaultValue: mine,
+        count: 5,
+        shape: 'star',
+        labels: ['Poor', 'Fair', 'Good', 'Great', 'Superb'],
+        activeColor: '#ff8a5c',
+        idleColor: 'rgba(255,255,255,0.22)',
+        tipColor: '#1c1311',
+        tipTextColor: '#fbf6f2',
+        size: 30, lift: 7, magnify: 1.15, riseDuration: 320, popScale: 1.3,
+        showTip: true, allowClear: true, ariaLabel: 'Rate this blog',
+        onPreview: function (v) { box.parentNode.classList.toggle('peeking', v !== null); },
+        onChange: function (v) {
+            store(KEY, v ? String(v) : null);
+            noteEl.textContent = 'saving…';
+            fetch('/api/rating', { method: 'POST', headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ page: PAGE, device: device, value: v }) })
+                .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+                .then(function (d) { show(d); noteEl.textContent = v ? 'thanks, you rated it ' + v : 'rating removed'; },
+                      function () { noteEl.textContent = 'could not save, try again'; });
+        }
+    });
+})();
+
+// chapters sidebar
+(function () {
+    var toc = document.getElementById('toc'), list = document.getElementById('tocList'), btn = document.getElementById('tocBtn');
+    if (!toc || !list) return;
+    var panels = [].slice.call(document.querySelectorAll('main.content > .lg[id], .chapters > .lg[id]'));
+    var links = panels.map(function (el) {
+        var a = document.createElement('a');
+        a.href = '#' + el.id;
+        var m = /^ch-(\d+)$/.exec(el.id);
+        if (m) {
+            var h = el.querySelector('h3');
+            var t = h ? h.textContent.replace(/^\d+\.\s*/, '') : el.id;
+            a.className = 'sub';
+            a.innerHTML = '<span class="n"></span><span></span>';
+            a.firstChild.textContent = m[1];
+            a.lastChild.textContent = t;
+        } else {
+            if (el.id === 'how-it-works') { var sep = document.createElement('div'); sep.className = 'toc-sep'; list.appendChild(sep); }
+            a.textContent = el.getAttribute('data-toc') || el.id;
+        }
+        a.addEventListener('click', function () { setOpen(false); });
+        list.appendChild(a);
+        return a;
+    });
+    function setOpen(v) {
+        toc.classList.toggle('open', v);
+        if (btn) btn.setAttribute('aria-expanded', v ? 'true' : 'false');
+    }
+    if (btn) btn.addEventListener('click', function () { setOpen(!toc.classList.contains('open')); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+    var current = -1, ticking = false;
+    function update() {
+        ticking = false;
+        var idx = 0;
+        for (var i = 0; i < panels.length; i++) if (panels[i].getBoundingClientRect().top <= 130) idx = i;
+        if (idx === current) return;
+        if (current >= 0) links[current].classList.remove('on');
+        current = idx;
+        var a = links[idx];
+        a.classList.add('on');
+        if (toc.scrollHeight > toc.clientHeight) {
+            var top = a.offsetTop - toc.clientHeight / 2;
+            toc.scrollTo({ top: top, behavior: 'smooth' });
+        }
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
 })();
 </script>
 </body>
