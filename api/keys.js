@@ -14,7 +14,10 @@ export default async function handler(req, res) {
       used: Boolean(c.device),
       revoked: Boolean(c.revoked),
       created: c.created || 0,
-      usedAt: c.usedAt || 0
+      usedAt: c.usedAt || 0,
+      invitedName: c.invitedName || '',
+      invitedBy: c.parentH || '',
+      invitedTo: c.invited ? c.invited.name : ''
     })).sort((a, b) => b.created - a.created);
     return send(res, 200, { keys: list });
   }
