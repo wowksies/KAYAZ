@@ -349,6 +349,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
         <div class="pbar-title" id="pTitle">game</div>
         <div style="display:flex;gap:8px;">
             <button class="pbtn" id="padBtn" onclick="togglePad()"><i class="fa-solid fa-gamepad"></i> <span class="lbl">controls</span></button>
+            <button class="pbtn" id="kbBtn" onclick="toggleKb()" title="on-screen keyboard"><i class="fa-solid fa-keyboard"></i> <span class="lbl">keyboard</span></button>
             <button class="pbtn" onclick="reloadBoosted()" title="reload with extra memory if the game crashes or freezes"><i class="fa-solid fa-microchip"></i> <span class="lbl">memory</span></button>
             <button class="pbtn" onclick="reloadDirect()" title="reload the game directly if it will not load"><i class="fa-solid fa-rotate"></i> <span class="lbl">fix</span></button>
             <button class="pbtn" onclick="goFull()"><i class="fa-solid fa-expand"></i> <span class="lbl">full</span></button>
@@ -363,6 +364,229 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
     </div>
 </div>
 
+<script type="text/plain" id="kbSrc">
+(function () {
+  if (window.__kayazKb) return;
+  window.__kayazKb = true;
+  var SHIFTED = { '1': '!', '2': '@', '3': '#', '4': '$', '5': '%', '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', ',': '<', '.': '>' };
+  var SPEC = {
+    esc:   { k: 'Escape', c: 'Escape', n: 27, l: 'esc', w: 1.2 },
+    back:  { k: 'Backspace', c: 'Backspace', n: 8, l: '⌫', w: 1.6 },
+    tab:   { k: 'Tab', c: 'Tab', n: 9, l: 'tab', w: 1.4 },
+    enter: { k: 'Enter', c: 'Enter', n: 13, l: 'enter', w: 1.9 },
+    shift: { k: 'Shift', c: 'ShiftLeft', n: 16, l: '⇧', w: 1.7, mod: 'shift' },
+    ctrl:  { k: 'Control', c: 'ControlLeft', n: 17, l: 'ctrl', w: 1.3, mod: 'ctrl' },
+    alt:   { k: 'Alt', c: 'AltLeft', n: 18, l: 'alt', w: 1.3, mod: 'alt' },
+    space: { k: ' ', c: 'Space', n: 32, l: 'space', w: 5.2, ch: ' ' },
+    up:    { k: 'ArrowUp', c: 'ArrowUp', n: 38, l: '▲' },
+    down:  { k: 'ArrowDown', c: 'ArrowDown', n: 40, l: '▼' },
+    left:  { k: 'ArrowLeft', c: 'ArrowLeft', n: 37, l: '◀' },
+    right: { k: 'ArrowRight', c: 'ArrowRight', n: 39, l: '▶' }
+  };
+  var PUNCT = { ',': ['Comma', 188], '.': ['Period', 190] };
+  var ROWS = [
+    ['esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'back'],
+    ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'enter'],
+    ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', 'up'],
+    ['ctrl', 'alt', 'space', 'left', 'down', 'right']
+  ];
+  var mods = { shift: false, ctrl: false, alt: false };
+  var held = {};
+  var kb;
+
+  function spec(t) {
+    if (SPEC[t]) return SPEC[t];
+    var sh = mods.shift;
+    if (/^[a-z]$/.test(t)) { var U = t.toUpperCase(); return { k: sh ? U : t, c: 'Key' + U, n: U.charCodeAt(0), ch: sh ? U : t }; }
+    if (/^[0-9]$/.test(t)) { var s = sh ? SHIFTED[t] : t; return { k: s, c: 'Digit' + t, n: 48 + Number(t), ch: s }; }
+    if (PUNCT[t]) { var p = sh ? SHIFTED[t] : t; return { k: p, c: PUNCT[t][0], n: PUNCT[t][1], ch: p }; }
+    return null;
+  }
+  function label(t) { return SPEC[t] ? SPEC[t].l : (spec(t) || { k: t }).k; }
+
+  function editable(el) {
+    if (!el) return false;
+    if (el.isContentEditable) return true;
+    if (el.tagName === 'TEXTAREA') return !el.readOnly && !el.disabled;
+    if (el.tagName === 'INPUT') return !el.readOnly && !el.disabled && /^(text|search|email|url|tel|password|number|)$/i.test(el.type || '');
+    return false;
+  }
+  function target() {
+    var a = document.activeElement;
+    if (a && a !== document.body && a !== document.documentElement) return a;
+    return document.querySelector('canvas') || document.body || document;
+  }
+  function fire(type, d, repeat) {
+    var init = { key: d.k, code: d.c, bubbles: true, cancelable: true, repeat: !!repeat, view: window,
+      shiftKey: mods.shift, ctrlKey: mods.ctrl, altKey: mods.alt };
+    var e;
+    try { e = new KeyboardEvent(type, init); }
+    catch (err) { e = document.createEvent('Events'); e.initEvent(type, true, true); e.key = d.k; e.code = d.c; }
+    try {
+      Object.defineProperty(e, 'keyCode', { get: function () { return d.n; } });
+      Object.defineProperty(e, 'which', { get: function () { return d.n; } });
+      if (type === 'keypress') Object.defineProperty(e, 'charCode', { get: function () { return d.ch ? d.ch.charCodeAt(0) : 0; } });
+    } catch (err) {}
+    try { return target().dispatchEvent(e); } catch (err) { return true; }
+  }
+  function typeInto(d) {
+    var el = document.activeElement;
+    if (!editable(el) || mods.ctrl || mods.alt) return;
+    if (el.isContentEditable) {
+      try {
+        if (d.k === 'Backspace') document.execCommand('delete', false);
+        else if (d.k === 'Enter') document.execCommand('insertLineBreak', false);
+        else if (d.ch) document.execCommand('insertText', false, d.ch);
+      } catch (err) {}
+      return;
+    }
+    var s = null, e2 = null;
+    try { s = el.selectionStart; e2 = el.selectionEnd; } catch (err) {}
+    var put = function (text, from, to) {
+      if (s == null) { el.value = text === '' ? el.value.slice(0, -1) : el.value + text; return; }
+      el.setRangeText(text, from, to, 'end');
+    };
+    if (d.k === 'Backspace') {
+      if (s != null && s === e2 && s === 0) return;
+      if (s == null || s !== e2) put('', s, e2); else put('', s - 1, s);
+    } else if (d.k === 'Enter') {
+      if (el.tagName === 'TEXTAREA') put('\n', s, e2);
+      else { if (el.form && el.form.requestSubmit) { try { el.form.requestSubmit(); } catch (err) {} } return; }
+    } else if (d.ch) {
+      put(d.ch, s, e2);
+    } else return;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  function press(d, repeat) {
+    var ok = fire('keydown', d, repeat);
+    if (ok && d.ch) fire('keypress', d, repeat);
+    if (ok && (d.ch || d.k === 'Backspace' || d.k === 'Enter')) typeInto(d);
+  }
+
+  function keyDown(t, btn) {
+    var d = spec(t);
+    if (!d) return;
+    if (d.mod) { toggleMod(d.mod); return; }
+    if (held[t]) return;
+    try { window.focus(); } catch (e) {}
+    press(d, false);
+    btn.classList.add('hit');
+    var h = held[t] = { d: d, btn: btn, timer: 0 };
+    h.timer = setTimeout(function rep() {
+      if (held[t] !== h) return;
+      press(d, true);
+      h.timer = setTimeout(rep, 55);
+    }, 380);
+  }
+  function keyUp(t) {
+    var h = held[t];
+    if (!h) return;
+    clearTimeout(h.timer);
+    delete held[t];
+    h.btn.classList.remove('hit');
+    fire('keyup', h.d, false);
+  }
+  function toggleMod(m) {
+    var d = SPEC[m];
+    mods[m] = !mods[m];
+    fire(mods[m] ? 'keydown' : 'keyup', d, false);
+    [].forEach.call(kb.querySelectorAll('[data-k="' + m + '"]'), function (b) { b.classList.toggle('on', mods[m]); });
+    if (m === 'shift') relabel();
+  }
+  function relabel() {
+    [].forEach.call(kb.querySelectorAll('.k'), function (b) {
+      var t = b.getAttribute('data-k');
+      if (!SPEC[t]) b.textContent = label(t);
+    });
+  }
+  function releaseAll() {
+    Object.keys(held).forEach(keyUp);
+    ['shift', 'ctrl', 'alt'].forEach(function (m) { if (mods[m]) toggleMod(m); });
+  }
+  function show(on) {
+    kb.classList.toggle('on', on);
+    if (!on) releaseAll();
+  }
+
+  var st = document.createElement('style');
+  st.textContent =
+    '#kz-kb{position:fixed;left:50%;bottom:calc(8px + env(safe-area-inset-bottom));transform:translateX(-50%);' +
+    'width:min(calc(100% - 16px),800px);z-index:2147483647;display:none;padding:6px 7px 8px;border-radius:18px;box-sizing:border-box;' +
+    'background:rgba(16,10,9,.62);border:1px solid rgba(255,255,255,.18);-webkit-backdrop-filter:blur(14px) saturate(150%);' +
+    'backdrop-filter:blur(14px) saturate(150%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 16px 40px rgba(0,0,0,.5);' +
+    'font-family:system-ui,-apple-system,Segoe UI,sans-serif;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}' +
+    '#kz-kb.on{display:block}' +
+    '#kz-kb.top{bottom:auto;top:calc(8px + env(safe-area-inset-top))}' +
+    '#kz-kb *{box-sizing:border-box}' +
+    '#kz-kb .kz-bar{display:flex;align-items:center;gap:6px;padding:0 2px 1px;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.14em;text-transform:uppercase}' +
+    '#kz-kb .kz-bar span{flex:1}' +
+    '#kz-kb .kz-bar button{width:32px;height:24px;border-radius:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:13px;line-height:1;cursor:pointer;padding:0;touch-action:none}' +
+    '#kz-kb .kz-row{display:flex;gap:5px;margin-top:5px}' +
+    '#kz-kb .k{flex:1 1 0;min-width:0;height:42px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.1);' +
+    'color:#fbf6f2;font:600 15px/1 system-ui,-apple-system,Segoe UI,sans-serif;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;' +
+    'touch-action:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.16);transition:background .08s,transform .08s;white-space:nowrap;overflow:hidden}' +
+    '#kz-kb .k.s{font-size:12px;color:rgba(255,255,255,.82)}' +
+    '#kz-kb .k.hit{background:rgba(255,75,62,.75);border-color:rgba(255,75,62,.95);transform:scale(.95)}' +
+    '#kz-kb .k.on{background:rgba(255,138,92,.55);border-color:rgba(255,138,92,.85)}' +
+    '#kz-kb .kz-sp{flex:.5 1 0}' +
+    '@media (max-width:520px){#kz-kb{padding:5px 5px 6px;border-radius:14px}#kz-kb .kz-row{gap:3px;margin-top:4px}#kz-kb .k{height:38px;font-size:13px;border-radius:8px}#kz-kb .k.s{font-size:10px}}';
+  (document.head || document.documentElement).appendChild(st);
+
+  kb = document.createElement('div');
+  kb.id = 'kz-kb';
+  var bar = document.createElement('div');
+  bar.className = 'kz-bar';
+  bar.innerHTML = '<span>keyboard</span><button class="kz-mv" title="move to top or bottom">⇅</button><button class="kz-x" title="hide keyboard">✕</button>';
+  kb.appendChild(bar);
+  ROWS.forEach(function (row, ri) {
+    var r = document.createElement('div');
+    r.className = 'kz-row';
+    if (ri === 2) { var sp = document.createElement('span'); sp.className = 'kz-sp'; r.appendChild(sp); }
+    row.forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'k' + (SPEC[t] ? ' s' : '');
+      b.setAttribute('data-k', t);
+      b.textContent = label(t);
+      if (SPEC[t] && SPEC[t].w) b.style.flexGrow = SPEC[t].w;
+      b.addEventListener('pointerdown', function (e) { e.preventDefault(); keyDown(t, b); });
+      if (!(SPEC[t] && SPEC[t].mod)) {
+        b.addEventListener('pointerup', function () { keyUp(t); });
+        b.addEventListener('pointercancel', function () { keyUp(t); });
+        b.addEventListener('pointerleave', function () { keyUp(t); });
+      }
+      r.appendChild(b);
+    });
+    kb.appendChild(r);
+  });
+  ['pointerdown', 'pointermove', 'pointerup', 'mousedown', 'mouseup', 'click', 'touchstart', 'touchmove', 'touchend', 'wheel'].forEach(function (ev) {
+    kb.addEventListener(ev, function (e) {
+      e.stopPropagation();
+      if (ev === 'touchstart' || ev === 'mousedown') e.preventDefault();
+    }, { passive: false });
+  });
+  kb.querySelector('.kz-mv').addEventListener('pointerdown', function (e) { e.preventDefault(); kb.classList.toggle('top'); });
+  kb.querySelector('.kz-x').addEventListener('pointerdown', function (e) {
+    e.preventDefault();
+    show(false);
+    try { parent.postMessage({ kayaz: 'kb-state', on: false }, '*'); } catch (err) {}
+  });
+  kb.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  function attach() {
+    if (!document.body) { setTimeout(attach, 60); return; }
+    document.body.appendChild(kb);
+  }
+  attach();
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (!d || d.kayaz !== 'kb') return;
+    show(!!d.on);
+  });
+  document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+})();
+</script>
 <script src="/assets/peek-rating.js"></script>
 <script>
 'use strict';
@@ -508,6 +732,8 @@ function bgResume() { try { var r = bgv.play(); if (r && r.catch) r.catch(functi
 function loadDirect(g, my) {
     padAvailable = false;
     padBtn.classList.remove('on');
+    kbAvailable = false; kbOn = false;
+    kbBtn.classList.remove('on');
     frame.removeAttribute('srcdoc');
     frame.src = g.url;
     frame.onload = function () {
@@ -516,7 +742,8 @@ function loadDirect(g, my) {
     };
 }
 
-function openGame(g, forceDirect) {
+function openGame(g, forceDirect, opts) {
+    opts = opts || {};
     var my = ++token;
     bgPause();
     currentGame = g;
@@ -527,37 +754,56 @@ function openGame(g, forceDirect) {
     padOn = false; padAvailable = false;
     padBtn.classList.remove('on');
     padBtn.style.display = isTouch ? '' : 'none';
+    kbOn = false; kbAvailable = false;
+    kbBtn.classList.remove('on');
     frame.removeAttribute('srcdoc');
     frame.src = 'about:blank';
 
-    if (forceDirect || !isTouch || !g.kb) { loadDirect(g, my); return; }
+    if (forceDirect || (!opts.wantKb && (!isTouch || !g.kb))) { loadDirect(g, my); return; }
 
-    fetch(g.url).then(function (r) {
-        if (!r.ok) throw new Error('bad');
-        return r.text();
-    }).then(function (html) {
+    resolveDoc(g.url).then(function (res) {
         if (my !== token) return;
+        var html = res.html;
         if (/type=['"]?module|\.wasm|serviceWorker|new\s+Worker|importmap|SharedArrayBuffer/i.test(html)) {
             loadDirect(g, my);
-            showNote('this game runs on its own, on-screen controls are off for it');
+            showNote(opts.wantKb ? 'this game runs on its own, the keyboard cannot be added to it'
+                                 : 'this game runs on its own, on-screen controls are off for it');
             return;
         }
-        var base = g.url.replace(/[^/]*$/, '');
+        var base = res.url.replace(/[^/]*$/, '');
         var doc = html;
         if (!/<base\s/i.test(doc)) doc = doc.replace(/<head([^>]*)>/i, '<head$1><base href="' + base + '">');
         if (!/<head/i.test(doc)) doc = '<head><base href="' + base + '"></head>' + doc;
         doc += '\n<' + 'script>' + PAD_SRC + '<\/' + 'script>';
-        padAvailable = true;
+        doc += '\n<' + 'script>' + KB_SRC + '<\/' + 'script>';
+        padAvailable = true; kbAvailable = true;
         frame.srcdoc = doc;
         frame.onload = function () {
             if (my !== token) return;
             loading.style.display = 'none';
-            setPad(true);
-            showNote('touch controls on, tap the controls button to hide');
+            if (opts.wantKb) { setKb(true); showNote('keyboard on, tap keyboard again to hide it'); }
+            else { setPad(true); showNote('touch controls on, tap the controls button to hide'); }
         };
     }).catch(function () {
         if (my !== token) return;
         loadDirect(g, my);
+        if (opts.wantKb) showNote('the keyboard cannot be added to this game');
+    });
+}
+
+function resolveDoc(url) {
+    return fetchText(url).then(function (html) {
+        var tags = html.match(/<iframe\b[^>]*>/gi) || [];
+        if (tags.length === 1 && !/<canvas\b/i.test(html) && !isUnity(html) && /100(%|v[wh])/i.test(tags[0])) {
+            var m = tags[0].match(/\ssrc=["']([^"']+)["']/i);
+            var inner = null;
+            try { inner = m && new URL(m[1], url); } catch (e) {}
+            if (inner && inner.host === new URL(url).host) {
+                return fetchText(inner.href).then(function (h2) { return { html: h2, url: inner.href }; },
+                                                 function () { return { html: html, url: url }; });
+            }
+        }
+        return { html: html, url: url };
     });
 }
 
@@ -608,6 +854,8 @@ function boostGame(g) {
     padOn = false; padAvailable = false;
     padBtn.classList.remove('on');
     padBtn.style.display = isTouch ? '' : 'none';
+    kbOn = false; kbAvailable = false;
+    kbBtn.classList.remove('on');
     frame.removeAttribute('srcdoc');
     frame.src = 'about:blank';
     showNote('reloading with extra memory...');
@@ -626,6 +874,7 @@ function boostGame(g) {
         var doc = res.html;
         doc = /<head([^>]*)>/i.test(doc) ? doc.replace(/<head([^>]*)>/i, '<head$1>' + head) : head + doc;
         if (isTouch && g.kb) { doc += '\n<' + 'script>' + PAD_SRC + '<\/' + 'script>'; padAvailable = true; }
+        doc += '\n<' + 'script>' + KB_SRC + '<\/' + 'script>'; kbAvailable = true;
         frame.srcdoc = doc;
         watchBoot(g, my);
     }).catch(function () {
@@ -647,7 +896,31 @@ function closeGame() {
     if (document.fullscreenElement) { try { document.exitFullscreen(); } catch (e) {} }
 }
 
+var kbBtn = document.getElementById('kbBtn');
+var kbOn = false, kbAvailable = false;
+var KB_SRC = document.getElementById('kbSrc').textContent;
+function setKb(on) {
+    kbOn = on;
+    kbBtn.classList.toggle('on', on);
+    if (on && padOn) setPad(false);
+    if (frame.contentWindow) frame.contentWindow.postMessage({ kayaz: 'kb', on: on }, '*');
+}
+function toggleKb() {
+    if (!currentGame) return;
+    if (kbAvailable) { setKb(!kbOn); return; }
+    showNote('reloading with the keyboard...');
+    openGame(currentGame, false, { wantKb: true });
+}
+window.addEventListener('message', function (e) {
+    if (e.source !== frame.contentWindow) return;
+    var d = e.data;
+    if (!d || d.kayaz !== 'kb-state') return;
+    kbOn = !!d.on;
+    kbBtn.classList.toggle('on', kbOn);
+});
+
 function setPad(on) {
+    if (on && kbOn) setKb(false);
     padOn = on;
     padBtn.classList.toggle('on', on);
     if (frame.contentWindow) frame.contentWindow.postMessage({ kayaz: 'pad', on: on }, '*');
