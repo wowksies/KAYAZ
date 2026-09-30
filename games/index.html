@@ -514,7 +514,10 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
   }
   function releaseAll() {
     Object.keys(held).forEach(keyUp);
-    ['shift', 'ctrl', 'alt'].forEach(function (m) { if (mods[m]) toggleMod(m); });
+    ['shift', 'ctrl', 'alt', 'caps'].forEach(function (m) { if (mods[m]) toggleMod(m); });
+    try { var a = document.activeElement; if (a && editable(a) && a.blur) a.blur(); } catch (e) {}
+    try { window.focus(); } catch (e) {}
+    try { (document.querySelector('canvas') || document.body).focus && (document.querySelector('canvas') || document.body).focus(); } catch (e) {}
   }
   function show(on) {
     kb.classList.toggle('on', on);
@@ -786,10 +789,13 @@ function openGame(g, forceDirect, opts) {
     padBtn.style.display = isTouch ? '' : 'none';
     kbOn = false; kbAvailable = false;
     kbBtn.classList.remove('on');
+    kbBtn.style.display = isTouch ? '' : 'none';
     frame.removeAttribute('srcdoc');
     frame.src = 'about:blank';
 
-    if (forceDirect || (!opts.wantKb && (!isTouch || !g.kb))) { loadDirect(g, my); return; }
+    // on touch, inject controls + keyboard into every game that can take it, so
+    // turning either on later never reloads. desktop keeps a plain direct load.
+    if (forceDirect || (!isTouch && !opts.wantKb)) { loadDirect(g, my); return; }
 
     resolveDoc(g.url).then(function (res) {
         if (my !== token) return;
@@ -812,13 +818,33 @@ function openGame(g, forceDirect, opts) {
             if (my !== token) return;
             loading.style.display = 'none';
             if (opts.wantKb) { setKb(true); showNote('keyboard on, tap keyboard again to hide it'); }
-            else { setPad(true); showNote('touch controls on, tap the controls button to hide'); }
+            else if (g.kb) { setPad(true); showNote('touch controls on, tap the controls button to hide'); }
+            injectWatch(g, my);
         };
     }).catch(function () {
         if (my !== token) return;
         loadDirect(g, my);
         if (opts.wantKb) showNote('the keyboard cannot be added to this game');
     });
+}
+
+// if a game comes up blank under injection (some sites only run on their own
+// origin), quietly fall back to a plain direct load so it still plays.
+function injectWatch(g, my) {
+    setTimeout(function () {
+        if (my !== token || !frame.hasAttribute('srcdoc')) return;
+        var blank = false;
+        try {
+            var d = frame.contentDocument;
+            if (!d || d.readyState === 'loading') return;
+            var real = 0;
+            if (d.body) [].forEach.call(d.body.children, function (el) {
+                if (el.id !== 'kayaz-pad' && el.id !== 'kz-kb' && el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') real++;
+            });
+            blank = !d.querySelector('canvas') && d.images.length === 0 && real === 0;
+        } catch (e) { return; }
+        if (blank) { loadDirect(g, my); showNote('on-screen keyboard is off for this game'); }
+    }, 6500);
 }
 
 function resolveDoc(url) {
@@ -938,8 +964,8 @@ function setKb(on) {
 function toggleKb() {
     if (!currentGame) return;
     if (kbAvailable) { setKb(!kbOn); return; }
-    showNote('reloading with the keyboard...');
-    openGame(currentGame, false, { wantKb: true });
+    if (!isTouch) { showNote('reloading with the keyboard...'); openGame(currentGame, false, { wantKb: true }); return; }
+    showNote('the on-screen keyboard is not available for this game');
 }
 window.addEventListener('message', function (e) {
     if (e.source !== frame.contentWindow) return;
