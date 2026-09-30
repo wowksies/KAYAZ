@@ -368,37 +368,45 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
 (function () {
   if (window.__kayazKb) return;
   window.__kayazKb = true;
-  var SHIFTED = { '1': '!', '2': '@', '3': '#', '4': '$', '5': '%', '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', ',': '<', '.': '>' };
+  var SHIFTED = { '1': '!', '2': '@', '3': '#', '4': '$', '5': '%', '6': '^', '7': '&', '8': '*', '9': '(', '0': ')',
+    '-': '_', '=': '+', '[': '{', ']': '}', '\\': '|', ';': ':', "'": '"', ',': '<', '.': '>', '/': '?' };
+  var PUNCT = { '-': ['Minus', 189], '=': ['Equal', 187], '[': ['BracketLeft', 219], ']': ['BracketRight', 221],
+    '\\': ['Backslash', 220], ';': ['Semicolon', 186], "'": ['Quote', 222], ',': ['Comma', 188], '.': ['Period', 190], '/': ['Slash', 191] };
   var SPEC = {
-    esc:   { k: 'Escape', c: 'Escape', n: 27, l: 'esc', w: 1.2 },
-    back:  { k: 'Backspace', c: 'Backspace', n: 8, l: '⌫', w: 1.6 },
-    tab:   { k: 'Tab', c: 'Tab', n: 9, l: 'tab', w: 1.4 },
-    enter: { k: 'Enter', c: 'Enter', n: 13, l: 'enter', w: 1.9 },
-    shift: { k: 'Shift', c: 'ShiftLeft', n: 16, l: '⇧', w: 1.7, mod: 'shift' },
-    ctrl:  { k: 'Control', c: 'ControlLeft', n: 17, l: 'ctrl', w: 1.3, mod: 'ctrl' },
-    alt:   { k: 'Alt', c: 'AltLeft', n: 18, l: 'alt', w: 1.3, mod: 'alt' },
-    space: { k: ' ', c: 'Space', n: 32, l: 'space', w: 5.2, ch: ' ' },
-    up:    { k: 'ArrowUp', c: 'ArrowUp', n: 38, l: '▲' },
-    down:  { k: 'ArrowDown', c: 'ArrowDown', n: 40, l: '▼' },
-    left:  { k: 'ArrowLeft', c: 'ArrowLeft', n: 37, l: '◀' },
-    right: { k: 'ArrowRight', c: 'ArrowRight', n: 39, l: '▶' }
+    esc:    { k: 'Escape', c: 'Escape', n: 27, l: 'esc' },
+    back:   { k: 'Backspace', c: 'Backspace', n: 8, l: '⌫ back', w: 2 },
+    tab:    { k: 'Tab', c: 'Tab', n: 9, l: 'tab', w: 1.5 },
+    caps:   { k: 'CapsLock', c: 'CapsLock', n: 20, l: 'caps', w: 1.75, mod: 'caps' },
+    enter:  { k: 'Enter', c: 'Enter', n: 13, l: '↵ enter', w: 2.25 },
+    shift:  { k: 'Shift', c: 'ShiftLeft', n: 16, l: '⇧ shift', w: 2.25, mod: 'shift' },
+    rshift: { k: 'Shift', c: 'ShiftRight', n: 16, l: '⇧ shift', w: 2.75, mod: 'shift' },
+    ctrl:   { k: 'Control', c: 'ControlLeft', n: 17, l: 'ctrl', w: 1.5, mod: 'ctrl' },
+    alt:    { k: 'Alt', c: 'AltLeft', n: 18, l: 'alt', w: 1.5, mod: 'alt' },
+    space:  { k: ' ', c: 'Space', n: 32, l: 'space', w: 9, ch: ' ' },
+    up:     { k: 'ArrowUp', c: 'ArrowUp', n: 38, l: '▲' },
+    down:   { k: 'ArrowDown', c: 'ArrowDown', n: 40, l: '▼' },
+    left:   { k: 'ArrowLeft', c: 'ArrowLeft', n: 37, l: '◀' },
+    right:  { k: 'ArrowRight', c: 'ArrowRight', n: 39, l: '▶' }
   };
-  var PUNCT = { ',': ['Comma', 188], '.': ['Period', 190] };
+  var COLS = 15, Q = 4;
   var ROWS = [
-    ['esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'back'],
-    ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'enter'],
-    ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', 'up'],
-    ['ctrl', 'alt', 'space', 'left', 'down', 'right']
+    ['esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'back'],
+    ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', ['\\', 1.5]],
+    ['caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'enter'],
+    ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'rshift'],
+    ['ctrl', 'alt', 'space', 'left', { stack: ['up', 'down'] }, 'right']
   ];
-  var mods = { shift: false, ctrl: false, alt: false };
+  var mods = { shift: false, ctrl: false, alt: false, caps: false };
   var held = {};
   var kb;
 
   function spec(t) {
     if (SPEC[t]) return SPEC[t];
     var sh = mods.shift;
-    if (/^[a-z]$/.test(t)) { var U = t.toUpperCase(); return { k: sh ? U : t, c: 'Key' + U, n: U.charCodeAt(0), ch: sh ? U : t }; }
+    if (/^[a-z]$/.test(t)) {
+      var U = t.toUpperCase(), up = sh !== mods.caps;
+      return { k: up ? U : t, c: 'Key' + U, n: U.charCodeAt(0), ch: up ? U : t };
+    }
     if (/^[0-9]$/.test(t)) { var s = sh ? SHIFTED[t] : t; return { k: s, c: 'Digit' + t, n: 48 + Number(t), ch: s }; }
     if (PUNCT[t]) { var p = sh ? SHIFTED[t] : t; return { k: p, c: PUNCT[t][0], n: PUNCT[t][1], ch: p }; }
     return null;
@@ -488,11 +496,15 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
     fire('keyup', h.d, false);
   }
   function toggleMod(m) {
-    var d = SPEC[m];
+    var d = m === 'shift' ? SPEC.shift : SPEC[m];
     mods[m] = !mods[m];
-    fire(mods[m] ? 'keydown' : 'keyup', d, false);
-    [].forEach.call(kb.querySelectorAll('[data-k="' + m + '"]'), function (b) { b.classList.toggle('on', mods[m]); });
-    if (m === 'shift') relabel();
+    if (m === 'caps') { fire('keydown', d, false); fire('keyup', d, false); }
+    else fire(mods[m] ? 'keydown' : 'keyup', d, false);
+    [].forEach.call(kb.querySelectorAll('.k'), function (b) {
+      var t = b.getAttribute('data-k');
+      if (SPEC[t] && SPEC[t].mod === m) b.classList.toggle('on', mods[m]);
+    });
+    if (m === 'shift' || m === 'caps') relabel();
   }
   function relabel() {
     [].forEach.call(kb.querySelectorAll('.k'), function (b) {
@@ -512,26 +524,45 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
   var st = document.createElement('style');
   st.textContent =
     '#kz-kb{position:fixed;left:50%;bottom:calc(8px + env(safe-area-inset-bottom));transform:translateX(-50%);' +
-    'width:min(calc(100% - 16px),800px);z-index:2147483647;display:none;padding:6px 7px 8px;border-radius:18px;box-sizing:border-box;' +
+    'width:min(calc(100% - 16px),860px);z-index:2147483647;display:none;padding:6px 6px 8px;border-radius:18px;box-sizing:border-box;' +
     'background:rgba(16,10,9,.62);border:1px solid rgba(255,255,255,.18);-webkit-backdrop-filter:blur(14px) saturate(150%);' +
     'backdrop-filter:blur(14px) saturate(150%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 16px 40px rgba(0,0,0,.5);' +
     'font-family:system-ui,-apple-system,Segoe UI,sans-serif;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}' +
     '#kz-kb.on{display:block}' +
     '#kz-kb.top{bottom:auto;top:calc(8px + env(safe-area-inset-top))}' +
     '#kz-kb *{box-sizing:border-box}' +
-    '#kz-kb .kz-bar{display:flex;align-items:center;gap:6px;padding:0 2px 1px;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.14em;text-transform:uppercase}' +
+    '#kz-kb .kz-bar{display:flex;align-items:center;gap:6px;padding:0 4px 1px;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.14em;text-transform:uppercase}' +
     '#kz-kb .kz-bar span{flex:1}' +
     '#kz-kb .kz-bar button{width:32px;height:24px;border-radius:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:13px;line-height:1;cursor:pointer;padding:0;touch-action:none}' +
-    '#kz-kb .kz-row{display:flex;gap:5px;margin-top:5px}' +
-    '#kz-kb .k{flex:1 1 0;min-width:0;height:42px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.1);' +
+    '#kz-kb .kz-row{display:grid;grid-template-columns:repeat(' + (COLS * Q) + ',minmax(0,1fr));margin-top:5px}' +
+    '#kz-kb .kz-stack{display:flex;flex-direction:column;gap:3px;margin:0 2.5px}' +
+    '#kz-kb .kz-stack .k{margin:0;height:19.5px;font-size:10px}' +
+    '#kz-kb .k{min-width:0;height:42px;margin:0 2.5px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.1);' +
     'color:#fbf6f2;font:600 15px/1 system-ui,-apple-system,Segoe UI,sans-serif;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;' +
     'touch-action:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.16);transition:background .08s,transform .08s;white-space:nowrap;overflow:hidden}' +
     '#kz-kb .k.s{font-size:12px;color:rgba(255,255,255,.82)}' +
     '#kz-kb .k.hit{background:rgba(255,75,62,.75);border-color:rgba(255,75,62,.95);transform:scale(.95)}' +
     '#kz-kb .k.on{background:rgba(255,138,92,.55);border-color:rgba(255,138,92,.85)}' +
-    '#kz-kb .kz-sp{flex:.5 1 0}' +
-    '@media (max-width:520px){#kz-kb{padding:5px 5px 6px;border-radius:14px}#kz-kb .kz-row{gap:3px;margin-top:4px}#kz-kb .k{height:38px;font-size:13px;border-radius:8px}#kz-kb .k.s{font-size:10px}}';
+    '@media (max-width:620px){#kz-kb{padding:5px 3px 6px;border-radius:14px}#kz-kb .kz-row{margin-top:4px}' +
+    '#kz-kb .k{height:36px;margin:0 1.5px;font-size:12px;border-radius:7px}#kz-kb .k.s{font-size:9px}' +
+    '#kz-kb .kz-stack{margin:0 1.5px;gap:2px}#kz-kb .kz-stack .k{height:17px;font-size:8px}}';
   (document.head || document.documentElement).appendChild(st);
+
+  function makeKey(t) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'k' + (SPEC[t] ? ' s' : '');
+    b.setAttribute('data-k', t);
+    b.textContent = label(t);
+    b.addEventListener('pointerdown', function (e) { e.preventDefault(); keyDown(t, b); });
+    if (!(SPEC[t] && SPEC[t].mod)) {
+      b.addEventListener('pointerup', function () { keyUp(t); });
+      b.addEventListener('pointercancel', function () { keyUp(t); });
+      b.addEventListener('pointerleave', function () { keyUp(t); });
+    }
+    return b;
+  }
+  function span(w) { return 'span ' + Math.round(w * Q); }
 
   kb = document.createElement('div');
   kb.id = 'kz-kb';
@@ -539,24 +570,23 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
   bar.className = 'kz-bar';
   bar.innerHTML = '<span>keyboard</span><button class="kz-mv" title="move to top or bottom">⇅</button><button class="kz-x" title="hide keyboard">✕</button>';
   kb.appendChild(bar);
-  ROWS.forEach(function (row, ri) {
+  ROWS.forEach(function (row) {
     var r = document.createElement('div');
     r.className = 'kz-row';
-    if (ri === 2) { var sp = document.createElement('span'); sp.className = 'kz-sp'; r.appendChild(sp); }
-    row.forEach(function (t) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'k' + (SPEC[t] ? ' s' : '');
-      b.setAttribute('data-k', t);
-      b.textContent = label(t);
-      if (SPEC[t] && SPEC[t].w) b.style.flexGrow = SPEC[t].w;
-      b.addEventListener('pointerdown', function (e) { e.preventDefault(); keyDown(t, b); });
-      if (!(SPEC[t] && SPEC[t].mod)) {
-        b.addEventListener('pointerup', function () { keyUp(t); });
-        b.addEventListener('pointercancel', function () { keyUp(t); });
-        b.addEventListener('pointerleave', function () { keyUp(t); });
+    row.forEach(function (item) {
+      var el, w = 1;
+      if (item && item.stack) {
+        el = document.createElement('div');
+        el.className = 'kz-stack';
+        item.stack.forEach(function (t) { el.appendChild(makeKey(t)); });
+      } else {
+        var t = Array.isArray(item) ? item[0] : item;
+        if (Array.isArray(item)) w = item[1];
+        else if (SPEC[t] && SPEC[t].w) w = SPEC[t].w;
+        el = makeKey(t);
       }
-      r.appendChild(b);
+      el.style.gridColumn = span(w);
+      r.appendChild(el);
     });
     kb.appendChild(r);
   });
