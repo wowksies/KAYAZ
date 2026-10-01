@@ -478,12 +478,14 @@ a.pcard:hover .pcard-cta .arr { transform: translate(2px, -2px); }
                 <div class="pcard-info">
                     <div class="pcard-kicker">rainbow six siege</div>
                     <div class="pcard-name">Kayaz R6 Internal</div>
-                    <div class="pcard-pills"><span class="pill closed">closed source</span><span class="pill be">works with BE</span><span class="pill stars" id="r6Stars" hidden></span></div>
+                    <div class="pcard-pills"><span class="pill closed">closed source</span><span class="pill be">works with BE</span><!-- blog rating pill removed: <span class="pill stars" id="r6Stars" hidden></span> --></div>
                     <div class="pcard-desc">Internal for Siege, still in development, working on all QB's. Health, box and skeleton ESP on every player, with chams being added.</div>
                     <div class="pcard-tags"><span>C++</span><span>internal</span><span>siege</span><span>health esp</span><span>box esp</span><span>skeleton esp</span><span>chams</span><span>battleye</span></div>
                     <div class="pcard-foot split">
                         <span class="pcard-private"><i class="fa-solid fa-lock"></i> source not public</span>
+                        <!-- blog removed for the internal; kept for later
                         <a class="pcard-read" href="/r6-internal"><i class="fa-solid fa-book-open"></i> read more <i class="fa-solid fa-arrow-right arr"></i></a>
+                        -->
                     </div>
                 </div>
             </div>
@@ -1000,6 +1002,7 @@ function render(data) {
 
 <script src="assets/tech-text.js"></script>
 <script>
+/* blog rating readout removed for the internal; kept for later
 (function () {
     var el = document.getElementById('r6Stars');
     if (!el || !window.fetch) return;
@@ -1010,6 +1013,7 @@ function render(data) {
         el.hidden = false;
     }).catch(function () {});
 })();
+*/
 
 (function () {
     var box = document.getElementById('unameTech');

@@ -268,7 +268,9 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
     <div class="hd glass-pill">
         <a href="/" class="brand"><span class="dot"></span>kayaz<b>.</b><span style="color:var(--mute);font-weight:600;font-size:0.9rem;">/games</span></a>
         <div class="hd-right">
+            <!-- blog section removed for the internal; kept for later
             <button class="ic blog" id="blogBtn" title="from the blog" aria-label="from the blog"><i class="fa-solid fa-newspaper"></i></button>
+            -->
             <button class="ic invite" id="inviteBtn" title="invite a friend" aria-label="invite a friend" hidden><i class="fa-solid fa-user-plus"></i></button>
             <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic s-discord" title="Discord"><i class="fa-brands fa-discord"></i></a>
             <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="ic s-tiktok" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
@@ -298,6 +300,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
 
 <footer>&copy; <span id="yr"></span> kayaz &middot; <a href="/">kayaz.xyz</a></footer>
 
+<!-- blog popup removed for the internal; kept for later
 <div class="gmodal" id="blogModal">
     <div class="gmodal-card">
         <button class="gmodal-x" id="blogClose" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
@@ -321,6 +324,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
         </div>
     </div>
 </div>
+-->
 
 <div class="gmodal" id="inviteModal">
     <div class="gmodal-card sm">
@@ -1007,7 +1011,7 @@ function openModal(id) {
     if (id === 'inviteModal') loadInvite();
 }
 function closeModal(id) { var m = document.getElementById(id); if (m) m.classList.remove('on'); }
-[['blogBtn','blogModal','blogClose'],['inviteBtn','inviteModal','inviteClose']].forEach(function (t) {
+[/* blog removed: ['blogBtn','blogModal','blogClose'], */['inviteBtn','inviteModal','inviteClose']].forEach(function (t) {
     var btn = document.getElementById(t[0]), modal = document.getElementById(t[1]), x = document.getElementById(t[2]);
     if (btn) btn.addEventListener('click', function () { openModal(t[1]); });
     if (x) x.addEventListener('click', function () { closeModal(t[1]); });
@@ -1024,7 +1028,7 @@ function onUnlocked() {
     document.body.classList.add('unlocked');
     var ib = document.getElementById('inviteBtn');
     if (ib) ib.hidden = false;
-    maybeAutoBlog();
+    /* maybeAutoBlog();  blog removed for the internal */
 }
 
 /* show the blog popup now and then, not every visit */
