@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kayaz &middot; privacy policy</title>
+<meta name="description" content="Privacy policy for kayaz. How we collect, use and protect your data.">
+<meta name="theme-color" content="#0a0e14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --bg: #0a0e14;
+    --bg-soft: rgba(255,255,255,0.04);
+    --panel: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.08);
+    --border-hi: rgba(255,255,255,0.16);
+    --text: #e8eef7;
+    --text-2: rgba(232,238,247,0.75);
+    --mute: rgba(232,238,247,0.55);
+    --accent: #00e5ff;
+    --accent-rgb: 0, 229, 255;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--accent); color: #04121a; }
+.bg-fx {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background:
+        radial-gradient(900px 520px at 12% -8%, rgba(var(--accent-rgb),0.14), transparent 60%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(var(--accent-rgb),0.10), transparent 60%);
+}
+.wrap { width: 100%; max-width: 860px; margin: 0 auto; padding: 0 22px; }
+header.nav {
+    position: sticky; top: 0; z-index: 40; padding: 14px 0;
+    background: rgba(10,14,20,0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 800; font-size: 1.18rem; letter-spacing: -0.02em; }
+.brand .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px rgba(var(--accent-rgb),0.9); }
+.brand b { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-links a { padding: 9px 15px; border-radius: 11px; font-size: 0.92rem; font-weight: 600; color: var(--text-2); transition: color 0.2s, background 0.2s; }
+.nav-links a:hover { color: var(--text); background: var(--bg-soft); }
+.nav-links a.cta { color: #04121a; background: var(--accent); }
+
+.hero { padding: 66px 0 30px; }
+.hero .eyebrow { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.hero h1 { font-size: clamp(2.1rem, 5vw, 3.15rem); font-weight: 800; letter-spacing: -0.035em; margin-bottom: 12px; }
+.hero p { color: var(--text-2); font-size: 1.05rem; }
+.updated { margin-top: 16px; font-family: var(--mono); font-size: 0.82rem; color: var(--mute); }
+
+.doc { padding: 26px 0 70px; }
+.doc h2 {
+    font-size: 1.42rem; font-weight: 700; letter-spacing: -0.02em;
+    margin: 38px 0 12px; padding-top: 12px;
+    scroll-margin-top: 80px;
+}
+.doc h2 .num { color: var(--accent); font-family: var(--mono); font-size: 1.05rem; margin-right: 10px; }
+.doc p { color: var(--text-2); margin-bottom: 13px; }
+.doc ul { margin: 0 0 15px 4px; list-style: none; }
+.doc ul li { position: relative; padding-left: 22px; margin-bottom: 9px; color: var(--text-2); }
+.doc ul li::before { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 2px; color: var(--accent); font-size: 0.72rem; }
+.doc a.inline { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.toc {
+    margin: 22px 0 10px; padding: 22px 24px; border-radius: 18px;
+    background: var(--panel); border: 1px solid var(--border);
+}
+.toc h3 { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); margin-bottom: 13px; }
+.toc ol { margin-left: 18px; }
+.toc ol li { margin-bottom: 7px; }
+.toc ol li a { color: var(--text-2); transition: color 0.2s; }
+.toc ol li a:hover { color: var(--accent); }
+
+footer { padding: 40px 0; border-top: 1px solid var(--border); }
+.foot-bottom { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; color: var(--mute); font-size: 0.86rem; }
+.foot-bottom a:hover { color: var(--accent); }
+
+@media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero { padding: 44px 0 20px; }
+}
+</style>
+</head>
+<body>
+<div class="bg-fx"></div>
+
+<header class="nav">
+    <div class="wrap nav-inner">
+        <a href="/" class="brand"><span class="dot"></span>kayaz<b>.</b></a>
+        <nav class="nav-links">
+            <a href="/">store</a>
+            <a href="/r6-internal">the internal</a>
+            <a href="/games">games</a>
+            <a href="/profile">profile</a>
+            <a href="/" class="cta">buy now</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="wrap">
+            <div class="eyebrow">legal</div>
+            <h1>privacy policy</h1>
+            <p>how we collect, use and protect your information when you use this site and store.</p>
+            <div class="updated">last updated: 5 october 2026</div>
+        </div>
+    </section>
+
+    <section class="doc">
+        <div class="wrap">
+            <div class="toc">
+                <h3>contents</h3>
+                <ol>
+                    <li><a href="#overview">overview</a></li>
+                    <li><a href="#collect">what we collect</a></li>
+                    <li><a href="#use">how we use it</a></li>
+                    <li><a href="#payments">payments and SellAuth</a></li>
+                    <li><a href="#cookies">cookies</a></li>
+                    <li><a href="#thirdparty">third party services</a></li>
+                    <li><a href="#retention">data retention</a></li>
+                    <li><a href="#rights">your rights</a></li>
+                    <li><a href="#children">children's privacy</a></li>
+                    <li><a href="#changes">changes to this policy</a></li>
+                    <li><a href="#contact">contact</a></li>
+                </ol>
+            </div>
+
+            <h2 id="overview"><span class="num">01</span>overview</h2>
+            <p>this site is a showcase and storefront for kayaz. we keep data collection to a minimum and only gather what is needed to run the store, deliver your purchases and keep the site secure. by using this site you agree to the practices described here.</p>
+
+            <h2 id="collect"><span class="num">02</span>what we collect</h2>
+            <p>depending on how you use the site, we may handle the following:</p>
+            <ul>
+                <li><strong>purchase information</strong>: when you buy through our SellAuth checkout, we receive details such as the product purchased, the order reference and the delivery status. full payment card details are handled by SellAuth and its payment providers, never by us.</li>
+                <li><strong>device and access identifiers</strong>: when you redeem an access code, we store a one way hash of the code together with a device identifier so the code works on the intended machine and can be revoked if misused.</li>
+                <li><strong>technical data</strong>: basic server logs such as ip address, browser type and pages requested, used for security, abuse prevention and rate limiting.</li>
+                <li><strong>rating and preference data</strong>: if you rate a blog page, we store a hashed identifier so each device can only vote once.</li>
+            </ul>
+
+            <h2 id="use"><span class="num">03</span>how we use it</h2>
+            <ul>
+                <li>to process orders and deliver your products</li>
+                <li>to verify access codes and tie them to a device</li>
+                <li>to provide support when you contact us</li>
+                <li>to protect the site against fraud, abuse and spam</li>
+                <li>to improve the site based on how it is used</li>
+            </ul>
+            <p>we do not sell your personal data to anyone.</p>
+
+            <h2 id="payments"><span class="num">04</span>payments and SellAuth</h2>
+            <p>checkout is handled by <a class="inline" href="https://sellauth.com" target="_blank" rel="noopener">SellAuth</a>. when you make a purchase you are interacting with their checkout, and the information you enter there (such as your email and payment method) is processed under their own privacy policy and the policies of the payment provider you choose. we only receive the information needed to fulfil your order and provide support.</p>
+
+            <h2 id="cookies"><span class="num">05</span>cookies</h2>
+            <p>we use cookies and similar storage to keep the site working and to remember your choices. when you first visit, a consent banner lets you accept all cookies or continue with essential cookies only.</p>
+            <ul>
+                <li><strong>essential</strong>: required for the site to function, such as remembering your cookie choice and keeping your session or access code working.</li>
+                <li><strong>analytics and preferences</strong>: help us understand how the store is used and remember your settings. these are only set if you accept them.</li>
+            </ul>
+            <p>you can change or clear cookies at any time through your browser settings. blocking essential cookies may stop parts of the site, such as checkout or code redemption, from working properly.</p>
+
+            <h2 id="thirdparty"><span class="num">06</span>third party services</h2>
+            <p>the site uses a small number of third party services to function:</p>
+            <ul>
+                <li><strong>SellAuth</strong> for checkout and payment processing</li>
+                <li><strong>hosting and content delivery</strong> for serving the site and its media</li>
+                <li><strong>embedded media and fonts</strong> for displaying images, video and typefaces</li>
+            </ul>
+            <p>these providers may process data under their own policies. we only use what is needed to run the store and keep it secure.</p>
+
+            <h2 id="retention"><span class="num">07</span>data retention</h2>
+            <p>we keep purchase and access records for as long as needed to deliver your products, honour support requests and meet legal or accounting obligations. access code hashes are kept until the code is revoked or the system is retired. server logs are rotated on a short cycle.</p>
+
+            <h2 id="rights"><span class="num">08</span>your rights</h2>
+            <p>depending on where you live, you may have the right to:</p>
+            <ul>
+                <li>ask what personal data we hold about you</li>
+                <li>request correction or deletion of that data</li>
+                <li>object to or restrict certain processing</li>
+                <li>withdraw consent where processing is based on consent</li>
+            </ul>
+            <p>to exercise any of these, contact us using the details below. we will respond within a reasonable time.</p>
+
+            <h2 id="children"><span class="num">09</span>children's privacy</h2>
+            <p>this site and store are not directed at children under 13, and we do not knowingly collect personal data from them. if you believe a child has provided us with data, contact us and we will remove it.</p>
+
+            <h2 id="changes"><span class="num">10</span>changes to this policy</h2>
+            <p>we may update this policy from time to time. any changes will be posted on this page with a revised date at the top. continued use of the site after a change means you accept the updated policy.</p>
+
+            <h2 id="contact"><span class="num">11</span>contact</h2>
+            <p>questions about this policy or your data? reach out on <a class="inline" href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener">discord</a> or through <a class="inline" href="https://github.com/wowksies" target="_blank" rel="noopener">github</a>.</p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="wrap">
+        <div class="foot-bottom">
+            <span>&copy; 2026 kayaz. all rights reserved.</span>
+            <span><a href="/">back to store</a> &middot; <a href="/profile">profile</a></span>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

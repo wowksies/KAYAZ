@@ -1,4 +1,4 @@
-import { db, requireAdmin, requireUser, readBody, send, guardConfig } from './_lib.js';
+import { db, requireAdmin, requireUser, readBody, send, guardConfig, rateLimit } from './_lib.js';
 
 const HOST_MOVES = [
   [/^https?:\/\/kivro-game-library-9d7913\.gitlab\.io\/+/i, 'https://kivrhdhdhd.vercel.app/']
@@ -27,6 +27,7 @@ function clean(g) {
 
 export default async function handler(req, res) {
   if (guardConfig(res)) return;
+  if (!rateLimit(req, res, 'games', 60, 60000)) return;
 
   if (req.method === 'GET') {
     if (!requireUser(req)) return send(res, 401, { error: 'unauthorized' });

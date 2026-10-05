@@ -1,7 +1,8 @@
-import { db, sha256, normCode, makeCode, requireAdmin, readBody, send, guardConfig } from './_lib.js';
+import { db, sha256, normCode, makeCode, requireAdmin, readBody, send, guardConfig, rateLimit } from './_lib.js';
 
 export default async function handler(req, res) {
   if (guardConfig(res)) return;
+  if (!rateLimit(req, res, 'keys', 60, 60000)) return;
   if (!requireAdmin(req)) return send(res, 401, { error: 'unauthorized' });
 
   if (req.method === 'GET') {

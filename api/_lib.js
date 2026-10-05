@@ -1,7 +1,9 @@
 import crypto from 'node:crypto';
 
-const DB_URL = (process.env.FIREBASE_DB_URL || '').replace(/\/$/, '');
-const DB_SECRET = process.env.FIREBASE_DB_SECRET || '';
+// Accept either FIREBASE_DB_URL/FIREBASE_DB_SECRET or the shorter
+// FIREBASE_URL/FIREBASE_SECRET names used in the Vercel project env.
+const DB_URL = (process.env.FIREBASE_DB_URL || process.env.FIREBASE_URL || '').replace(/\/$/, '');
+const DB_SECRET = process.env.FIREBASE_DB_SECRET || process.env.FIREBASE_SECRET || '';
 const SESSION_SECRET = process.env.SESSION_SECRET || '';
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
@@ -115,5 +117,36 @@ export function send(res, code, obj) {
 export function guardConfig(res) {
   if (configured()) return false;
   send(res, 503, { error: 'server not configured' });
+  return true;
+}
+
+// ---- shared rate limiting -----------------------------------------------
+// Best effort fixed window limiter keyed by client ip. Good enough to blunt
+// abuse on a small serverless API without pulling in a dependency.
+const buckets = new Map();
+
+export function clientIp(req) {
+  const h = req.headers || {};
+  const fwd = String(h['x-forwarded-for'] || h['x-vercel-forwarded-for'] || '').split(',')[0].trim();
+  return fwd || String(h['x-real-ip'] || '').trim() || (req.socket && req.socket.remoteAddress) || 'x';
+}
+
+// Returns true when the request should be allowed, false when the limit is hit.
+export function rateLimit(req, res, name, max, windowMs) {
+  const ip = clientIp(req);
+  const key = name + '|' + ip;
+  const now = Date.now();
+  let rec = buckets.get(key);
+  if (!rec || now - rec.t > windowMs) { rec = { n: 0, t: now }; buckets.set(key, rec); }
+  rec.n++;
+  const left = Math.max(0, max - rec.n);
+  res.setHeader('X-RateLimit-Limit', String(max));
+  res.setHeader('X-RateLimit-Remaining', String(left));
+  if (rec.n > max) {
+    const retry = Math.ceil((rec.t + windowMs - now) / 1000);
+    res.setHeader('Retry-After', String(retry));
+    send(res, 429, { error: 'too many requests, slow down' });
+    return false;
+  }
   return true;
 }

@@ -1,8 +1,9 @@
-import { db, sha256, normCode, signSession, readBody, send, guardConfig } from './_lib.js';
+import { db, sha256, normCode, signSession, readBody, send, guardConfig, rateLimit } from './_lib.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { error: 'method' });
   if (guardConfig(res)) return;
+  if (!rateLimit(req, res, 'redeem', 10, 600000)) return;
   const { code, device } = await readBody(req);
   const c = normCode(code);
   const dev = String(device || '').slice(0, 64);

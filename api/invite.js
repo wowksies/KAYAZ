@@ -1,4 +1,4 @@
-import { db, sha256, normCode, makeCode, requireUser, readBody, send, guardConfig } from './_lib.js';
+import { db, sha256, normCode, makeCode, requireUser, readBody, send, guardConfig, rateLimit } from './_lib.js';
 
 // A redeemed user may invite exactly one person, and must name them.
 // The invite is a normal code (redeems on one browser) whose record remembers who
@@ -12,6 +12,7 @@ function cleanName(n) {
 
 export default async function handler(req, res) {
   if (guardConfig(res)) return;
+  if (!rateLimit(req, res, 'invite', 30, 60000)) return;
   res.setHeader('cache-control', 'no-store');
 
   const s = requireUser(req);
