@@ -39,10 +39,10 @@ export default function handler(req, res) {
   };
 
   const catalog = [
-    { key: 'threeDays',  name: '3 Days',    img: '/assets/products/3days.png',  tag: 'quick try',    blurb: 'A short pass to test the internal on your own terms.' },
-    { key: 'sevenDays',  name: '7 Days',    img: '/assets/products/7days.png',  tag: 'popular',      blurb: 'A full week of access with every feature unlocked.' },
-    { key: 'oneMonth',   name: '1 Month',   img: '/assets/products/1month.png', tag: 'best value',   blurb: 'Thirty days, updates included, no re-buying mid season.' },
-    { key: 'seasonal',   name: 'Seasonal',  img: '/assets/products/seasonal.png', tag: 'long haul',  blurb: 'Access for the whole season, the longest run we offer.' }
+    { key: 'threeDays', name: '3 Days', img: '/assets/products/3days.png', tag: 'quick access', blurb: 'Three days of KAYAZ R6: The Internal.' },
+    { key: 'sevenDays', name: '7 Days', img: '/assets/products/7days.png', tag: 'most popular', blurb: 'A full week of KAYAZ R6: The Internal.' },
+    { key: 'oneMonth', name: '1 Month', img: '/assets/products/1month.png', tag: 'monthly', blurb: 'One month of KAYAZ R6: The Internal.' },
+    { key: 'seasonal', name: 'Seasonal', img: '/assets/products/seasonal.png', tag: 'longest access', blurb: 'Seasonal access to KAYAZ R6: The Internal.' }
   ];
 
   const products = catalog
