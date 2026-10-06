@@ -165,6 +165,7 @@ tr:last-child td { border-bottom: none; }
         <div class="tabs">
             <button class="tab on" data-p="g">games</button>
             <button class="tab" data-p="k">invite keys</button>
+            <button class="tab" data-p="l">launcher keys</button>
         </div>
 
         <div class="panel on" id="p-g">
@@ -240,6 +241,39 @@ tr:last-child td { border-bottom: none; }
                     <button class="btn sm" id="kRefresh"><i class="fa-solid fa-rotate"></i></button>
                 </div>
                 <div id="kList"></div>
+            </div>
+        </div>
+
+        <div class="panel" id="p-l">
+            <div class="card">
+                <div class="bar">
+                    <h2 style="margin:0">launcher keys</h2>
+                    <span class="tag" id="lCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm d" id="lPrune">delete expired</button>
+                    <button class="btn sm" id="lRefresh"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+                <div class="sub">these are the R6 keys buyers redeem in the launcher, key = sha256 of the key text</div>
+                <div class="msg" id="lMsg"></div>
+                <div id="lList"></div>
+            </div>
+
+            <div class="card">
+                <h2>ban a machine</h2>
+                <div class="sub">the launcher checks this list before it even reads a key, so a ban bites immediately</div>
+                <div class="msg" id="bMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="bHwid">machine fingerprint</label>
+                        <input class="f" id="bHwid" placeholder="paste the hwid">
+                    </div>
+                    <div>
+                        <label for="bWhy">reason (optional)</label>
+                        <input class="f" id="bWhy" placeholder="chargeback">
+                    </div>
+                </div>
+                <button class="btn p" id="bAdd">ban machine</button>
+                <div id="bList" style="margin-top:20px"></div>
             </div>
         </div>
     </div>
@@ -488,11 +522,107 @@ function loadKeys() {
     });
 }
 
+/* ---------- launcher keys (the R6 key store) ---------- */
+document.getElementById('lRefresh').addEventListener('click', loadLauncher);
+document.getElementById('lPrune').addEventListener('click', function () {
+    if (!confirm('delete every expired launcher key?')) return;
+    api('launcher-keys', { method: 'DELETE', body: { all: 'expired' } }).then(function (r) {
+        msg(document.getElementById('lMsg'), r.ok ? ('removed ' + r.data.removed) : (r.data.error || 'failed'), r.ok ? 'ok' : 'err');
+        loadLauncher();
+    });
+});
+document.getElementById('bAdd').addEventListener('click', function () {
+    var hwid = document.getElementById('bHwid').value.trim();
+    if (!hwid) return msg(document.getElementById('bMsg'), 'paste a hwid first');
+    api('launcher-keys', { method: 'POST', body: { hwid: hwid, banned: true, reason: document.getElementById('bWhy').value.trim() } })
+        .then(function (r) {
+            msg(document.getElementById('bMsg'), r.ok ? 'machine banned' : (r.data.error || 'failed'), r.ok ? 'ok' : 'err');
+            if (r.ok) { document.getElementById('bHwid').value = ''; document.getElementById('bWhy').value = ''; }
+            loadLauncher();
+        });
+});
+
+function loadLauncher() {
+    api('launcher-keys').then(function (r) {
+        var listEl = document.getElementById('lList');
+        var banEl = document.getElementById('bList');
+        if (!r.ok) {
+            listEl.innerHTML = '<div class="empty">' + esc(r.data.error || 'failed') + '</div>';
+            banEl.innerHTML = '';
+            return;
+        }
+        var keys = r.data.keys || [];
+        var bans = r.data.bans || [];
+        var now = Math.floor(Date.now() / 1000);
+        document.getElementById('lCount').textContent = keys.length;
+
+        if (!keys.length) {
+            listEl.innerHTML = '<div class="empty">no launcher keys yet</div>';
+        } else {
+            var rows = keys.map(function (k) {
+                var st = k.disabled
+                    ? '<span class="st rev">disabled</span>'
+                    : (k.bound ? '<span class="st used">in use</span>' : '<span class="st free">unused</span>');
+                var exp = k.expiresAt ? new Date(k.expiresAt * 1000).toLocaleDateString() : 'never';
+                if (k.expiresAt && k.expiresAt < now) exp += ' (expired)';
+                var tier = k.tier || k.label || '';
+                var label = k.label && k.label !== tier ? ' <span class="tag">' + esc(k.label) + '</span>' : '';
+                return '<tr>' +
+                    '<td><strong>' + esc(tier) + '</strong>' + label + '</td>' +
+                    '<td class="mono">' + esc(k.order || '') + '</td>' +
+                    '<td class="hide-s">' + esc(k.email || '') + '</td>' +
+                    '<td>' + st + '</td>' +
+                    '<td class="hide-s mono" style="color:var(--mute)">' + esc(exp) + '</td>' +
+                    '<td class="hide-s mono" title="' + esc(k.hwid || '') + '">' + esc((k.hwid || '').slice(0, 12)) + '</td>' +
+                    '<td style="text-align:right;white-space:nowrap">' +
+                    (k.bound ? '<button class="btn sm" data-lunbind="' + esc(k.h) + '">unbind</button> ' : '') +
+                    '<button class="btn sm" data-ldis="' + esc(k.h) + '" data-on="' + (k.disabled ? '0' : '1') + '">' + (k.disabled ? 'restore' : 'disable') + '</button> ' +
+                    '<button class="btn sm d" data-ldel="' + esc(k.h) + '">delete</button></td></tr>';
+            }).join('');
+            listEl.innerHTML = '<div style="overflow-x:auto"><table><thead><tr><th>term</th><th>order</th><th class="hide-s">email</th><th>status</th><th class="hide-s">expires</th><th class="hide-s">machine</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+        }
+
+        if (!bans.length) {
+            banEl.innerHTML = '<div class="empty">no banned machines</div>';
+        } else {
+            banEl.innerHTML = '<div style="overflow-x:auto"><table><thead><tr><th>machine</th><th class="hide-s">reason</th><th class="hide-s">since</th><th></th></tr></thead><tbody>' +
+                bans.map(function (b) {
+                    return '<tr><td class="mono" title="' + esc(b.hwid) + '">' + esc(String(b.hwid).slice(0, 12)) + '...</td>' +
+                        '<td class="hide-s">' + esc(b.reason || '') + '</td>' +
+                        '<td class="hide-s mono" style="color:var(--mute)">' + (b.at ? esc(new Date(b.at).toLocaleDateString()) : '') + '</td>' +
+                        '<td style="text-align:right"><button class="btn sm" data-bunban="' + esc(b.hwid) + '">unban</button></td></tr>';
+                }).join('') + '</tbody></table></div>';
+        }
+
+        [].forEach.call(listEl.querySelectorAll('[data-lunbind]'), function (b) {
+            b.addEventListener('click', function () {
+                if (confirm('unbind this key from its machine?')) api('launcher-keys', { method: 'PATCH', body: { h: b.dataset.lunbind, reset: true } }).then(loadLauncher);
+            });
+        });
+        [].forEach.call(listEl.querySelectorAll('[data-ldis]'), function (b) {
+            b.addEventListener('click', function () {
+                api('launcher-keys', { method: 'PATCH', body: { h: b.dataset.ldis, disabled: b.dataset.on === '1' } }).then(loadLauncher);
+            });
+        });
+        [].forEach.call(listEl.querySelectorAll('[data-ldel]'), function (b) {
+            b.addEventListener('click', function () {
+                if (confirm('delete this key? the buyer loses access immediately.')) api('launcher-keys', { method: 'DELETE', body: { h: b.dataset.ldel } }).then(loadLauncher);
+            });
+        });
+        [].forEach.call(banEl.querySelectorAll('[data-bunban]'), function (b) {
+            b.addEventListener('click', function () {
+                if (confirm('lift the ban on this machine?')) api('launcher-keys', { method: 'POST', body: { hwid: b.dataset.bunban, banned: false } }).then(loadLauncher);
+            });
+        });
+    });
+}
+
 function boot() {
     gate.style.display = 'none';
     app.style.display = '';
     loadGames();
     loadKeys();
+    loadLauncher();
 }
 
 if (token) {

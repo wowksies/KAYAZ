@@ -94,6 +94,71 @@ export function readBody(req) {
   });
 }
 
+// Raw request bytes, untouched. Webhook signatures are computed over the exact
+// body, so this must never pass through JSON.parse/stringify first.
+export function rawBody(req, limit = 2e6) {
+  if (Buffer.isBuffer(req.body)) return Promise.resolve(req.body);
+  if (typeof req.body === 'string') return Promise.resolve(Buffer.from(req.body));
+  if (req.body && typeof req.body === 'object') return Promise.resolve(Buffer.from(JSON.stringify(req.body)));
+  return new Promise(resolve => {
+    const chunks = [];
+    let size = 0;
+    req.on('data', c => {
+      size += c.length;
+      if (size > limit) { req.destroy(); return; }
+      chunks.push(c);
+    });
+    req.on('end', () => resolve(Buffer.concat(chunks)));
+    req.on('error', () => resolve(Buffer.alloc(0)));
+  });
+}
+
+// ---- the R6 launcher key store ------------------------------------------
+// A second, entirely separate Firebase project: the one the KAYAZ R6 launcher
+// and its in-game guard read at keys/<sha256(key)>. It is never exposed to the
+// browser -- the URL and secret stay in the function environment, and every
+// call below happens server side.
+//
+// Env: R6_Firebase_URL / R6_Firebase_secret (fall back to the upper-case
+// spellings, since Vercel passes names through exactly as typed).
+const R6_URL = (process.env.R6_Firebase_URL || process.env.R6_FIREBASE_URL || '').replace(/\/$/, '');
+const R6_SECRET = process.env.R6_Firebase_secret || process.env.R6_FIREBASE_SECRET || '';
+
+export function r6configured() {
+  return Boolean(R6_URL && R6_SECRET);
+}
+
+async function r6Fetch(path, opts = {}) {
+  if (!r6configured()) throw new Error('r6 unconfigured');
+  const url = `${R6_URL}/${path}.json?auth=${encodeURIComponent(R6_SECRET)}`;
+  const res = await fetch(url, opts);
+  if (!res.ok) throw new Error('r6 ' + res.status);
+  const txt = await res.text();
+  return txt && txt !== 'null' ? JSON.parse(txt) : null;
+}
+
+export const r6db = {
+  get: p => r6Fetch(p),
+  put: (p, v) => r6Fetch(p, { method: 'PUT', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
+  patch: (p, v) => r6Fetch(p, { method: 'PATCH', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
+  del: p => r6Fetch(p, { method: 'DELETE' })
+};
+
+export function guardR6(res) {
+  if (r6configured()) return false;
+  send(res, 503, { error: 'launcher database not configured' });
+  return true;
+}
+
+// Launcher keys are hashed by the client exactly as the user typed them, so the
+// literal string is the credential: keys/<sha256(literal)> has to match. The
+// format is fixed-width and upper case to keep that predictable.
+export function makeLauncherKey() {
+  const alpha = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const pick = n => Array.from(crypto.randomBytes(n)).map(b => alpha[b % alpha.length]).join('');
+  return 'KAYAZ-' + pick(4) + '-' + pick(4) + '-' + pick(4);
+}
+
 export function bearer(req) {
   const h = req.headers.authorization || '';
   return h.startsWith('Bearer ') ? h.slice(7) : '';
