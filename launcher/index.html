@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>KAYAZ. launcher</title>
-<meta name="description" content="Collect the KAYAZ R6 launcher key from your purchase, then download the client.">
+<title>KAYAZ. download</title>
+<meta name="description" content="Download the KAYAZ R6: The Internal client.">
 <meta name="theme-color" content="#0a0807">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +13,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 /* ============================================================
-   KAYAZ launcher delivery
-   One card, one job: hand a verified buyer their key and the build.
+   KAYAZ download
+   Straight through: one card, one button, the real GitHub link.
    ============================================================ */
 :root {
     --bg:        #0a0807;
@@ -31,7 +31,6 @@
     --accent-hi: #ff7a66;
     --accent-rgb: 239,75,66;
     --ok:        #7ee2ab;
-    --warn:      #d9a95f;
     --sans: 'DM Sans', system-ui, -apple-system, sans-serif;
     --mono: 'IBM Plex Mono', ui-monospace, monospace;
     --ease: cubic-bezier(.22,.68,0,1);
@@ -57,7 +56,7 @@ img { display:block; max-width:100%; }
 ::selection { background:var(--accent); color:#1a0806; }
 :focus-visible { outline:2px solid var(--accent-hi); outline-offset:3px; border-radius:4px; }
 
-/* same warm wash + eye the storefront runs, so this reads as the same site */
+/* the same warm wash and eye the storefront runs */
 .bg-fx {
     position:fixed; inset:0; z-index:-2; pointer-events:none;
     background:
@@ -73,7 +72,6 @@ img { display:block; max-width:100%; }
 }
 .eye-bg canvas { display:block; width:100%; height:100%; }
 
-/* ---------- brand ---------- */
 .brand { display:flex; align-items:center; gap:10px; font-size:1.05rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
 .brand .brand-mark {
     width:auto; height:40px; flex:none;
@@ -81,7 +79,6 @@ img { display:block; max-width:100%; }
 }
 .brand b { color:var(--accent); }
 
-/* ---------- buttons ---------- */
 .btn {
     display:inline-flex; align-items:center; justify-content:center; gap:9px;
     padding:12px 20px; border-radius:var(--r-s);
@@ -92,16 +89,10 @@ img { display:block; max-width:100%; }
 .btn:hover { transform:translateY(-1px); }
 .btn-primary { color:#fff6f2; background:var(--accent-lo); border-color:#c93a30; }
 .btn-primary:hover { background:#cb3f34; }
-.btn-ghost { color:var(--text); border-color:var(--line-2); background:rgba(255,255,255,.03); }
-.btn-ghost:hover { background:rgba(255,255,255,.07); border-color:var(--line-2); }
 .btn-block { width:100%; }
-.btn:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+.btn-lg { padding:16px 22px; font-size:1rem; border-radius:10px; }
 
-/* ---------- layout ---------- */
-.shell {
-    min-height:100vh; display:flex; align-items:center; justify-content:center;
-    padding:clamp(22px,5vw,56px) 20px;
-}
+.shell { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:clamp(22px,5vw,56px) 20px; }
 .card {
     width:100%; max-width:560px;
     border:1px solid var(--line-2); border-radius:var(--r);
@@ -118,78 +109,46 @@ img { display:block; max-width:100%; }
     color:var(--accent-hi);
 }
 .eyebrow::before { content:''; width:16px; height:1px; background:currentColor; opacity:.6; }
-h1 { font-size:clamp(1.55rem,3.4vw,2.05rem); font-weight:600; letter-spacing:-.035em; line-height:1.1; margin-bottom:12px; }
+h1 { font-size:clamp(1.7rem,3.8vw,2.3rem); font-weight:600; letter-spacing:-.035em; line-height:1.08; margin-bottom:12px; }
 .lede { color:var(--text-2); font-size:.92rem; line-height:1.72; margin-bottom:24px; }
 .lede a { color:var(--accent-hi); text-decoration:underline; text-underline-offset:3px; }
 
-/* ---------- states ---------- */
-.state { display:none; }
-.state.on { display:block; }
-.spinner {
-    display:flex; align-items:center; gap:12px;
-    color:var(--text-2); font-size:.9rem; padding:6px 0 4px;
-}
-.spinner i { color:var(--accent); animation:spin 1.1s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-.msg {
-    display:none; gap:11px; align-items:flex-start;
-    padding:13px 15px; border-radius:var(--r-s); font-size:.86rem; line-height:1.6;
-    margin-bottom:18px;
-}
-.msg.on { display:flex; }
-.msg i { margin-top:2px; }
-.msg.err { background:rgba(90,26,26,.30); border:1px solid rgba(239,75,66,.34); color:#ffb3ab; }
-.msg.ok { background:rgba(16,80,52,.24); border:1px solid rgba(126,226,171,.28); color:var(--ok); }
-
-/* ---------- key form ---------- */
-.field { margin-bottom:14px; }
-.field label { display:block; font-size:.78rem; font-weight:600; color:var(--text-2); margin-bottom:7px; }
-.input {
-    width:100%; padding:13px 15px; border-radius:var(--r-s);
-    background:rgba(0,0,0,.42); border:1px solid var(--line-2);
-    color:var(--text); font:.95rem var(--mono); letter-spacing:.09em; text-transform:uppercase;
-    outline:none; transition:border-color .2s, background .2s;
-}
-.input::placeholder { color:var(--mute); letter-spacing:.06em; }
-.input:focus { border-color:rgba(var(--accent-rgb),.6); background:rgba(0,0,0,.55); }
-.hint { color:var(--mute); font-size:.76rem; line-height:1.6; margin-top:-4px; margin-bottom:16px; }
-
-/* ---------- result ---------- */
-.kv { display:grid; gap:0; margin-bottom:20px; border-top:1px solid var(--line); }
-.kv-row { display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:11px 0; border-bottom:1px solid var(--line); }
-.kv-row dt { color:var(--mute); font:.6rem var(--mono); letter-spacing:.14em; text-transform:uppercase; white-space:nowrap; }
-.kv-row dd { color:var(--text); font-size:.88rem; text-align:right; word-break:break-word; }
-.kv-row dd.mono { font-family:var(--mono); font-size:.82rem; }
-
-.key-block { margin-bottom:20px; }
-.key-label {
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    color:var(--mute); font:.6rem var(--mono); letter-spacing:.14em; text-transform:uppercase;
-    margin-bottom:9px;
-}
-.key-box {
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
+/* the download row: file identity left, the action right */
+.dl {
+    display:flex; align-items:center; gap:14px;
     padding:15px 16px; border-radius:var(--r-s);
     border:1px solid rgba(var(--accent-rgb),.34); background:rgba(var(--accent-rgb),.075);
+    margin-bottom:14px;
 }
-.key-box code {
-    font:.98rem/1.4 var(--mono); letter-spacing:.11em; color:#fff4f0;
-    word-break:break-all; font-weight:500;
+.dl-ico {
+    display:grid; place-items:center; width:44px; height:44px; flex:none;
+    border-radius:10px; border:1px solid rgba(var(--accent-rgb),.3);
+    background:rgba(var(--accent-rgb),.12); color:var(--accent-hi); font-size:1rem;
 }
-.copy {
-    flex:none; padding:8px 12px; border-radius:6px;
-    border:1px solid var(--line-2); background:rgba(255,255,255,.05);
-    color:var(--text-2); font:.72rem var(--mono); letter-spacing:.1em; text-transform:uppercase;
-    transition:background .2s, color .2s;
+.dl-file { font-weight:600; font-size:.95rem; letter-spacing:-.02em; }
+.dl-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:5px; }
+.chip {
+    font:.55rem var(--mono); letter-spacing:.12em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px;
+    border:1px solid var(--line-2); background:rgba(255,255,255,.04); color:var(--text-2);
 }
-.copy:hover { background:rgba(255,255,255,.1); color:var(--text); }
-.key-note { color:var(--mute); font-size:.76rem; line-height:1.6; margin-top:9px; }
+.chip.live { display:inline-flex; align-items:center; gap:6px; color:var(--ok); border-color:rgba(126,226,171,.24); }
+.chip.live::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--ok); }
 
-.download-note { color:var(--mute); font-size:.76rem; line-height:1.65; margin-top:13px; }
-.again { margin-top:18px; display:flex; justify-content:center; }
-.again button { color:var(--mute); font-size:.78rem; text-decoration:underline; text-underline-offset:3px; }
-.again button:hover { color:var(--text-2); }
+.note { color:var(--mute); font-size:.76rem; line-height:1.65; margin-top:12px; }
+
+.steps { margin-top:26px; padding-top:20px; border-top:1px solid var(--line); }
+.steps h2 { color:var(--mute); font:.6rem var(--mono); font-weight:500; letter-spacing:.16em; text-transform:uppercase; margin-bottom:14px; }
+.step-row { display:flex; gap:13px; padding:11px 0; border-bottom:1px solid var(--line); }
+.step-row:last-child { border-bottom:0; padding-bottom:0; }
+.step-n {
+    display:grid; place-items:center; width:24px; height:24px; flex:none; margin-top:1px;
+    border-radius:7px; border:1px solid rgba(var(--accent-rgb),.24);
+    background:rgba(var(--accent-rgb),.1); color:var(--accent-hi);
+    font:.66rem var(--mono); font-weight:500;
+}
+.step-row p { color:var(--text-2); font-size:.85rem; line-height:1.65; }
+.step-row strong { color:var(--text); font-weight:600; }
 
 .foot { margin-top:26px; padding-top:18px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; }
 .foot span { color:var(--mute); font-size:.72rem; }
@@ -207,55 +166,50 @@ h1 { font-size:clamp(1.55rem,3.4vw,2.05rem); font-weight:600; letter-spacing:-.0
                 <img class="brand-mark" src="/assets/kayaz-logo.png" alt="" width="35" height="40">
                 <span class="word">KAYAZ<b>.</b></span>
             </a>
-            <span class="step">Launcher</span>
+            <span class="step">Download</span>
         </div>
 
-        <p class="eyebrow">Delivery</p>
-        <h1 id="title">One step from the client.</h1>
-        <p class="lede" id="lede">Your key and the download live on this page. Keep the key somewhere safe, it is what the launcher asks for on every start.</p>
+        <p class="eyebrow">You're in</p>
+        <h1>Grab the client.</h1>
+        <p class="lede">Thanks for the purchase. Download the launcher below, run it, and paste the key from your order when it asks. If anything looks off, the support server is one click away.</p>
 
-        <div class="msg err" id="errMsg" role="alert"><i class="fa-solid fa-circle-exclamation"></i><span id="errText"></span></div>
-        <div class="msg ok" id="okMsg"><i class="fa-solid fa-circle-check"></i><span id="okText"></span></div>
-
-        <!-- looking the order up -->
-        <div class="state" id="loading">
-            <div class="spinner"><i class="fa-solid fa-circle-notch"></i><span id="loadingText">Checking your order&hellip;</span></div>
-        </div>
-
-        <!-- key entry: the fallback path and the retry path -->
-        <div class="state" id="keyForm">
-            <form id="claimForm" novalidate>
-                <div class="field">
-                    <label for="keyInput">Your launcher key</label>
-                    <input class="input" id="keyInput" name="key" type="text" placeholder="KAYAZ-XXXX-XXXX-XXXX"
-                           autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+        <div class="dl">
+            <span class="dl-ico"><i class="fa-solid fa-file-arrow-down"></i></span>
+            <div>
+                <div class="dl-file">KAYAZ.exe</div>
+                <div class="dl-meta">
+                    <span class="chip live">latest build</span>
+                    <span class="chip">about 6.7 MB</span>
+                    <span class="chip">windows x64</span>
                 </div>
-                <p class="hint">It looks like KAYAZ-XXXX-XXXX-XXXX and was shown on this page right after your purchase. It is case sensitive, so paste it exactly.</p>
-                <button class="btn btn-primary btn-block" id="claimBtn" type="submit"><i class="fa-solid fa-key"></i> Show my key and download</button>
-            </form>
-        </div>
-
-        <!-- the payoff -->
-        <div class="state" id="result">
-            <div class="key-block">
-                <div class="key-label">
-                    <span>Your key</span>
-                    <button class="copy" id="copyBtn" type="button">Copy</button>
-                </div>
-                <div class="key-box"><code id="keyValue"></code></div>
-                <p class="key-note">Keep this. If you reinstall Windows or move to a new PC, open this page again or paste the key above to get a fresh download link.</p>
             </div>
+        </div>
 
-            <dl class="kv">
-                <div class="kv-row"><dt>Access</dt><dd id="termValue"></dd></div>
-                <div class="kv-row"><dt>Expires</dt><dd id="expiryValue"></dd></div>
-                <div class="kv-row" id="boundRow" style="display:none"><dt>Machine</dt><dd id="boundValue"></dd></div>
-            </dl>
+        <a class="btn btn-primary btn-block btn-lg"
+           href="https://github.com/wowksies/kayazlauncher/releases/download/launcher/KAYAZ.exe"
+           rel="noopener">
+            <i class="fa-solid fa-download"></i> Download KAYAZ.exe
+        </a>
+        <p class="note">That button goes straight to the file on GitHub. If your browser blocks it, right click and choose save link as.</p>
 
-            <a class="btn btn-primary btn-block" id="downloadBtn" href="#" rel="noopener"><i class="fa-solid fa-download"></i> Download KAYAZ.exe</a>
-            <p class="download-note">The link behind that button is good for about an hour. After that, reload this page or paste your key again to get a fresh one.</p>
-
-            <div class="again"><button type="button" id="againBtn">Use a different key</button></div>
+        <div class="steps">
+            <h2>Getting it running</h2>
+            <div class="step-row">
+                <span class="step-n">1</span>
+                <p><strong>Download and unpack.</strong> Keep KAYAZ.exe somewhere you can find again, not inside a temp folder.</p>
+            </div>
+            <div class="step-row">
+                <span class="step-n">2</span>
+                <p><strong>Run it as administrator.</strong> Accept the UAC prompt. If your antivirus quarantines it, allow it back and add an exclusion.</p>
+            </div>
+            <div class="step-row">
+                <span class="step-n">3</span>
+                <p><strong>Paste your key</strong> when the launcher asks. That is the key that came with your order.</p>
+            </div>
+            <div class="step-row">
+                <span class="step-n">4</span>
+                <p><strong>Stuck?</strong> Open a ticket in the <a href="https://discord.gg/4WCVJJjsDUo" target="_blank" rel="noopener">support server</a> and we will sort it out.</p>
+            </div>
         </div>
 
         <div class="foot">
@@ -265,172 +219,7 @@ h1 { font-size:clamp(1.55rem,3.4vw,2.05rem); font-weight:600; letter-spacing:-.0
     </section>
 </main>
 
-<script>
-'use strict';
-
-(function () {
-    var el = function (id) { return document.getElementById(id); };
-    var states = {
-        loading: el('loading'),
-        keyForm: el('keyForm'),
-        result: el('result')
-    };
-
-    function show(name) {
-        Object.keys(states).forEach(function (k) {
-            states[k].classList.toggle('on', k === name);
-        });
-    }
-
-    function message(kind, text) {
-        var err = el('errMsg'), ok = el('okMsg');
-        err.classList.remove('on');
-        ok.classList.remove('on');
-        if (!text) return;
-        if (kind === 'ok') {
-            el('okText').textContent = text;
-            ok.classList.add('on');
-        } else {
-            el('errText').textContent = text;
-            err.classList.add('on');
-        }
-    }
-
-    function setHeading(title, lede) {
-        el('title').textContent = title;
-        el('lede').textContent = lede;
-    }
-
-    // Expiry arrives as unix seconds, and 0 means the key does not run out.
-    function expiryText(seconds) {
-        var n = parseInt(seconds, 10) || 0;
-        if (!n) return 'never expires';
-        var d = new Date(n * 1000);
-        if (isNaN(d.getTime())) return 'never expires';
-        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) +
-            ' at ' + d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function post(body) {
-        return fetch('/api/launcher', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(body)
-        }).then(function (res) {
-            return res.json().then(function (data) {
-                return { ok: res.ok, status: res.status, data: data };
-            }).catch(function () {
-                return { ok: res.ok, status: res.status, data: {} };
-            });
-        });
-    }
-
-    function render(data) {
-        el('keyValue').textContent = data.key || '';
-        el('termValue').textContent = data.term || (data.days ? data.days + ' days' : 'active');
-        el('expiryValue').textContent = expiryText(data.expiresAt);
-
-        if (data.bound) {
-            el('boundValue').textContent = 'locked to one machine';
-            el('boundRow').style.display = '';
-        } else {
-            el('boundRow').style.display = 'none';
-        }
-
-        // The link is single purpose and short lived, so navigating to it is enough.
-        el('downloadBtn').setAttribute('href', data.download || '#');
-        el('copyBtn').textContent = 'Copy';
-
-        setHeading('You are in.', 'Grab the client below, then start it and paste your key when it asks.');
-        message(null, '');
-        show('result');
-    }
-
-    function fail(text) {
-        message('err', text || 'Something went wrong. Try again in a moment.');
-        setHeading('Let us sort this out.', 'Paste the key from your purchase and you will get your download straight away.');
-        show('keyForm');
-        el('keyInput').focus();
-    }
-
-    function lookup(body, loadingText) {
-        if (loadingText) el('loadingText').textContent = loadingText;
-        message(null, '');
-        show('loading');
-        return post(body).then(function (r) {
-            if (r.ok && r.data && r.data.key) {
-                render(r.data);
-                return;
-            }
-            var error = (r.data && r.data.error) || '';
-            if (r.status === 403 && /email/i.test(error)) {
-                fail('That email does not match this order. Paste your launcher key below instead.');
-            } else {
-                fail(error);
-            }
-        }).catch(function () {
-            fail('Could not reach the server. Check your connection and try again.');
-        });
-    }
-
-    // ---- entry points ----------------------------------------------------
-    var params = new URLSearchParams(window.location.search);
-    var order = (params.get('order') || '').trim();
-    var email = (params.get('email') || '').trim();
-
-    el('claimForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var value = el('keyInput').value.trim();
-        if (!value) {
-            message('err', 'Enter your launcher key first.');
-            el('keyInput').focus();
-            return;
-        }
-        var btn = el('claimBtn');
-        btn.disabled = true;
-        lookup({ key: value }, 'Checking your key&hellip;').then(function () {
-            btn.disabled = false;
-        });
-    });
-
-    el('copyBtn').addEventListener('click', function () {
-        var key = el('keyValue').textContent || '';
-        var btn = this;
-        function done() {
-            btn.textContent = 'Copied';
-            setTimeout(function () { btn.textContent = 'Copy'; }, 1400);
-        }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(key).then(done).catch(function () { done(); });
-        } else {
-            var range = document.createRange();
-            range.selectNodeContents(el('keyValue'));
-            var sel = window.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(range);
-            try { document.execCommand('copy'); } catch (err) {}
-            sel.removeAllRanges();
-            done();
-        }
-    });
-
-    el('againBtn').addEventListener('click', function () {
-        el('keyInput').value = '';
-        message(null, '');
-        setHeading('One step from the client.', 'Paste a launcher key and this page will hand back the download.');
-        show('keyForm');
-        el('keyInput').focus();
-    });
-
-    if (order) {
-        lookup({ order: order, email: email }, 'Checking your order&hellip;');
-    } else {
-        show('keyForm');
-    }
-})();
-</script>
-
-<!-- React Bits EvilEye: the same animated page background the storefront runs. -->
+<!-- React Bits EvilEye: the animated page background the storefront runs. -->
 <script src="/assets/evil-eye.js" defer></script>
 </body>
 </html>
