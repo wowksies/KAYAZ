@@ -261,7 +261,7 @@ the generated format.
   touch it.
 - Separately, and not part of this work: the Omnis launcher family under
   `D:\Important\venniisbesthesmydadyy - Copy\Launchers\LauncherBase.hpp` has a
-  GitHub token hardcoded in one of the source files,
-  `github_pat_11A3JLZUI0gRaXMx...`. If any of those builds ship, that token
-  ships with them and anyone can read the private repo it belongs to. Rotate it.
-  You told me not to change anything in those folders, so I have not.
+  GitHub personal access token hardcoded in one of the source files. If any of
+  those builds ship, that token ships with them and anyone can read the private
+  repo it belongs to. Rotate it. You told me not to change anything in those
+  folders, so I have not, and the value deliberately does not appear here.
