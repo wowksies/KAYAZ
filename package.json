@@ -1,5 +1,17 @@
 {
   "name": "kayaz-site",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "ogl": "^1.0.11"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "pngjs": "^7.0.0"
+  },
+  "scripts": {
+    "build-logo": "node scripts/prepare-logo.mjs",
+    "build-effects": "node scripts/build-effects.mjs",
+    "preview": "node scripts/preview-server.mjs"
+  }
 }

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAYAZ R6: The Internal &middot; Store</title>
-<meta name="description" content="KAYAZ R6: The Internal for Rainbow Six Siege. Real in-game captures, the full menu, and 3 day, 7 day, monthly or seasonal access.">
+<meta name="description" content="KAYAZ R6: The Internal for Rainbow Six Siege. Have an eye like an eagle: real in-game captures, the full menu, and 3 day, 7 day, monthly or seasonal access.">
 <meta name="theme-color" content="#0a0807">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,13 +57,25 @@ img { display:block; max-width:100%; }
 ::selection { background:var(--accent); color:#1a0806; }
 :focus-visible { outline:2px solid var(--accent-hi); outline-offset:3px; border-radius:4px; }
 
+/* warm wash over the eye: keeps the centre open and the edges dark enough to read on */
 .bg-fx {
-    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    position:fixed; inset:0; z-index:-2; pointer-events:none;
     background:
         radial-gradient(ellipse 70% 48% at 72% -6%, rgba(154,44,33,.20), transparent 70%),
         radial-gradient(ellipse 46% 40% at 2% 52%, rgba(104,43,31,.11), transparent 72%),
-        linear-gradient(180deg, #0c0908 0%, var(--bg) 48%, #0c0908 100%);
+        radial-gradient(ellipse 120% 92% at 50% 44%, transparent 34%, rgba(6,4,4,.74) 100%);
 }
+
+/* ---------- EvilEye background (React Bits, ogl) ----------
+   Renders into its own canvas behind everything; opacity is the only knob the
+   page adds on top of the component's own props. */
+.eye-bg {
+    position:fixed; inset:0; z-index:-3; pointer-events:none;
+    opacity:.42;
+    -webkit-mask-image:linear-gradient(180deg, #000 0%, rgba(0,0,0,.7) 36%, rgba(0,0,0,.22) 66%, rgba(0,0,0,.08) 100%);
+    mask-image:linear-gradient(180deg, #000 0%, rgba(0,0,0,.7) 36%, rgba(0,0,0,.22) 66%, rgba(0,0,0,.08) 100%);
+}
+.eye-bg canvas { display:block; width:100%; height:100%; }
 
 .wrap { width:100%; max-width:1240px; margin:0 auto; padding:0 32px; }
 
@@ -146,11 +158,11 @@ header.nav {
     border-bottom:1px solid var(--line);
 }
 .nav-inner { display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:68px; }
-.brand { display:flex; align-items:center; gap:9px; font-size:1.1rem; font-weight:700; letter-spacing:-.05em; }
+.brand { display:flex; align-items:center; gap:10px; font-size:1.05rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
 .brand .word { display:inline-block; }
-.brand .dot {
-    width:8px; height:8px; border-radius:50%; background:var(--accent);
-    box-shadow:0 0 12px rgba(var(--accent-rgb),.8);
+.brand .brand-mark {
+    width:auto; height:40px; flex:none;
+    filter:drop-shadow(0 0 11px rgba(var(--accent-rgb),.45));
 }
 .brand b { color:var(--accent); }
 .nav-links { display:flex; align-items:center; gap:2px; }
@@ -446,6 +458,7 @@ footer { padding:52px 0 36px; border-top:1px solid var(--line); background:rgba(
     .wrap { padding:0 18px; }
     html { scroll-padding-top:74px; }
     .nav-inner { min-height:60px; }
+    .brand .brand-mark { height:34px; }
     .nav-links { display:none; }
     .nav-links.open {
         position:absolute; top:100%; left:0; right:0; z-index:40;
@@ -495,11 +508,15 @@ footer { padding:52px 0 36px; border-top:1px solid var(--line); background:rgba(
 </style>
 </head>
 <body>
+<div class="eye-bg" id="eyeBg" data-evil-eye aria-hidden="true"></div>
 <div class="bg-fx"></div>
 
 <header class="nav" id="top">
     <div class="wrap nav-inner">
-        <a href="/" class="brand"><span class="dot"></span><span class="word">kayaz<b>.</b></span></a>
+        <a href="/" class="brand" aria-label="KAYAZ home">
+            <img class="brand-mark" src="/assets/kayaz-logo.png" alt="" width="35" height="40">
+            <span class="word">KAYAZ<b>.</b></span>
+        </a>
         <nav class="nav-links" id="navLinks">
             <a href="#products">store</a>
             <a href="#features">features</a>
@@ -518,7 +535,7 @@ footer { padding:52px 0 36px; border-top:1px solid var(--line); background:rgba(
             <div class="hero-inner">
                 <div class="hero-copy">
                     <p class="eyebrow"><span class="live"></span> Rainbow Six Siege &middot; internal</p>
-                    <h1>Read the room<br>before you <em>push it.</em></h1>
+                    <h1>Have an eye<br>like an <em>eagle.</em></h1>
                     <p class="lede">KAYAZ R6: The Internal draws clean player visuals over Siege and keeps every setting in a menu you can reach mid&#8209;round. The captures below are the build, untouched.</p>
                     <div class="hero-actions">
                         <a href="#products" class="btn btn-primary"><i class="fa-solid fa-bag-shopping"></i> Shop access</a>
@@ -722,7 +739,10 @@ footer { padding:52px 0 36px; border-top:1px solid var(--line); background:rgba(
     <div class="wrap">
         <div class="foot-grid">
             <div class="foot-brand">
-                <a href="#top" class="brand"><span class="dot"></span><span class="word">kayaz<b>.</b></span></a>
+                <a href="#top" class="brand" aria-label="KAYAZ home">
+                    <img class="brand-mark" src="/assets/kayaz-logo.png" alt="" width="35" height="40">
+                    <span class="word">KAYAZ<b>.</b></span>
+                </a>
                 <p>KAYAZ R6: The Internal, an internal overlay for Rainbow Six Siege.</p>
                 <div class="socials">
                     <a href="https://discord.gg/4WCVJJjsDUo" target="_blank" rel="noopener" aria-label="Kayaz R6 support server"><i class="fa-brands fa-discord"></i></a>
@@ -952,6 +972,9 @@ fetch('/api/config').then(function (r) { return r.json(); }).then(function (cfg)
         '<div class="prod-skeleton">could not load the store right now.</div>';
 });
 </script>
+
+<!-- React Bits EvilEye: the animated page background. -->
+<script src="/assets/evil-eye.js" defer></script>
 
 <script src="https://static.sellauth.com/embed/v3.min.js" defer></script>
 </body>
