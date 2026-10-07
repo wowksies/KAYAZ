@@ -2,12 +2,20 @@
 
 ## React Bits
 
-The animated storefront background is built from a React Bits component
-(https://reactbits.dev):
+The animated storefront background and cards are built from React Bits
+components (https://reactbits.dev):
 
-- **EvilEye** - `src/evil-eye.js` (upstream React component ported to a plain DOM
-  mount; shaders, noise texture and defaults unchanged), bundled to
-  `assets/evil-eye.js`
+- **CRTWarp** - `src/crt-warp.js` (upstream React component ported to a plain DOM
+  mount; shaders, uniforms and defaults unchanged), bundled to
+  `assets/crt-warp.js`. The port draws through `ogl` rather than `three`, which
+  this site already bundles, so no second WebGL library ships to the browser.
+- **PixelCard** - `src/pixel-card.js` (upstream React component ported to a plain
+  DOM mount; pixel class, variant table and defaults unchanged), bundled to
+  `assets/pixel-card.js`
+- **TechText** - `src/tech-text.js` (upstream React component ported to a plain
+  DOM mount; glyph layout, dash outlines, specks, selection frame, drag springs
+  and every default unchanged), bundled to `assets/tech-text.js`. It draws the
+  storefront slogan and the profile page wordmark.
 
 Licence: **MIT + Commons Clause License Condition v1.0**
 
@@ -45,6 +53,7 @@ resold or redistributed as a component.
 
 ## npm packages
 
-Bundled into `assets/evil-eye.js`: `ogl` (MIT).
+Bundled into `assets/crt-warp.js`: `ogl` (MIT). The TechText and PixelCard
+bundles have no dependencies.
 
 Dev tooling only: `esbuild` (MIT), `pngjs` (MIT).

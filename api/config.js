@@ -10,6 +10,14 @@ import { rateLimit } from './_lib.js';
 //   SHOP_URL    -> the SellAuth storefront url checkout is served from
 //                  (for example https://yourshop.mysellauth.com or your custom store domain)
 //
+// Listed prices, one per term, with the optional "was" price the storefront
+// strikes through. The defaults mirror the SellAuth variant list; change them
+// here or override them per environment without a deploy:
+//   PRICE_3DAYS / COMPARE_3DAYS, PRICE_7DAYS / COMPARE_7DAYS,
+//   PRICE_1MONTH / COMPARE_1MONTH, PRICE_SEASONAL / COMPARE_SEASONAL
+//   CURRENCY (default EUR) and CURRENCY_SYMBOL (default the euro sign)
+// SellAuth stays the source of truth: it shows the final total at checkout.
+//
 // MODE controls how the per-duration ids are used:
 //   'variants' (default) -> each duration id is a VARIANT id under PRODUCT_ID.
 //                           cart item: { productId: PRODUCT_ID, variantId: <duration id> }
@@ -23,6 +31,10 @@ export default function handler(req, res) {
   const num = v => {
     const n = parseInt(v, 10);
     return Number.isFinite(n) ? n : null;
+  };
+  const money = (name, fallback) => {
+    const n = parseFloat(env[name]);
+    return Number.isFinite(n) ? n : fallback;
   };
 
   const mode = (env.SELLAUTH_MODE || 'variants').toLowerCase() === 'products' ? 'products' : 'variants';
@@ -39,10 +51,10 @@ export default function handler(req, res) {
   };
 
   const catalog = [
-    { key: 'threeDays', name: '3 Days', img: '/assets/products/3days.png', tag: 'quick access', blurb: 'Three days of KAYAZ R6: The Internal.' },
-    { key: 'sevenDays', name: '7 Days', img: '/assets/products/7days.png', tag: 'most popular', blurb: 'A full week of KAYAZ R6: The Internal.' },
-    { key: 'oneMonth', name: '1 Month', img: '/assets/products/1month.png', tag: 'monthly', blurb: 'One month of KAYAZ R6: The Internal.' },
-    { key: 'seasonal', name: 'Seasonal', img: '/assets/products/seasonal.png', tag: 'longest access', blurb: 'Seasonal access to KAYAZ R6: The Internal.' }
+    { key: 'threeDays', name: '3 Days', img: '/assets/products/3days.png', tag: 'quick access', blurb: 'Three days of KAYAZ R6: The Internal.', price: money('PRICE_3DAYS', 4.99), compareAt: money('COMPARE_3DAYS', 6.99) },
+    { key: 'sevenDays', name: '7 Days', img: '/assets/products/7days.png', tag: 'most popular', blurb: 'A full week of KAYAZ R6: The Internal.', price: money('PRICE_7DAYS', 9.99), compareAt: money('COMPARE_7DAYS', 12.99) },
+    { key: 'oneMonth', name: '1 Month', img: '/assets/products/1month.png', tag: 'monthly', blurb: 'One month of KAYAZ R6: The Internal.', price: money('PRICE_1MONTH', 29.99), compareAt: money('COMPARE_1MONTH', 39.99) },
+    { key: 'seasonal', name: 'Seasonal', img: '/assets/products/seasonal.png', tag: 'longest access', blurb: 'Seasonal access to KAYAZ R6: The Internal.', price: money('PRICE_SEASONAL', 69.99), compareAt: money('COMPARE_SEASONAL', 89.99) }
   ];
 
   const products = catalog
@@ -63,6 +75,8 @@ export default function handler(req, res) {
     mode,
     shopId,
     shopUrl,
+    currency: env.CURRENCY || 'EUR',
+    currencySymbol: env.CURRENCY_SYMBOL || '\u20ac',
     ready: Boolean(shopId && products.length)
   , products });
 }

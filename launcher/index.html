@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>KAYAZ. download</title>
 <meta name="description" content="Download the KAYAZ R6: The Internal client.">
-<meta name="theme-color" content="#0a0807">
+<meta name="theme-color" content="#05010a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -14,11 +14,11 @@
 <style>
 /* ============================================================
    KAYAZ download
-   Straight through: one card, one button, the real GitHub link.
+   One screen, same shape as the storefront: logo, the file, the
+   button, and the price list for extending access. Nothing scrolls.
    ============================================================ */
 :root {
-    --bg:        #0a0807;
-    --bg-2:      #0f0c0b;
+    --bg:        #05010a;
     --panel:     #131010;
     --panel-2:   #171312;
     --line:      rgba(255,238,228,.10);
@@ -26,10 +26,11 @@
     --text:      #f4ede8;
     --text-2:    #b9aca5;
     --mute:      #8a7d77;
-    --accent:    #ef4b42;
-    --accent-lo: #b4332b;
-    --accent-hi: #ff7a66;
-    --accent-rgb: 239,75,66;
+    --accent:     #c2433a;
+    --accent-lo:  #8f2b25;
+    --accent-deep:#7d241f;
+    --accent-hi:  #e07a6b;
+    --accent-rgb: 194,67,58;
     --ok:        #7ee2ab;
     --sans: 'DM Sans', system-ui, -apple-system, sans-serif;
     --mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -38,6 +39,7 @@
     --r-s: 8px;
 }
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
 body {
     background: var(--bg);
     color: var(--text);
@@ -45,8 +47,10 @@ body {
     font-size: 16px;
     line-height: 1.6;
     letter-spacing: -.01em;
-    min-height: 100vh;
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
 }
@@ -56,25 +60,25 @@ img { display:block; max-width:100%; }
 ::selection { background:var(--accent); color:#1a0806; }
 :focus-visible { outline:2px solid var(--accent-hi); outline-offset:3px; border-radius:4px; }
 
-/* the same warm wash and eye the storefront runs */
+/* the same warm wash and CRT warp the storefront runs */
 .bg-fx {
     position:fixed; inset:0; z-index:-2; pointer-events:none;
     background:
-        radial-gradient(ellipse 70% 48% at 72% -6%, rgba(154,44,33,.20), transparent 70%),
-        radial-gradient(ellipse 46% 40% at 2% 52%, rgba(104,43,31,.11), transparent 72%),
-        radial-gradient(ellipse 120% 92% at 50% 44%, transparent 34%, rgba(6,4,4,.74) 100%);
+        radial-gradient(ellipse 66% 46% at 74% -8%, rgba(140,42,32,.12), transparent 70%),
+        radial-gradient(ellipse 44% 38% at 0% 56%, rgba(96,40,29,.06), transparent 72%),
+        radial-gradient(ellipse 130% 96% at 50% 46%, transparent 32%, rgba(4,2,3,.86) 100%);
 }
-.eye-bg {
+.crt-bg {
     position:fixed; inset:0; z-index:-3; pointer-events:none;
-    opacity:.34;
-    -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 40%, #000 0%, rgba(0,0,0,.35) 70%, transparent 100%);
-    mask-image:radial-gradient(ellipse 80% 70% at 50% 40%, #000 0%, rgba(0,0,0,.35) 70%, transparent 100%);
+    opacity:.22;
+    -webkit-mask-image:radial-gradient(ellipse 84% 74% at 50% 42%, rgba(0,0,0,.7) 0%, rgba(0,0,0,.4) 68%, rgba(0,0,0,.26) 100%);
+    mask-image:radial-gradient(ellipse 84% 74% at 50% 42%, rgba(0,0,0,.7) 0%, rgba(0,0,0,.4) 68%, rgba(0,0,0,.26) 100%);
 }
-.eye-bg canvas { display:block; width:100%; height:100%; }
+.crt-bg canvas { display:block; width:100%; height:100%; }
 
 .brand { display:flex; align-items:center; gap:10px; font-size:1.05rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
 .brand .brand-mark {
-    width:auto; height:40px; flex:none;
+    width:auto; height:38px; flex:none;
     filter:drop-shadow(0 0 11px rgba(var(--accent-rgb),.45));
 }
 .brand b { color:var(--accent); }
@@ -87,80 +91,154 @@ img { display:block; max-width:100%; }
 }
 .btn i { font-size:.82em; }
 .btn:hover { transform:translateY(-1px); }
-.btn-primary { color:#fff6f2; background:var(--accent-lo); border-color:#c93a30; }
-.btn-primary:hover { background:#cb3f34; }
+.btn-primary { color:#fff6f2; background:var(--accent-lo); border-color:var(--accent-deep); }
+.btn-primary:hover { background:var(--accent); }
 .btn-block { width:100%; }
-.btn-lg { padding:16px 22px; font-size:1rem; border-radius:10px; }
+.btn-lg { padding:15px 22px; font-size:.95rem; border-radius:10px; }
 
-.shell { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:clamp(22px,5vw,56px) 20px; }
+.shell {
+    flex:1; min-height:0;
+    display:grid; place-items:center;
+    padding:clamp(18px,3.4vh,44px) 20px;
+    overflow-y:auto; scrollbar-width:none;
+}
+.shell::-webkit-scrollbar { display:none; }
 .card {
-    width:100%; max-width:560px;
+    position:relative; overflow:hidden; isolation:isolate;
+    width:100%; max-width:580px;
     border:1px solid var(--line-2); border-radius:var(--r);
-    background:linear-gradient(180deg, rgba(23,19,18,.92), rgba(12,10,9,.94));
+    background:linear-gradient(180deg, rgba(21,17,16,.92), rgba(10,7,9,.95));
     backdrop-filter:blur(16px) saturate(140%); -webkit-backdrop-filter:blur(16px) saturate(140%);
     box-shadow:0 30px 70px rgba(0,0,0,.55);
-    padding:clamp(24px,4vw,34px);
+    padding:clamp(22px,3.4vw,32px);
 }
-.card-head { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; }
+/* PixelCard (React Bits) covers the download card: the shimmer plays over it on
+   hover and keyboard focus, blended so the copy stays legible. */
+.card::before {
+    content:''; position:absolute; inset:0; z-index:1; margin:auto;
+    aspect-ratio:1; opacity:0; pointer-events:none; mix-blend-mode:screen;
+    background:radial-gradient(circle, var(--pixel-card-active-color, #09090b), transparent 85%);
+    transition:opacity 800ms var(--ease);
+}
+.card:hover::before, .card:focus-within::before { opacity:1; }
+.card { --pixel-card-active-color:rgba(154,44,33,.5); }
+.pixel-canvas {
+    position:absolute; inset:0; z-index:2; display:block;
+    width:100%; height:100%; pointer-events:none; mix-blend-mode:screen;
+    opacity:.72;
+    -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.24) 52%, rgba(0,0,0,.85) 100%);
+    mask-image:linear-gradient(180deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.24) 52%, rgba(0,0,0,.85) 100%);
+}
+
+.card-head { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
 .card-head .step { color:var(--mute); font:.55rem var(--mono); letter-spacing:.16em; text-transform:uppercase; white-space:nowrap; }
 .eyebrow {
-    display:flex; align-items:center; gap:9px; margin-bottom:14px;
-    font:500 .68rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase;
+    display:flex; align-items:center; gap:9px; margin-bottom:12px;
+    font:500 .66rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase;
     color:var(--accent-hi);
 }
 .eyebrow::before { content:''; width:16px; height:1px; background:currentColor; opacity:.6; }
-h1 { font-size:clamp(1.7rem,3.8vw,2.3rem); font-weight:600; letter-spacing:-.035em; line-height:1.08; margin-bottom:12px; }
-.lede { color:var(--text-2); font-size:.92rem; line-height:1.72; margin-bottom:24px; }
+h1 { font-size:clamp(1.7rem,3.6vw,2.15rem); font-weight:600; letter-spacing:-.035em; line-height:1.08; margin-bottom:10px; }
+.lede { color:var(--text-2); font-size:.9rem; line-height:1.7; margin-bottom:20px; }
 .lede a { color:var(--accent-hi); text-decoration:underline; text-underline-offset:3px; }
 
 /* the download row: file identity left, the action right */
 .dl {
     display:flex; align-items:center; gap:14px;
-    padding:15px 16px; border-radius:var(--r-s);
+    padding:14px 16px; border-radius:var(--r-s);
     border:1px solid rgba(var(--accent-rgb),.34); background:rgba(var(--accent-rgb),.075);
-    margin-bottom:14px;
+    margin-bottom:13px;
 }
 .dl-ico {
-    display:grid; place-items:center; width:44px; height:44px; flex:none;
+    display:grid; place-items:center; width:42px; height:42px; flex:none;
     border-radius:10px; border:1px solid rgba(var(--accent-rgb),.3);
     background:rgba(var(--accent-rgb),.12); color:var(--accent-hi); font-size:1rem;
 }
-.dl-file { font-weight:600; font-size:.95rem; letter-spacing:-.02em; }
-.dl-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:5px; }
+.dl-file { font-weight:600; font-size:.94rem; letter-spacing:-.02em; }
+.dl-meta { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; }
 .chip {
-    font:.55rem var(--mono); letter-spacing:.12em; text-transform:uppercase;
+    font:.53rem var(--mono); letter-spacing:.12em; text-transform:uppercase;
     padding:3px 8px; border-radius:999px;
     border:1px solid var(--line-2); background:rgba(255,255,255,.04); color:var(--text-2);
 }
 .chip.live { display:inline-flex; align-items:center; gap:6px; color:var(--ok); border-color:rgba(126,226,171,.24); }
 .chip.live::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--ok); }
 
-.note { color:var(--mute); font-size:.76rem; line-height:1.65; margin-top:12px; }
+.note { color:var(--mute); font-size:.74rem; line-height:1.6; margin-top:11px; }
 
-.steps { margin-top:26px; padding-top:20px; border-top:1px solid var(--line); }
-.steps h2 { color:var(--mute); font:.6rem var(--mono); font-weight:500; letter-spacing:.16em; text-transform:uppercase; margin-bottom:14px; }
-.step-row { display:flex; gap:13px; padding:11px 0; border-bottom:1px solid var(--line); }
-.step-row:last-child { border-bottom:0; padding-bottom:0; }
+.steps { margin-top:20px; padding-top:16px; border-top:1px solid var(--line); }
+.steps h2 { color:var(--mute); font:.57rem var(--mono); font-weight:500; letter-spacing:.16em; text-transform:uppercase; margin-bottom:10px; }
+.step-row { display:flex; gap:12px; align-items:flex-start; padding:8px 0; }
 .step-n {
-    display:grid; place-items:center; width:24px; height:24px; flex:none; margin-top:1px;
+    display:grid; place-items:center; width:22px; height:22px; flex:none; margin-top:2px;
     border-radius:7px; border:1px solid rgba(var(--accent-rgb),.24);
     background:rgba(var(--accent-rgb),.1); color:var(--accent-hi);
-    font:.66rem var(--mono); font-weight:500;
+    font:.63rem var(--mono); font-weight:500;
 }
-.step-row p { color:var(--text-2); font-size:.85rem; line-height:1.65; }
+.step-row p { color:var(--text-2); font-size:.82rem; line-height:1.6; }
 .step-row strong { color:var(--text); font-weight:600; }
+.step-row a { color:var(--accent-hi); }
 
-.foot { margin-top:26px; padding-top:18px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; }
+/* price strip: same numbers the store shows, straight from /api/config */
+.price-terms { margin-top:20px; padding-top:16px; border-top:1px solid var(--line); }
+.price-terms h2 { color:var(--mute); font:.57rem var(--mono); font-weight:500; letter-spacing:.16em; text-transform:uppercase; margin-bottom:12px; }
+.price-tabs { display:flex; flex-wrap:wrap; gap:6px; }
+.price-tab {
+    display:inline-flex; align-items:baseline; gap:7px;
+    padding:8px 14px; border-radius:999px; white-space:nowrap;
+    border:1px solid var(--line-2); background:rgba(255,255,255,.03);
+    color:var(--text-2); font-size:.8rem; font-weight:500;
+    transition:background .2s, border-color .2s, color .2s, transform .15s var(--ease);
+}
+.price-tab .t-price { font:.7rem var(--mono); color:var(--mute); transition:color .2s; }
+.price-tab:hover { color:var(--text); border-color:rgba(var(--accent-rgb),.45); transform:translateY(-1px); }
+.price-tab:hover .t-price { color:var(--accent-hi); }
+.price-tab:disabled { opacity:.5; cursor:default; transform:none; }
+.price-loading { color:var(--mute); font-size:.78rem; }
+
+.foot { margin-top:20px; padding-top:14px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center; justify-content:space-between; }
 .foot span { color:var(--mute); font-size:.72rem; }
 .foot a { color:var(--accent-hi); }
+
+@media (max-height:760px) {
+    .shell { padding:14px 20px; }
+    .lede { margin-bottom:16px; }
+    .card-head { margin-bottom:16px; }
+    .step-row { padding:6px 0; }
+    .steps { margin-top:16px; padding-top:12px; }
+    .price-terms { margin-top:16px; padding-top:12px; }
+    .foot { margin-top:16px; padding-top:12px; }
+}
+@media (max-width:520px) {
+    /* phones: the card still has to land inside one screen, so the padding and
+       the small type tighten up before anything is dropped */
+    .shell { padding:12px 14px; }
+    .card { padding:20px 18px; }
+    .card-head { margin-bottom:14px; }
+    .brand .brand-mark { height:32px; }
+    h1 { font-size:1.6rem; margin-bottom:8px; }
+    .lede { font-size:.84rem; margin-bottom:14px; }
+    .dl { gap:12px; padding:11px 13px; }
+    .note { font-size:.7rem; margin-top:9px; }
+    .steps { margin-top:16px; padding-top:13px; }
+    .step-row { padding:6px 0; }
+    .step-row p { font-size:.78rem; }
+    .price-terms { margin-top:16px; padding-top:13px; }
+    .price-tab { padding:7px 10px; font-size:.75rem; }
+    .price-tab .t-price { font-size:.65rem; }
+    .foot { margin-top:12px; padding-top:10px; }
+}
+@media (prefers-reduced-motion:reduce) {
+    *, *::before, *::after { animation:none !important; transition:none !important; }
+}
 </style>
 </head>
 <body>
-<div class="eye-bg" id="eyeBg" data-evil-eye aria-hidden="true"></div>
+<div class="crt-bg" id="crtBg" data-crt-warp aria-hidden="true"></div>
 <div class="bg-fx"></div>
 
 <main class="shell">
-    <section class="card">
+    <section class="card" id="dlCard" data-pixel-card data-no-focus data-gap="9" data-colors="#c9553f,#8f2a24,#e6b3a6">
         <div class="card-head">
             <a href="/" class="brand" aria-label="KAYAZ home">
                 <img class="brand-mark" src="/assets/kayaz-logo.png" alt="" width="35" height="40">
@@ -171,7 +249,7 @@ h1 { font-size:clamp(1.7rem,3.8vw,2.3rem); font-weight:600; letter-spacing:-.035
 
         <p class="eyebrow">You're in</p>
         <h1>Grab the client.</h1>
-        <p class="lede">Thanks for the purchase. Download the launcher below, run it, and paste the key from your order when it asks. If anything looks off, the support server is one click away.</p>
+        <p class="lede">Thanks for the purchase. Save it somewhere permanent, run it, and you are in. Anything off, the <a href="https://discord.gg/4WCVJJjsDUo" target="_blank" rel="noopener">support server</a> sorts it.</p>
 
         <div class="dl">
             <span class="dl-ico"><i class="fa-solid fa-file-arrow-down"></i></span>
@@ -196,7 +274,7 @@ h1 { font-size:clamp(1.7rem,3.8vw,2.3rem); font-weight:600; letter-spacing:-.035
             <h2>Getting it running</h2>
             <div class="step-row">
                 <span class="step-n">1</span>
-                <p><strong>Download and unpack.</strong> Keep KAYAZ.exe somewhere you can find again, not inside a temp folder.</p>
+                <p><strong>Keep it.</strong> Move KAYAZ.exe somewhere you can find again, not inside a temp or downloads folder.</p>
             </div>
             <div class="step-row">
                 <span class="step-n">2</span>
@@ -204,11 +282,14 @@ h1 { font-size:clamp(1.7rem,3.8vw,2.3rem); font-weight:600; letter-spacing:-.035
             </div>
             <div class="step-row">
                 <span class="step-n">3</span>
-                <p><strong>Paste your key</strong> when the launcher asks. That is the key that came with your order.</p>
-            </div>
-            <div class="step-row">
-                <span class="step-n">4</span>
                 <p><strong>Stuck?</strong> Open a ticket in the <a href="https://discord.gg/4WCVJJjsDUo" target="_blank" rel="noopener">support server</a> and we will sort it out.</p>
+            </div>
+        </div>
+
+        <div class="price-terms">
+            <h2>Extend your access</h2>
+            <div class="price-tabs" id="priceTabs">
+                <span class="price-loading">loading prices&hellip;</span>
             </div>
         </div>
 
@@ -219,7 +300,73 @@ h1 { font-size:clamp(1.7rem,3.8vw,2.3rem); font-weight:600; letter-spacing:-.035
     </section>
 </main>
 
-<!-- React Bits EvilEye: the animated page background the storefront runs. -->
-<script src="/assets/evil-eye.js" defer></script>
+<script>
+'use strict';
+
+/* Prices and checkout come from the same config the storefront uses, so the two
+   pages can never disagree about what a term costs. */
+var sellAuthConfig = null;
+
+function formatPrice(amount) {
+    if (amount === null || amount === undefined || amount === '') return null;
+    var value = Number(amount);
+    if (!isFinite(value)) return null;
+    var symbol = (sellAuthConfig && sellAuthConfig.currencySymbol) || '\u20ac';
+    return symbol + value.toFixed(2);
+}
+
+function openCheckout(prod) {
+    if (!window.sellAuth || !sellAuthConfig) return;
+    window.sellAuth.open({
+        shopId: sellAuthConfig.shopId,
+        shopUrl: sellAuthConfig.shopUrl,
+        cart: prod.cart,
+        theme: 'dark'
+    });
+}
+
+function renderTerms(cfg) {
+    var tabs = document.getElementById('priceTabs');
+    var products = (cfg && cfg.products) || [];
+    tabs.innerHTML = '';
+    if (!products.length) {
+        var empty = document.createElement('span');
+        empty.className = 'price-loading';
+        empty.textContent = 'no terms on sale right now, ask in the support server.';
+        tabs.appendChild(empty);
+        return;
+    }
+    products.forEach(function (p) {
+        var tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'price-tab';
+        var name = document.createElement('span');
+        name.textContent = p.name;
+        tab.appendChild(name);
+        var price = formatPrice(p.price);
+        if (price) {
+            var tag = document.createElement('span');
+            tag.className = 't-price';
+            tag.textContent = price;
+            tab.appendChild(tag);
+        }
+        tab.addEventListener('click', function () { openCheckout(p); });
+        tabs.appendChild(tab);
+    });
+}
+
+fetch('/api/config').then(function (r) { return r.json(); }).then(function (cfg) {
+    sellAuthConfig = cfg;
+    renderTerms(cfg);
+}).catch(function () {
+    renderTerms({ products: [] });
+});
+</script>
+
+<!-- React Bits CRTWarp: the animated page background the storefront runs. -->
+<script src="/assets/crt-warp.js" defer></script>
+<!-- React Bits PixelCard: the shimmer on the download card. -->
+<script src="/assets/pixel-card.js" defer></script>
+<script src="https://static.sellauth.com/embed/v3.min.js" defer></script>
 </body>
 </html>
