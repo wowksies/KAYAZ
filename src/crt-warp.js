@@ -25,7 +25,7 @@ import { Renderer, Program, Mesh, Triangle } from 'ogl';
 /** Exact settings requested for the storefront background. */
 export const CRT_WARP_PROPS = {
   color: '#930000',
-  backgroundColor: '#05010a',
+  backgroundColor: '#17121e',
   speed: 0.5,
   curvature: 0.25,
   scanlineStrength: 0.25,

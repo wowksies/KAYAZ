@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAYAZ R6: The Internal &middot; Store</title>
 <meta name="description" content="KAYAZ R6: The Internal for Rainbow Six Siege. Have an eye like an eagle: one build, priced by how long you keep it, checked out instantly through SellAuth.">
-<meta name="theme-color" content="#05010a">
+<meta name="theme-color" content="#17121e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -18,13 +18,13 @@
    /api/config, which reads them from the SellAuth env vars.
    ============================================================ */
 :root {
-    --bg:        #05010a;
+    --bg:        #17121e;
     --panel:     #131010;
     --line:      rgba(255,238,228,.10);
     --line-2:    rgba(255,238,228,.17);
     --text:      #f4ede8;
     --text-2:    #b9aca5;
-    --mute:      #8a7d77;
+    --mute:      #9d9089;
     --accent:     #c2433a;
     --accent-lo:  #8f2b25;
     --accent-deep:#7d241f;
@@ -70,17 +70,17 @@ img { display:block; max-width:100%; }
    own props. The warm wash above it (.bg-fx) keeps the copy readable. */
 .crt-bg {
     position:fixed; inset:0; z-index:-3; pointer-events:none;
-    opacity:.17;
-    -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.38) 46%, rgba(0,0,0,.28) 78%, rgba(0,0,0,.22) 100%);
-    mask-image:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.38) 46%, rgba(0,0,0,.28) 78%, rgba(0,0,0,.22) 100%);
+    opacity:.38;
+    -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.6) 46%, rgba(0,0,0,.48) 78%, rgba(0,0,0,.4) 100%);
+    mask-image:linear-gradient(180deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.6) 46%, rgba(0,0,0,.48) 78%, rgba(0,0,0,.4) 100%);
 }
 .crt-bg canvas { display:block; width:100%; height:100%; }
 .bg-fx {
     position:fixed; inset:0; z-index:-2; pointer-events:none;
     background:
-        radial-gradient(ellipse 66% 46% at 74% -8%, rgba(140,42,32,.09), transparent 70%),
-        radial-gradient(ellipse 44% 38% at 0% 56%, rgba(96,40,29,.05), transparent 72%),
-        radial-gradient(ellipse 130% 96% at 50% 46%, transparent 32%, rgba(4,2,3,.86) 100%);
+        radial-gradient(ellipse 66% 46% at 74% -8%, rgba(140,42,32,.15), transparent 70%),
+        radial-gradient(ellipse 44% 38% at 0% 56%, rgba(96,40,29,.09), transparent 72%),
+        radial-gradient(ellipse 130% 96% at 50% 46%, transparent 32%, rgba(9,6,13,.52) 100%);
 }
 
 .wrap { width:100%; max-width:1180px; margin:0 auto; padding:0 30px; }
@@ -114,7 +114,7 @@ img { display:block; max-width:100%; }
 /* ---------- nav ---------- */
 header.nav {
     flex:none;
-    background:rgba(5,2,8,.72);
+    background:rgba(17,12,23,.62);
     backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
     border-bottom:1px solid var(--line);
 }
@@ -198,7 +198,7 @@ header.nav {
 .price-panel { position:relative; isolation:isolate; padding:clamp(6px,1.4vh,14px) 0 0; }
 .price-panel .crt-layer {
     position:absolute; inset:-14% -10% -16%; z-index:-1; pointer-events:none;
-    opacity:.12;
+    opacity:.2;
     -webkit-mask-image:radial-gradient(ellipse 58% 70% at 50% 52%, rgba(0,0,0,.28) 0%, rgba(0,0,0,.54) 54%, transparent 100%);
     mask-image:radial-gradient(ellipse 58% 70% at 50% 52%, rgba(0,0,0,.28) 0%, rgba(0,0,0,.54) 54%, transparent 100%);
 }
@@ -229,7 +229,7 @@ header.nav {
 /* ---------- footer: one ruled row of links, like the board it copies ---------- */
 footer.mini {
     flex:none; border-top:1px solid var(--line);
-    background:rgba(4,2,6,.66);
+    background:rgba(13,9,18,.58);
     backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
 }
 .mini-inner {
@@ -322,7 +322,7 @@ footer.mini {
 </style>
 </head>
 <body>
-<div class="crt-bg" id="crtBg" data-crt-warp data-crt-props='{"color":"#930000","backgroundColor":"#05010a","speed":0.45,"scanlineStrength":0.2,"waveAmplitude":0.26,"bloom":1.35,"brightness":1.08,"noise":0.08,"fps":24}' aria-hidden="true"></div>
+<div class="crt-bg" id="crtBg" data-crt-warp data-crt-props='{"color":"#930000","backgroundColor":"#17121e","speed":0.45,"scanlineStrength":0.2,"waveAmplitude":0.26,"bloom":1.5,"brightness":1.18,"noise":0.08,"fps":24}' aria-hidden="true"></div>
 <div class="bg-fx"></div>
 
 <header class="nav">
