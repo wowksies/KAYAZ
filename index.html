@@ -110,6 +110,17 @@ img { display:block; max-width:100%; }
 .btn-primary { color:#fff6f2; background:var(--accent-lo); border-color:var(--accent-deep); }
 .btn-primary:hover { background:var(--accent); }
 .btn-lg { padding:15px 34px; font-size:.95rem; border-radius:10px; }
+/* Discord keeps its own blurple. The invite should read as "go talk to a
+   person", not as another thing to buy, so it never borrows the ember. */
+.btn-discord {
+    color:#fff; background:#5865f2; border-color:rgba(255,255,255,.14);
+    box-shadow:0 8px 20px rgba(88,101,242,.26), inset 0 1px 0 rgba(255,255,255,.16);
+}
+.btn-discord:hover {
+    background:#4752c4; color:#fff;
+    box-shadow:0 12px 26px rgba(88,101,242,.38), inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-discord i { font-size:1.08em; }
 
 /* ---------- nav ---------- */
 header.nav {
@@ -139,6 +150,19 @@ header.nav {
     transition:background .2s, transform .15s var(--ease);
 }
 .nav-links button.cta:hover { background:var(--accent); transform:translateY(-1px); }
+.nav-links a.nav-discord {
+    display:inline-flex; align-items:center; gap:7px; margin-left:10px;
+    padding:9px 13px; border-radius:var(--r-s);
+    color:#fff; font-size:.8rem; font-weight:600;
+    background:#5865f2; border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 4px 14px rgba(88,101,242,.22);
+    transition:background .2s, box-shadow .2s, transform .15s var(--ease);
+}
+.nav-links a.nav-discord:hover {
+    color:#fff; background:#4752c4;
+    box-shadow:0 6px 18px rgba(88,101,242,.34); transform:translateY(-1px);
+}
+.nav-links a.nav-discord i { font-size:1.05em; }
 
 /* ---------- the one screen ---------- */
 .stage {
@@ -222,7 +246,12 @@ header.nav {
 }
 .price-perks li { display:flex; align-items:center; justify-content:center; gap:9px; }
 .price-perks li::before { content:''; width:5px; height:5px; flex:none; border-radius:50%; background:var(--accent); }
+.price-actions {
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px;
+}
 .price-buy { padding:14px 32px; font-size:.92rem; }
+.price-actions .btn-discord { padding:13px 24px; font-size:.9rem; }
+.price-support { color:var(--mute); font-size:.74rem; line-height:1.62; max-width:46ch; margin:10px auto 0; }
 .price-note { color:var(--mute); font-size:.74rem; line-height:1.62; max-width:46ch; margin:12px auto 0; }
 .price-note a { color:var(--accent-hi); }
 
@@ -278,6 +307,7 @@ footer.mini {
     .nav-inner { min-height:60px; }
     .brand .brand-mark { height:32px; }
     .nav-links a.plain { display:none; }
+    .nav-links a.nav-discord { font-size:.78rem; padding:8px 12px; }
     .slogan { height:clamp(76px,12vh,110px); }
 }
 @media (max-width:520px) {
@@ -290,6 +320,11 @@ footer.mini {
     .t-price { font-size:.68rem; }
     .price-perks { gap:6px; margin:12px 0 16px; font-size:.8rem; }
     .price-note { font-size:.71rem; }
+    .price-actions { flex-direction:column; gap:8px; }
+    .price-actions .price-buy, .price-actions .btn-discord { width:100%; }
+    .price-support { font-size:.72rem; }
+    .nav-links a.nav-discord { padding:8px 10px; }
+    .nav-links a.nav-discord span { display:none; }
     .mini-inner { justify-content:center; text-align:center; }
 }
 @media (max-height:720px) {
@@ -313,7 +348,7 @@ footer.mini {
     .price-terms { margin:12px 0 10px; }
     .price-amount { font-size:clamp(1.9rem,4.4vw,2.6rem); }
     .price-perks { font-size:.74rem; gap:5px 16px; margin:10px 0 12px; }
-    .price-note { display:none; }
+    .price-note, .price-support { display:none; }
 }
 
 @media (prefers-reduced-motion:reduce) {
@@ -334,6 +369,7 @@ footer.mini {
         <nav class="nav-links">
             <a href="https://discord.gg/4WCVJJjsDU" target="_blank" rel="noopener" class="plain">support</a>
             <a href="/privacy" class="plain">privacy</a>
+            <a class="nav-discord" href="https://discord.gg/4WCVJJjsDU" target="_blank" rel="noopener" aria-label="Join the KAYAZ Discord server"><i class="fa-brands fa-discord" aria-hidden="true"></i><span>discord</span></a>
             <button class="cta" type="button" id="navBuy">buy now</button>
         </nav>
     </div>
@@ -363,7 +399,11 @@ footer.mini {
                     <li>Updates for as long as the term runs</li>
                     <li>Instant delivery after checkout</li>
                 </ul>
-                <button class="btn btn-primary price-buy" type="button" id="priceBuy" disabled><i class="fa-solid fa-bag-shopping"></i> buy now</button>
+                <div class="price-actions">
+                    <button class="btn btn-primary price-buy" type="button" id="priceBuy" disabled><i class="fa-solid fa-bag-shopping"></i> buy now</button>
+                    <a class="btn btn-discord" href="https://discord.gg/4WCVJJjsDU" target="_blank" rel="noopener"><i class="fa-brands fa-discord" aria-hidden="true"></i> join the discord</a>
+                </div>
+                <p class="price-support">Come join the server: setup help, updates and tickets all live there.</p>
                 <p class="price-note" id="priceNote">Windows x64, run Siege borderless or windowed. Checkout runs through SellAuth on its own page.</p>
             </div>
         </div>
