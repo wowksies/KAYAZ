@@ -51,10 +51,10 @@ export default function handler(req, res) {
   };
 
   const catalog = [
-    { key: 'threeDays', name: '3 Days', img: '/assets/products/3days.png', tag: 'quick access', blurb: 'Three days of KAYAZ R6: The Internal.', price: money('PRICE_3DAYS', 4.99), compareAt: money('COMPARE_3DAYS', 6.99) },
-    { key: 'sevenDays', name: '7 Days', img: '/assets/products/7days.png', tag: 'most popular', blurb: 'A full week of KAYAZ R6: The Internal.', price: money('PRICE_7DAYS', 9.99), compareAt: money('COMPARE_7DAYS', 12.99) },
-    { key: 'oneMonth', name: '1 Month', img: '/assets/products/1month.png', tag: 'monthly', blurb: 'One month of KAYAZ R6: The Internal.', price: money('PRICE_1MONTH', 29.99), compareAt: money('COMPARE_1MONTH', 39.99) },
-    { key: 'seasonal', name: 'Seasonal', img: '/assets/products/seasonal.png', tag: 'longest access', blurb: 'Seasonal access to KAYAZ R6: The Internal.', price: money('PRICE_SEASONAL', 69.99), compareAt: money('COMPARE_SEASONAL', 89.99) }
+    { key: 'threeDays', name: '3 Days', img: '/assets/products/3days.png', tag: 'quick access', blurb: 'Three days of KAYAZ R6: The External.', price: money('PRICE_3DAYS', 4.99), compareAt: money('COMPARE_3DAYS', 6.99) },
+    { key: 'sevenDays', name: '7 Days', img: '/assets/products/7days.png', tag: 'most popular', blurb: 'A full week of KAYAZ R6: The External.', price: money('PRICE_7DAYS', 9.99), compareAt: money('COMPARE_7DAYS', 12.99) },
+    { key: 'oneMonth', name: '1 Month', img: '/assets/products/1month.png', tag: 'monthly', blurb: 'One month of KAYAZ R6: The External.', price: money('PRICE_1MONTH', 29.99), compareAt: money('COMPARE_1MONTH', 39.99) },
+    { key: 'seasonal', name: 'Seasonal', img: '/assets/products/seasonal.png', tag: 'longest access', blurb: 'Seasonal access to KAYAZ R6: The External.', price: money('PRICE_SEASONAL', 69.99), compareAt: money('COMPARE_SEASONAL', 89.99) }
   ];
 
   const products = catalog

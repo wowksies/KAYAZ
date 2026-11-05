@@ -10,7 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="/assets/peek-rating.css">
 <style>
 :root {
     --accent: #ff4b3e;
@@ -180,7 +179,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
     .pbtn .lbl { display: none; }
 }
 
-/* liquid glass popups (blog + invite) */
+/* liquid glass popups */
 .gmodal { position: fixed; inset: 0; z-index: 150; display: none; align-items: center; justify-content: center; padding: 20px;
     background: rgba(6,4,3,0.5); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%); }
 .gmodal.on { display: flex; }
@@ -242,7 +241,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
 .gm-code button:hover { color: #fff; background: rgba(var(--accent-rgb),0.3); border-color: rgba(var(--accent-rgb),0.5); }
 .gm-hint { font-size: 0.78rem; color: var(--mute); line-height: 1.5; margin-top: 12px; }
 
-.ic.blog:hover { --bc: #ffcf6b; } .ic.invite:hover { --bc: #7fe0a6; }
+.ic.invite:hover { --bc: #7fe0a6; }
 
 </style>
 </head>
@@ -268,9 +267,6 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
     <div class="hd glass-pill">
         <a href="/" class="brand"><span class="dot"></span>kayaz<b>.</b><span style="color:var(--mute);font-weight:600;font-size:0.9rem;">/games</span></a>
         <div class="hd-right">
-            <!-- blog section removed for the internal; kept for later
-            <button class="ic blog" id="blogBtn" title="from the blog" aria-label="from the blog"><i class="fa-solid fa-newspaper"></i></button>
-            -->
             <button class="ic invite" id="inviteBtn" title="invite a friend" aria-label="invite a friend" hidden><i class="fa-solid fa-user-plus"></i></button>
             <a href="https://discord.com/users/747411610389446747" target="_blank" rel="noopener" class="ic s-discord" title="Discord"><i class="fa-brands fa-discord"></i></a>
             <a href="https://www.tiktok.com/@k.a.yaz" target="_blank" rel="noopener" class="ic s-tiktok" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
@@ -300,31 +296,6 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
 
 <footer>&copy; <span id="yr"></span> kayaz &middot; <a href="/">kayaz.xyz</a></footer>
 
-<!-- blog popup removed for the internal; kept for later
-<div class="gmodal" id="blogModal">
-    <div class="gmodal-card">
-        <button class="gmodal-x" id="blogClose" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
-        <div class="gm-banner"><img src="/projects/r6int1.webp" alt="" loading="lazy"></div>
-        <div class="gm-body">
-            <div class="gm-kicker">from the blog</div>
-            <h2>How the internal works</h2>
-            <p class="gm-desc">A build log for the R6 internal: camera, ESP, skeletons, and how each piece was found. Have a read between games and leave it a rating.</p>
-            <a class="gm-cta" href="/r6-internal"><i class="fa-solid fa-book-open"></i> read the writeup <i class="fa-solid fa-arrow-right arr"></i></a>
-            <div class="gm-rate">
-                <div class="gm-rate-avg">
-                    <span class="star"><i class="fa-solid fa-star"></i></span>
-                    <div><b id="gRateAvg">&ndash;</b> <span class="of">/ 5</span><span class="count" id="gRateCount">loading&hellip;</span></div>
-                </div>
-                <div class="gm-rate-you">
-                    <span class="lbl">rate it</span>
-                    <div id="gRater"></div>
-                    <span class="gm-rate-note" id="gRateNote"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
 
 <div class="gmodal" id="inviteModal">
     <div class="gmodal-card sm">
@@ -624,7 +595,6 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
   document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
 })();
 </script>
-<script src="/assets/peek-rating.js"></script>
 <script>
 'use strict';
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -1002,16 +972,15 @@ var MEM_SRC = "(function(){var T=" + UNITY_MEM + ";function w(v){if(!v||v.__kzme
 var PAD_SRC = "(function () {\n  if (window.__kayazPad) return;\n  window.__kayazPad = true;\n  var K = {\n    up:    [{k:'ArrowUp',c:'ArrowUp',n:38},{k:'w',c:'KeyW',n:87}],\n    down:  [{k:'ArrowDown',c:'ArrowDown',n:40},{k:'s',c:'KeyS',n:83}],\n    left:  [{k:'ArrowLeft',c:'ArrowLeft',n:37},{k:'a',c:'KeyA',n:65}],\n    right: [{k:'ArrowRight',c:'ArrowRight',n:39},{k:'d',c:'KeyD',n:68}],\n    space: [{k:' ',c:'Space',n:32}],\n    enter: [{k:'Enter',c:'Enter',n:13}],\n    r:     [{k:'r',c:'KeyR',n:82}]\n  };\n  function targets() {\n    var t = [];\n    var c = document.querySelector('canvas');\n    if (c) t.push(c);\n    if (document.body) t.push(document.body);\n    t.push(document);\n    return t;\n  }\n  function fire(type, d, repeat) {\n    var opts = { key: d.k, code: d.c, bubbles: true, cancelable: true, repeat: !!repeat, view: window };\n    var t = targets()[0];\n    var e;\n    try { e = new KeyboardEvent(type, opts); }\n    catch (err) { e = document.createEvent('Events'); e.initEvent(type, true, true); e.key = d.k; e.code = d.c; }\n    try {\n      Object.defineProperty(e, 'keyCode', { get: function () { return d.n; } });\n      Object.defineProperty(e, 'which', { get: function () { return d.n; } });\n    } catch (err) {}\n    try { t.dispatchEvent(e); } catch (err) {}\n  }\n  var held = {};\n  function down(name) {\n    if (held[name]) return;\n    try { window.focus(); } catch (e) {}\n    K[name].forEach(function (d) { fire('keydown', d, false); });\n    held[name] = setInterval(function () {\n      K[name].forEach(function (d) { fire('keydown', d, true); });\n    }, 90);\n  }\n  function up(name) {\n    if (!held[name]) return;\n    clearInterval(held[name]);\n    held[name] = null;\n    K[name].forEach(function (d) { fire('keyup', d); });\n  }\n  var st = document.createElement('style');\n  st.textContent =\n    '#kayaz-pad{position:fixed;left:0;right:0;bottom:0;top:0;z-index:2147483647;pointer-events:none;font-family:system-ui,-apple-system,sans-serif;display:none}' +\n    '#kayaz-pad.on{display:block}' +\n    '#kayaz-pad .z{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom))}' +\n    '#kayaz-pad .dp{left:16px;display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(3,60px);gap:6px}' +\n    '#kayaz-pad .u{grid-area:1/2}#kayaz-pad .l{grid-area:2/1}#kayaz-pad .r{grid-area:2/3}#kayaz-pad .d{grid-area:3/2}' +\n    '#kayaz-pad .dp button{opacity:1}' +\n    '#kayaz-pad .ac{right:16px;display:flex;flex-direction:column;gap:10px;align-items:flex-end}' +\n    '#kayaz-pad .sp{width:132px;height:60px;font-size:13px;letter-spacing:2px}' +\n    '#kayaz-pad .sq{width:60px;height:60px}' +\n    '#kayaz-pad .b{pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;' +\n    'border:1px solid rgba(255,255,255,.28);background:rgba(16,8,10,.55);color:#fff;font-size:20px;font-weight:800;' +\n    'border-radius:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;' +\n    'justify-content:center;box-shadow:inset 1px 1px 0 rgba(255,255,255,.2),0 6px 16px rgba(0,0,0,.45);transition:transform .08s,background .08s}' +\n    '#kayaz-pad .b.hit{background:rgba(255,45,70,.75);border-color:rgba(255,45,70,.95);transform:scale(.94)}';\n  (document.head || document.documentElement).appendChild(st);\n  var pad = document.createElement('div');\n  pad.id = 'kayaz-pad';\n  pad.innerHTML =\n    '<div class=\"z dp\">' +\n      '<button class=\"b sq u\" data-k=\"up\">\u25b2</button>' +\n      '<button class=\"b sq l\" data-k=\"left\">\u25c0</button>' +\n      '<button class=\"b sq d\" data-k=\"down\">\u25bc</button>' +\n      '<button class=\"b sq r\" data-k=\"right\">\u25ba</button>' +\n    '</div>' +\n    '<div class=\"z ac\">' +\n      '<button class=\"b sq\" data-k=\"r\">R</button>' +\n      '<button class=\"b sq\" data-k=\"enter\">\u21b5</button>' +\n      '<button class=\"b sp\" data-k=\"space\">SPACE</button>' +\n    '</div>';\n  function attach() {\n    if (!document.body) { setTimeout(attach, 60); return; }\n    document.body.appendChild(pad);\n    [].forEach.call(pad.querySelectorAll('.b'), function (b) {\n      var name = b.getAttribute('data-k');\n      function on(e) { e.preventDefault(); e.stopPropagation(); b.classList.add('hit'); down(name); }\n      function off(e) { if (e) { e.preventDefault(); e.stopPropagation(); } b.classList.remove('hit'); up(name); }\n      b.addEventListener('pointerdown', on, { passive: false });\n      b.addEventListener('pointerup', off, { passive: false });\n      b.addEventListener('pointercancel', off, { passive: false });\n      b.addEventListener('pointerleave', off, { passive: false });\n      b.addEventListener('touchstart', on, { passive: false });\n      b.addEventListener('touchend', off, { passive: false });\n      b.addEventListener('contextmenu', function (e) { e.preventDefault(); });\n    });\n  }\n  attach();\n  var dpad = pad.querySelector('.dp');\n  window.addEventListener('message', function (e) {\n    var d = e.data;\n    if (!d || d.kayaz !== 'pad') return;\n    pad.classList.toggle('on', !!d.on);\n    if (!d.on) { Object.keys(held).forEach(up); }\n  });\n  document.addEventListener('gesturestart', function (e) { e.preventDefault(); });\n})();\n";
 
 
-/* ---- blog popup + invite popup (liquid glass) ---- */
+/* ---- invite popup (liquid glass) ---- */
 function openModal(id) {
     var m = document.getElementById(id);
     if (!m) return;
     m.classList.add('on');
-    if (id === 'blogModal') { markBlogSeen(); initBlogRating(); }
     if (id === 'inviteModal') loadInvite();
 }
 function closeModal(id) { var m = document.getElementById(id); if (m) m.classList.remove('on'); }
-[/* blog removed: ['blogBtn','blogModal','blogClose'], */['inviteBtn','inviteModal','inviteClose']].forEach(function (t) {
+[['inviteBtn','inviteModal','inviteClose']].forEach(function (t) {
     var btn = document.getElementById(t[0]), modal = document.getElementById(t[1]), x = document.getElementById(t[2]);
     if (btn) btn.addEventListener('click', function () { openModal(t[1]); });
     if (x) x.addEventListener('click', function () { closeModal(t[1]); });
@@ -1019,7 +988,7 @@ function closeModal(id) { var m = document.getElementById(id); if (m) m.classLis
 });
 document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
-    ['blogModal','inviteModal'].forEach(function (id) {
+    ['inviteModal'].forEach(function (id) {
         if (document.getElementById(id).classList.contains('on')) closeModal(id);
     });
 });
@@ -1028,64 +997,6 @@ function onUnlocked() {
     document.body.classList.add('unlocked');
     var ib = document.getElementById('inviteBtn');
     if (ib) ib.hidden = false;
-    /* maybeAutoBlog();  blog removed for the internal */
-}
-
-/* show the blog popup now and then, not every visit */
-var BLOG_SEEN = 'kz_blog_seen', BLOG_GAP = 3 * 86400000;
-function markBlogSeen() { try { localStorage.setItem(BLOG_SEEN, String(Date.now())); } catch (e) {} }
-function maybeAutoBlog() {
-    var last = 0;
-    try { last = parseInt(localStorage.getItem(BLOG_SEEN) || '0', 10) || 0; } catch (e) {}
-    if (Date.now() - last < BLOG_GAP) return;
-    setTimeout(function () {
-        if (!player.classList.contains('on') &&
-            !document.getElementById('blogModal').classList.contains('on') &&
-            !document.getElementById('inviteModal').classList.contains('on')) {
-            openModal('blogModal');
-        }
-    }, 7000);
-}
-
-/* blog rating: same page + device key as the r6-internal page, so a rating counts once */
-var blogRatingReady = false;
-function initBlogRating() {
-    if (blogRatingReady) return;
-    blogRatingReady = true;
-    var PAGE = 'r6-internal', KEY = 'kz-rating-' + PAGE;
-    var box = document.getElementById('gRater');
-    var avgEl = document.getElementById('gRateAvg'), countEl = document.getElementById('gRateCount'), noteEl = document.getElementById('gRateNote');
-    function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
-    var device = ls('kz-device');
-    if (!device || !/^[A-Za-z0-9-]{16,64}$/.test(device)) {
-        device = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-        ls('kz-device', device);
-    }
-    var mine = parseInt(ls(KEY) || '0', 10) || 0;
-    function show(d) {
-        if (!d || !d.count) { avgEl.textContent = '–'; countEl.textContent = 'no ratings yet'; return; }
-        avgEl.textContent = Number(d.avg).toFixed(1);
-        countEl.textContent = 'from ' + d.count + (d.count === 1 ? ' rating' : ' ratings');
-    }
-    fetch('/api/rating?page=' + PAGE).then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-        .then(show, function () { countEl.textContent = 'ratings unavailable'; });
-    if (mine) noteEl.textContent = 'you rated it ' + mine;
-    if (!window.PeekRating) { box.style.display = 'none'; return; }
-    PeekRating(box, {
-        defaultValue: mine, count: 5, shape: 'star',
-        labels: ['Poor', 'Fair', 'Good', 'Great', 'Superb'],
-        activeColor: '#ff8a5c', idleColor: 'rgba(255,255,255,0.22)', tipColor: '#1c1311', tipTextColor: '#fbf6f2',
-        size: 26, lift: 6, magnify: 1.12, riseDuration: 300, popScale: 1.25, showTip: true, allowClear: true, ariaLabel: 'Rate this blog',
-        onPreview: function (v) { box.parentNode.classList.toggle('peeking', v !== null); },
-        onChange: function (v) {
-            ls(KEY, v ? String(v) : null);
-            noteEl.textContent = 'saving…';
-            fetch('/api/rating', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ page: PAGE, device: device, value: v }) })
-                .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-                .then(function (d) { show(d); noteEl.textContent = v ? 'thanks, you rated it ' + v : 'rating removed'; },
-                      function (code) { noteEl.textContent = code === 429 ? 'too many from here, try later' : 'could not save'; });
-        }
-    });
 }
 
 /* invite flow */
