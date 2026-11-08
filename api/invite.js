@@ -1,4 +1,4 @@
-import { db, sha256, normCode, makeCode, requireUser, readBody, send, guardConfig, rateLimit } from './_lib.js';
+import { db, sha256, normCode, makeCode, requireUser, readBody, send, guardConfig, rateLimit, enc } from './_lib.js';
 
 // A redeemed user may invite exactly one person, and must name them.
 // The invite is a normal code (redeems on one browser) whose record remembers who
@@ -45,11 +45,11 @@ export default async function handler(req, res) {
       if (clash) return send(res, 500, { error: 'please try again' });
       await db.put('codes/' + childH, {
         created: Date.now(),
-        label: 'invite: ' + name,
+        label: enc('invite: ' + name),
         shown: code.slice(0, 4) + '••••',
         device: null,
         revoked: false,
-        invitedName: name,
+        invitedName: enc(name),
         parentH: parentH
       });
       await db.patch('codes/' + parentH, { invited: { name: name, code: code, h: childH, at: Date.now() } });

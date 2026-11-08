@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>kayaz &middot; reseller</title>
+<meta name="theme-color" content="#0a0709">
+<link rel="stylesheet" href="/assets/panel.css">
+</head>
+<body data-panel="reseller">
+
+<div class="gate" id="gate">
+    <form class="gate-box" id="loginForm" method="post" autocomplete="on" novalidate>
+        <div class="gate-mark"><span class="dot"></span>kayaz</div>
+        <h1>reseller</h1>
+        <p>sign in with the account issued to you &middot; attempts are locked out on the server</p>
+        <div class="msg" id="loginMsg"></div>
+        <label for="lu">username or email</label>
+        <input class="f" id="lu" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        <label for="lp">password</label>
+        <input class="f" id="lp" name="password" type="password" autocomplete="current-password" required>
+        <button class="btn p w" id="loginBtn" type="submit">sign in</button>
+    </form>
+</div>
+
+<div id="app" hidden>
+    <header class="top">
+        <div class="wrap top-in">
+            <div class="logo"><span class="d"></span>kayaz<span>/reseller</span></div>
+            <div class="who">
+                <span class="tag" id="whoami"></span>
+                <a class="btn sm" href="/">store</a>
+                <button class="btn sm" id="out" type="button">sign out</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <nav class="tabs">
+            <button class="tab on" data-tab="keys" type="button">my keys</button>
+            <button class="tab" data-tab="account" type="button">my account</button>
+        </nav>
+
+        <section class="panel on" id="tab-keys">
+            <div class="card">
+                <h2>generate keys</h2>
+                <div class="sub" id="quotaLine">each key locks to the first device that redeems it</div>
+                <div class="msg" id="kMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="kn">how many</label>
+                        <input class="f" id="kn" type="number" min="1" max="20" value="1" inputmode="numeric">
+                    </div>
+                    <div>
+                        <label for="kl">label (optional)</label>
+                        <input class="f" id="kl" maxlength="60" placeholder="buyer name or batch">
+                    </div>
+                </div>
+                <button class="btn p" id="kGen" type="button">generate</button>
+                <div class="hint">codes are shown once &mdash; copy them before leaving this page</div>
+                <div class="codes-out" id="kOut"></div>
+            </div>
+
+            <div class="card">
+                <div class="bar">
+                    <h2>my keys</h2>
+                    <span class="tag" id="kCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm d" id="kPrune" type="button">delete unused</button>
+                    <button class="btn sm" id="kRefresh" type="button">refresh</button>
+                </div>
+                <div class="msg" id="kListMsg"></div>
+                <div id="kList"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="tab-account">
+            <div class="card">
+                <h2>your account</h2>
+                <div class="sub" id="aWho">loading&hellip;</div>
+                <div class="msg" id="aMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="au">username</label>
+                        <input class="f" id="au" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="32">
+                    </div>
+                    <div>
+                        <label for="ae">email</label>
+                        <input class="f" id="ae" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="64">
+                    </div>
+                </div>
+                <label for="auCur">current password (to confirm)</label>
+                <input class="f" id="auCur" type="password" autocomplete="current-password">
+                <button class="btn p" id="auSave" type="button">save login details</button>
+            </div>
+
+            <div class="card">
+                <h2>change password</h2>
+                <div class="sub">at least 12 characters &middot; changing it signs out every other session</div>
+                <div class="msg" id="apMsg"></div>
+                <label for="apCur">current password</label>
+                <input class="f" id="apCur" type="password" autocomplete="current-password">
+                <label for="ap">new password</label>
+                <input class="f" id="ap" type="password" autocomplete="new-password">
+                <label for="ap2">repeat new password</label>
+                <input class="f" id="ap2" type="password" autocomplete="new-password">
+                <button class="btn p" id="apSave" type="button">change password</button>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="/assets/panel.js" defer></script>
+</body>
+</html>

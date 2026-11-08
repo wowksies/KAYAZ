@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>kayaz &middot; control</title>
+<meta name="theme-color" content="#0a0709">
+<link rel="stylesheet" href="/assets/panel.css">
+</head>
+<body data-panel="admin">
+
+<div class="gate" id="gate">
+    <form class="gate-box" id="loginForm" method="post" autocomplete="on" novalidate>
+        <div class="gate-mark"><span class="dot"></span>kayaz</div>
+        <h1>control</h1>
+        <p>restricted area &middot; attempts are rate limited and locked out on the server</p>
+        <div class="msg" id="loginMsg"></div>
+        <label for="lu">username or email</label>
+        <input class="f" id="lu" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        <label for="lp">password</label>
+        <input class="f" id="lp" name="password" type="password" autocomplete="current-password" required>
+        <button class="btn p w" id="loginBtn" type="submit">sign in</button>
+    </form>
+</div>
+
+<div id="app" hidden>
+    <header class="top">
+        <div class="wrap top-in">
+            <div class="logo"><span class="d"></span>kayaz<span>/control</span></div>
+            <div class="who">
+                <span class="tag" id="whoami"></span>
+                <a class="btn sm" href="/games">games</a>
+                <button class="btn sm" id="out" type="button">sign out</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <nav class="tabs">
+            <button class="tab on" data-tab="overview" data-admin type="button">overview</button>
+            <button class="tab" data-tab="keys" type="button">keys</button>
+            <button class="tab" data-tab="resellers" data-admin type="button">accounts</button>
+            <button class="tab" data-tab="games" data-admin type="button">games</button>
+            <button class="tab" data-tab="account" type="button">my account</button>
+        </nav>
+
+        <section class="panel on" id="tab-overview" data-admin>
+            <div class="grid4">
+                <div class="stat"><span class="stat-n" id="sKeys">&ndash;</span><span class="stat-l">keys issued</span></div>
+                <div class="stat"><span class="stat-n" id="sUnused">&ndash;</span><span class="stat-l">unused</span></div>
+                <div class="stat"><span class="stat-n" id="sUsed">&ndash;</span><span class="stat-l">in use</span></div>
+                <div class="stat"><span class="stat-n" id="sRevoked">&ndash;</span><span class="stat-l">revoked</span></div>
+                <div class="stat"><span class="stat-n" id="sAccounts">&ndash;</span><span class="stat-l">accounts</span></div>
+                <div class="stat"><span class="stat-n" id="sGames">&ndash;</span><span class="stat-l">games</span></div>
+            </div>
+
+            <div class="card">
+                <div class="bar">
+                    <h2>recent activity</h2>
+                    <span class="tag" id="ovCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm" id="ovRefresh" type="button">refresh</button>
+                </div>
+                <div class="msg" id="ovMsg"></div>
+                <div id="ovList"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="tab-keys">
+            <div class="card">
+                <h2>generate keys</h2>
+                <div class="sub" id="quotaLine">each key locks to the first device that redeems it</div>
+                <div class="msg" id="kMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="kn">how many</label>
+                        <input class="f" id="kn" type="number" min="1" max="50" value="1" inputmode="numeric">
+                    </div>
+                    <div>
+                        <label for="kl">label (optional)</label>
+                        <input class="f" id="kl" maxlength="60" placeholder="reseller batch">
+                    </div>
+                </div>
+                <div id="kOwnerWrap" data-admin>
+                    <label for="ko">assign to</label>
+                    <select class="f" id="ko"><option value="">me (admin)</option></select>
+                </div>
+                <button class="btn p" id="kGen" type="button">generate</button>
+                <div class="hint">codes are shown once &mdash; copy them before leaving this page</div>
+                <div class="codes-out" id="kOut"></div>
+            </div>
+
+            <div class="card">
+                <div class="bar">
+                    <h2>keys</h2>
+                    <span class="tag" id="kCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm d" id="kPrune" type="button">delete unused</button>
+                    <button class="btn sm" id="kRefresh" type="button">refresh</button>
+                </div>
+                <div class="msg" id="kListMsg"></div>
+                <div id="kList"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="tab-resellers" data-admin>
+            <div class="card">
+                <h2>add an account</h2>
+                <div class="sub">resellers sign in at /reseller and can only ever see the keys issued to them</div>
+                <div class="msg" id="rMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="ru">username</label>
+                        <input class="f" id="ru" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="32">
+                    </div>
+                    <div>
+                        <label for="re">email (optional, also signs in)</label>
+                        <input class="f" id="re" type="email" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="64">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label for="rp">password</label>
+                        <input class="f" id="rp" type="password" autocomplete="new-password">
+                    </div>
+                    <div>
+                        <label for="rr">role</label>
+                        <select class="f" id="rr">
+                            <option value="reseller">reseller</option>
+                            <option value="admin">admin</option>
+                        </select>
+                    </div>
+                </div>
+                <label for="rq">key allowance (0 = unlimited)</label>
+                <input class="f" id="rq" type="number" min="0" value="50" inputmode="numeric">
+                <button class="btn p" id="rAdd" type="button">create account</button>
+            </div>
+
+            <div class="card">
+                <div class="bar">
+                    <h2>accounts</h2>
+                    <span class="tag" id="rCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm" id="rRefresh" type="button">refresh</button>
+                </div>
+                <div class="msg" id="rListMsg"></div>
+                <div id="rList"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="tab-games" data-admin>
+            <div class="card">
+                <h2>add a game</h2>
+                <div class="sub">thumbnail can be a link or an upload, uploads get resized down automatically</div>
+                <div class="msg" id="gMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="gt">title</label>
+                        <input class="f" id="gt" placeholder="Retro Bowl">
+                    </div>
+                    <div>
+                        <label for="gc">tag</label>
+                        <input class="f" id="gc" placeholder="Sports" list="cats">
+                        <datalist id="cats"></datalist>
+                    </div>
+                </div>
+                <label for="gu">game link</label>
+                <input class="f" id="gu" placeholder="https://...">
+                <div class="thumb-pick">
+                    <img class="thumb-prev" id="gPrev" alt="">
+                    <div class="thumb-side">
+                        <label for="gi">thumbnail link</label>
+                        <input class="f" id="gi" placeholder="https://... (or upload below)">
+                        <input type="file" id="gf" accept="image/*" hidden>
+                        <button class="btn sm" id="gUp" type="button">upload image</button>
+                    </div>
+                </div>
+                <div class="chk"><input type="checkbox" id="gk"><label for="gk">needs keyboard (shows touch controls on mobile)</label></div>
+                <button class="btn p" id="gAdd" type="button">add game</button>
+            </div>
+
+            <div class="card">
+                <div class="msg err" id="dupWarn"></div>
+                <div class="bar">
+                    <h2>library</h2>
+                    <span class="tag" id="gCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm" id="gSeed" type="button">import built-in 75</button>
+                    <button class="btn sm" id="gRefresh" type="button">refresh</button>
+                </div>
+                <div id="gList"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="tab-account">
+            <div class="card">
+                <h2>your account</h2>
+                <div class="sub" id="aWho">loading&hellip;</div>
+                <div class="msg" id="aMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="au">username</label>
+                        <input class="f" id="au" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="32">
+                    </div>
+                    <div>
+                        <label for="ae">email</label>
+                        <input class="f" id="ae" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="64">
+                    </div>
+                </div>
+                <label for="auCur">current password (to confirm)</label>
+                <input class="f" id="auCur" type="password" autocomplete="current-password">
+                <button class="btn p" id="auSave" type="button">save login details</button>
+            </div>
+
+            <div class="card">
+                <h2>change password</h2>
+                <div class="sub">at least 12 characters &middot; changing it signs out every other session</div>
+                <div class="msg" id="apMsg"></div>
+                <label for="apCur">current password</label>
+                <input class="f" id="apCur" type="password" autocomplete="current-password">
+                <label for="ap">new password</label>
+                <input class="f" id="ap" type="password" autocomplete="new-password">
+                <label for="ap2">repeat new password</label>
+                <input class="f" id="ap2" type="password" autocomplete="new-password">
+                <button class="btn p" id="apSave" type="button">change password</button>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="/assets/seed-games.js" defer></script>
+<script src="/assets/panel.js" defer></script>
+</body>
+</html>

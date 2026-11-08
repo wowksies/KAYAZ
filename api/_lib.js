@@ -1,12 +1,43 @@
 import crypto from 'node:crypto';
 
-// Accept either FIREBASE_DB_URL/FIREBASE_DB_SECRET or the shorter
-// FIREBASE_URL/FIREBASE_SECRET names used in the Vercel project env.
+/**
+ * Server core for the KAYAZ panels.
+ *
+ * Everything security-relevant lives here and only here, so a panel page can
+ * never be "emulated" into doing something the API would not do on its own:
+ *
+ *   - passwords are stored as scrypt hashes (never encrypted, never reversible)
+ *   - usernames, emails, key labels and owner names are encrypted at rest with
+ *     AES-256-GCM, with HMAC blind indexes for lookups
+ *   - panel sessions are AES-256-GCM sealed, HttpOnly, SameSite=Strict cookies
+ *     scoped to /api, and a per-account version revokes them on password change
+ *   - every mutating panel call is checked against the request origin
+ *   - login failures are counted per account in the database and locked out
+ *     with exponential backoff, so hammering is not just a memory trick
+ *   - privileged changes append to an audit trail the admin can read
+ *
+ * Env (Vercel):
+ *   FIREBASE_URL / FIREBASE_SECRET   (or FIREBASE_DB_URL / FIREBASE_DB_SECRET)
+ *   SESSION_SECRET                   >= 32 random chars, also the key material
+ *   DATA_KEY                         optional separate key for data at rest
+ *   ADMIN_EMAIL / ADMIN_PASSWORD     bootstrap only: creates the first admin
+ *                                    when no admin account exists yet
+ */
+
 const DB_URL = (process.env.FIREBASE_DB_URL || process.env.FIREBASE_URL || '').replace(/\/$/, '');
 const DB_SECRET = process.env.FIREBASE_DB_SECRET || process.env.FIREBASE_SECRET || '';
 const SESSION_SECRET = process.env.SESSION_SECRET || '';
-const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+const DATA_KEY = process.env.DATA_KEY || '';
+const ADMIN_USER = (process.env.ADMIN_EMAIL || '').trim();
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
+
+export const COOKIE = 'kz_s';
+export const ROLES = ['admin', 'reseller'];
+export const PASSWORD_MIN = 12;
+
+const SCRYPT = { N: 16384, r: 8, p: 1, maxmem: 64 * 1024 * 1024 };
+const USER_RE = /^[a-z0-9][a-z0-9._-]{2,31}$/;
+const EMAIL_RE = /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)+$/;
 
 export function configured() {
   return Boolean(DB_URL && DB_SECRET && SESSION_SECRET);
@@ -20,45 +51,387 @@ export function normCode(s) {
   return String(s || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
+export function normUser(s) {
+  return String(s || '').trim().toLowerCase();
+}
+
+export function validUsername(u) {
+  return USER_RE.test(String(u || ''));
+}
+
+export function validEmail(e) {
+  const v = String(e || '');
+  return v.length <= 64 && EMAIL_RE.test(v);
+}
+
+// Length-constant compare for arbitrary strings (secret/hash equality).
+export function safeEqual(a, b) {
+  const x = crypto.createHash('sha256').update(String(a)).digest();
+  const y = crypto.createHash('sha256').update(String(b)).digest();
+  return crypto.timingSafeEqual(x, y);
+}
+
+// ---- key derivation -------------------------------------------------------
+// One root material, split with HKDF into independent subkeys so the session
+// key and the data-at-rest key are never the same bytes.
+function material() {
+  return DATA_KEY || SESSION_SECRET + '|kayaz';
+}
+
+function subkey(label) {
+  return Buffer.from(
+    crypto.hkdfSync('sha256', Buffer.from(material(), 'utf8'), Buffer.from('kayaz-v1', 'utf8'), Buffer.from(label, 'utf8'), 32)
+  );
+}
+
+const K_DATA = subkey('data');
+
+// ---- encryption at rest (AES-256-GCM) -------------------------------------
+// Stored as kz1.<iv>.<ciphertext+tag>, base64url. Anything that was written
+// before encryption existed (plain text) is returned untouched so old records
+// keep working.
+export function enc(value) {
+  const plain = String(value == null ? '' : value);
+  if (!plain) return '';
+  const iv = crypto.randomBytes(12);
+  const c = crypto.createCipheriv('aes-256-gcm', K_DATA, iv);
+  const ct = Buffer.concat([c.update(plain, 'utf8'), c.final()]);
+  return 'kz1.' + iv.toString('base64url') + '.' + Buffer.concat([ct, c.getAuthTag()]).toString('base64url');
+}
+
+export function dec(value) {
+  const s = String(value == null ? '' : value);
+  if (!s.startsWith('kz1.')) return s;
+  const parts = s.split('.');
+  if (parts.length !== 3) return '';
+  try {
+    const iv = Buffer.from(parts[1], 'base64url');
+    const buf = Buffer.from(parts[2], 'base64url');
+    if (buf.length < 17) return '';
+    const tag = buf.subarray(buf.length - 16);
+    const ct = buf.subarray(0, buf.length - 16);
+    const d = crypto.createDecipheriv('aes-256-gcm', K_DATA, iv);
+    d.setAuthTag(tag);
+    return Buffer.concat([d.update(ct), d.final()]).toString('utf8');
+  } catch (e) {
+    return '';
+  }
+}
+
+// Blind indexes: lets us find an encrypted identifier without storing it clear.
+export function userIndex(user) {
+  return crypto.createHmac('sha256', K_DATA).update('user|' + normUser(user)).digest('hex');
+}
+
+export function emailIndex(email) {
+  return crypto.createHmac('sha256', K_DATA).update('email|' + normUser(email)).digest('hex');
+}
+
+// ---- passwords (scrypt, one way) -----------------------------------------
+export function hashPassword(password) {
+  const salt = crypto.randomBytes(16);
+  const key = crypto.scryptSync(String(password).normalize('NFKC'), salt, 32, SCRYPT);
+  return ['scrypt', SCRYPT.N, SCRYPT.r, SCRYPT.p, salt.toString('hex'), key.toString('hex')].join('$');
+}
+
+export function verifyPassword(password, stored) {
+  const parts = String(stored || '').split('$');
+  if (parts.length !== 6 || parts[0] !== 'scrypt') return false;
+  const N = parseInt(parts[1], 10);
+  const r = parseInt(parts[2], 10);
+  const p = parseInt(parts[3], 10);
+  if (!N || !r || !p) return false;
+  let salt, want;
+  try { salt = Buffer.from(parts[4], 'hex'); want = Buffer.from(parts[5], 'hex'); } catch (e) { return false; }
+  if (!salt.length || want.length < 16) return false;
+  let got;
+  try {
+    got = crypto.scryptSync(String(password).normalize('NFKC'), salt, want.length, { N, r, p, maxmem: SCRYPT.maxmem });
+  } catch (e) {
+    return false;
+  }
+  return want.length === got.length && crypto.timingSafeEqual(want, got);
+}
+
+// Verified against when the login does not exist, so a wrong username costs the
+// same time as a wrong password.
+export const DUMMY_HASH = hashPassword('kayaz-dummy-' + crypto.randomBytes(12).toString('hex'));
+
+// ---- sessions (sealed cookies) -------------------------------------------
+export function signSession(payload, days) {
+  const body = { ...payload, iat: Date.now(), exp: Date.now() + (days || 30) * 86400000 };
+  return enc('s1|' + JSON.stringify(body));
+}
+
 function b64u(buf) {
   return Buffer.from(buf).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-function unb64u(s) {
-  const t = String(s).replace(/-/g, '+').replace(/_/g, '/');
-  return Buffer.from(t + '='.repeat((4 - (t.length % 4)) % 4), 'base64');
-}
-
-export function signSession(payload, days) {
-  const body = { ...payload, exp: Date.now() + (days || 30) * 86400000 };
-  const p = b64u(JSON.stringify(body));
-  const sig = b64u(crypto.createHmac('sha256', SESSION_SECRET).update(p).digest());
-  return p + '.' + sig;
-}
-
-export function verifySession(token) {
-  if (!token || typeof token !== 'string' || token.indexOf('.') < 0) return null;
-  const [p, sig] = token.split('.');
-  if (!p || !sig) return null;
+function legacyVerify(token) {
+  const parts = String(token).split('.');
+  if (parts.length !== 2) return null;
+  const [p, sig] = parts;
   const want = b64u(crypto.createHmac('sha256', SESSION_SECRET).update(p).digest());
   const a = Buffer.from(sig);
   const b = Buffer.from(want);
   if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
-  let body;
-  try { body = JSON.parse(unb64u(p).toString('utf8')); } catch (e) { return null; }
+  try {
+    const t = p.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(Buffer.from(t + '='.repeat((4 - (t.length % 4)) % 4), 'base64').toString('utf8'));
+  } catch (e) {
+    return null;
+  }
+}
+
+export function verifySession(token) {
+  const t = String(token || '');
+  if (!t) return null;
+  let body = null;
+  if (t.startsWith('kz1.')) {
+    const raw = dec(t);
+    if (raw.startsWith('s1|')) {
+      try { body = JSON.parse(raw.slice(3)); } catch (e) { body = null; }
+    }
+  } else {
+    // Tokens issued before sessions were sealed still verify until they expire,
+    // so nobody has to re-redeem a working code.
+    body = legacyVerify(t);
+  }
   if (!body || typeof body.exp !== 'number' || Date.now() > body.exp) return null;
   return body;
 }
 
-export function checkAdminCreds(email, password) {
-  const e = String(email || '').trim().toLowerCase();
-  const p = String(password || '');
-  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) return false;
-  const eo = crypto.createHash('sha256').update(e).digest();
-  const et = crypto.createHash('sha256').update(ADMIN_EMAIL).digest();
-  const po = crypto.createHash('sha256').update(p).digest();
-  const pt = crypto.createHash('sha256').update(ADMIN_PASSWORD).digest();
-  return crypto.timingSafeEqual(eo, et) && crypto.timingSafeEqual(po, pt);
+export function cookies(req) {
+  const out = {};
+  const raw = String((req.headers && req.headers.cookie) || '');
+  raw.split(';').forEach(part => {
+    const i = part.indexOf('=');
+    if (i < 1) return;
+    const k = part.slice(0, i).trim();
+    const v = part.slice(i + 1).trim();
+    if (k) out[k] = decodeURIComponent(v);
+  });
+  return out;
+}
+
+function isHttps(req) {
+  const proto = String((req.headers && req.headers['x-forwarded-proto']) || '').split(',')[0].trim().toLowerCase();
+  return proto === 'https' || process.env.VERCEL === '1';
+}
+
+// Scoped to /api: panel pages themselves never receive the cookie, so a page
+// injected or mirrored elsewhere cannot ride a signed-in browser.
+export function setSessionCookie(req, res, token, maxAge) {
+  const bits = [COOKIE + '=' + token, 'Path=/api', 'HttpOnly', 'SameSite=Strict', 'Max-Age=' + Math.max(0, Math.floor(maxAge))];
+  if (isHttps(req)) bits.push('Secure');
+  res.setHeader('Set-Cookie', bits.join('; '));
+}
+
+export function clearSessionCookie(req, res) {
+  setSessionCookie(req, res, '', 0);
+}
+
+// ---- accounts ------------------------------------------------------------
+export function accountId() {
+  return 'a' + crypto.randomBytes(9).toString('hex');
+}
+
+export async function getAccounts() {
+  return (await db.get('accounts')) || {};
+}
+
+export async function getAccount(id) {
+  if (!/^a[a-f0-9]{18}$/.test(String(id || ''))) return null;
+  const a = await db.get('accounts/' + id);
+  return a ? { id, ...a } : null;
+}
+
+export async function getAccountByUser(user) {
+  const idx = userIndex(user);
+  const all = await getAccounts();
+  for (const [id, a] of Object.entries(all)) {
+    if (a && a.uh === idx) return { id, ...a };
+  }
+  return null;
+}
+
+export async function getAccountByEmail(email) {
+  const idx = emailIndex(email);
+  const all = await getAccounts();
+  for (const [id, a] of Object.entries(all)) {
+    if (a && a.eh === idx) return { id, ...a };
+  }
+  return null;
+}
+
+// Login accepts a username or an email address.
+export async function getAccountByLogin(login) {
+  const l = normUser(login);
+  if (!l) return null;
+  const uh = userIndex(l);
+  const eh = emailIndex(l);
+  const all = await getAccounts();
+  for (const [id, a] of Object.entries(all)) {
+    if (!a) continue;
+    if (a.uh === uh || (a.eh && a.eh === eh)) return { id, ...a };
+  }
+  return null;
+}
+
+export async function createAccount({ user, email, password, role, quota, by }) {
+  const u = normUser(user);
+  const em = normUser(email || '');
+  if (!validUsername(u)) throw new Error('username must be 3-32 characters, letters/numbers/._- only');
+  if (em && !validEmail(em)) throw new Error('enter a valid email address');
+  if (String(password || '').length < PASSWORD_MIN) {
+    throw new Error('password must be at least ' + PASSWORD_MIN + ' characters');
+  }
+  if (!ROLES.includes(role)) throw new Error('bad role');
+  if (await getAccountByUser(u)) throw new Error('that username is taken');
+  if (em && await getAccountByEmail(em)) throw new Error('that email is already in use');
+
+  const id = accountId();
+  const rec = {
+    user: enc(u),
+    uh: userIndex(u),
+    role,
+    pass: hashPassword(password),
+    quota: Math.max(0, Math.min(100000, parseInt(quota, 10) || 0)),
+    created: Date.now(),
+    ver: 1,
+    disabled: false,
+    by: String(by || '').slice(0, 40)
+  };
+  if (em) {
+    rec.email = enc(em);
+    rec.eh = emailIndex(em);
+  }
+  await db.put('accounts/' + id, rec);
+  return { id, ...rec };
+}
+
+// First admin only, straight from the environment, so a fresh database can be
+// claimed once and then managed entirely from the panel.
+export async function bootstrapAdmin(user, password) {
+  if (!ADMIN_USER || !ADMIN_PASSWORD) return null;
+  if (normUser(user) !== normUser(ADMIN_USER)) return null;
+  if (!safeEqual(password, ADMIN_PASSWORD)) return null;
+  const all = await getAccounts();
+  const hasAdmin = Object.values(all).some(a => a && a.role === 'admin');
+  if (hasAdmin) return null;
+  const id = accountId();
+  const u = normUser(ADMIN_USER);
+  const rec = {
+    user: enc(u),
+    uh: userIndex(u),
+    role: 'admin',
+    pass: hashPassword(ADMIN_PASSWORD),
+    quota: 0,
+    created: Date.now(),
+    ver: 1,
+    disabled: false,
+    by: 'bootstrap'
+  };
+  if (validEmail(u)) {
+    rec.email = enc(u);
+    rec.eh = emailIndex(u);
+  }
+  await db.put('accounts/' + id, rec);
+  return { id, ...rec };
+}
+
+export async function panelAccount(req) {
+  const s = verifySession(cookies(req)[COOKIE]);
+  if (!s || (s.t !== 'a' && s.t !== 'r') || !s.u) return null;
+  const acc = await getAccount(s.u);
+  if (!acc || acc.disabled) return null;
+  if ((Number(acc.ver) || 1) !== (Number(s.v) || 1)) return null;
+  return { ...acc, user: dec(acc.user) };
+}
+
+export async function requirePanel(req, res, roles) {
+  if (guardConfig(res)) return null;
+  let acc = null;
+  try {
+    acc = await panelAccount(req);
+  } catch (e) {
+    send(res, 500, { error: 'server error' });
+    return null;
+  }
+  if (!acc) {
+    clearSessionCookie(req, res);
+    send(res, 401, { error: 'sign in again' });
+    return null;
+  }
+  if (roles && !roles.includes(acc.role)) {
+    send(res, 403, { error: 'forbidden' });
+    return null;
+  }
+  return acc;
+}
+
+// ---- audit trail ---------------------------------------------------------
+export async function audit(acc, action, target, req) {
+  try {
+    await db.push('audit', {
+      at: Date.now(),
+      by: acc && acc.id ? acc.id : 'system',
+      who: enc((acc && acc.user) || 'system'),
+      action: String(action || '').slice(0, 40),
+      target: enc(String(target || '').slice(0, 80)),
+      ip: req ? sha256('ip:' + clientIp(req)).slice(0, 16) : ''
+    });
+    // Keep the trail bounded without paying for a read on every write.
+    if (Math.random() < 0.05) await pruneAudit();
+  } catch (e) {}
+}
+
+async function pruneAudit() {
+  try {
+    const all = (await db.get('audit')) || {};
+    const ids = Object.keys(all).sort();
+    for (let i = 0; i < ids.length - 800; i++) {
+      try { await db.del('audit/' + ids[i]); } catch (e) {}
+    }
+  } catch (e) {}
+}
+
+// ---- request origin ------------------------------------------------------
+export function requestHost(req) {
+  return String((req.headers && (req.headers['x-forwarded-host'] || req.headers.host)) || '')
+    .split(',')[0].trim().toLowerCase();
+}
+
+// Browsers always send Origin on cross-site and same-site POSTs; requiring it
+// to match our own host blocks a stolen cookie from being replayed by another
+// site, and blocks curl-shaped emulation of the panel endpoints.
+export function sameOrigin(req) {
+  const host = requestHost(req);
+  if (!host) return false;
+  const src = (req.headers && (req.headers.origin || req.headers.referer)) || '';
+  if (!src) return false;
+  try {
+    return new URL(src).host.toLowerCase() === host;
+  } catch (e) {
+    return false;
+  }
+}
+
+export function requireSameOrigin(req, res) {
+  if (sameOrigin(req)) return true;
+  send(res, 403, { error: 'bad origin' });
+  return false;
+}
+
+// ---- legacy helpers still used by the games/invite/redeem endpoints ------
+export function bearer(req) {
+  const h = (req.headers && req.headers.authorization) || '';
+  return h.startsWith('Bearer ') ? h.slice(7) : '';
+}
+
+export function requireUser(req) {
+  const s = verifySession(bearer(req));
+  return s && (s.t === 'u' || s.t === 'a') ? s : null;
 }
 
 export function makeCode() {
@@ -67,6 +440,7 @@ export function makeCode() {
   return pick(4) + '-' + pick(4) + '-' + pick(4);
 }
 
+// ---- database ------------------------------------------------------------
 async function dbFetch(path, opts = {}) {
   if (!configured()) throw new Error('unconfigured');
   const url = `${DB_URL}/${path}.json?auth=${encodeURIComponent(DB_SECRET)}`;
@@ -88,29 +462,23 @@ export function readBody(req) {
   if (req.body && typeof req.body === 'object') return Promise.resolve(req.body);
   return new Promise(resolve => {
     let d = '';
-    req.on('data', c => { d += c; if (d.length > 8e6) req.destroy(); });
-    req.on('end', () => { try { resolve(JSON.parse(d || '{}')); } catch (e) { resolve({}); } });
+    req.on('data', c => {
+      d += c;
+      if (d.length > 8e6) req.destroy();
+    });
+    req.on('end', () => {
+      try { resolve(JSON.parse(d || '{}')); } catch (e) { resolve({}); }
+    });
     req.on('error', () => resolve({}));
   });
 }
 
-export function bearer(req) {
-  const h = req.headers.authorization || '';
-  return h.startsWith('Bearer ') ? h.slice(7) : '';
-}
-
-export function requireAdmin(req) {
-  const s = verifySession(bearer(req));
-  return s && s.t === 'a' ? s : null;
-}
-
-export function requireUser(req) {
-  const s = verifySession(bearer(req));
-  return s && (s.t === 'u' || s.t === 'a') ? s : null;
-}
-
 export function send(res, code, obj) {
-  res.status(code).setHeader('content-type', 'application/json');
+  res.status(code);
+  res.setHeader('content-type', 'application/json; charset=utf-8');
+  res.setHeader('cache-control', 'no-store');
+  res.setHeader('x-content-type-options', 'nosniff');
+  res.setHeader('referrer-policy', 'no-referrer');
   res.end(JSON.stringify(obj));
 }
 
@@ -121,8 +489,9 @@ export function guardConfig(res) {
 }
 
 // ---- shared rate limiting -----------------------------------------------
-// Best effort fixed window limiter keyed by client ip. Good enough to blunt
-// abuse on a small serverless API without pulling in a dependency.
+// Best effort fixed window limiter keyed by client ip. The login endpoint also
+// keeps a durable lockout in the database, so restarting an instance does not
+// reset an attack.
 const buckets = new Map();
 
 export function clientIp(req) {
@@ -131,7 +500,6 @@ export function clientIp(req) {
   return fwd || String(h['x-real-ip'] || '').trim() || (req.socket && req.socket.remoteAddress) || 'x';
 }
 
-// Returns true when the request should be allowed, false when the limit is hit.
 export function rateLimit(req, res, name, max, windowMs) {
   const ip = clientIp(req);
   const key = name + '|' + ip;

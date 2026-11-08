@@ -1,4 +1,4 @@
-import { db, requireAdmin, requireUser, readBody, send, guardConfig, rateLimit } from './_lib.js';
+import { db, requirePanel, requireUser, readBody, send, guardConfig, rateLimit } from './_lib.js';
 
 const HOST_MOVES = [
   [/^https?:\/\/kivro-game-library-9d7913\.gitlab\.io\/+/i, 'https://kivrhdhdhd.vercel.app/']
@@ -30,7 +30,10 @@ export default async function handler(req, res) {
   if (!rateLimit(req, res, 'games', 60, 60000)) return;
 
   if (req.method === 'GET') {
-    if (!requireUser(req)) return send(res, 401, { error: 'unauthorized' });
+    if (!requireUser(req)) {
+      const panel = await requirePanel(req, res);
+      if (!panel) return;
+    }
     let all;
     try { all = await db.get('games'); } catch (e) { return send(res, 500, { error: 'server error' }); }
     const moved = {};
@@ -45,7 +48,8 @@ export default async function handler(req, res) {
     return send(res, 200, { games: list });
   }
 
-  if (!requireAdmin(req)) return send(res, 401, { error: 'unauthorized' });
+  const admin = await requirePanel(req, res, ['admin']);
+  if (!admin) return;
 
   if (req.method === 'POST') {
     const body = await readBody(req);

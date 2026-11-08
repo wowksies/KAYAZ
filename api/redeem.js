@@ -1,4 +1,4 @@
-import { db, sha256, normCode, signSession, readBody, send, guardConfig, rateLimit } from './_lib.js';
+import { db, sha256, normCode, signSession, readBody, send, guardConfig, rateLimit, dec } from './_lib.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { error: 'method' });
@@ -17,5 +17,5 @@ export default async function handler(req, res) {
     try { await db.patch('codes/' + h, { device: dev, usedAt: Date.now() }); }
     catch (e) { return send(res, 500, { error: 'server error' }); }
   }
-  return send(res, 200, { token: signSession({ t: 'u', d: dev, c: h }, 60), label: rec.label || null });
+  return send(res, 200, { token: signSession({ t: 'u', d: dev, c: h }, 60), label: rec.label ? dec(rec.label) : null });
 }
