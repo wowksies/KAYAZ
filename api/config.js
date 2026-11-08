@@ -1,4 +1,5 @@
 import { rateLimit } from './_lib.js';
+import health from './_health.js';
 
 // Public storefront config. Exposes only non-secret SellAuth identifiers so the
 // browser can build a checkout cart. No Firebase secrets ever leave the server.
@@ -26,6 +27,9 @@ import { rateLimit } from './_lib.js';
 // Flip MODE here (or set SELLAUTH_MODE env) if the ids map the other way in your dashboard.
 
 export default function handler(req, res) {
+  // /api/health is rewritten here to stay inside the Hobby plan's
+  // 12-serverless-function limit. The probe only exposes public data.
+  if (req.query && (req.query.__health === '1' || req.query.__health === 1)) return health(req, res);
   if (!rateLimit(req, res, 'config', 120, 60000)) return;
   const env = process.env;
   const num = v => {

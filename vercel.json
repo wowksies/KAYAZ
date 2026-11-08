@@ -6,6 +6,9 @@
     { "source": "/dashboard", "destination": "/", "permanent": false },
     { "source": "/dashboard/:path*", "destination": "/", "permanent": false }
   ],
+  "rewrites": [
+    { "source": "/api/health", "destination": "/api/config?__health=1" }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",

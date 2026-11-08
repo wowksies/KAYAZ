@@ -73,7 +73,7 @@ const { default: keys } = await import('../api/keys.js');
 const { default: resellers } = await import('../api/resellers.js');
 const { default: account } = await import('../api/account.js');
 const { default: audit } = await import('../api/audit.js');
-const { default: health } = await import('../api/health.js');
+const { default: config } = await import('../api/config.js');
 const { default: redeem } = await import('../api/redeem.js');
 const { default: games } = await import('../api/games.js');
 const { default: credential } = await import('../api/credential.js');
@@ -123,11 +123,11 @@ ok('password stored as scrypt hash', /^scrypt\$16384\$8\$1\$/.test(String(adminR
 ok('username encrypted at rest', String(adminRec.user).startsWith('kz1.') && !String(adminRec.user).includes('owner'));
 
 r = res();
-await health(req(), r);
+await config(Object.assign(req(), { query: { __health: '1' } }), r);
 ok('public health reveals nothing', r.statusCode === 200 && json(r).ok === true && !json(r).env, json(r));
 
 r = res();
-await health(req({ cookie: adminCookie }), r);
+await config(Object.assign(req({ cookie: adminCookie }), { query: { __health: '1' } }), r);
 ok('admin health shows config booleans', r.statusCode === 200 && Boolean(json(r).env), json(r));
 
 r = res();
