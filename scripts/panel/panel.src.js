@@ -1,5 +1,5 @@
-/* KAYAZ panel — readable source. `npm run build:panel` obfuscates this into
-   assets/panel.js, which is what the pages actually load. */
+                                                                            
+                                                             
 (function () {
   'use strict';
 
@@ -19,7 +19,7 @@
     el.className = 'msg ' + (kind || 'err') + (text ? ' on' : '');
   }
 
-  // Same-origin, cookie-authenticated JSON. No token ever touches storage.
+                                                                           
   function api(path, opts) {
     opts = opts || {};
     var headers = { 'x-requested-with': 'kz-panel' };
@@ -37,7 +37,7 @@
     });
   }
 
-  // ---------------------------------------------------------------- gate ---
+                                                                              
   var loginForm = $('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
@@ -85,7 +85,7 @@
       loadGames();
     }
 
-    // Deep link support: /adminpanel#account opens your own login settings.
+                                                                            
     var hash = String((window.location && window.location.hash) || '').replace('#', '');
     if (hash && showTab(hash)) {
       var load = loaders[hash];
@@ -133,7 +133,7 @@
     });
   }
 
-  // ------------------------------------------------------------ overview ---
+                                                                              
   function loadOverview() {
     if (!$('sKeys')) return;
     var out = {};
@@ -179,7 +179,7 @@
 
   if ($('ovRefresh')) $('ovRefresh').addEventListener('click', loadOverview);
 
-  // ---------------------------------------------------------------- keys ---
+                                                                              
   function quotaText(quota, used) {
     if (!quota) return used + ' keys on this account · no limit';
     return used + ' of ' + quota + ' keys used';
@@ -277,7 +277,7 @@
             });
           });
         });
-        msg($('kMsg'), (r.data.codes || []).length + ' generated — copy them now', 'ok');
+        msg($('kMsg'), (r.data.codes || []).length + ' generated - copy them now', 'ok');
         $('kl').value = '';
         loadKeys();
       }).catch(function () {
@@ -299,7 +299,7 @@
     });
   }
 
-  // ----------------------------------------------------------- resellers ---
+                                                                              
   function loadResellers() {
     var box = $('rList');
     if (!box) return;
@@ -463,7 +463,7 @@
 
   if ($('rRefresh')) $('rRefresh').addEventListener('click', loadResellers);
 
-  // --------------------------------------------------------------- games ---
+                                                                              
   var gf = $('gf');
   var gPrev = $('gPrev');
   var gi = $('gi');
@@ -686,7 +686,7 @@
     });
   }
 
-  // ------------------------------------------------------------- account ---
+                                                                              
   function loadAccount() {
     api('account').then(function (r) {
       if (!r.ok) return;
@@ -738,7 +738,7 @@
         $('apCur').value = '';
         $('ap').value = '';
         $('ap2').value = '';
-        msg($('apMsg'), 'password changed — every other session is signed out', 'ok');
+        msg($('apMsg'), 'password changed - every other session is signed out', 'ok');
       }).catch(function () {
         b.disabled = false;
         msg($('apMsg'), 'network error');
@@ -746,7 +746,7 @@
     });
   }
 
-  // ---------------------------------------------------------------- boot ---
+                                                                              
   api('session').then(function (r) {
     if (r.ok && r.data.role && r.data.role !== 'user') {
       boot({ user: r.data.user || '', role: r.data.role });

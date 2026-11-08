@@ -1,8 +1,8 @@
 import { panelAccount, send } from './_lib.js';
 
-// Public health probe stays deliberately boring. Environment details are only
-// shown to a signed-in admin, so the endpoint cannot be used to fingerprint the
-// deployment or confirm which secrets exist.
+                                                                              
+                                                                                
+                                             
 export default async function handler(req, res) {
   let admin = false;
   try {

@@ -1,26 +1,26 @@
-/**
- * TechText - React Bits (reactbits.dev), ported from the supplied React
- * component to a plain DOM mount so it can render the storefront slogan on a
- * page with no React and no bundler at runtime.
- *
- * What changed from upstream, and nothing else:
- *   - the React wrapper is gone; window.TechText(container, opts) builds the
- *     canvas, owns the requestAnimationFrame loop, the sprite cache, the
- *     spring physics and the pointer handling, and returns { destroy }
- *   - the CSS the component imported now lives in the page (TechText only adds
- *     the .tech-text class, exactly like the upstream container div)
- *   - TECH_TEXT_PROPS carries the settings the storefront slogan asks for, and
- *     [data-tech-text] elements mount themselves with data-tech-props (JSON)
- *     merged over them, the same convention crt-warp uses
- *
- * The glyph layout, dash outline, specks, selection frame, drag springs, idle
- * sweep and every default below are copied from upstream unchanged.
- *
- * Upstream licence: MIT + Commons Clause, (c) 2026 David Haz.
- * See THIRD_PARTY_NOTICES.md.
- */
+   
+                                                                        
+                                                                             
+                                                
+  
+                                                
+                                                                             
+                                                                         
+                                                                       
+                                                                               
+                                                                     
+                                                                               
+                                                                             
+                                                          
+  
+                                                                              
+                                                                    
+  
+                                                              
+                              
+   
 
-/** Settings the storefront slogan mounts with. */
+                                                  
 export const TECH_TEXT_PROPS = {
   text: 'Have an eye like an eagle.',
   fontFamily: '',
@@ -542,7 +542,7 @@ export const TECH_TEXT_PROPS = {
     };
   };
 
-  /** Merges `data-tech-props` (JSON) over the storefront settings. */
+                                                                      
   function readProps(el) {
     var raw = el.getAttribute('data-tech-props');
     if (!raw) return {};

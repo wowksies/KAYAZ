@@ -1,28 +1,28 @@
-/**
- * CRTWarp - React Bits (reactbits.dev), ported from the supplied React component
- * to a plain DOM mount so it can sit behind this static storefront.
- *
- * What changed from upstream, and nothing else:
- *   - the React wrapper is gone; this module owns its own requestAnimationFrame
- *     loop, fps cap, pointer smoothing, visibility pause and destroy()
- *   - the renderer is ogl, which this site already bundles for its effects,
- *     instead of three.js. Both draw one full screen quad with a custom
- *     ShaderMaterial, so the GLSL, the uniforms and the output are identical.
- *     Pulling in three would add roughly 600 KB for the same picture.
- *   - pointer tracking listens on the window, because the canvas sits under
- *     `pointer-events: none`, and it only bends when the pointer is over the
- *     container.
- *   - reduced motion renders one settled frame instead of animating.
- *
- * The GLSL below, the uniform block and every default are copied from upstream
- * unchanged.
- *
- * Upstream licence: MIT + Commons Clause, (c) 2026 David Haz.
- * See THIRD_PARTY_NOTICES.md.
- */
+   
+                                                                                 
+                                                                    
+  
+                                                
+                                                                                
+                                                                       
+                                                                            
+                                                                        
+                                                                              
+                                                                      
+                                                                            
+                                                                             
+                 
+                                                                     
+  
+                                                                               
+             
+  
+                                                              
+                              
+   
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
-/** Exact settings requested for the storefront background. */
+                                                              
 export const CRT_WARP_PROPS = {
   color: '#930000',
   backgroundColor: '#17121e',
@@ -178,13 +178,13 @@ void main() {
 }
 `;
 
-/** The settled time used for the single reduced-motion frame. */
+                                                                 
 const STILL_TIME = 12.5;
 
-/**
- * Mounts the warp inside `container` and returns a handle, or null when the
- * browser cannot give us a WebGL context (the page keeps its CSS background).
- */
+   
+                                                                            
+                                                                              
+   
 export function createCRTWarp(container, options = {}) {
   const props = { ...CRT_WARP_PROPS, ...options };
   const still = Boolean(props.still);
@@ -270,8 +270,8 @@ export function createCRTWarp(container, options = {}) {
   const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null;
   if (observer) observer.observe(container);
 
-  // The canvas is pointer-events:none, so the pointer is followed on the window
-  // and only bends the signal while it is actually over the container.
+                                                                                
+                                                                       
   function onPointerMove(event) {
     const rect = container.getBoundingClientRect();
     const inside = event.clientX >= rect.left && event.clientX <= rect.right
@@ -352,7 +352,7 @@ export function createCRTWarp(container, options = {}) {
   };
 }
 
-/** Merges `data-crt-props` (JSON) over the defaults for one container. */
+                                                                          
 function readProps(el) {
   const raw = el.getAttribute('data-crt-props');
   if (!raw) return {};
@@ -373,7 +373,7 @@ export function mountAll(root = document) {
       const instance = createCRTWarp(el, { ...readProps(el), still });
       if (instance) el.__crtWarp = instance;
     } catch (error) {
-      // Shader compile or context loss: the page keeps its CSS background.
+                                                                           
       console.warn('[crt-warp] disabled', error);
     }
   });

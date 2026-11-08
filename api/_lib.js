@@ -1,28 +1,28 @@
 import crypto from 'node:crypto';
 
-/**
- * Server core for the KAYAZ panels.
- *
- * Everything security-relevant lives here and only here, so a panel page can
- * never be "emulated" into doing something the API would not do on its own:
- *
- *   - passwords are stored as scrypt hashes (never encrypted, never reversible)
- *   - usernames, emails, key labels and owner names are encrypted at rest with
- *     AES-256-GCM, with HMAC blind indexes for lookups
- *   - panel sessions are AES-256-GCM sealed, HttpOnly, SameSite=Strict cookies
- *     scoped to /api, and a per-account version revokes them on password change
- *   - every mutating panel call is checked against the request origin
- *   - login failures are counted per account in the database and locked out
- *     with exponential backoff, so hammering is not just a memory trick
- *   - privileged changes append to an audit trail the admin can read
- *
- * Env (Vercel):
- *   FIREBASE_URL / FIREBASE_SECRET   (or FIREBASE_DB_URL / FIREBASE_DB_SECRET)
- *   SESSION_SECRET                   >= 32 random chars, also the key material
- *   DATA_KEY                         optional separate key for data at rest
- *   ADMIN_EMAIL / ADMIN_PASSWORD     bootstrap only: creates the first admin
- *                                    when no admin account exists yet
- */
+   
+                                    
+  
+                                                                             
+                                                                            
+  
+                                                                                
+                                                                               
+                                                       
+                                                                               
+                                                                                
+                                                                      
+                                                                            
+                                                                        
+                                                                     
+  
+                
+                                                                               
+                                                                               
+                                                                            
+                                                                             
+                                                                      
+   
 
 const DB_URL = (process.env.FIREBASE_DB_URL || process.env.FIREBASE_URL || '').replace(/\/$/, '');
 const DB_SECRET = process.env.FIREBASE_DB_SECRET || process.env.FIREBASE_SECRET || '';
@@ -64,16 +64,16 @@ export function validEmail(e) {
   return v.length <= 64 && EMAIL_RE.test(v);
 }
 
-// Length-constant compare for arbitrary strings (secret/hash equality).
+                                                                        
 export function safeEqual(a, b) {
   const x = crypto.createHash('sha256').update(String(a)).digest();
   const y = crypto.createHash('sha256').update(String(b)).digest();
   return crypto.timingSafeEqual(x, y);
 }
 
-// ---- key derivation -------------------------------------------------------
-// One root material, split with HKDF into independent subkeys so the session
-// key and the data-at-rest key are never the same bytes.
+                                                                              
+                                                                             
+                                                         
 function material() {
   return DATA_KEY || SESSION_SECRET + '|kayaz';
 }
@@ -86,10 +86,10 @@ function subkey(label) {
 
 const K_DATA = subkey('data');
 
-// ---- encryption at rest (AES-256-GCM) -------------------------------------
-// Stored as kz1.<iv>.<ciphertext+tag>, base64url. Anything that was written
-// before encryption existed (plain text) is returned untouched so old records
-// keep working.
+                                                                              
+                                                                            
+                                                                              
+                
 export function enc(value) {
   const plain = String(value == null ? '' : value);
   if (!plain) return '';
@@ -118,7 +118,7 @@ export function dec(value) {
   }
 }
 
-// Blind indexes: lets us find an encrypted identifier without storing it clear.
+                                                                                
 export function userIndex(user) {
   return crypto.createHmac('sha256', K_DATA).update('user|' + normUser(user)).digest('hex');
 }
@@ -127,7 +127,7 @@ export function emailIndex(email) {
   return crypto.createHmac('sha256', K_DATA).update('email|' + normUser(email)).digest('hex');
 }
 
-// ---- passwords (scrypt, one way) -----------------------------------------
+                                                                             
 export function hashPassword(password) {
   const salt = crypto.randomBytes(16);
   const key = crypto.scryptSync(String(password).normalize('NFKC'), salt, 32, SCRYPT);
@@ -153,11 +153,11 @@ export function verifyPassword(password, stored) {
   return want.length === got.length && crypto.timingSafeEqual(want, got);
 }
 
-// Verified against when the login does not exist, so a wrong username costs the
-// same time as a wrong password.
+                                                                                
+                                 
 export const DUMMY_HASH = hashPassword('kayaz-dummy-' + crypto.randomBytes(12).toString('hex'));
 
-// ---- sessions (sealed cookies) -------------------------------------------
+                                                                             
 export function signSession(payload, days) {
   const body = { ...payload, iat: Date.now(), exp: Date.now() + (days || 30) * 86400000 };
   return enc('s1|' + JSON.stringify(body));
@@ -193,8 +193,8 @@ export function verifySession(token) {
       try { body = JSON.parse(raw.slice(3)); } catch (e) { body = null; }
     }
   } else {
-    // Tokens issued before sessions were sealed still verify until they expire,
-    // so nobody has to re-redeem a working code.
+                                                                                
+                                                 
     body = legacyVerify(t);
   }
   if (!body || typeof body.exp !== 'number' || Date.now() > body.exp) return null;
@@ -219,8 +219,8 @@ function isHttps(req) {
   return proto === 'https' || process.env.VERCEL === '1';
 }
 
-// Scoped to /api: panel pages themselves never receive the cookie, so a page
-// injected or mirrored elsewhere cannot ride a signed-in browser.
+                                                                             
+                                                                  
 export function setSessionCookie(req, res, token, maxAge) {
   const bits = [COOKIE + '=' + token, 'Path=/api', 'HttpOnly', 'SameSite=Strict', 'Max-Age=' + Math.max(0, Math.floor(maxAge))];
   if (isHttps(req)) bits.push('Secure');
@@ -231,7 +231,7 @@ export function clearSessionCookie(req, res) {
   setSessionCookie(req, res, '', 0);
 }
 
-// ---- accounts ------------------------------------------------------------
+                                                                             
 export function accountId() {
   return 'a' + crypto.randomBytes(9).toString('hex');
 }
@@ -264,7 +264,7 @@ export async function getAccountByEmail(email) {
   return null;
 }
 
-// Login accepts a username or an email address.
+                                                
 export async function getAccountByLogin(login) {
   const l = normUser(login);
   if (!l) return null;
@@ -286,6 +286,7 @@ export async function createAccount({ user, email, password, role, quota, by }) 
   if (String(password || '').length < PASSWORD_MIN) {
     throw new Error('password must be at least ' + PASSWORD_MIN + ' characters');
   }
+  if (String(password || '').length > 200) throw new Error('password must be 200 characters or fewer');
   if (!ROLES.includes(role)) throw new Error('bad role');
   if (await getAccountByUser(u)) throw new Error('that username is taken');
   if (em && await getAccountByEmail(em)) throw new Error('that email is already in use');
@@ -310,8 +311,8 @@ export async function createAccount({ user, email, password, role, quota, by }) 
   return { id, ...rec };
 }
 
-// First admin only, straight from the environment, so a fresh database can be
-// claimed once and then managed entirely from the panel.
+                                                                              
+                                                         
 export async function bootstrapAdmin(user, password) {
   if (!ADMIN_USER || !ADMIN_PASSWORD) return null;
   if (normUser(user) !== normUser(ADMIN_USER)) return null;
@@ -370,7 +371,7 @@ export async function requirePanel(req, res, roles) {
   return acc;
 }
 
-// ---- audit trail ---------------------------------------------------------
+                                                                             
 export async function audit(acc, action, target, req) {
   try {
     await db.push('audit', {
@@ -381,7 +382,7 @@ export async function audit(acc, action, target, req) {
       target: enc(String(target || '').slice(0, 80)),
       ip: req ? sha256('ip:' + clientIp(req)).slice(0, 16) : ''
     });
-    // Keep the trail bounded without paying for a read on every write.
+                                                                       
     if (Math.random() < 0.05) await pruneAudit();
   } catch (e) {}
 }
@@ -396,15 +397,15 @@ async function pruneAudit() {
   } catch (e) {}
 }
 
-// ---- request origin ------------------------------------------------------
+                                                                             
 export function requestHost(req) {
   return String((req.headers && (req.headers['x-forwarded-host'] || req.headers.host)) || '')
     .split(',')[0].trim().toLowerCase();
 }
 
-// Browsers always send Origin on cross-site and same-site POSTs; requiring it
-// to match our own host blocks a stolen cookie from being replayed by another
-// site, and blocks curl-shaped emulation of the panel endpoints.
+                                                                              
+                                                                              
+                                                                 
 export function sameOrigin(req) {
   const host = requestHost(req);
   if (!host) return false;
@@ -423,7 +424,7 @@ export function requireSameOrigin(req, res) {
   return false;
 }
 
-// ---- legacy helpers still used by the games/invite/redeem endpoints ------
+                                                                             
 export function bearer(req) {
   const h = (req.headers && req.headers.authorization) || '';
   return h.startsWith('Bearer ') ? h.slice(7) : '';
@@ -440,7 +441,7 @@ export function makeCode() {
   return pick(4) + '-' + pick(4) + '-' + pick(4);
 }
 
-// ---- database ------------------------------------------------------------
+                                                                             
 async function dbFetch(path, opts = {}) {
   if (!configured()) throw new Error('unconfigured');
   const url = `${DB_URL}/${path}.json?auth=${encodeURIComponent(DB_SECRET)}`;
@@ -488,10 +489,10 @@ export function guardConfig(res) {
   return true;
 }
 
-// ---- shared rate limiting -----------------------------------------------
-// Best effort fixed window limiter keyed by client ip. The login endpoint also
-// keeps a durable lockout in the database, so restarting an instance does not
-// reset an attack.
+                                                                            
+                                                                               
+                                                                              
+                   
 const buckets = new Map();
 
 export function clientIp(req) {

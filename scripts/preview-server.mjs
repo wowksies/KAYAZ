@@ -1,10 +1,10 @@
-/**
- * Local preview server for the static storefront.
- * Serves the repo root and answers /api/* with empty storefront config so the
- * page renders offline exactly as it does when a SellAuth config is missing.
- *
- * Run: node scripts/preview-server.mjs [port]   (default 8103)
- */
+   
+                                                  
+                                                                              
+                                                                             
+  
+                                                               
+   
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';

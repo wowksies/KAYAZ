@@ -3,9 +3,9 @@ import {
   guardConfig, rateLimit, enc, dec, getAccount, audit
 } from './_lib.js';
 
-// Keys are shared between the admin panel and the reseller panel. Resellers
-// only ever see and touch their own keys; the server decides that from the
-// sealed session, never from anything the browser sends.
+                                                                            
+                                                                           
+                                                         
 function cleanLabel(v) {
   return String(v || '').replace(/\s+/g, ' ').trim().slice(0, 60);
 }
@@ -79,7 +79,7 @@ export default async function handler(req, res) {
         const used = Object.values(all || {}).filter(k => k && k.owner === acc.id).length;
         if (used + n > quota) {
           return send(res, 403, {
-            error: 'key allowance reached — ' + used + ' of ' + quota + ' used',
+            error: 'key allowance reached - ' + used + ' of ' + quota + ' used',
             quota, used, left: Math.max(0, quota - used)
           });
         }

@@ -1,9 +1,9 @@
-/**
- * End-to-end checks for the panel API, run against an in-memory Firebase
- * stand-in. No credentials, network or side effects.
- *
- * Run: node scripts/test-panel.mjs
- */
+   
+                                                                         
+                                                     
+  
+                                   
+   
 process.env.FIREBASE_URL = 'https://fake-db.local';
 process.env.FIREBASE_SECRET = 'test-secret';
 process.env.SESSION_SECRET = 'k'.repeat(48);
@@ -106,7 +106,7 @@ const json = r => { try { return JSON.parse(r.payload); } catch (e) { return {};
 const cookieOf = r => String(r.headers['set-cookie'] || '').split(';')[0];
 const setCookie = r => String(r.headers['set-cookie'] || '');
 
-// --- login, cookie sealing, health ---------------------------------------
+                                                                            
 let r = res();
 await login(req({ method: 'POST', body: { user: 'owner', password: 'wrong-password' } }), r);
 ok('wrong password rejected', r.statusCode === 401, r.statusCode);
@@ -134,7 +134,7 @@ r = res();
 await session(req({ cookie: adminCookie }), r);
 ok('sealed cookie authenticates', r.statusCode === 200 && json(r).role === 'admin', json(r));
 
-// --- change own email, then sign in with it ------------------------------
+                                                                            
 r = res();
 await account(req({ method: 'POST', cookie: adminCookie, body: { current: 'owner-password-123', email: 'owner@kayaz.xyz' } }), r);
 ok('admin can set their own email', r.statusCode === 200 && json(r).email === 'owner@kayaz.xyz', json(r));
@@ -148,7 +148,7 @@ r = res();
 await login(req({ method: 'POST', body: { user: 'owner', password: 'owner-password-123' } }), r);
 ok('username still signs in', r.statusCode === 200, json(r));
 
-// --- reseller account, email login ---------------------------------------
+                                                                            
 r = res();
 await resellers(req({
   method: 'POST',
@@ -163,7 +163,7 @@ await login(req({ method: 'POST', body: { user: 'seller@kayaz.xyz', password: 's
 ok('reseller signs in by email', r.statusCode === 200 && json(r).role === 'reseller', json(r));
 let sellerCookie = cookieOf(r);
 
-// --- keys, ownership, quota ----------------------------------------------
+                                                                            
 r = res();
 await keys(req({ method: 'POST', cookie: adminCookie, body: { count: 1, label: 'batch-a', owner: sellerId } }), r);
 ok('admin issues a key to the reseller', r.statusCode === 200 && json(r).codes.length === 1, json(r));
@@ -207,7 +207,7 @@ r = res();
 await keys(req({ method: 'DELETE', cookie: sellerCookie, body: { h: adminHash } }), r);
 ok('reseller cannot delete another account key', r.statusCode === 404, r.statusCode);
 
-// --- redeem still works and returns the readable label --------------------
+                                                                             
 r = res();
 await redeem(req({ method: 'POST', body: { code: sellerCode, device: 'device-test-1' } }), r);
 ok('key redeems', r.statusCode === 200 && Boolean(json(r).token), json(r));
@@ -218,7 +218,7 @@ r = res();
 await session(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
 ok('code session still works', r.statusCode === 200 && json(r).role === 'user', json(r));
 
-// --- origin checks --------------------------------------------------------
+                                                                             
 r = res();
 await login(req({ method: 'POST', headers: { origin: 'https://evil.test' }, body: { user: 'seller1', password: 'seller-pass-1' } }), r);
 ok('cross-origin login refused', r.statusCode === 403, r.statusCode);
@@ -227,7 +227,7 @@ r = res();
 await keys(req({ method: 'POST', cookie: sellerCookie, headers: { origin: 'https://evil.test' }, body: { count: 1 } }), r);
 ok('cross-origin key call refused', r.statusCode === 403, r.statusCode);
 
-// --- password rotation revokes sessions ----------------------------------
+                                                                            
 r = res();
 await account(req({ method: 'POST', cookie: sellerCookie, body: { current: 'seller-pass-1', password: 'seller-pass-2' } }), r);
 ok('password change accepted', r.statusCode === 200, json(r));
@@ -245,7 +245,7 @@ r = res();
 await login(req({ method: 'POST', body: { user: 'seller1', password: 'seller-pass-1' } }), r);
 ok('old password rejected', r.statusCode === 401, r.statusCode);
 
-// --- games and audit ------------------------------------------------------
+                                                                             
 r = res();
 await games(req({ cookie: adminCookie }), r);
 ok('admin reads games with a cookie session', r.statusCode === 200, r.statusCode);
@@ -261,32 +261,36 @@ ok('audit returns events', r.statusCode === 200 && events.length > 0, events.len
 ok('audit records logins and key creation', events.some(e => e.action === 'login') && events.some(e => e.action === 'keys.create'), events.map(e => e.action));
 ok('audit names are readable for the admin', events.some(e => e.who === 'owner'), events.map(e => e.who));
 
-// --- nothing sensitive sits in the clear ---------------------------------
+                                                                            
 const dump = JSON.stringify(store);
 ok('no plaintext usernames at rest', !dump.includes('seller1') && !dump.includes('owner@kayaz.xyz'));
 ok('no plaintext labels at rest', !dump.includes('batch-a'));
 
-// --- sign out -------------------------------------------------------------
+                                                                             
 r = res();
 await logout(req({ method: 'POST', cookie: adminCookie }), r);
 ok('logout expires the cookie', /Max-Age=0/.test(setCookie(r)), setCookie(r));
 
 
-// --- website credential endpoint (used by the local key admin page) -------
+                                                                             
 r = res();
-await credential(req({ method: 'OPTIONS' }), r);
-ok('credential preflight allows the local tool', r.statusCode === 204 && r.headers['access-control-allow-origin'] === '*', r.headers);
+await credential(req({ method: 'OPTIONS', headers: { origin: 'null' } }), r);
+ok('credential preflight allows the local tool', r.statusCode === 204 && r.headers['access-control-allow-origin'] === 'null', r.headers);
 
 r = res();
-await credential(req({ method: 'POST', body: { user: 'owner@kayaz.xyz', current: 'nope-nope-nope', email: 'x@kayaz.xyz' } }), r);
+await credential(req({ method: 'POST', headers: { origin: 'null' }, body: { user: 'owner@kayaz.xyz', current: 'nope-nope-nope', email: 'x@kayaz.xyz' } }), r);
 ok('credential needs the current password', r.statusCode === 401, r.statusCode);
 
 r = res();
-await credential(req({ method: 'POST', body: { user: 'seller1', current: 'seller-pass-2', email: 'seller2@kayaz.xyz' } }), r);
+await credential(req({ method: 'POST', headers: { origin: 'https://evil.test' }, body: { user: 'owner@kayaz.xyz', current: 'owner-password-123', email: 'x@kayaz.xyz' } }), r);
+ok('credential refuses foreign origins', r.statusCode === 403, r.statusCode);
+
+r = res();
+await credential(req({ method: 'POST', headers: { origin: 'null' }, body: { user: 'seller1', current: 'seller-pass-2', email: 'seller2@kayaz.xyz' } }), r);
 ok('credential refuses non-admin accounts', r.statusCode === 403, r.statusCode);
 
 r = res();
-await credential(req({ method: 'POST', body: { user: 'owner@kayaz.xyz', current: 'owner-password-123', email: 'owner2@kayaz.xyz', password: 'owner-password-456' } }), r);
+await credential(req({ method: 'POST', headers: { origin: 'null' }, body: { user: 'owner@kayaz.xyz', current: 'owner-password-123', email: 'owner2@kayaz.xyz', password: 'owner-password-456' } }), r);
 ok('admin changes website email + password', r.statusCode === 200 && json(r).email === 'owner2@kayaz.xyz', json(r));
 
 r = res();

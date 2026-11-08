@@ -7,9 +7,9 @@ import {
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// Self-service account for whoever is signed in: username, email and password.
-// Changing the password bumps the account version, which invalidates every
-// other sealed session cookie.
+                                                                               
+                                                                           
+                               
 export default async function handler(req, res) {
   if (guardConfig(res)) return;
   if (!rateLimit(req, res, 'account', 60, 60000)) return;
@@ -87,6 +87,7 @@ export default async function handler(req, res) {
   if (body.password) {
     const p = String(body.password);
     if (p.length < PASSWORD_MIN) return send(res, 400, { error: 'password must be at least ' + PASSWORD_MIN + ' characters' });
+    if (p.length > 200) return send(res, 400, { error: 'password must be 200 characters or fewer' });
     if (p === current) return send(res, 400, { error: 'pick a different password' });
     if (email && p.toLowerCase() === email) return send(res, 400, { error: 'do not use your email as the password' });
     patch.pass = hashPassword(p);

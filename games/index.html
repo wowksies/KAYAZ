@@ -38,14 +38,14 @@ img { display: block; max-width: 100%; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* same background as the main page */
+                                      
 #bgv { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; pointer-events: none;
     filter: saturate(1.05) brightness(0.9); }
 .tint { position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background: radial-gradient(120% 90% at 50% 30%, transparent 42%, rgba(6,4,3,0.62) 100%),
                 linear-gradient(180deg, rgba(4,3,2,0.55), rgba(4,3,2,0.30) 22%, rgba(4,3,2,0.42) 70%, rgba(4,3,2,0.6)); }
 
-/* liquid glass, same recipe as the main page */
+                                                
 .glass-pill { background: rgba(22,15,13,0.48); border: 1px solid rgba(255,255,255,0.16);
     backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), 0 14px 32px -10px rgba(0,0,0,0.6); }
@@ -111,7 +111,7 @@ footer { border-top: 1px solid rgba(255,255,255,0.08); padding: 26px 0 40px; tex
     font-family: var(--mono); font-size: 0.72rem; color: var(--mute); }
 footer a { color: var(--dim); } footer a:hover { color: var(--accent-2); }
 
-/* player */
+            
 .player { position: fixed; inset: 0; z-index: 100; background: #000; display: none; flex-direction: column; }
 .player.on { display: flex; }
 .pbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px;
@@ -179,7 +179,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
     .pbtn .lbl { display: none; }
 }
 
-/* liquid glass popups */
+                         
 .gmodal { position: fixed; inset: 0; z-index: 150; display: none; align-items: center; justify-content: center; padding: 20px;
     background: rgba(6,4,3,0.5); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%); }
 .gmodal.on { display: flex; }
@@ -343,7 +343,7 @@ body.locked main.wrap, body.locked footer { opacity: 0; pointer-events: none; }
 (function () {
   if (window.__kayazKb) return;
   window.__kayazKb = true;
-  var SHIFTED = { '1': '!', '2': '@', '3': '#', '4': '$', '5': '%', '6': '^', '7': '&', '8': '*', '9': '(', '0': ')',
+  var SHIFTED = { '1': '!', '2': '@', '3': '#', '4': '</script>, '5': '%', '6': '^', '7': '&', '8': '*', '9': '(', '0': ')',
     '-': '_', '=': '+', '[': '{', ']': '}', '\\': '|', ';': ':', "'": '"', ',': '<', '.': '>', '/': '?' };
   var PUNCT = { '-': ['Minus', 189], '=': ['Equal', 187], '[': ['BracketLeft', 219], ']': ['BracketRight', 221],
     '\\': ['Backslash', 220], ';': ['Semicolon', 186], "'": ['Quote', 222], ',': ['Comma', 188], '.': ['Period', 190], '/': ['Slash', 191] };
@@ -767,8 +767,8 @@ function openGame(g, forceDirect, opts) {
     frame.removeAttribute('srcdoc');
     frame.src = 'about:blank';
 
-    // on touch, inject controls + keyboard into every game that can take it, so
-    // turning either on later never reloads. desktop keeps a plain direct load.
+                                                                                
+                                                                                
     if (forceDirect || (!isTouch && !opts.wantKb)) { loadDirect(g, my); return; }
 
     resolveDoc(g.url).then(function (res) {
@@ -802,8 +802,8 @@ function openGame(g, forceDirect, opts) {
     });
 }
 
-// if a game comes up blank under injection (some sites only run on their own
-// origin), quietly fall back to a plain direct load so it still plays.
+                                                                             
+                                                                       
 function injectWatch(g, my) {
     setTimeout(function () {
         if (my !== token || !frame.hasAttribute('srcdoc')) return;
@@ -972,7 +972,7 @@ var MEM_SRC = "(function(){var T=" + UNITY_MEM + ";function w(v){if(!v||v.__kzme
 var PAD_SRC = "(function () {\n  if (window.__kayazPad) return;\n  window.__kayazPad = true;\n  var K = {\n    up:    [{k:'ArrowUp',c:'ArrowUp',n:38},{k:'w',c:'KeyW',n:87}],\n    down:  [{k:'ArrowDown',c:'ArrowDown',n:40},{k:'s',c:'KeyS',n:83}],\n    left:  [{k:'ArrowLeft',c:'ArrowLeft',n:37},{k:'a',c:'KeyA',n:65}],\n    right: [{k:'ArrowRight',c:'ArrowRight',n:39},{k:'d',c:'KeyD',n:68}],\n    space: [{k:' ',c:'Space',n:32}],\n    enter: [{k:'Enter',c:'Enter',n:13}],\n    r:     [{k:'r',c:'KeyR',n:82}]\n  };\n  function targets() {\n    var t = [];\n    var c = document.querySelector('canvas');\n    if (c) t.push(c);\n    if (document.body) t.push(document.body);\n    t.push(document);\n    return t;\n  }\n  function fire(type, d, repeat) {\n    var opts = { key: d.k, code: d.c, bubbles: true, cancelable: true, repeat: !!repeat, view: window };\n    var t = targets()[0];\n    var e;\n    try { e = new KeyboardEvent(type, opts); }\n    catch (err) { e = document.createEvent('Events'); e.initEvent(type, true, true); e.key = d.k; e.code = d.c; }\n    try {\n      Object.defineProperty(e, 'keyCode', { get: function () { return d.n; } });\n      Object.defineProperty(e, 'which', { get: function () { return d.n; } });\n    } catch (err) {}\n    try { t.dispatchEvent(e); } catch (err) {}\n  }\n  var held = {};\n  function down(name) {\n    if (held[name]) return;\n    try { window.focus(); } catch (e) {}\n    K[name].forEach(function (d) { fire('keydown', d, false); });\n    held[name] = setInterval(function () {\n      K[name].forEach(function (d) { fire('keydown', d, true); });\n    }, 90);\n  }\n  function up(name) {\n    if (!held[name]) return;\n    clearInterval(held[name]);\n    held[name] = null;\n    K[name].forEach(function (d) { fire('keyup', d); });\n  }\n  var st = document.createElement('style');\n  st.textContent =\n    '#kayaz-pad{position:fixed;left:0;right:0;bottom:0;top:0;z-index:2147483647;pointer-events:none;font-family:system-ui,-apple-system,sans-serif;display:none}' +\n    '#kayaz-pad.on{display:block}' +\n    '#kayaz-pad .z{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom))}' +\n    '#kayaz-pad .dp{left:16px;display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(3,60px);gap:6px}' +\n    '#kayaz-pad .u{grid-area:1/2}#kayaz-pad .l{grid-area:2/1}#kayaz-pad .r{grid-area:2/3}#kayaz-pad .d{grid-area:3/2}' +\n    '#kayaz-pad .dp button{opacity:1}' +\n    '#kayaz-pad .ac{right:16px;display:flex;flex-direction:column;gap:10px;align-items:flex-end}' +\n    '#kayaz-pad .sp{width:132px;height:60px;font-size:13px;letter-spacing:2px}' +\n    '#kayaz-pad .sq{width:60px;height:60px}' +\n    '#kayaz-pad .b{pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;' +\n    'border:1px solid rgba(255,255,255,.28);background:rgba(16,8,10,.55);color:#fff;font-size:20px;font-weight:800;' +\n    'border-radius:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;' +\n    'justify-content:center;box-shadow:inset 1px 1px 0 rgba(255,255,255,.2),0 6px 16px rgba(0,0,0,.45);transition:transform .08s,background .08s}' +\n    '#kayaz-pad .b.hit{background:rgba(255,45,70,.75);border-color:rgba(255,45,70,.95);transform:scale(.94)}';\n  (document.head || document.documentElement).appendChild(st);\n  var pad = document.createElement('div');\n  pad.id = 'kayaz-pad';\n  pad.innerHTML =\n    '<div class=\"z dp\">' +\n      '<button class=\"b sq u\" data-k=\"up\">\u25b2</button>' +\n      '<button class=\"b sq l\" data-k=\"left\">\u25c0</button>' +\n      '<button class=\"b sq d\" data-k=\"down\">\u25bc</button>' +\n      '<button class=\"b sq r\" data-k=\"right\">\u25ba</button>' +\n    '</div>' +\n    '<div class=\"z ac\">' +\n      '<button class=\"b sq\" data-k=\"r\">R</button>' +\n      '<button class=\"b sq\" data-k=\"enter\">\u21b5</button>' +\n      '<button class=\"b sp\" data-k=\"space\">SPACE</button>' +\n    '</div>';\n  function attach() {\n    if (!document.body) { setTimeout(attach, 60); return; }\n    document.body.appendChild(pad);\n    [].forEach.call(pad.querySelectorAll('.b'), function (b) {\n      var name = b.getAttribute('data-k');\n      function on(e) { e.preventDefault(); e.stopPropagation(); b.classList.add('hit'); down(name); }\n      function off(e) { if (e) { e.preventDefault(); e.stopPropagation(); } b.classList.remove('hit'); up(name); }\n      b.addEventListener('pointerdown', on, { passive: false });\n      b.addEventListener('pointerup', off, { passive: false });\n      b.addEventListener('pointercancel', off, { passive: false });\n      b.addEventListener('pointerleave', off, { passive: false });\n      b.addEventListener('touchstart', on, { passive: false });\n      b.addEventListener('touchend', off, { passive: false });\n      b.addEventListener('contextmenu', function (e) { e.preventDefault(); });\n    });\n  }\n  attach();\n  var dpad = pad.querySelector('.dp');\n  window.addEventListener('message', function (e) {\n    var d = e.data;\n    if (!d || d.kayaz !== 'pad') return;\n    pad.classList.toggle('on', !!d.on);\n    if (!d.on) { Object.keys(held).forEach(up); }\n  });\n  document.addEventListener('gesturestart', function (e) { e.preventDefault(); });\n})();\n";
 
 
-/* ---- invite popup (liquid glass) ---- */
+                                           
 function openModal(id) {
     var m = document.getElementById(id);
     if (!m) return;
@@ -999,7 +999,7 @@ function onUnlocked() {
     if (ib) ib.hidden = false;
 }
 
-/* invite flow */
+                 
 function authFetch(path, opts) {
     opts = opts || {};
     opts.headers = opts.headers || {};

@@ -1,5 +1,5 @@
-// PeekRating from React Bits (reactbits.dev), ported to plain JS for this static site.
-// Usage: PeekRating(containerEl, { defaultValue: 0, onChange: v => {} }) -> { setValue, getValue, destroy }
+                                                                                       
+                                                                                                            
 (function () {
   var EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
   var SVG_NS = 'http://www.w3.org/2000/svg';

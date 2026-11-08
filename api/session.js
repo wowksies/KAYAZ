@@ -2,8 +2,8 @@ import {
   panelAccount, verifySession, bearer, send, guardConfig, rateLimit, clearSessionCookie
 } from './_lib.js';
 
-// Panel sessions are cookie-only: a copied token is useless without the
-// HttpOnly cookie, and the cookie cannot be replayed by another origin.
+                                                                        
+                                                                        
 export default async function handler(req, res) {
   if (guardConfig(res)) return;
   if (!rateLimit(req, res, 'session', 120, 60000)) return;
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     return send(res, 200, { ok: true, admin: acc.role === 'admin', role: acc.role, user: acc.user });
   }
 
-  // The games page still signs in with a redeemed code as a bearer token.
+                                                                          
   const s = verifySession(bearer(req));
   if (s && s.t === 'u') return send(res, 200, { ok: true, admin: false, role: 'user' });
 

@@ -1,5 +1,5 @@
-// WarpText from React Bits (reactbits.dev), ported to plain JS + raw WebGL2 (no ogl) for this static site.
-// Usage: WarpText(containerEl, { text: 'Hello', ... }) -> { destroy } or null if WebGL2 isn't available.
+                                                                                                           
+                                                                                                         
 (function () {
   var VERTEX = '#version 300 es\n' +
     'in vec2 position;\nin vec2 uv;\nout vec2 vUv;\n' +
@@ -158,7 +158,7 @@
     canvas.setAttribute('aria-hidden', 'true');
     container.appendChild(canvas);
 
-    // one big triangle covering the viewport, same as ogl's Triangle
+                                                                     
     var vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
     function attrib(name, data) {

@@ -6,29 +6,34 @@ import {
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-/**
- * Credential change for the offline key-admin page (keys_admin.html).
- *
- * That page runs from file://, so it has no session cookie and cannot use the
- * panel endpoints. Instead it posts the account's CURRENT password here and we
- * do the hashing/encryption server-side — the browser never sees a key.
- *
- * Safety:
- *   - the current password is required and verified against the scrypt hash
- *   - the same durable lockout as the login endpoint applies (shared counter)
- *   - only admin accounts may be changed this way
- *   - CORS is open because the caller is a local file, but success still needs
- *     the password, so a foreign page gains nothing without it
- */
-function cors(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+   
+                                                                      
+  
+                                                                              
+                                                                               
+                                                                        
+  
+          
+                                                                            
+                                                                              
+                                                  
+                                                                               
+                                                               
+   
+function cors(req, res) {
+  const origin = String((req.headers && req.headers.origin) || '');
+  res.setHeader('Vary', 'Origin');
+  if (origin !== 'null') return;
+  res.setHeader('Access-Control-Allow-Origin', 'null');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'content-type');
   res.setHeader('Access-Control-Max-Age', '86400');
 }
 
 export default async function handler(req, res) {
-  cors(res);
+  const origin = String((req.headers && req.headers.origin) || '');
+  cors(req, res);
+  if (origin && origin !== 'null') return send(res, 403, { error: 'bad origin' });
 
   if (req.method === 'OPTIONS') {
     res.status(204);
@@ -105,6 +110,7 @@ export default async function handler(req, res) {
   if (body.password) {
     const p = String(body.password);
     if (p.length < PASSWORD_MIN) return send(res, 400, { error: 'password must be at least ' + PASSWORD_MIN + ' characters' });
+    if (p.length > 200) return send(res, 400, { error: 'password must be 200 characters or fewer' });
     if (p === current) return send(res, 400, { error: 'pick a different password' });
     if (email && p.toLowerCase() === email) return send(res, 400, { error: 'do not use your email as the password' });
     patch.pass = hashPassword(p);

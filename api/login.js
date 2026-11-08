@@ -6,8 +6,8 @@ import {
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// Durable lockout: failures are counted per login in the database, so an
-// attacker cannot reset the counter by hitting a different instance.
+                                                                         
+                                                                     
 export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { error: 'method' });
   if (guardConfig(res)) return;
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
 
   let ok = false;
   if (acc && !acc.disabled) ok = verifyPassword(password, acc.pass);
-  else verifyPassword(password, DUMMY_HASH); // equal cost for unknown/disabled
+  else verifyPassword(password, DUMMY_HASH);                                   
 
   if (!ok) {
     let boot = null;

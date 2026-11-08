@@ -1,9 +1,9 @@
-/**
- * Smoke test for the obfuscated client bundle: runs assets/panel.js against a
- * stub DOM to prove the build still parses and executes its top-level paths.
- *
- * Run: node scripts/test-panel-dom.mjs
- */
+   
+                                                                              
+                                                                             
+  
+                                       
+   
 import fs from 'node:fs';
 import path from 'node:path';
 

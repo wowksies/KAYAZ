@@ -1,10 +1,10 @@
-/**
- * Bundles the storefront's visual effects into plain <script> files the static
- * pages can load. Output is committed, so the site keeps deploying with no
- * build step.
- *
- * Run: npm run build-effects
- */
+   
+                                                                               
+                                                                           
+              
+  
+                             
+   
 import esbuild from 'esbuild';
 
 const effects = [

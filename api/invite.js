@@ -1,10 +1,10 @@
 import { db, sha256, normCode, makeCode, requireUser, readBody, send, guardConfig, rateLimit, enc } from './_lib.js';
 
-// A redeemed user may invite exactly one person, and must name them.
-// The invite is a normal code (redeems on one browser) whose record remembers who
-// it was made for and which code made it. The full invite code is stored on the
-// parent record so the inviter can reopen the popup and copy it again; it is only
-// ever returned to the session that owns the parent code.
+                                                                     
+                                                                                  
+                                                                                
+                                                                                  
+                                                          
 
 function cleanName(n) {
   return String(n || '').replace(/\s+/g, ' ').trim().slice(0, 40);

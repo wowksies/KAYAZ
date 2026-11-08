@@ -12,11 +12,11 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ============================================================
-   KAYAZ download
-   One screen, same shape as the storefront: logo, the file, the
-   button, and the price list for extending access. Nothing scrolls.
-   ============================================================ */
+                                                               
+                 
+                                                                
+                                                                    
+                                                                  
 :root {
     --bg:        #17121e;
     --panel:     #131010;
@@ -60,7 +60,7 @@ img { display:block; max-width:100%; }
 ::selection { background:var(--accent); color:#1a0806; }
 :focus-visible { outline:2px solid var(--accent-hi); outline-offset:3px; border-radius:4px; }
 
-/* the same warm wash and CRT warp the storefront runs */
+                                                         
 .bg-fx {
     position:fixed; inset:0; z-index:-2; pointer-events:none;
     background:
@@ -93,8 +93,8 @@ img { display:block; max-width:100%; }
 .btn:hover { transform:translateY(-1px); }
 .btn-primary { color:#fff6f2; background:var(--accent-lo); border-color:var(--accent-deep); }
 .btn-primary:hover { background:var(--accent); }
-/* the invite keeps Discord's own blurple, so it reads as "talk to a person"
-   rather than as a second thing to download */
+                                                                            
+                                               
 .btn-discord {
     color:#fff; background:#5865f2; border-color:rgba(255,255,255,.14);
     box-shadow:0 8px 20px rgba(88,101,242,.26), inset 0 1px 0 rgba(255,255,255,.16);
@@ -124,8 +124,8 @@ img { display:block; max-width:100%; }
     box-shadow:0 30px 70px rgba(0,0,0,.55);
     padding:clamp(22px,3.4vw,32px);
 }
-/* PixelCard (React Bits) covers the download card: the shimmer plays over it on
-   hover and keyboard focus, blended so the copy stays legible. */
+                                                                                
+                                                                  
 .card::before {
     content:''; position:absolute; inset:0; z-index:1; margin:auto;
     aspect-ratio:1; opacity:0; pointer-events:none; mix-blend-mode:screen;
@@ -154,7 +154,7 @@ h1 { font-size:clamp(1.7rem,3.6vw,2.15rem); font-weight:600; letter-spacing:-.03
 .lede { color:var(--text-2); font-size:.9rem; line-height:1.7; margin-bottom:20px; }
 .lede a { color:var(--accent-hi); text-decoration:underline; text-underline-offset:3px; }
 
-/* the download row: file identity left, the action right */
+                                                            
 .dl {
     display:flex; align-items:center; gap:14px;
     padding:14px 16px; border-radius:var(--r-s);
@@ -191,7 +191,7 @@ h1 { font-size:clamp(1.7rem,3.6vw,2.15rem); font-weight:600; letter-spacing:-.03
 .step-row strong { color:var(--text); font-weight:600; }
 .step-row a { color:var(--accent-hi); }
 
-/* price strip: same numbers the store shows, straight from /api/config */
+                                                                          
 .price-terms { margin-top:20px; padding-top:16px; border-top:1px solid var(--line); }
 .price-terms h2 { color:var(--mute); font:.57rem var(--mono); font-weight:500; letter-spacing:.16em; text-transform:uppercase; margin-bottom:12px; }
 .price-tabs { display:flex; flex-wrap:wrap; gap:6px; }
@@ -222,8 +222,8 @@ h1 { font-size:clamp(1.7rem,3.6vw,2.15rem); font-weight:600; letter-spacing:-.03
     .foot { margin-top:16px; padding-top:12px; }
 }
 @media (max-width:520px) {
-    /* phones: the card still has to land inside one screen, so the padding and
-       the small type tighten up before anything is dropped */
+                                                                               
+                                                              
     .shell { padding:12px 14px; }
     .card { padding:20px 18px; }
     .card-head { margin-bottom:14px; }
@@ -320,8 +320,8 @@ h1 { font-size:clamp(1.7rem,3.6vw,2.15rem); font-weight:600; letter-spacing:-.03
 <script>
 'use strict';
 
-/* Prices and checkout come from the same config the storefront uses, so the two
-   pages can never disagree about what a term costs. */
+                                                                                
+                                                       
 var sellAuthConfig = null;
 
 function formatPrice(amount) {
@@ -380,9 +380,9 @@ fetch('/api/config').then(function (r) { return r.json(); }).then(function (cfg)
 });
 </script>
 
-<!-- React Bits CRTWarp: the animated page background the storefront runs. -->
+
 <script src="/assets/crt-warp.js" defer></script>
-<!-- React Bits PixelCard: the shimmer on the download card. -->
+
 <script src="/assets/pixel-card.js" defer></script>
 <script src="https://static.sellauth.com/embed/v3.min.js" defer></script>
 </body>

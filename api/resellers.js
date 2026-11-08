@@ -4,14 +4,14 @@ import {
   normUser, validUsername, validEmail, enc, userIndex, emailIndex, dec, db, audit, PASSWORD_MIN
 } from './_lib.js';
 
-// Admin-only account management. Reseller passwords are write-only: they can
-// be set or reset here, but no endpoint ever returns one.
+                                                                             
+                                                          
 function quotaOf(v) {
   const n = parseInt(v, 10);
   return Number.isFinite(n) ? Math.max(0, Math.min(100000, n)) : 0;
 }
 
-// Would this change leave at least one usable admin behind?
+                                                            
 function adminsAfter(all, id, patch) {
   let n = 0;
   for (const [cid, a] of Object.entries(all || {})) {

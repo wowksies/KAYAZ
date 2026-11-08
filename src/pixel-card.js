@@ -1,20 +1,20 @@
-/**
- * PixelCard - React Bits (reactbits.dev), ported from the supplied React
- * component to a plain DOM mount so it can wrap the storefront's own cards.
- *
- * What changed from upstream, and nothing else:
- *   - the React wrapper is gone; the mounted container owns its canvas, its
- *     own mount/update lifecycle and destroy()
- *   - settings can come from data attributes (see mountAll) or from mount()
- *   - reduced motion keeps the card still instead of animating, matching the
- *     rest of the page
- *
- * The Pixel class, getEffectiveSpeed, the variant table and the 60 fps loop are
- * copied from upstream unchanged.
- *
- * Upstream licence: MIT + Commons Clause, (c) 2026 David Haz.
- * See THIRD_PARTY_NOTICES.md.
- */
+   
+                                                                         
+                                                                            
+  
+                                                
+                                                                            
+                                               
+                                                                            
+                                                                             
+                       
+  
+                                                                                
+                                  
+  
+                                                              
+                              
+   
 
 class Pixel {
   constructor(canvas, context, x, y, color, speed, delay) {
@@ -142,12 +142,12 @@ function prefersReducedMotion() {
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/**
- * Wraps one container (the card itself) with the pixel effect. The canvas is a
- * child of the container and everything else inside is left alone, so the card
- * keeps its own markup, links and buttons. Returns a handle, or null when the
- * container cannot take a 2d context.
- */
+   
+                                                                               
+                                                                               
+                                                                              
+                                      
+   
 export function createPixelCard(container, options = {}) {
   if (!container) return null;
 
@@ -282,7 +282,7 @@ export function createPixelCard(container, options = {}) {
   };
 }
 
-/** Mounts one container, unless it is already wrapped. */
+                                                          
 export function mount(container, options = {}) {
   if (!container || container.__kayazPixelCard) return null;
   let instance = null;

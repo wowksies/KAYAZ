@@ -1,34 +1,34 @@
 import { rateLimit } from './_lib.js';
 import health from './_health.js';
 
-// Public storefront config. Exposes only non-secret SellAuth identifiers so the
-// browser can build a checkout cart. No Firebase secrets ever leave the server.
-//
-// Env vars (set in Vercel):
-//   SHOP_ID     -> SellAuth shop id
-//   PRODUCT_ID  -> the single SellAuth product id (used as productId in variants mode)
-//   THREEDAYID / SEVENDAYID / ONEMONTHID / SEASONALID -> per-duration ids
-//   SHOP_URL    -> the SellAuth storefront url checkout is served from
-//                  (for example https://yourshop.mysellauth.com or your custom store domain)
-//
-// Listed prices, one per term, with the optional "was" price the storefront
-// strikes through. The defaults mirror the SellAuth variant list; change them
-// here or override them per environment without a deploy:
-//   PRICE_3DAYS / COMPARE_3DAYS, PRICE_7DAYS / COMPARE_7DAYS,
-//   PRICE_1MONTH / COMPARE_1MONTH, PRICE_SEASONAL / COMPARE_SEASONAL
-//   CURRENCY (default EUR) and CURRENCY_SYMBOL (default the euro sign)
-// SellAuth stays the source of truth: it shows the final total at checkout.
-//
-// MODE controls how the per-duration ids are used:
-//   'variants' (default) -> each duration id is a VARIANT id under PRODUCT_ID.
-//                           cart item: { productId: PRODUCT_ID, variantId: <duration id> }
-//   'products'           -> each duration id is its own PRODUCT id.
-//                           cart item: { productId: <duration id> }
-// Flip MODE here (or set SELLAUTH_MODE env) if the ids map the other way in your dashboard.
+                                                                                
+                                                                                
+  
+                            
+                                    
+                                                                                       
+                                                                          
+                                                                       
+                                                                                             
+  
+                                                                            
+                                                                              
+                                                          
+                                                              
+                                                                     
+                                                                       
+                                                                            
+  
+                                                   
+                                                                               
+                                                                                           
+                                                                    
+                                                                    
+                                                                                            
 
 export default function handler(req, res) {
-  // /api/health is rewritten here to stay inside the Hobby plan's
-  // 12-serverless-function limit. The probe only exposes public data.
+                                                                  
+                                                                      
   if (req.query && (req.query.__health === '1' || req.query.__health === 1)) return health(req, res);
   if (!rateLimit(req, res, 'config', 120, 60000)) return;
   const env = process.env;
@@ -46,7 +46,7 @@ export default function handler(req, res) {
   const productId = num(env.PRODUCT_ID);
   const shopUrl = env.SHOP_URL || 'https://kayaz.mysellauth.com';
 
-  // duration label -> its id
+                             
   const durationIds = {
     threeDays: num(env.THREEDAYID),
     sevenDays: num(env.SEVENDAYID),
