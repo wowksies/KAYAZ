@@ -16,6 +16,33 @@ function pickTarget(v) {
   return t === 'r6' || t === 'site' ? t : '';
 }
 
+function parseDuration(v) {
+  if (v === undefined || v === null || v === '') return null;
+  if (v === 'lifetime' || v === 0 || v === '0') return 0;
+  let n;
+  if (typeof v === 'number') n = v;
+  else {
+    const s = String(v).trim().toLowerCase();
+    const m = s.match(/^([0-9]+)\s*(d|days?|w|weeks?|m|months?|y|years?)?$/);
+    if (!m) return null;
+    n = parseInt(m[1], 10);
+    const u = m[2] || 'd';
+    if (u.startsWith('w')) n *= 7;
+    else if (u.startsWith('m')) n *= 30;
+    else if (u.startsWith('y')) n *= 365;
+  }
+  if (!Number.isFinite(n) || n < 0 || n > 3650) return null;
+  return n;
+}
+
+function validHwid(h) {
+  return /^[a-f0-9]{32,96}$/.test(String(h || '').toLowerCase());
+}
+
+function cleanReason(v) {
+  return String(v || '').replace(/[^\x20-\x7E]/g, '').trim().slice(0, 256);
+}
+
 function storeFor(target) {
   return target === 'site' ? db : r6db;
 }
@@ -49,7 +76,12 @@ function r6Record(h, c) {
     owner: c.owner || '',
     ownerName: c.ownerName ? dec(c.ownerName) : (c.email || 'sellaut'),
     invitedName: '',
-    invitedTo: ''
+    invitedTo: '',
+    // r6 only: how long is left, so the panel can show "7d left" / "expired" / "lifetime"
+    // without the client needing to know the schema.
+    durationDays: Number(c.duration_days) || 0,
+    expiresAt: Number(c.expires_at) || 0,
+    hwid: String(c.hwid || '')
   };
 }
 
@@ -76,6 +108,60 @@ export default async function handler(req, res) {
   const acc = await requirePanel(req, res);
   if (!acc) return;
   const isAdmin = acc.role === 'admin';
+
+  // ── bans sub-route ────────────────────────────────────────────────────
+  // Lives under /api/keys to keep the Vercel Hobby function count at 12.
+  // Admin-only on every verb: resellers never need to see or touch bans.
+  const bodyKind = req.method === 'GET'
+    ? (req.query && req.query.kind)
+    : null;
+  const needsBody = req.method === 'POST' || req.method === 'PATCH' || req.method === 'DELETE';
+  let parsedBody = null;
+  async function body() {
+    if (parsedBody === null) parsedBody = await readBody(req);
+    return parsedBody;
+  }
+  const kind = bodyKind || (needsBody ? ((await body()).kind) : null);
+  if (kind === 'bans') {
+    if (!isAdmin) return send(res, 403, { error: 'admin only' });
+    if (!r6Configured()) return send(res, 503, { error: 'r6 key store not configured' });
+
+    if (req.method === 'GET') {
+      let all;
+      try { all = await r6db.get('bans'); } catch (e) { return send(res, 500, { error: 'server error' }); }
+      const rows = Object.entries(all || {})
+        .map(([hwid, v]) => v ? { hwid, at: Number(v.at) || 0, reason: String(v.reason || '') } : null)
+        .filter(Boolean)
+        .sort((a, b) => b.at - a.at);
+      return send(res, 200, { bans: rows });
+    }
+
+    if (req.method === 'POST') {
+      if (!requireSameOrigin(req, res)) return;
+      const b = await body();
+      const hwid = String(b.hwid || '').toLowerCase();
+      if (!validHwid(hwid)) return send(res, 400, { error: 'bad hwid' });
+      const reason = cleanReason(b.reason) || 'manual';
+      try {
+        await r6db.put('bans/' + hwid, { at: Math.floor(Date.now() / 1000), reason });
+      } catch (e) { return send(res, 500, { error: 'server error' }); }
+      await audit(acc, 'ban.add', hwid.slice(0, 16) + (reason ? ' (' + reason + ')' : ''), req);
+      return send(res, 200, { ok: true });
+    }
+
+    if (req.method === 'DELETE') {
+      if (!requireSameOrigin(req, res)) return;
+      const b = await body();
+      const hwid = String(b.hwid || '').toLowerCase();
+      if (!validHwid(hwid)) return send(res, 400, { error: 'bad hwid' });
+      try { await r6db.del('bans/' + hwid); } catch (e) { return send(res, 500, { error: 'server error' }); }
+      await audit(acc, 'ban.remove', hwid.slice(0, 16), req);
+      return send(res, 200, { ok: true });
+    }
+
+    res.setHeader('allow', 'GET, POST, DELETE');
+    return send(res, 405, { error: 'method' });
+  }
 
   if (req.method === 'GET') {
     const target = pickTarget(req.query && req.query.target);
@@ -114,19 +200,25 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     if (!requireSameOrigin(req, res)) return;
 
-    const body = await readBody(req);
-    const target = pickTarget(body.target);
+    const bod = parsedBody || await readBody(req);
+    const target = pickTarget(bod.target);
     if (!target) return send(res, 400, { error: 'bad target' });
     if (target === 'r6' && !r6Configured()) return send(res, 503, { error: 'r6 key store not configured' });
 
-    let n = Math.min(Math.max(parseInt(body.count, 10) || 1, 1), isAdmin ? 50 : 20);
-    const label = cleanLabel(body.label);
+    let n = Math.min(Math.max(parseInt(bod.count, 10) || 1, 1), isAdmin ? 50 : 20);
+    const label = cleanLabel(bod.label);
+    // Duration: only honoured for r6 (site keys have no expiry). null = lifetime.
+    // Resellers get the same choices as admins; the quota check below still
+    // caps their total key count.
+    const durationDays = target === 'r6' ? parseDuration(bod.duration) : null;
+    if (target === 'r6' && bod.duration !== undefined && bod.duration !== '' && durationDays === null)
+      return send(res, 400, { error: 'bad duration' });
 
     let owner = acc.id;
     let ownerName = acc.user;
 
-    if (isAdmin && body.owner) {
-      const targetAcc = await getAccount(String(body.owner));
+    if (isAdmin && bod.owner) {
+      const targetAcc = await getAccount(String(bod.owner));
       if (!targetAcc) return send(res, 400, { error: 'unknown account' });
       owner = targetAcc.id;
       ownerName = dec(targetAcc.user);
@@ -158,14 +250,19 @@ export default async function handler(req, res) {
         if (target === 'r6') {
           const code = makeLauncherKey();
           const h = sha256(code);
+          // expires_at is seconds-since-epoch (matches how the Worker reads
+          // it; needed/Worker/src/index.ts treats 0/missing/empty as
+          // lifetime). duration_days is kept purely for the panel's UI.
+          const d = durationDays === null ? 0 : durationDays;
+          const exp = d > 0 ? Math.floor(Date.now() / 1000) + d * 86400 : 0;
           await store.put(node + '/' + h, {
             created: Date.now(),
             label: 'KAYAZ R6',
             memo: enc(label),
             shown: '••••-' + code.slice(-4),
             tier: 'panel',
-            duration_days: 0,
-            expires_at: 0,
+            duration_days: d,
+            expires_at: exp,
             disabled: false,
             active: true,
             hwid: '',
@@ -199,7 +296,8 @@ export default async function handler(req, res) {
   if (req.method === 'PATCH') {
     if (!requireSameOrigin(req, res)) return;
 
-    const { h, revoked, reset, target: rawTarget } = await readBody(req);
+    const bod = parsedBody || await readBody(req);
+    const { h, revoked, reset, duration, banHwid, target: rawTarget } = bod;
     const target = pickTarget(rawTarget);
     if (!target) return send(res, 400, { error: 'bad target' });
     if (target === 'r6' && !r6Configured()) return send(res, 503, { error: 'r6 key store not configured' });
@@ -215,6 +313,21 @@ export default async function handler(req, res) {
     }
     if (!rec || (!isAdmin && rec.owner !== acc.id)) return send(res, 404, { error: 'not found' });
 
+    // Shortcut: ban the key's bound HWID straight from the key row. Admin
+    // only; needs an actual bound hwid.
+    if (banHwid) {
+      if (!isAdmin) return send(res, 403, { error: 'admin only' });
+      if (target !== 'r6') return send(res, 400, { error: 'ban only for r6' });
+      const hwid = String(rec.hwid || '').toLowerCase();
+      if (!validHwid(hwid)) return send(res, 400, { error: 'key is not bound' });
+      const reason = cleanReason(bod.banReason) || ('key ' + h.slice(0, 12));
+      try {
+        await r6db.put('bans/' + hwid, { at: Math.floor(Date.now() / 1000), reason });
+      } catch (e) { return send(res, 500, { error: 'server error' }); }
+      await audit(acc, 'ban.add', hwid.slice(0, 16) + ' (from key ' + h.slice(0, 12) + ')', req);
+      return send(res, 200, { ok: true, banned: hwid });
+    }
+
     const patch = {};
     if (target === 'r6') {
       if (typeof revoked === 'boolean') {
@@ -222,6 +335,12 @@ export default async function handler(req, res) {
         patch.active = !revoked;
       }
       if (reset) patch.hwid = '';
+      if (duration !== undefined && duration !== '') {
+        const d = parseDuration(duration);
+        if (d === null) return send(res, 400, { error: 'bad duration' });
+        patch.duration_days = d;
+        patch.expires_at = d > 0 ? Math.floor(Date.now() / 1000) + d * 86400 : 0;
+      }
     } else {
       if (typeof revoked === 'boolean') patch.revoked = revoked;
       if (reset) { patch.device = null; patch.usedAt = 0; }
@@ -233,14 +352,19 @@ export default async function handler(req, res) {
     } catch (e) {
       return send(res, 500, { error: 'server error' });
     }
-    await audit(acc, patch.revoked === undefined && patch.disabled === undefined ? 'key.unbind' : (revoked ? 'key.revoke' : 'key.restore'), target + ':' + h.slice(0, 12), req);
+    const act = patch.expires_at !== undefined
+      ? 'key.duration'
+      : (patch.revoked === undefined && patch.disabled === undefined
+          ? 'key.unbind'
+          : (revoked ? 'key.revoke' : 'key.restore'));
+    await audit(acc, act, target + ':' + h.slice(0, 12), req);
     return send(res, 200, { ok: true, target });
   }
 
   if (req.method === 'DELETE') {
     if (!requireSameOrigin(req, res)) return;
 
-    const body = await readBody(req);
+    const body = parsedBody || await readBody(req);
     const target = pickTarget(body.target);
     if (!target) return send(res, 400, { error: 'bad target' });
     if (target === 'r6' && !r6Configured()) return send(res, 503, { error: 'r6 key store not configured' });
