@@ -163,9 +163,10 @@ export function verifyPassword(password, stored) {
   const r = parseInt(parts[2], 10);
   const p = parseInt(parts[3], 10);
   if (!N || !r || !p) return false;
+  if (N < 16384 || N > 1048576 || r < 8 || r > 32 || p < 1 || p > 8) return false;
   let salt, want;
   try { salt = Buffer.from(parts[4], 'hex'); want = Buffer.from(parts[5], 'hex'); } catch (e) { return false; }
-  if (!salt.length || want.length < 16) return false;
+  if (!salt.length || salt.length > 64 || want.length < 16 || want.length > 64) return false;
   let got;
   try {
     got = crypto.scryptSync(String(password).normalize('NFKC'), salt, want.length, { N, r, p, maxmem: SCRYPT.maxmem });
@@ -183,6 +184,27 @@ export const DUMMY_HASH = hashPassword('kayaz-dummy-' + crypto.randomBytes(12).t
 export function signSession(payload, days) {
   const body = { ...payload, iat: Date.now(), exp: Date.now() + (days || 30) * 86400000 };
   return enc('s1|' + JSON.stringify(body));
+}
+
+export async function createPanelSession(acc, name, ver, req) {
+  const sid = crypto.randomBytes(18).toString('hex');
+  const now = Date.now();
+  const exp = now + 7 * 86400000;
+  await db.put('sessions/' + sid, {
+    u: acc.id,
+    v: Number(ver) || 1,
+    at: now,
+    exp,
+    ua: sha256('ua:' + String((req.headers && req.headers['user-agent']) || '').slice(0, 300)).slice(0, 16),
+    ip: sha256('ip:' + clientIp(req)).slice(0, 16)
+  });
+  return signSession({ t: acc.role === 'admin' ? 'a' : 'r', u: acc.id, n: name, v: Number(ver) || 1, sid }, 7);
+}
+
+export async function destroyPanelSession(req) {
+  const s = verifySession(cookies(req)[COOKIE]);
+  if (!s || !s.sid) return;
+  try { await db.del('sessions/' + s.sid); } catch (e) {}
 }
 
 function b64u(buf) {
@@ -225,13 +247,14 @@ export function verifySession(token) {
 
 export function cookies(req) {
   const out = {};
-  const raw = String((req.headers && req.headers.cookie) || '');
+  const raw = String((req.headers && req.headers.cookie) || '').slice(0, 8192);
   raw.split(';').forEach(part => {
     const i = part.indexOf('=');
     if (i < 1) return;
     const k = part.slice(0, i).trim();
     const v = part.slice(i + 1).trim();
-    if (k) out[k] = decodeURIComponent(v);
+    if (!k || k.length > 64 || v.length > 4096) return;
+    try { out[k] = decodeURIComponent(v); } catch (e) { out[k] = v; }
   });
   return out;
 }
@@ -366,10 +389,23 @@ export async function bootstrapAdmin(user, password) {
 export async function panelAccount(req) {
   const s = verifySession(cookies(req)[COOKIE]);
   if (!s || (s.t !== 'a' && s.t !== 'r') || !s.u) return null;
+  if (!/^[a-f0-9]{36}$/.test(String(s.sid || ''))) return null;
+  const sess = await db.get('sessions/' + s.sid);
+  if (!sess || sess.u !== s.u || Number(sess.exp) <= Date.now()) return null;
+  if ((Number(sess.v) || 1) !== (Number(s.v) || 1)) return null;
   const acc = await getAccount(s.u);
   if (!acc || acc.disabled) return null;
   if ((Number(acc.ver) || 1) !== (Number(s.v) || 1)) return null;
   return { ...acc, user: dec(acc.user) };
+}
+
+export async function activeCodeUser(req) {
+  const s = requireUser(req);
+  if (!s || s.t !== 'u' || !/^[a-f0-9]{64}$/.test(String(s.c || ''))) return null;
+  const rec = await db.get('codes/' + s.c);
+  if (!rec || rec.revoked) return null;
+  if (!rec.device || rec.device !== String(s.d || '')) return null;
+  return { s, rec };
 }
 
 export async function requirePanel(req, res, roles) {
@@ -421,7 +457,7 @@ async function pruneAudit() {
 
                                                                              
 export function requestHost(req) {
-  return String((req.headers && (req.headers['x-forwarded-host'] || req.headers.host)) || '')
+  return String((req.headers && (req.headers.host || req.headers['x-forwarded-host'])) || '')
     .split(',')[0].trim().toLowerCase();
 }
 
@@ -472,7 +508,12 @@ export function makeLauncherKey() {
                                                                              
 async function dbFetchAt(base, secret, path, opts = {}) {
   const url = `${base}/${path}.json?auth=${encodeURIComponent(secret)}`;
-  const res = await fetch(url, opts);
+  let res;
+  try {
+    res = await fetch(url, opts);
+  } catch (e) {
+    throw new Error('db unavailable');
+  }
   if (!res.ok) throw new Error('db ' + res.status);
   const txt = await res.text();
   return txt && txt !== 'null' ? JSON.parse(txt) : null;
@@ -505,17 +546,33 @@ export const r6db = {
 };
 
 export function readBody(req) {
-  if (req.body && typeof req.body === 'object') return Promise.resolve(req.body);
+  if (req.body && typeof req.body === 'object') return Promise.resolve(Array.isArray(req.body) ? {} : req.body);
   return new Promise(resolve => {
     let d = '';
+    let done = false;
+    const finish = value => {
+      if (done) return;
+      done = true;
+      resolve(value);
+    };
     req.on('data', c => {
       d += c;
-      if (d.length > 8e6) req.destroy();
+      if (d.length > 8e6) {
+        finish({});
+        try { req.destroy(); } catch (e) {}
+      }
     });
     req.on('end', () => {
-      try { resolve(JSON.parse(d || '{}')); } catch (e) { resolve({}); }
+      try {
+        const v = JSON.parse(d || '{}');
+        finish(v && typeof v === 'object' && !Array.isArray(v) ? v : {});
+      } catch (e) {
+        finish({});
+      }
     });
-    req.on('error', () => resolve({}));
+    req.on('error', () => finish({}));
+    req.on('aborted', () => finish({}));
+    req.on('close', () => finish({}));
   });
 }
 
@@ -542,14 +599,23 @@ const buckets = new Map();
 
 export function clientIp(req) {
   const h = req.headers || {};
-  const fwd = String(h['x-forwarded-for'] || h['x-vercel-forwarded-for'] || '').split(',')[0].trim();
-  return fwd || String(h['x-real-ip'] || '').trim() || (req.socket && req.socket.remoteAddress) || 'x';
+  const fwd = String(h['x-vercel-forwarded-for'] || h['x-real-ip'] || h['x-forwarded-for'] || '').split(',')[0].trim().slice(0, 64);
+  return fwd || (req.socket && req.socket.remoteAddress) || 'x';
 }
 
 export function rateLimit(req, res, name, max, windowMs) {
   const ip = clientIp(req);
   const key = name + '|' + ip;
   const now = Date.now();
+  if (buckets.size > 5000) {
+    const cutoff = now - 3600000;
+    for (const [k, v] of buckets) if (!v || v.t < cutoff) buckets.delete(k);
+    while (buckets.size > 10000) {
+      const first = buckets.keys().next().value;
+      if (!first) break;
+      buckets.delete(first);
+    }
+  }
   let rec = buckets.get(key);
   if (!rec || now - rec.t > windowMs) { rec = { n: 0, t: now }; buckets.set(key, rec); }
   rec.n++;

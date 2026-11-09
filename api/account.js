@@ -2,7 +2,7 @@ import {
   requirePanel, requireSameOrigin, readBody, send, guardConfig, rateLimit,
   verifyPassword, hashPassword, normUser, validUsername, validEmail,
   getAccountByUser, getAccountByEmail, enc, userIndex, emailIndex,
-  signSession, setSessionCookie, db, audit, PASSWORD_MIN, dec
+  createPanelSession, setSessionCookie, db, audit, PASSWORD_MIN, dec
 } from './_lib.js';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -106,7 +106,12 @@ export default async function handler(req, res) {
   await audit({ id: acc.id, user: name }, 'account.update', Object.keys(patch).join(','), req);
 
   const ver = Number(patch.ver) || Number(acc.ver) || 1;
-  const token = signSession({ t: acc.role === 'admin' ? 'a' : 'r', u: acc.id, n: name, v: ver }, 7);
+  let token;
+  try {
+    token = await createPanelSession(acc, name, ver, req);
+  } catch (e) {
+    return send(res, 500, { error: 'server error' });
+  }
   setSessionCookie(req, res, token, 7 * 86400);
   return send(res, 200, { ok: true, user: name, email });
 }

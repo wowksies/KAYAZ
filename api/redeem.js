@@ -5,7 +5,9 @@ export default async function handler(req, res) {
   if (guardConfig(res)) return;
   if (!rateLimit(req, res, 'redeem', 10, 600000)) return;
   const { code, device } = await readBody(req);
-  const c = normCode(code);
+  const raw = String(code || '');
+  if (raw.length > 64) return send(res, 400, { error: 'bad request' });
+  const c = normCode(raw);
   const dev = String(device || '').slice(0, 64);
   if (c.length < 6 || !dev) return send(res, 400, { error: 'bad request' });
   const h = sha256(c);

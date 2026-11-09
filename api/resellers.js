@@ -97,6 +97,7 @@ export default async function handler(req, res) {
     if (b.password) {
       const p = String(b.password);
       if (p.length < PASSWORD_MIN) return send(res, 400, { error: 'password must be at least ' + PASSWORD_MIN + ' characters' });
+      if (p.length > 200) return send(res, 400, { error: 'password must be 200 characters or fewer' });
       patch.pass = hashPassword(p);
       patch.ver = (Number(target.ver) || 1) + 1;
       patch.passChanged = Date.now();

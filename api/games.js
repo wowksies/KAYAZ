@@ -1,4 +1,4 @@
-import { db, requirePanel, requireUser, readBody, send, guardConfig, rateLimit } from './_lib.js';
+import { db, requirePanel, activeCodeUser, readBody, send, guardConfig, rateLimit, requireSameOrigin } from './_lib.js';
 
 const HOST_MOVES = [
   [/^https?:\/\/kivro-game-library-9d7913\.gitlab\.io\/+/i, 'https://kivrhdhdhd.vercel.app/']
@@ -30,26 +30,27 @@ export default async function handler(req, res) {
   if (!rateLimit(req, res, 'games', 60, 60000)) return;
 
   if (req.method === 'GET') {
-    if (!requireUser(req)) {
+    let user = null;
+    try {
+      user = await activeCodeUser(req);
+    } catch (e) {
+      return send(res, 500, { error: 'server error' });
+    }
+    if (!user) {
       const panel = await requirePanel(req, res);
       if (!panel) return;
     }
     let all;
     try { all = await db.get('games'); } catch (e) { return send(res, 500, { error: 'server error' }); }
-    const moved = {};
-    for (const [id, g] of Object.entries(all || {})) {
-      if (!g || typeof g.url !== 'string') continue;
-      const m = moveHost(g.url);
-      if (m !== g.url) { moved[id + '/url'] = m; g.url = m; }
-    }
-    if (Object.keys(moved).length) { try { await db.patch('games', moved); } catch (e) {} }
     const list = Object.entries(all || {}).map(([id, g]) => ({ id, ...g }))
+      .filter(g => /^https?:\/\//i.test(String(g.url || '')))
       .sort((a, b) => String(a.title).localeCompare(String(b.title)));
     return send(res, 200, { games: list });
   }
 
   const admin = await requirePanel(req, res, ['admin']);
   if (!admin) return;
+  if (!requireSameOrigin(req, res)) return;
 
   if (req.method === 'POST') {
     const body = await readBody(req);

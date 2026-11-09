@@ -258,6 +258,7 @@ export default async function handler(req, res) {
       let removed = 0;
       for (const [k, v] of Object.entries(all || {})) {
         if (!v || (target === 'r6' ? v.hwid : v.device)) continue;
+        if (target === 'r6' && !v.owner) continue;
         if (!isAdmin && v.owner !== acc.id) continue;
         try { await store.del(node + '/' + k); removed++; } catch (e) {}
       }

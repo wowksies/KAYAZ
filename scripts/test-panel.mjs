@@ -1,9 +1,5 @@
-   
-                                                                         
-                                                     
-  
-                                   
-   
+import fs from 'node:fs';
+
 process.env.FIREBASE_URL = 'https://fake-db.local';
 process.env.FIREBASE_SECRET = 'test-secret';
 process.env['R6_Firebase_URL'] = 'https://fake-r6.local';
@@ -68,7 +64,7 @@ globalThis.fetch = async (url, opts = {}) => {
   return { ok: true, status: 200, text: async () => JSON.stringify(value) };
 };
 
-const { sha256, normCode, r6Status } = await import('../api/_lib.js');
+const { sha256, normCode, r6Status, verifyPassword } = await import('../api/_lib.js');
 const { default: login } = await import('../api/login.js');
 const { default: logout } = await import('../api/logout.js');
 const { default: session } = await import('../api/session.js');
@@ -79,6 +75,7 @@ const { default: audit } = await import('../api/audit.js');
 const { default: config } = await import('../api/config.js');
 const { default: redeem } = await import('../api/redeem.js');
 const { default: games } = await import('../api/games.js');
+const { default: invite } = await import('../api/invite.js');
 const { default: credential } = await import('../api/credential.js');
 
 let checks = 0;
@@ -89,6 +86,14 @@ function ok(name, cond, extra) {
   failures++;
   console.error('  FAIL  ' + name + (extra !== undefined ? '  ' + JSON.stringify(extra) : ''));
 }
+
+const root = process.cwd();
+const rules = JSON.parse(fs.readFileSync(root + '/firebase.rules.json', 'utf8'));
+const ruleObjects = Object.values(rules.rules).filter(v => v && typeof v === 'object');
+ok('firebase rules deny every client path', rules.rules['.read'] === false && rules.rules['.write'] === false && ruleObjects.every(v => v['.read'] === false && v['.write'] === false));
+const gamesHtml = fs.readFileSync(root + '/games/index.html', 'utf8');
+ok('injected games cannot inherit the panel origin', /SANDBOX_BASE/.test(gamesHtml) && /setFrameSandbox\(false\)/.test(gamesHtml) && /setFrameSandbox\(true\)/.test(gamesHtml));
+ok('game base urls are attribute-escaped', (gamesHtml.match(/escAttr\(base\)/g) || []).length >= 2);
 
 function req(o = {}) {
   const headers = Object.assign({ host: 'kayaz.xyz', origin: 'https://kayaz.xyz' }, o.headers || {});
@@ -120,6 +125,8 @@ ok('bootstrap admin signs in', r.statusCode === 200 && json(r).role === 'admin',
 let adminCookie = cookieOf(r);
 ok('session cookie is sealed', /^kz_s=kz1\./.test(adminCookie), adminCookie.slice(0, 30));
 ok('cookie is scoped to /api', /Path=\/api/.test(setCookie(r)), setCookie(r));
+ok('panel session is stored server side', Object.keys(store.sessions || {}).length > 0);
+ok('tampered scrypt cost rejected', verifyPassword('x', 'scrypt$999999999$8$1$' + '00'.repeat(16) + '$' + '11'.repeat(32)) === false);
 
 const adminRec = store.accounts[Object.keys(store.accounts)[0]];
 ok('password stored as scrypt hash', /^scrypt\$16384\$8\$1\$/.test(String(adminRec.pass)));
@@ -243,6 +250,12 @@ await keys(req({ method: 'DELETE', cookie: adminCookie, body: { h: adminHash, ta
 ok('a key cannot be deleted through the other store', r.statusCode === 404, r.statusCode);
 ok('r6 key survived the cross-store delete', Boolean(store.r6.keys[adminHash]));
 
+store.r6.keys['f'.repeat(64)] = { label: 'sellauth', disabled: false, active: true, hwid: '', expires_at: 0 };
+r = res();
+await keys(req({ method: 'DELETE', cookie: adminCookie, body: { all: 'unused', target: 'r6' } }), r);
+ok('bulk delete never removes non-panel r6 keys', r.statusCode === 200 && Boolean(store.r6.keys['f'.repeat(64)]), json(r));
+ok('bulk delete removes unused panel r6 keys', !store.r6.keys[adminHash], json(r));
+
                                                                              
 r = res();
 await redeem(req({ method: 'POST', body: { code: siteCode, device: 'device-test-1' } }), r);
@@ -251,8 +264,61 @@ ok('redeem returns the plaintext label', json(r).label === 'site-batch', json(r)
 const userToken = json(r).token;
 
 r = res();
+await redeem(req({ method: 'POST', body: { code: 'A'.repeat(200), device: 'device-test-1' } }), r);
+ok('oversized redeem code refused', r.statusCode === 400, r.statusCode);
+
+r = res();
 await session(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
 ok('code session still works', r.statusCode === 200 && json(r).role === 'user', json(r));
+
+r = res();
+await games(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
+ok('code session reads games', r.statusCode === 200, r.statusCode);
+
+r = res();
+await invite(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
+ok('invite state starts empty', r.statusCode === 200 && json(r).invited === null, json(r));
+
+r = res();
+await invite(req({ method: 'POST', headers: { authorization: 'Bearer ' + userToken }, body: { name: 'friend' } }), r);
+const inviteCode = json(r).invited && json(r).invited.code;
+ok('invite is created', r.statusCode === 200 && Boolean(inviteCode), json(r));
+ok('invite name and code are encrypted at rest', (() => {
+  const inv = store.codes[siteHash] && store.codes[siteHash].invited;
+  return Boolean(inv) && String(inv.name).startsWith('kz1.') && String(inv.code).startsWith('kz1.') && !JSON.stringify(store).includes(inviteCode);
+})(), store.codes[siteHash] && store.codes[siteHash].invited);
+
+r = res();
+await invite(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
+ok('invite reads back decrypted', r.statusCode === 200 && json(r).invited.name === 'friend' && json(r).invited.code === inviteCode, json(r));
+
+r = res();
+await invite(req({ method: 'POST', headers: { authorization: 'Bearer ' + userToken }, body: { name: 'again' } }), r);
+ok('one invite per code', r.statusCode === 409, r.statusCode);
+
+r = res();
+await keys(req({ method: 'PATCH', cookie: adminCookie, body: { h: siteHash, reset: true, target: 'site' } }), r);
+ok('admin can reset a site key device', r.statusCode === 200, r.statusCode);
+
+r = res();
+await session(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
+ok('reset code session is refused', r.statusCode === 401, r.statusCode);
+
+r = res();
+await keys(req({ method: 'PATCH', cookie: adminCookie, body: { h: siteHash, revoked: true, target: 'site' } }), r);
+ok('admin can revoke a site key', r.statusCode === 200, r.statusCode);
+
+r = res();
+await session(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
+ok('revoked code session is refused', r.statusCode === 401, r.statusCode);
+
+r = res();
+await games(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
+ok('revoked code cannot read games', r.statusCode === 401, r.statusCode);
+
+r = res();
+await invite(req({ headers: { authorization: 'Bearer ' + userToken } }), r);
+ok('revoked code cannot invite', r.statusCode === 401, r.statusCode);
 
                                                                              
 r = res();
@@ -274,8 +340,16 @@ await account(req({ method: 'POST', cookie: sellerCookie, body: { current: 'sell
 ok('short password refused', r.statusCode === 400, json(r));
 
 r = res();
+await resellers(req({ method: 'PATCH', cookie: adminCookie, body: { id: sellerId, password: 'a'.repeat(201) } }), r);
+ok('oversized reseller password refused', r.statusCode === 400, json(r));
+
+r = res();
 await session(req({ cookie: cookieOf(res()) || '' }), r);
 ok('anonymous session refused', r.statusCode === 401, r.statusCode);
+
+r = res();
+await session(req({ cookie: 'kz_s=%E0%A4%A' }), r);
+ok('malformed cookie refused without a crash', r.statusCode === 401, r.statusCode);
 
 r = res();
 await login(req({ method: 'POST', body: { user: 'seller1', password: 'seller-pass-1' } }), r);
@@ -290,6 +364,15 @@ r = res();
 await games(req({ method: 'POST', cookie: adminCookie, body: { title: 'Test Game', url: 'https://example.test/g', cat: 'Test' } }), r);
 ok('admin can add a game', r.statusCode === 200, json(r));
 
+store.games.evil = { title: 'Evil', url: 'javascript:alert(1)' };
+r = res();
+await games(req({ cookie: adminCookie }), r);
+ok('non-http game urls are not served', r.statusCode === 200 && !(json(r).games || []).some(g => g.id === 'evil'), json(r));
+
+r = res();
+await games(req({ method: 'POST', cookie: adminCookie, headers: { origin: 'https://evil.test' }, body: { title: 'Evil', url: 'https://evil.test/g' } }), r);
+ok('cross-origin game write refused', r.statusCode === 403, r.statusCode);
+
 r = res();
 await audit(req({ cookie: adminCookie }), r);
 const events = json(r).events || [];
@@ -300,12 +383,16 @@ ok('audit names are readable for the admin', events.some(e => e.who === 'owner')
                                                                             
 const dump = JSON.stringify(store);
 ok('no plaintext usernames at rest', !dump.includes('seller1') && !dump.includes('owner@kayaz.xyz'));
-ok('no plaintext labels at rest', !dump.includes('batch-a') && !dump.includes('site-batch'));
+ok('no plaintext labels at rest', !dump.includes('batch-a') && !dump.includes('site-batch') && !dump.includes('friend'));
 
                                                                              
 r = res();
 await logout(req({ method: 'POST', cookie: adminCookie }), r);
 ok('logout expires the cookie', /Max-Age=0/.test(setCookie(r)), setCookie(r));
+
+r = res();
+await session(req({ cookie: adminCookie }), r);
+ok('logout revokes the server session', r.statusCode === 401, r.statusCode);
 
 
                                                                              

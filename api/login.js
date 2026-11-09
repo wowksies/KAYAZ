@@ -1,6 +1,6 @@
 import {
   db, sha256, normUser, verifyPassword, DUMMY_HASH, getAccountByLogin, bootstrapAdmin,
-  signSession, setSessionCookie, send, guardConfig, rateLimit, requireSameOrigin,
+  createPanelSession, setSessionCookie, send, guardConfig, rateLimit, requireSameOrigin,
   readBody, dec, clientIp, audit
 } from './_lib.js';
 
@@ -75,7 +75,12 @@ export default async function handler(req, res) {
   const role = acc.role === 'admin' ? 'admin' : 'reseller';
   const ver = Number(acc.ver) || 1;
   const name = dec(acc.user) || user;
-  const token = signSession({ t: role === 'admin' ? 'a' : 'r', u: acc.id, n: name, v: ver }, 7);
+  let token;
+  try {
+    token = await createPanelSession(acc, name, ver, req);
+  } catch (e) {
+    return send(res, 500, { error: 'server error' });
+  }
   setSessionCookie(req, res, token, 7 * 86400);
 
   try {

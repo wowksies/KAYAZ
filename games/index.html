@@ -724,6 +724,17 @@ var frame = document.getElementById('frame'), player = document.getElementById('
     loading = document.getElementById('loading'), note = document.getElementById('note'),
     padBtn = document.getElementById('padBtn');
 var token = 0, padOn = false, padAvailable = false;
+var SANDBOX_BASE = 'allow-scripts allow-popups allow-forms allow-pointer-lock allow-modals';
+var SANDBOX_TRUSTED = SANDBOX_BASE + ' allow-same-origin';
+function setFrameSandbox(trusted) {
+    frame.setAttribute('sandbox', trusted ? SANDBOX_TRUSTED : SANDBOX_BASE);
+}
+
+function escAttr(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+}
 
 function showNote(msg, ms) {
     note.textContent = msg; note.classList.add('on');
@@ -737,6 +748,7 @@ function bgPause() { try { bgv.pause(); } catch (e) {} }
 function bgResume() { try { var r = bgv.play(); if (r && r.catch) r.catch(function () {}); } catch (e) {} }
 
 function loadDirect(g, my) {
+    setFrameSandbox(true);
     padAvailable = false;
     padBtn.classList.remove('on');
     kbAvailable = false; kbOn = false;
@@ -765,6 +777,7 @@ function openGame(g, forceDirect, opts) {
     kbBtn.classList.remove('on');
     kbBtn.style.display = isTouch ? '' : 'none';
     frame.removeAttribute('srcdoc');
+    setFrameSandbox(false);
     frame.src = 'about:blank';
 
                                                                                 
@@ -782,8 +795,8 @@ function openGame(g, forceDirect, opts) {
         }
         var base = res.url.replace(/[^/]*$/, '');
         var doc = html;
-        if (!/<base\s/i.test(doc)) doc = doc.replace(/<head([^>]*)>/i, '<head$1><base href="' + base + '">');
-        if (!/<head/i.test(doc)) doc = '<head><base href="' + base + '"></head>' + doc;
+        if (!/<base\s/i.test(doc)) doc = doc.replace(/<head([^>]*)>/i, '<head$1><base href="' + escAttr(base) + '">');
+        if (!/<head/i.test(doc)) doc = '<head><base href="' + escAttr(base) + '"></head>' + doc;
         doc += '\n<' + 'script>' + PAD_SRC + '<\/' + 'script>';
         doc += '\n<' + 'script>' + KB_SRC + '<\/' + 'script>';
         padAvailable = true; kbAvailable = true;
@@ -887,6 +900,7 @@ function boostGame(g) {
     kbOn = false; kbAvailable = false;
     kbBtn.classList.remove('on');
     frame.removeAttribute('srcdoc');
+    setFrameSandbox(false);
     frame.src = 'about:blank';
     showNote('reloading with extra memory...');
 
@@ -900,7 +914,7 @@ function boostGame(g) {
         if (!res || my !== token) return;
         if (!isUnity(res.html)) throw new Error('not unity');
         var base = res.url.replace(/[^/]*$/, '');
-        var head = '<base href="' + base + '"><' + 'script>' + MEM_SRC + '<\/' + 'script>';
+        var head = '<base href="' + escAttr(base) + '"><' + 'script>' + MEM_SRC + '<\/' + 'script>';
         var doc = res.html;
         doc = /<head([^>]*)>/i.test(doc) ? doc.replace(/<head([^>]*)>/i, '<head$1>' + head) : head + doc;
         if (isTouch && g.kb) { doc += '\n<' + 'script>' + PAD_SRC + '<\/' + 'script>'; padAvailable = true; }
@@ -922,6 +936,7 @@ function closeGame() {
     player.classList.remove('on');
     document.body.style.overflow = '';
     frame.removeAttribute('srcdoc');
+    setFrameSandbox(false);
     frame.src = 'about:blank';
     if (document.fullscreenElement) { try { document.exitFullscreen(); } catch (e) {} }
 }
