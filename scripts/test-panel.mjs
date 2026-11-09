@@ -6,6 +6,8 @@
    
 process.env.FIREBASE_URL = 'https://fake-db.local';
 process.env.FIREBASE_SECRET = 'test-secret';
+process.env['R6_Firebase_URL'] = 'https://fake-r6.local';
+process.env['R6_Firebase_secret'] = 'r6-test-secret';
 process.env.SESSION_SECRET = 'k'.repeat(48);
 process.env.ADMIN_EMAIL = 'owner';
 process.env.ADMIN_PASSWORD = 'owner-password-123';
@@ -42,7 +44,8 @@ function drop(path) {
 }
 
 globalThis.fetch = async (url, opts = {}) => {
-  const path = new URL(url).pathname.replace(/^\//, '').replace(/\.json$/, '');
+  const u = new URL(url);
+  const path = (u.host === 'fake-r6.local' ? 'r6/' : '') + u.pathname.replace(/^\//, '').replace(/\.json$/, '');
   const method = String(opts.method || 'GET').toUpperCase();
   const body = opts.body ? JSON.parse(opts.body) : null;
   let value = null;
@@ -65,7 +68,7 @@ globalThis.fetch = async (url, opts = {}) => {
   return { ok: true, status: 200, text: async () => JSON.stringify(value) };
 };
 
-const { sha256, normCode } = await import('../api/_lib.js');
+const { sha256, normCode, r6Status } = await import('../api/_lib.js');
 const { default: login } = await import('../api/login.js');
 const { default: logout } = await import('../api/logout.js');
 const { default: session } = await import('../api/session.js');
@@ -90,7 +93,7 @@ function ok(name, cond, extra) {
 function req(o = {}) {
   const headers = Object.assign({ host: 'kayaz.xyz', origin: 'https://kayaz.xyz' }, o.headers || {});
   if (o.cookie) headers.cookie = o.cookie;
-  return { method: o.method || 'GET', body: o.body, headers };
+  return { method: o.method || 'GET', body: o.body, headers, query: o.query };
 }
 function res() {
   return {
@@ -164,20 +167,48 @@ ok('reseller signs in by email', r.statusCode === 200 && json(r).role === 'resel
 let sellerCookie = cookieOf(r);
 
                                                                             
+ok('r6 env vars detected whatever their casing', r6Status().url && r6Status().secret, r6Status());
+
 r = res();
 await keys(req({ method: 'POST', cookie: adminCookie, body: { count: 1, label: 'batch-a', owner: sellerId } }), r);
-ok('admin issues a key to the reseller', r.statusCode === 200 && json(r).codes.length === 1, json(r));
+ok('admin issues an r6 key to the reseller', r.statusCode === 200 && json(r).codes.length === 1 && json(r).target === 'r6', json(r));
 const sellerCode = (json(r).codes || [])[0];
-const sellerHash = sha256(normCode(sellerCode));
+const sellerHash = sha256(sellerCode);
 
-ok('key label encrypted at rest', String(store.codes[sellerHash].label).startsWith('kz1.'));
-ok('key owner recorded server side', store.codes[sellerHash].owner === sellerId);
+ok('r6 key format matches the launcher', /^KAYAZ-[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(sellerCode), sellerCode);
+ok('r6 key is stored under the launcher node', Boolean(store.r6 && store.r6.keys && store.r6.keys[sellerHash]));
+ok('r6 key is not in the site store', !(store.codes && store.codes[sellerHash]));
+ok('r6 key uses the launcher record shape', (() => {
+  const c = store.r6.keys[sellerHash];
+  return c.hwid === '' && c.disabled === false && c.active === true && c.expires_at === 0 && c.tier === 'panel' && c.duration_days === 0;
+})(), store.r6.keys[sellerHash]);
+ok('r6 key label encrypted at rest', String(store.r6.keys[sellerHash].memo).startsWith('kz1.'));
+ok('r6 key label is generic for the launcher', store.r6.keys[sellerHash].label === 'KAYAZ R6');
+ok('key owner recorded server side', store.r6.keys[sellerHash].owner === sellerId);
 ok('plaintext code never stored', !JSON.stringify(store).includes(sellerCode));
+
+r = res();
+await keys(req({ method: 'POST', cookie: adminCookie, body: { count: 1, label: 'site-batch', owner: sellerId, target: 'site' } }), r);
+ok('admin issues a site key to the reseller', r.statusCode === 200 && json(r).target === 'site', json(r));
+const siteCode = (json(r).codes || [])[0];
+const siteHash = sha256(normCode(siteCode));
+ok('site key is stored in the site store', Boolean(store.codes && store.codes[siteHash]));
+ok('site key is not in the r6 store', !store.r6.keys[siteHash]);
 
 r = res();
 await keys(req({ cookie: sellerCookie }), r);
 ok('reseller sees only their own keys', r.statusCode === 200 && json(r).keys.every(k => k.owner === sellerId), json(r));
 ok('owner reads decrypted label', json(r).keys[0].label === 'batch-a', json(r).keys[0] && json(r).keys[0].label);
+ok('r6 listing does not leak site keys', json(r).keys.length === 1 && json(r).keys[0].label === 'batch-a', json(r).keys);
+ok('quota counts keys in both stores', json(r).used === 2, json(r).used);
+
+r = res();
+await keys(Object.assign(req({ cookie: sellerCookie }), { query: { target: 'site' } }), r);
+ok('site listing is separate', r.statusCode === 200 && json(r).keys.length === 1 && json(r).keys[0].label === 'site-batch', json(r));
+
+r = res();
+await keys(Object.assign(req({ cookie: sellerCookie }), { query: { target: 'evil' } }), r);
+ok('unknown target refused', r.statusCode === 400, r.statusCode);
 
 r = res();
 await keys(req({ method: 'POST', cookie: sellerCookie, body: { count: 2 } }), r);
@@ -197,7 +228,7 @@ ok('reseller blocked from games writes', r.statusCode === 403, r.statusCode);
 
 r = res();
 await keys(req({ method: 'POST', cookie: adminCookie, body: { count: 1, label: 'admin-key' } }), r);
-const adminHash = sha256(normCode((json(r).codes || [])[0]));
+const adminHash = sha256((json(r).codes || [])[0]);
 
 r = res();
 await keys(req({ method: 'PATCH', cookie: sellerCookie, body: { h: adminHash, revoked: true } }), r);
@@ -207,11 +238,16 @@ r = res();
 await keys(req({ method: 'DELETE', cookie: sellerCookie, body: { h: adminHash } }), r);
 ok('reseller cannot delete another account key', r.statusCode === 404, r.statusCode);
 
+r = res();
+await keys(req({ method: 'DELETE', cookie: adminCookie, body: { h: adminHash, target: 'site' } }), r);
+ok('a key cannot be deleted through the other store', r.statusCode === 404, r.statusCode);
+ok('r6 key survived the cross-store delete', Boolean(store.r6.keys[adminHash]));
+
                                                                              
 r = res();
-await redeem(req({ method: 'POST', body: { code: sellerCode, device: 'device-test-1' } }), r);
-ok('key redeems', r.statusCode === 200 && Boolean(json(r).token), json(r));
-ok('redeem returns the plaintext label', json(r).label === 'batch-a', json(r).label);
+await redeem(req({ method: 'POST', body: { code: siteCode, device: 'device-test-1' } }), r);
+ok('site key redeems', r.statusCode === 200 && Boolean(json(r).token), json(r));
+ok('redeem returns the plaintext label', json(r).label === 'site-batch', json(r).label);
 const userToken = json(r).token;
 
 r = res();
@@ -264,7 +300,7 @@ ok('audit names are readable for the admin', events.some(e => e.who === 'owner')
                                                                             
 const dump = JSON.stringify(store);
 ok('no plaintext usernames at rest', !dump.includes('seller1') && !dump.includes('owner@kayaz.xyz'));
-ok('no plaintext labels at rest', !dump.includes('batch-a'));
+ok('no plaintext labels at rest', !dump.includes('batch-a') && !dump.includes('site-batch'));
 
                                                                              
 r = res();

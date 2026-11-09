@@ -24,8 +24,22 @@ import crypto from 'node:crypto';
                                                                       
    
 
+function envFirst(...names) {
+  for (const n of names) {
+    const v = process.env[n];
+    if (v) return v;
+  }
+  const want = names.map(n => n.toLowerCase());
+  for (const k of Object.keys(process.env)) {
+    if (want.includes(k.toLowerCase()) && process.env[k]) return process.env[k];
+  }
+  return '';
+}
+
 const DB_URL = (process.env.FIREBASE_DB_URL || process.env.FIREBASE_URL || '').replace(/\/$/, '');
 const DB_SECRET = process.env.FIREBASE_DB_SECRET || process.env.FIREBASE_SECRET || '';
+const R6_DB_URL = envFirst('R6_FIREBASE_URL', 'R6_FIREBASE_DB_URL').replace(/\/$/, '');
+const R6_DB_SECRET = envFirst('R6_FIREBASE_SECRET', 'R6_FIREBASE_DB_SECRET');
 const SESSION_SECRET = process.env.SESSION_SECRET || '';
 const DATA_KEY = process.env.DATA_KEY || '';
 const ADMIN_USER = (process.env.ADMIN_EMAIL || '').trim();
@@ -41,6 +55,14 @@ const EMAIL_RE = /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)+$/;
 
 export function configured() {
   return Boolean(DB_URL && DB_SECRET && SESSION_SECRET);
+}
+
+export function r6Configured() {
+  return Boolean(R6_DB_URL && R6_DB_SECRET);
+}
+
+export function r6Status() {
+  return { url: Boolean(R6_DB_URL), secret: Boolean(R6_DB_SECRET) };
 }
 
 export function sha256(s) {
@@ -441,14 +463,29 @@ export function makeCode() {
   return pick(4) + '-' + pick(4) + '-' + pick(4);
 }
 
+export function makeLauncherKey() {
+  const alpha = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const pick = n => Array.from(crypto.randomBytes(n)).map(b => alpha[b % alpha.length]).join('');
+  return 'KAYAZ-' + pick(4) + '-' + pick(4) + '-' + pick(4);
+}
+
                                                                              
-async function dbFetch(path, opts = {}) {
-  if (!configured()) throw new Error('unconfigured');
-  const url = `${DB_URL}/${path}.json?auth=${encodeURIComponent(DB_SECRET)}`;
+async function dbFetchAt(base, secret, path, opts = {}) {
+  const url = `${base}/${path}.json?auth=${encodeURIComponent(secret)}`;
   const res = await fetch(url, opts);
   if (!res.ok) throw new Error('db ' + res.status);
   const txt = await res.text();
   return txt && txt !== 'null' ? JSON.parse(txt) : null;
+}
+
+async function dbFetch(path, opts = {}) {
+  if (!configured()) throw new Error('unconfigured');
+  return dbFetchAt(DB_URL, DB_SECRET, path, opts);
+}
+
+async function r6Fetch(path, opts = {}) {
+  if (!r6Configured()) throw new Error('unconfigured');
+  return dbFetchAt(R6_DB_URL, R6_DB_SECRET, path, opts);
 }
 
 export const db = {
@@ -457,6 +494,14 @@ export const db = {
   patch: (p, v) => dbFetch(p, { method: 'PATCH', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
   push: (p, v) => dbFetch(p, { method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
   del: p => dbFetch(p, { method: 'DELETE' })
+};
+
+export const r6db = {
+  get: p => r6Fetch(p),
+  put: (p, v) => r6Fetch(p, { method: 'PUT', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
+  patch: (p, v) => r6Fetch(p, { method: 'PATCH', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
+  push: (p, v) => r6Fetch(p, { method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
+  del: p => r6Fetch(p, { method: 'DELETE' })
 };
 
 export function readBody(req) {

@@ -1,4 +1,4 @@
-import { panelAccount, send } from './_lib.js';
+import { panelAccount, r6Status, send } from './_lib.js';
 
                                                                               
                                                                                 
@@ -15,9 +15,13 @@ export default async function handler(req, res) {
     return send(res, 200, { ok: true });
   }
 
+  const r6 = r6Status();
+
   return send(res, 200, {
     ok: true,
     env: {
+      R6_FIREBASE_URL: r6.url,
+      R6_FIREBASE_SECRET: r6.secret,
       FIREBASE_DB_URL: Boolean(process.env.FIREBASE_DB_URL || process.env.FIREBASE_URL),
       FIREBASE_DB_SECRET: Boolean(process.env.FIREBASE_DB_SECRET || process.env.FIREBASE_SECRET),
       SESSION_SECRET: Boolean(process.env.SESSION_SECRET),

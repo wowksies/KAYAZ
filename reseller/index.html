@@ -39,14 +39,15 @@
 
     <div class="wrap">
         <nav class="tabs">
-            <button class="tab on" data-tab="keys" type="button">my keys</button>
+            <button class="tab on" data-tab="keys" type="button">r6 keys</button>
+            <button class="tab" data-tab="sitekeys" type="button">site keys</button>
             <button class="tab" data-tab="account" type="button">my account</button>
         </nav>
 
         <section class="panel on" id="tab-keys">
             <div class="card">
-                <h2>generate keys</h2>
-                <div class="sub" id="quotaLine">each key locks to the first device that redeems it</div>
+                <h2>generate KAYAZ R6 keys</h2>
+                <div class="sub" id="quotaLine">keys for KAYAZ R6 &middot; each key locks to the first device that redeems it</div>
                 <div class="msg" id="kMsg"></div>
                 <div class="row">
                     <div>
@@ -59,13 +60,13 @@
                     </div>
                 </div>
                 <button class="btn p" id="kGen" type="button">generate</button>
-                <div class="hint">codes are shown once &mdash; copy them before leaving this page</div>
+                <div class="hint">codes are shown once, copy them before leaving this page</div>
                 <div class="codes-out" id="kOut"></div>
             </div>
 
             <div class="card">
                 <div class="bar">
-                    <h2>my keys</h2>
+                    <h2>KAYAZ R6 keys</h2>
                     <span class="tag" id="kCount">0</span>
                     <div class="spacer"></div>
                     <button class="btn sm d" id="kPrune" type="button">delete unused</button>
@@ -73,6 +74,39 @@
                 </div>
                 <div class="msg" id="kListMsg"></div>
                 <div id="kList"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="tab-sitekeys">
+            <div class="card">
+                <h2>generate game site keys</h2>
+                <div class="sub" id="gQuotaLine">keys for the main KAYAZ game site &middot; each key locks to the first device that redeems it</div>
+                <div class="msg" id="gkMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="gkn">how many</label>
+                        <input class="f" id="gkn" type="number" min="1" max="20" value="1" inputmode="numeric">
+                    </div>
+                    <div>
+                        <label for="gkl">label (optional)</label>
+                        <input class="f" id="gkl" maxlength="60" placeholder="buyer name or batch">
+                    </div>
+                </div>
+                <button class="btn p" id="gkGen" type="button">generate</button>
+                <div class="hint">codes are shown once, copy them before leaving this page</div>
+                <div class="codes-out" id="gkOut"></div>
+            </div>
+
+            <div class="card">
+                <div class="bar">
+                    <h2>game site keys</h2>
+                    <span class="tag" id="gkCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm d" id="gkPrune" type="button">delete unused</button>
+                    <button class="btn sm" id="gkRefresh" type="button">refresh</button>
+                </div>
+                <div class="msg" id="gkListMsg"></div>
+                <div id="gkList"></div>
             </div>
         </section>
 

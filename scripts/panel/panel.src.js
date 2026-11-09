@@ -78,7 +78,8 @@
     if ($('whoami')) $('whoami').textContent = state.user + ' · ' + state.role;
 
     loadAccount();
-    loadKeys();
+    loadKeys('r6');
+    loadKeys('site');
     if (state.role === 'admin') {
       loadOverview();
       loadResellers();
@@ -95,7 +96,8 @@
 
   var loaders = {
     overview: loadOverview,
-    keys: loadKeys,
+    keys: function () { loadKeys('r6'); },
+    sitekeys: function () { loadKeys('site'); },
     resellers: loadResellers,
     games: loadGames
   };
@@ -138,12 +140,13 @@
     if (!$('sKeys')) return;
     var out = {};
     Promise.all([
-      api('keys').then(function (r) { if (r.ok) out.keys = r.data.keys || []; }),
+      api('keys?target=r6').then(function (r) { if (r.ok) out.r6 = r.data.keys || []; }),
+      api('keys?target=site').then(function (r) { if (r.ok) out.site = r.data.keys || []; }),
       api('resellers').then(function (r) { if (r.ok) out.accounts = r.data.resellers || []; }),
       api('games').then(function (r) { if (r.ok) out.games = r.data.games || []; }),
       api('audit').then(function (r) { if (r.ok) out.events = r.data.events || []; })
     ]).then(function () {
-      var keys = out.keys || [];
+      var keys = (out.r6 || []).concat(out.site || []);
       var accounts = out.accounts || [];
       var games = out.games || [];
       if ($('sKeys')) $('sKeys').textContent = keys.length;
@@ -185,17 +188,30 @@
     return used + ' of ' + quota + ' keys used';
   }
 
-  function loadKeys() {
-    var box = $('kList');
+  var KUI = {
+    r6: {
+      list: 'kList', count: 'kCount', quota: 'quotaLine', msg: 'kMsg', out: 'kOut',
+      gen: 'kGen', n: 'kn', label: 'kl', owner: 'ko', refresh: 'kRefresh', prune: 'kPrune'
+    },
+    site: {
+      list: 'gkList', count: 'gkCount', quota: 'gQuotaLine', msg: 'gkMsg', out: 'gkOut',
+      gen: 'gkGen', n: 'gkn', label: 'gkl', owner: 'gko', refresh: 'gkRefresh', prune: 'gkPrune'
+    }
+  };
+
+  function loadKeys(target) {
+    target = target === 'site' ? 'site' : 'r6';
+    var ui = KUI[target];
+    var box = $(ui.list);
     if (!box) return;
-    api('keys').then(function (r) {
+    api('keys?target=' + target).then(function (r) {
       if (!r.ok) {
         box.innerHTML = '<div class="empty">' + esc(r.data.error || 'could not load keys') + '</div>';
         return;
       }
       var keys = r.data.keys || [];
-      if ($('quotaLine')) $('quotaLine').textContent = quotaText(Number(r.data.quota) || 0, Number(r.data.used) || 0);
-      if ($('kCount')) $('kCount').textContent = keys.length;
+      if ($(ui.quota)) $(ui.quota).textContent = quotaText(Number(r.data.quota) || 0, Number(r.data.used) || 0);
+      if ($(ui.count)) $(ui.count).textContent = keys.length;
       if (!keys.length) {
         box.innerHTML = '<div class="empty">no keys yet</div>';
         return;
@@ -225,45 +241,49 @@
         '<th class="hide-s">label</th><th class="hide-s">made</th><th></th></tr></thead>' +
         '<tbody>' + rows + '</tbody></table></div>';
 
-      bindKeys();
+      bindKeys(box, target);
     }).catch(function () {
       box.innerHTML = '<div class="empty">network error</div>';
     });
   }
 
-  function bindKeys() {
-    [].forEach.call(document.querySelectorAll('[data-kdel]'), function (b) {
+  function bindKeys(box, target) {
+    [].forEach.call(box.querySelectorAll('[data-kdel]'), function (b) {
       b.addEventListener('click', function () {
         if (!confirm('delete this key? any device using it loses access')) return;
-        api('keys', { method: 'DELETE', body: { h: b.getAttribute('data-kdel') } }).then(loadKeys);
+        api('keys', { method: 'DELETE', body: { h: b.getAttribute('data-kdel'), target: target } })
+          .then(function () { loadKeys(target); });
       });
     });
-    [].forEach.call(document.querySelectorAll('[data-rev]'), function (b) {
+    [].forEach.call(box.querySelectorAll('[data-rev]'), function (b) {
       b.addEventListener('click', function () {
         api('keys', {
           method: 'PATCH',
-          body: { h: b.getAttribute('data-rev'), revoked: b.getAttribute('data-on') === '1' }
-        }).then(loadKeys);
+          body: { h: b.getAttribute('data-rev'), revoked: b.getAttribute('data-on') === '1', target: target }
+        }).then(function () { loadKeys(target); });
       });
     });
-    [].forEach.call(document.querySelectorAll('[data-reset]'), function (b) {
+    [].forEach.call(box.querySelectorAll('[data-reset]'), function (b) {
       b.addEventListener('click', function () {
         if (!confirm('unbind this key from its device?')) return;
-        api('keys', { method: 'PATCH', body: { h: b.getAttribute('data-reset'), reset: true } }).then(loadKeys);
+        api('keys', { method: 'PATCH', body: { h: b.getAttribute('data-reset'), reset: true, target: target } })
+          .then(function () { loadKeys(target); });
       });
     });
   }
 
-  if ($('kGen')) {
-    $('kGen').addEventListener('click', function () {
+  function bindKeyGen(target) {
+    var ui = KUI[target];
+    if (!$(ui.gen)) return;
+    $(ui.gen).addEventListener('click', function () {
       var b = this;
-      var body = { count: $('kn').value, label: $('kl').value };
-      if ($('ko') && $('ko').value) body.owner = $('ko').value;
+      var body = { count: $(ui.n).value, label: $(ui.label).value, target: target };
+      if ($(ui.owner) && $(ui.owner).value) body.owner = $(ui.owner).value;
       b.disabled = true;
       api('keys', { method: 'POST', body: body }).then(function (r) {
         b.disabled = false;
-        if (!r.ok) return msg($('kMsg'), r.data.error || 'could not generate keys');
-        var out = $('kOut');
+        if (!r.ok) return msg($(ui.msg), r.data.error || 'could not generate keys');
+        var out = $(ui.out);
         out.className = 'codes-out on';
         out.innerHTML = (r.data.codes || []).map(function (c) {
           return '<div><span>' + esc(c) + '</span>' +
@@ -277,27 +297,32 @@
             });
           });
         });
-        msg($('kMsg'), (r.data.codes || []).length + ' generated - copy them now', 'ok');
-        $('kl').value = '';
-        loadKeys();
+        msg($(ui.msg), (r.data.codes || []).length + ' generated - copy them now', 'ok');
+        $(ui.label).value = '';
+        loadKeys(target);
       }).catch(function () {
         b.disabled = false;
-        msg($('kMsg'), 'network error');
+        msg($(ui.msg), 'network error');
       });
     });
   }
 
-  if ($('kRefresh')) $('kRefresh').addEventListener('click', loadKeys);
+  bindKeyGen('r6');
+  bindKeyGen('site');
 
-  if ($('kPrune')) {
-    $('kPrune').addEventListener('click', function () {
-      if (!confirm('delete every unused key? this cannot be undone')) return;
-      api('keys', { method: 'DELETE', body: { all: 'unused' } }).then(function (r) {
-        msg($('kMsg'), r.ok ? ('removed ' + r.data.removed) : 'failed', r.ok ? 'ok' : 'err');
-        loadKeys();
+  ['r6', 'site'].forEach(function (t) {
+    var ui = KUI[t];
+    if ($(ui.refresh)) $(ui.refresh).addEventListener('click', function () { loadKeys(t); });
+    if ($(ui.prune)) {
+      $(ui.prune).addEventListener('click', function () {
+        if (!confirm('delete every unused key in this section? this cannot be undone')) return;
+        api('keys', { method: 'DELETE', body: { all: 'unused', target: t } }).then(function (r) {
+          msg($(ui.msg), r.ok ? ('removed ' + r.data.removed) : 'failed', r.ok ? 'ok' : 'err');
+          loadKeys(t);
+        });
       });
-    });
-  }
+    }
+  });
 
                                                                               
   function loadResellers() {
@@ -311,13 +336,15 @@
       var list = r.data.resellers || [];
       if ($('rCount')) $('rCount').textContent = list.length;
 
-      if ($('ko')) {
-        $('ko').innerHTML = '<option value="">me (admin)</option>' + list.filter(function (a) {
+      ['ko', 'gko'].forEach(function (id) {
+        var sel = $(id);
+        if (!sel) return;
+        sel.innerHTML = '<option value="">me (admin)</option>' + list.filter(function (a) {
           return !a.disabled;
         }).map(function (a) {
           return '<option value="' + esc(a.id) + '">' + esc(a.user) + ' · ' + esc(a.role) + '</option>';
         }).join('');
-      }
+      });
 
       if (!list.length) {
         box.innerHTML = '<div class="empty">no accounts yet</div>';
