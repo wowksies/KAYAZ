@@ -1,12 +1,13 @@
 import crypto from 'node:crypto';
 import {
-  db, sha256, normUser, verifyPassword, DUMMY_HASH, getAccountByLogin, getAccount, bootstrapAdmin,
+  db, r6db, r6Configured, sha256, normUser, verifyPassword, DUMMY_HASH, getAccountByLogin, getAccount, bootstrapAdmin,
   createPanelSession, setSessionCookie, setDeviceCookie, signSession, trustedDevice,
   discordLoginEnabled, discordOwnerId, validDiscordId, safeEqual,
   send, guardConfig, rateLimit, requireSameOrigin, readBody, dec, clientIp, audit
 } from './_lib.js';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+const challengeDb = r6Configured() ? r6db : db;
 
 async function finishLogin(acc, name, req, res) {
   const role = acc.role === 'admin' ? 'admin' : 'reseller';
@@ -40,18 +41,18 @@ async function completeChallenge(req, res, body) {
   if (!/^\d{6}$/.test(code)) return send(res, 401, { error: 'enter the six digit code' });
   let rec;
   try {
-    rec = await db.get('loginChallenges/' + id);
+    rec = await challengeDb.get('loginChallenges/' + id);
   } catch (e) {
     return send(res, 500, { error: 'server error' });
   }
   if (!rec || !rec.u || Number(rec.exp) <= Date.now()) {
     if (rec) {
-      try { await db.del('loginChallenges/' + id); } catch (e) {}
+      try { await challengeDb.del('loginChallenges/' + id); } catch (e) {}
     }
     return send(res, 401, { error: 'code expired, sign in again' });
   }
   if (rec.status === 'failed') {
-    try { await db.del('loginChallenges/' + id); } catch (e) {}
+    try { await challengeDb.del('loginChallenges/' + id); } catch (e) {}
     return send(res, 502, { error: 'the code could not be sent, check your Discord DMs and try again' });
   }
   if (rec.status !== 'sent' || !rec.codeHash) {
@@ -60,9 +61,9 @@ async function completeChallenge(req, res, body) {
   if (!safeEqual(sha256(code + ':' + id), rec.codeHash)) {
     const attempts = (Number(rec.attempts) || 0) + 1;
     if (attempts >= 5) {
-      try { await db.del('loginChallenges/' + id); } catch (e) {}
+      try { await challengeDb.del('loginChallenges/' + id); } catch (e) {}
     } else {
-      try { await db.patch('loginChallenges/' + id, { attempts }); } catch (e) {}
+      try { await challengeDb.patch('loginChallenges/' + id, { attempts }); } catch (e) {}
     }
     return send(res, 401, { error: 'wrong or expired code' });
   }
@@ -73,10 +74,10 @@ async function completeChallenge(req, res, body) {
     return send(res, 500, { error: 'server error' });
   }
   if (!acc || acc.disabled) {
-    try { await db.del('loginChallenges/' + id); } catch (e) {}
+    try { await challengeDb.del('loginChallenges/' + id); } catch (e) {}
     return send(res, 401, { error: 'sign in again' });
   }
-  try { await db.del('loginChallenges/' + id); } catch (e) {}
+  try { await challengeDb.del('loginChallenges/' + id); } catch (e) {}
   return finishLogin(acc, dec(acc.user), req, res);
 }
 
@@ -151,7 +152,7 @@ export default async function handler(req, res) {
     if (!discordId) return send(res, 503, { error: 'discord login verification is not configured' });
     const challengeId = crypto.randomBytes(16).toString('hex');
     try {
-      await db.put('loginChallenges/' + challengeId, {
+      await challengeDb.put('loginChallenges/' + challengeId, {
         u: acc.id,
         discordId,
         at: now,

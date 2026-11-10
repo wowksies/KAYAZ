@@ -446,11 +446,12 @@ const challenge = json(r);
 const challengeId = challenge.challengeId || '';
 ok('new device requires a discord code', r.statusCode === 202 && challenge.challenge === 'discord' && /^[a-f0-9]{32}$/.test(challengeId), challenge);
 ok('new device gets no panel session yet', cookieOf(r) === '', setCookie(r));
-ok('challenge uses the owner discord id', Boolean(challengeId && store.loginChallenges && store.loginChallenges[challengeId] && store.loginChallenges[challengeId].discordId === '747411610389446747'), challengeId);
+const challengeRecord = challengeId && store.r6 && store.r6.loginChallenges ? store.r6.loginChallenges[challengeId] : null;
+ok('challenge uses the owner discord id', Boolean(challengeRecord && challengeRecord.discordId === '747411610389446747'), challengeId);
 
-if (challengeId && store.loginChallenges && store.loginChallenges[challengeId]) {
-  store.loginChallenges[challengeId].status = 'sent';
-  store.loginChallenges[challengeId].codeHash = sha256('654321:' + challengeId);
+if (challengeRecord) {
+  challengeRecord.status = 'sent';
+  challengeRecord.codeHash = sha256('654321:' + challengeId);
 
   r = res();
   await login(req({ method: 'POST', body: { challengeId, code: '123456' } }), r);
@@ -461,7 +462,7 @@ if (challengeId && store.loginChallenges && store.loginChallenges[challengeId]) 
   ok('discord code completes sign in', r.statusCode === 200 && json(r).role === 'admin', json(r));
   const deviceCookie = deviceCookieOf(r);
   ok('verified device is remembered', /^kz_d=kz1\./.test(deviceCookie), deviceCookie.slice(0, 30));
-  ok('challenge is one time', !(store.loginChallenges && store.loginChallenges[challengeId]));
+  ok('challenge is one time', !(store.r6 && store.r6.loginChallenges && store.r6.loginChallenges[challengeId]));
 
   r = res();
   await login(req({ method: 'POST', headers: { cookie: deviceCookie }, body: { user: 'owner2@kayaz.xyz', password: 'owner-password-456' } }), r);
