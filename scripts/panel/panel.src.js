@@ -191,13 +191,27 @@
   var KUI = {
     r6: {
       list: 'kList', count: 'kCount', quota: 'quotaLine', msg: 'kMsg', out: 'kOut',
-      gen: 'kGen', n: 'kn', label: 'kl', owner: 'ko', refresh: 'kRefresh', prune: 'kPrune'
+      gen: 'kGen', n: 'kn', label: 'kl', owner: 'ko', duration: 'kd',
+      refresh: 'kRefresh', prune: 'kPrune'
     },
     site: {
       list: 'gkList', count: 'gkCount', quota: 'gQuotaLine', msg: 'gkMsg', out: 'gkOut',
-      gen: 'gkGen', n: 'gkn', label: 'gkl', owner: 'gko', refresh: 'gkRefresh', prune: 'gkPrune'
+      gen: 'gkGen', n: 'gkn', label: 'gkl', owner: 'gko',
+      refresh: 'gkRefresh', prune: 'gkPrune'
     }
   };
+
+  function expiresCell(k) {
+    if (!k.expiresAt) {
+      return k.durationDays
+        ? '<span class="dim">' + k.durationDays + 'd</span>'
+        : '<span class="dim">lifetime</span>';
+    }
+    var left = k.expiresAt - Math.floor(Date.now() / 1000);
+    if (left <= 0) return '<span class="st rev">expired</span>';
+    if (left < 86400) return Math.floor(left / 3600) + 'h left';
+    return Math.floor(left / 86400) + 'd left';
+  }
 
   function loadKeys(target) {
     target = target === 'site' ? 'site' : 'r6';
@@ -222,13 +236,17 @@
         var st = k.revoked
           ? '<span class="st rev">revoked</span>'
           : (k.used ? '<span class="st used">in use</span>' : '<span class="st free">unused</span>');
+        var isR6 = target === 'r6';
         return '<tr>' +
           '<td class="mono">' + esc(k.shown || '••••') + '</td>' +
           '<td>' + st + '</td>' +
+          (isR6 ? '<td class="hide-s">' + expiresCell(k) + '</td>' : '') +
           (admin ? '<td class="hide-s">' + esc(k.ownerName || 'admin') + '</td>' : '') +
           '<td class="hide-s">' + esc(k.label || '') + '</td>' +
           '<td class="hide-s mono dim">' + (k.created ? new Date(k.created).toLocaleDateString() : '') + '</td>' +
           '<td class="right nowrap">' +
+            (isR6 ? '<button class="btn sm" type="button" data-kdur="' + esc(k.h) + '">duration</button> ' : '') +
+            (isR6 && admin && k.used ? '<button class="btn sm d" type="button" data-kban="' + esc(k.h) + '">ban hwid</button> ' : '') +
             (k.used ? '<button class="btn sm" type="button" data-reset="' + esc(k.h) + '">unbind</button> ' : '') +
             '<button class="btn sm" type="button" data-rev="' + esc(k.h) + '" data-on="' + (k.revoked ? '0' : '1') + '">' +
               (k.revoked ? 'restore' : 'revoke') + '</button> ' +
@@ -236,7 +254,9 @@
           '</td></tr>';
       }).join('');
 
+      var isR6 = target === 'r6';
       box.innerHTML = '<div class="scroll"><table><thead><tr><th>key</th><th>status</th>' +
+        (isR6 ? '<th class="hide-s">expires</th>' : '') +
         (admin ? '<th class="hide-s">account</th>' : '') +
         '<th class="hide-s">label</th><th class="hide-s">made</th><th></th></tr></thead>' +
         '<tbody>' + rows + '</tbody></table></div>';
@@ -270,6 +290,30 @@
           .then(function () { loadKeys(target); });
       });
     });
+    // r6 only: change the remaining duration on this key
+    [].forEach.call(box.querySelectorAll('[data-kdur]'), function (b) {
+      b.addEventListener('click', function () {
+        var v = prompt('new duration (lifetime, 7d, 30d, 90d, 1y...)', '30d');
+        if (v === null) return;
+        api('keys', { method: 'PATCH', body: { h: b.getAttribute('data-kdur'), duration: v.trim() || 'lifetime', target: 'r6' } })
+          .then(function (r) {
+            if (!r.ok) alert(r.data.error || 'could not change duration');
+            loadKeys('r6');
+          });
+      });
+    });
+    // r6 only, admin only: ban the hwid this key is bound to
+    [].forEach.call(box.querySelectorAll('[data-kban]'), function (b) {
+      b.addEventListener('click', function () {
+        var reason = prompt('reason for banning this HWID (optional)', 'manual');
+        if (reason === null) return;
+        api('keys', { method: 'PATCH', body: { h: b.getAttribute('data-kban'), banHwid: true, banReason: reason, target: 'r6' } })
+          .then(function (r) {
+            if (!r.ok) alert(r.data.error || 'could not ban');
+            else { loadKeys('r6'); loadBans(); }
+          });
+      });
+    });
   }
 
   function bindKeyGen(target) {
@@ -278,6 +322,7 @@
     $(ui.gen).addEventListener('click', function () {
       var b = this;
       var body = { count: $(ui.n).value, label: $(ui.label).value, target: target };
+      if (ui.duration && $(ui.duration)) body.duration = $(ui.duration).value;
       if ($(ui.owner) && $(ui.owner).value) body.owner = $(ui.owner).value;
       b.disabled = true;
       api('keys', { method: 'POST', body: body }).then(function (r) {
@@ -323,6 +368,57 @@
       });
     }
   });
+
+  // ── HWID bans (admin only; lives under tab-keys) ──────────────────────
+  function loadBans() {
+    var box = $('bList');
+    if (!box) return;
+    api('keys?kind=bans&target=r6').then(function (r) {
+      if (!r.ok) {
+        box.innerHTML = '<div class="empty">' + esc(r.data.error || 'could not load bans') + '</div>';
+        return;
+      }
+      var bans = r.data.bans || [];
+      if ($('bCount')) $('bCount').textContent = bans.length;
+      if (!bans.length) { box.innerHTML = '<div class="empty">no bans</div>'; return; }
+      var rows = bans.map(function (x) {
+        var when = x.at ? new Date(x.at * 1000).toLocaleString() : '';
+        return '<tr>' +
+          '<td class="mono">' + esc(x.hwid.slice(0, 16)) + '…</td>' +
+          '<td class="hide-s">' + esc(x.reason || '') + '</td>' +
+          '<td class="hide-s mono dim">' + esc(when) + '</td>' +
+          '<td class="right"><button class="btn sm" type="button" data-unban="' + esc(x.hwid) + '">unban</button></td>' +
+        '</tr>';
+      }).join('');
+      box.innerHTML = '<div class="scroll"><table><thead><tr><th>hwid</th><th class="hide-s">reason</th><th class="hide-s">when</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+      [].forEach.call(box.querySelectorAll('[data-unban]'), function (btn) {
+        btn.addEventListener('click', function () {
+          if (!confirm('remove this ban?')) return;
+          api('keys', { method: 'DELETE', body: { kind: 'bans', hwid: btn.getAttribute('data-unban'), target: 'r6' } })
+            .then(function () { loadBans(); });
+        });
+      });
+    }).catch(function () { box.innerHTML = '<div class="empty">network error</div>'; });
+  }
+
+  if ($('bAdd')) {
+    $('bAdd').addEventListener('click', function () {
+      var hwid = ($('bHwid').value || '').trim().toLowerCase();
+      var reason = ($('bReason').value || '').trim();
+      if (!/^[a-f0-9]{32,96}$/.test(hwid)) {
+        return msg($('bMsg'), 'HWID must be 32-96 lowercase hex characters', 'err');
+      }
+      api('keys', { method: 'POST', body: { kind: 'bans', target: 'r6', hwid: hwid, reason: reason } })
+        .then(function (r) {
+          if (!r.ok) return msg($('bMsg'), r.data.error || 'could not ban', 'err');
+          $('bHwid').value = ''; $('bReason').value = '';
+          msg($('bMsg'), 'banned', 'ok');
+          loadBans();
+        }).catch(function () { msg($('bMsg'), 'network error', 'err'); });
+    });
+  }
+  if ($('bRefresh')) $('bRefresh').addEventListener('click', loadBans);
+  if ($('bList')) loadBans();
 
                                                                               
   function loadResellers() {

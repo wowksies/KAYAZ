@@ -314,8 +314,10 @@ footer.mini {
     .t-price { font-size:.68rem; }
     .price-perks { gap:6px; margin:12px 0 16px; font-size:.8rem; }
     .price-note { font-size:.71rem; }
-    .price-actions { flex-direction:column; gap:8px; }
-    .price-actions .price-buy, .price-actions .btn-discord { width:100%; }
+    /* the two buttons share one row while they fit and wrap on their own when
+       they do not, so a phone still gets the whole board on one screen */
+    .price-actions { gap:8px; }
+    .price-actions .btn-discord { padding:13px 18px; }
     .price-support { font-size:.72rem; }
     .nav-links a.nav-discord { padding:8px 10px; }
     .nav-links a.nav-discord span { display:none; }

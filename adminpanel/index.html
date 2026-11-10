@@ -80,13 +80,29 @@
                         <input class="f" id="kn" type="number" min="1" max="50" value="1" inputmode="numeric">
                     </div>
                     <div>
+                        <label for="kd">duration</label>
+                        <select class="f" id="kd">
+                            <option value="lifetime">lifetime</option>
+                            <option value="1">1 day</option>
+                            <option value="3">3 days</option>
+                            <option value="7">7 days</option>
+                            <option value="14">14 days</option>
+                            <option value="30" selected>30 days</option>
+                            <option value="90">90 days</option>
+                            <option value="180">180 days</option>
+                            <option value="365">1 year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
                         <label for="kl">label (optional)</label>
                         <input class="f" id="kl" maxlength="60" placeholder="reseller batch">
                     </div>
-                </div>
-                <div id="kOwnerWrap" data-admin>
-                    <label for="ko">assign to</label>
-                    <select class="f" id="ko"><option value="">me (admin)</option></select>
+                    <div id="kOwnerWrap" data-admin>
+                        <label for="ko">assign to</label>
+                        <select class="f" id="ko"><option value="">me (admin)</option></select>
+                    </div>
                 </div>
                 <button class="btn p" id="kGen" type="button">generate</button>
                 <div class="hint">codes are shown once, copy them before leaving this page</div>
@@ -103,6 +119,29 @@
                 </div>
                 <div class="msg" id="kListMsg"></div>
                 <div id="kList"></div>
+            </div>
+
+            <div class="card" data-admin>
+                <div class="bar">
+                    <h2>HWID bans</h2>
+                    <span class="tag" id="bCount">0</span>
+                    <div class="spacer"></div>
+                    <button class="btn sm" id="bRefresh" type="button">refresh</button>
+                </div>
+                <div class="sub">a banned HWID cannot bind any R6 key; new logins get <code>banned</code> from the worker</div>
+                <div class="msg" id="bMsg"></div>
+                <div class="row">
+                    <div>
+                        <label for="bHwid">HWID (hex)</label>
+                        <input class="f mono" id="bHwid" maxlength="96" placeholder="32-96 lowercase hex">
+                    </div>
+                    <div>
+                        <label for="bReason">reason (optional)</label>
+                        <input class="f" id="bReason" maxlength="256" placeholder="manual">
+                    </div>
+                </div>
+                <button class="btn p" id="bAdd" type="button">ban HWID</button>
+                <div id="bList"></div>
             </div>
         </section>
 
