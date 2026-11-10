@@ -182,7 +182,7 @@ ok('admin issues an r6 key to the reseller', r.statusCode === 200 && json(r).cod
 const sellerCode = (json(r).codes || [])[0];
 const sellerHash = sha256(sellerCode);
 
-ok('r6 key format matches the launcher', /^KAYAZ-[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(sellerCode), sellerCode);
+ok('r6 key format has four groups', /^KAYAZ-[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(sellerCode), sellerCode);
 ok('r6 key is stored under the launcher node', Boolean(store.r6 && store.r6.keys && store.r6.keys[sellerHash]));
 ok('r6 key is not in the site store', !(store.codes && store.codes[sellerHash]));
 ok('r6 key uses the launcher record shape', (() => {

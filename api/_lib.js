@@ -502,7 +502,7 @@ export function makeCode() {
 export function makeLauncherKey() {
   const alpha = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const pick = n => Array.from(crypto.randomBytes(n)).map(b => alpha[b % alpha.length]).join('');
-  return 'KAYAZ-' + pick(4) + '-' + pick(4) + '-' + pick(4);
+  return 'KAYAZ-' + pick(4) + '-' + pick(4) + '-' + pick(4) + '-' + pick(4);
 }
 
                                                                              
