@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  var state = { role: '', user: '' };
+  var state = { role: '', user: '', challengeId: '' };
 
   function $(id) { return document.getElementById(id); }
 
@@ -38,6 +38,28 @@
   }
 
                                                                               
+  function showLoginChallenge(data) {
+    state.challengeId = data.challengeId || '';
+    $('loginForm').hidden = true;
+    $('loginVerifyForm').hidden = false;
+    $('loginCode').value = '';
+    msg($('loginVerifyMsg'), 'code sent to your Discord DMs, enter it below', 'ok');
+    $('loginCode').focus();
+  }
+
+  function showLoginForm() {
+    state.challengeId = '';
+    $('loginVerifyForm').hidden = true;
+    $('loginForm').hidden = false;
+    $('loginCode').value = '';
+    msg($('loginVerifyMsg'), '');
+    msg($('loginMsg'), '');
+  }
+
+  function completeLogin(r) {
+    boot({ user: r.data.user, role: r.data.role });
+  }
+
   var loginForm = $('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
@@ -47,18 +69,54 @@
       var p = $('lp').value;
       if (!u || !p) return msg($('loginMsg'), 'enter your username or email and password');
       btn.disabled = true;
-      btn.textContent = 'checking…';
+      btn.textContent = 'checking...';
       api('login', { method: 'POST', body: { user: u, password: p } }).then(function (r) {
         btn.disabled = false;
         btn.textContent = 'sign in';
+        if (r.data && r.data.challenge === 'discord') {
+          $('lp').value = '';
+          showLoginChallenge(r.data);
+          return;
+        }
         if (!r.ok) return msg($('loginMsg'), r.data.error || 'sign in failed');
         $('lp').value = '';
-        boot({ user: r.data.user, role: r.data.role });
+        completeLogin(r);
       }).catch(function () {
         btn.disabled = false;
         btn.textContent = 'sign in';
         msg($('loginMsg'), 'network error, try again');
       });
+    });
+  }
+
+  var loginVerifyForm = $('loginVerifyForm');
+  if (loginVerifyForm) {
+    loginVerifyForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = $('loginVerifyBtn');
+      var code = $('loginCode').value.trim();
+      if (!/^[0-9]{6}$/.test(code)) return msg($('loginVerifyMsg'), 'enter the six digit code');
+      if (!state.challengeId) return showLoginForm();
+      btn.disabled = true;
+      btn.textContent = 'verifying...';
+      api('login', { method: 'POST', body: { challengeId: state.challengeId, code: code } }).then(function (r) {
+        btn.disabled = false;
+        btn.textContent = 'verify code';
+        if (!r.ok) return msg($('loginVerifyMsg'), r.data.error || 'wrong or expired code');
+        state.challengeId = '';
+        completeLogin(r);
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'verify code';
+        msg($('loginVerifyMsg'), 'network error, try again');
+      });
+    });
+  }
+
+  if ($('loginBack')) {
+    $('loginBack').addEventListener('click', function () {
+      showLoginForm();
+      if ($('lu')) $('lu').focus();
     });
   }
 
@@ -202,6 +260,11 @@
   };
 
   function expiresCell(k) {
+    if (!k.used) {
+      return k.durationDays
+        ? '<span class="dim">' + k.durationDays + 'd from bind</span>'
+        : '<span class="dim">lifetime</span>';
+    }
     if (!k.expiresAt) {
       return k.durationDays
         ? '<span class="dim">' + k.durationDays + 'd</span>'
@@ -454,7 +517,8 @@
         var mine = a.id === r.data.me;
         return '<tr>' +
           '<td><strong>' + esc(a.user) + '</strong>' + (mine ? ' <span class="tag">you</span>' : '') +
-            (a.email ? '<div class="mono dim">' + esc(a.email) + '</div>' : '') + '</td>' +
+            (a.email ? '<div class="mono dim">' + esc(a.email) + '</div>' : '') +
+            (a.discordId ? '<div class="mono dim">discord ' + esc(a.discordId) + '</div>' : '') + '</td>' +
           '<td><span class="tag">' + esc(a.role) + '</span></td>' +
           '<td>' + st + '</td>' +
           '<td class="hide-s mono">' + (a.quota ? a.quota : '∞') + ' · ' + a.used + ' used</td>' +
@@ -474,6 +538,8 @@
               '</select></div>' +
               '<div><label>key allowance (0 = unlimited)</label>' +
                 '<input class="f" type="number" min="0" data-af="quota" value="' + (Number(a.quota) || 0) + '"></div>' +
+              '<div><label>discord user id for login codes</label>' +
+                '<input class="f mono" data-af="discordId" value="' + esc(a.discordId || '') + '" maxlength="20" inputmode="numeric"></div>' +
               '<div class="full"><label>new password (leave blank to keep)</label>' +
                 '<input class="f" type="password" data-af="password" autocomplete="new-password"></div>' +
             '</div>' +
@@ -563,7 +629,8 @@
         email: $('re') ? $('re').value.trim() : '',
         password: $('rp').value,
         role: $('rr').value,
-        quota: $('rq').value
+        quota: $('rq').value,
+        discordId: $('rd') ? $('rd').value.trim() : ''
       };
       if (!body.user || !body.password) return msg($('rMsg'), 'username and password are required');
       b.disabled = true;
@@ -574,6 +641,7 @@
         $('ru').value = '';
         if ($('re')) $('re').value = '';
         $('rp').value = '';
+        if ($('rd')) $('rd').value = '';
         $('rq').value = '50';
         $('rr').value = 'reseller';
         loadResellers();

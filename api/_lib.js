@@ -46,6 +46,7 @@ const ADMIN_USER = (process.env.ADMIN_EMAIL || '').trim();
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 
 export const COOKIE = 'kz_s';
+export const DEVICE_COOKIE = 'kz_d';
 export const ROLES = ['admin', 'reseller'];
 export const PASSWORD_MIN = 12;
 
@@ -84,6 +85,19 @@ export function validUsername(u) {
 export function validEmail(e) {
   const v = String(e || '');
   return v.length <= 64 && EMAIL_RE.test(v);
+}
+
+export function validDiscordId(value) {
+  return /^\d{17,20}$/.test(String(value || ''));
+}
+
+export function discordLoginEnabled() {
+  return process.env.DISCORD_LOGIN === '1';
+}
+
+export function discordOwnerId() {
+  const id = String(process.env.DISCORD_OWNER_ID || process.env.OWNER_ID || '').trim();
+  return validDiscordId(id) ? id : '';
 }
 
                                                                         
@@ -272,6 +286,20 @@ export function setSessionCookie(req, res, token, maxAge) {
   res.setHeader('Set-Cookie', bits.join('; '));
 }
 
+export function setDeviceCookie(req, res, token, maxAge) {
+  const bits = [DEVICE_COOKIE + '=' + token, 'Path=/api', 'HttpOnly', 'SameSite=Strict', 'Max-Age=' + Math.max(0, Math.floor(maxAge))];
+  if (isHttps(req)) bits.push('Secure');
+  const prev = res.getHeader('Set-Cookie');
+  const list = prev ? (Array.isArray(prev) ? prev : [prev]) : [];
+  res.setHeader('Set-Cookie', list.concat(bits.join('; ')));
+}
+
+export function trustedDevice(req, acc) {
+  const d = verifySession(cookies(req)[DEVICE_COOKIE]);
+  if (!d || d.t !== 'd' || d.u !== acc.id) return false;
+  return (Number(d.v) || 1) === (Number(acc.ver) || 1);
+}
+
 export function clearSessionCookie(req, res) {
   setSessionCookie(req, res, '', 0);
 }
@@ -323,7 +351,7 @@ export async function getAccountByLogin(login) {
   return null;
 }
 
-export async function createAccount({ user, email, password, role, quota, by }) {
+export async function createAccount({ user, email, password, role, quota, by, discordId }) {
   const u = normUser(user);
   const em = normUser(email || '');
   if (!validUsername(u)) throw new Error('username must be 3-32 characters, letters/numbers/._- only');
@@ -333,6 +361,7 @@ export async function createAccount({ user, email, password, role, quota, by }) 
   }
   if (String(password || '').length > 200) throw new Error('password must be 200 characters or fewer');
   if (!ROLES.includes(role)) throw new Error('bad role');
+  if (discordId && !validDiscordId(discordId)) throw new Error('enter a valid Discord user ID');
   if (await getAccountByUser(u)) throw new Error('that username is taken');
   if (em && await getAccountByEmail(em)) throw new Error('that email is already in use');
 
@@ -352,6 +381,7 @@ export async function createAccount({ user, email, password, role, quota, by }) 
     rec.email = enc(em);
     rec.eh = emailIndex(em);
   }
+  if (discordId) rec.discordId = String(discordId);
   await db.put('accounts/' + id, rec);
   return { id, ...rec };
 }

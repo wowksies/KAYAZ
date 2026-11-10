@@ -23,6 +23,16 @@
         <input class="f" id="lp" name="password" type="password" autocomplete="current-password" required>
         <button class="btn p w" id="loginBtn" type="submit">sign in</button>
     </form>
+    <form class="gate-box" id="loginVerifyForm" method="post" autocomplete="off" novalidate hidden>
+        <div class="gate-mark"><span class="dot"></span>kayaz</div>
+        <h1>verify</h1>
+        <p>enter the six digit code sent to your Discord DMs</p>
+        <div class="msg" id="loginVerifyMsg"></div>
+        <label for="loginCode">six digit code</label>
+        <input class="f" id="loginCode" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required>
+        <button class="btn p w" id="loginVerifyBtn" type="submit">verify code</button>
+        <button class="btn sm w" id="loginBack" type="button">back</button>
+    </form>
 </div>
 
 <div id="app" hidden>

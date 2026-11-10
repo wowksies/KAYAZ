@@ -1,13 +1,85 @@
+import crypto from 'node:crypto';
 import {
-  db, sha256, normUser, verifyPassword, DUMMY_HASH, getAccountByLogin, bootstrapAdmin,
-  createPanelSession, setSessionCookie, send, guardConfig, rateLimit, requireSameOrigin,
-  readBody, dec, clientIp, audit
+  db, sha256, normUser, verifyPassword, DUMMY_HASH, getAccountByLogin, getAccount, bootstrapAdmin,
+  createPanelSession, setSessionCookie, setDeviceCookie, signSession, trustedDevice,
+  discordLoginEnabled, discordOwnerId, validDiscordId, safeEqual,
+  send, guardConfig, rateLimit, requireSameOrigin, readBody, dec, clientIp, audit
 } from './_lib.js';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-                                                                         
-                                                                     
+async function finishLogin(acc, name, req, res) {
+  const role = acc.role === 'admin' ? 'admin' : 'reseller';
+  const ver = Number(acc.ver) || 1;
+  let token;
+  try {
+    token = await createPanelSession(acc, name, ver, req);
+  } catch (e) {
+    return send(res, 500, { error: 'server error' });
+  }
+  setSessionCookie(req, res, token, 7 * 86400);
+  if (discordLoginEnabled()) {
+    setDeviceCookie(req, res, signSession({ t: 'd', u: acc.id, v: ver }, 30), 30 * 86400);
+  }
+  try {
+    await db.patch('accounts/' + acc.id, {
+      lastLogin: Date.now(),
+      lastIp: sha256('ip:' + clientIp(req)).slice(0, 16)
+    });
+  } catch (e) {}
+  await audit({ id: acc.id, user: name }, 'login', role, req);
+  return send(res, 200, { ok: true, role, user: name });
+}
+
+async function completeChallenge(req, res, body) {
+  if (!discordLoginEnabled()) return send(res, 400, { error: 'discord verification is not enabled' });
+  if (!rateLimit(req, res, 'login-verify', 20, 600000)) return;
+  const id = String(body.challengeId || '');
+  if (!/^[a-f0-9]{32}$/.test(id)) return send(res, 401, { error: 'code expired, sign in again' });
+  const code = String(body.code || '').trim();
+  if (!/^\d{6}$/.test(code)) return send(res, 401, { error: 'enter the six digit code' });
+  let rec;
+  try {
+    rec = await db.get('loginChallenges/' + id);
+  } catch (e) {
+    return send(res, 500, { error: 'server error' });
+  }
+  if (!rec || !rec.u || Number(rec.exp) <= Date.now()) {
+    if (rec) {
+      try { await db.del('loginChallenges/' + id); } catch (e) {}
+    }
+    return send(res, 401, { error: 'code expired, sign in again' });
+  }
+  if (rec.status === 'failed') {
+    try { await db.del('loginChallenges/' + id); } catch (e) {}
+    return send(res, 502, { error: 'the code could not be sent, check your Discord DMs and try again' });
+  }
+  if (rec.status !== 'sent' || !rec.codeHash) {
+    return send(res, 409, { error: 'the code is still being sent, wait a few seconds' });
+  }
+  if (!safeEqual(sha256(code + ':' + id), rec.codeHash)) {
+    const attempts = (Number(rec.attempts) || 0) + 1;
+    if (attempts >= 5) {
+      try { await db.del('loginChallenges/' + id); } catch (e) {}
+    } else {
+      try { await db.patch('loginChallenges/' + id, { attempts }); } catch (e) {}
+    }
+    return send(res, 401, { error: 'wrong or expired code' });
+  }
+  let acc;
+  try {
+    acc = await getAccount(rec.u);
+  } catch (e) {
+    return send(res, 500, { error: 'server error' });
+  }
+  if (!acc || acc.disabled) {
+    try { await db.del('loginChallenges/' + id); } catch (e) {}
+    return send(res, 401, { error: 'sign in again' });
+  }
+  try { await db.del('loginChallenges/' + id); } catch (e) {}
+  return finishLogin(acc, dec(acc.user), req, res);
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { error: 'method' });
   if (guardConfig(res)) return;
@@ -15,6 +87,8 @@ export default async function handler(req, res) {
   if (!rateLimit(req, res, 'login', 30, 600000)) return;
 
   const body = await readBody(req);
+  if (body.challengeId) return completeChallenge(req, res, body);
+
   const user = normUser(body.user || body.username || body.email || '');
   const password = String(body.password || '');
   const generic = { error: 'wrong username or password' };
@@ -47,7 +121,7 @@ export default async function handler(req, res) {
 
   let ok = false;
   if (acc && !acc.disabled) ok = verifyPassword(password, acc.pass);
-  else verifyPassword(password, DUMMY_HASH);                                   
+  else verifyPassword(password, DUMMY_HASH);
 
   if (!ok) {
     let boot = null;
@@ -72,24 +146,24 @@ export default async function handler(req, res) {
     await db.del(key);
   } catch (e) {}
 
-  const role = acc.role === 'admin' ? 'admin' : 'reseller';
-  const ver = Number(acc.ver) || 1;
-  const name = dec(acc.user) || user;
-  let token;
-  try {
-    token = await createPanelSession(acc, name, ver, req);
-  } catch (e) {
-    return send(res, 500, { error: 'server error' });
+  if (discordLoginEnabled() && !trustedDevice(req, acc)) {
+    const discordId = validDiscordId(acc.discordId) ? String(acc.discordId) : discordOwnerId();
+    if (!discordId) return send(res, 503, { error: 'discord login verification is not configured' });
+    const challengeId = crypto.randomBytes(16).toString('hex');
+    try {
+      await db.put('loginChallenges/' + challengeId, {
+        u: acc.id,
+        discordId,
+        at: now,
+        exp: now + 5 * 60 * 1000,
+        status: 'pending',
+        attempts: 0
+      });
+    } catch (e) {
+      return send(res, 500, { error: 'server error' });
+    }
+    return send(res, 202, { ok: false, challenge: 'discord', challengeId, expiresIn: 300 });
   }
-  setSessionCookie(req, res, token, 7 * 86400);
 
-  try {
-    await db.patch('accounts/' + acc.id, {
-      lastLogin: Date.now(),
-      lastIp: sha256('ip:' + clientIp(req)).slice(0, 16)
-    });
-  } catch (e) {}
-
-  await audit({ id: acc.id, user: name }, 'login', role, req);
-  return send(res, 200, { ok: true, role, user: name });
+  return finishLogin(acc, dec(acc.user) || user, req, res);
 }

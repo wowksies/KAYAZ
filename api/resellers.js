@@ -1,7 +1,7 @@
 import {
   requirePanel, requireSameOrigin, readBody, send, guardConfig, rateLimit,
   getAccounts, createAccount, getAccountByUser, getAccountByEmail, hashPassword,
-  normUser, validUsername, validEmail, enc, userIndex, emailIndex, dec, db, audit, PASSWORD_MIN
+  normUser, validUsername, validEmail, validDiscordId, enc, userIndex, emailIndex, dec, db, audit, PASSWORD_MIN
 } from './_lib.js';
 
                                                                              
@@ -57,6 +57,7 @@ export default async function handler(req, res) {
       quota: Number(a.quota) || 0,
       used: used[id] || 0,
       created: a.created || 0,
+      discordId: a.discordId || '',
       lastLogin: a.lastLogin || 0
     })).sort((x, y) => {
       if (x.role !== y.role) return x.role === 'admin' ? -1 : 1;
@@ -75,6 +76,7 @@ export default async function handler(req, res) {
         password: b.password,
         role: b.role === 'admin' ? 'admin' : 'reseller',
         quota: quotaOf(b.quota),
+        discordId: String(b.discordId || '').trim(),
         by: me.id
       });
       await audit(me, 'account.create', dec(created.user), req);
@@ -131,6 +133,12 @@ export default async function handler(req, res) {
           patch.eh = emailIndex(em);
         }
       }
+    }
+
+    if (b.discordId != null) {
+      const did = String(b.discordId).trim();
+      if (did && !validDiscordId(did)) return send(res, 400, { error: 'enter a valid Discord user ID' });
+      patch.discordId = did || null;
     }
 
     if (b.role) {

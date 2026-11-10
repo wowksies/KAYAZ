@@ -107,12 +107,25 @@ function res() {
     payload: '',
     status(c) { this.statusCode = c; return this; },
     setHeader(k, v) { this.headers[String(k).toLowerCase()] = v; },
+    getHeader(k) { return this.headers[String(k).toLowerCase()]; },
     end(b) { this.payload = String(b); }
   };
 }
 const json = r => { try { return JSON.parse(r.payload); } catch (e) { return {}; } };
-const cookieOf = r => String(r.headers['set-cookie'] || '').split(';')[0];
-const setCookie = r => String(r.headers['set-cookie'] || '');
+const cookieList = r => {
+  const v = r.headers['set-cookie'];
+  if (!v) return [];
+  return Array.isArray(v) ? v : [v];
+};
+const cookieOf = r => {
+  const hit = cookieList(r).find(x => String(x).startsWith('kz_s='));
+  return hit ? String(hit).split(';')[0] : '';
+};
+const deviceCookieOf = r => {
+  const hit = cookieList(r).find(x => String(x).startsWith('kz_d='));
+  return hit ? String(hit).split(';')[0] : '';
+};
+const setCookie = r => cookieList(r).join('\n');
 
                                                                             
 let r = res();
@@ -423,6 +436,37 @@ ok('old admin password rejected', r.statusCode === 401, r.statusCode);
 r = res();
 await login(req({ method: 'POST', body: { user: 'owner2@kayaz.xyz', password: 'owner-password-456' } }), r);
 ok('new admin credentials work', r.statusCode === 200 && json(r).role === 'admin', json(r));
+
+process.env.DISCORD_LOGIN = '1';
+process.env.DISCORD_OWNER_ID = '747411610389446747';
+
+r = res();
+await login(req({ method: 'POST', body: { user: 'owner2@kayaz.xyz', password: 'owner-password-456' } }), r);
+const challenge = json(r);
+const challengeId = challenge.challengeId || '';
+ok('new device requires a discord code', r.statusCode === 202 && challenge.challenge === 'discord' && /^[a-f0-9]{32}$/.test(challengeId), challenge);
+ok('new device gets no panel session yet', cookieOf(r) === '', setCookie(r));
+ok('challenge uses the owner discord id', Boolean(challengeId && store.loginChallenges && store.loginChallenges[challengeId] && store.loginChallenges[challengeId].discordId === '747411610389446747'), challengeId);
+
+if (challengeId && store.loginChallenges && store.loginChallenges[challengeId]) {
+  store.loginChallenges[challengeId].status = 'sent';
+  store.loginChallenges[challengeId].codeHash = sha256('654321:' + challengeId);
+
+  r = res();
+  await login(req({ method: 'POST', body: { challengeId, code: '123456' } }), r);
+  ok('wrong discord code rejected', r.statusCode === 401, json(r));
+
+  r = res();
+  await login(req({ method: 'POST', body: { challengeId, code: '654321' } }), r);
+  ok('discord code completes sign in', r.statusCode === 200 && json(r).role === 'admin', json(r));
+  const deviceCookie = deviceCookieOf(r);
+  ok('verified device is remembered', /^kz_d=kz1\./.test(deviceCookie), deviceCookie.slice(0, 30));
+  ok('challenge is one time', !(store.loginChallenges && store.loginChallenges[challengeId]));
+
+  r = res();
+  await login(req({ method: 'POST', headers: { cookie: deviceCookie }, body: { user: 'owner2@kayaz.xyz', password: 'owner-password-456' } }), r);
+  ok('trusted device skips the code', r.statusCode === 200 && json(r).role === 'admin', json(r));
+}
 
 console.log(`\n${checks - failures}/${checks} checks passed`);
 if (failures) {
