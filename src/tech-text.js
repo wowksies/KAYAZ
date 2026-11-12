@@ -22,7 +22,7 @@
 
                                                   
 export const TECH_TEXT_PROPS = {
-  text: 'Have an eye like an eagle.',
+  text: 'Have an eye of an eagle.',
   fontFamily: '',
   fontWeight: 600,
   fontSize: 190,
