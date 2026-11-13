@@ -54,6 +54,7 @@
             <button class="tab" data-tab="sitekeys" type="button">site keys</button>
             <button class="tab" data-tab="resellers" data-admin type="button">accounts</button>
             <button class="tab" data-tab="games" data-admin type="button">games</button>
+            <button class="tab" data-tab="logs" data-admin type="button">logs</button>
             <button class="tab" data-tab="account" type="button">my account</button>
         </nav>
 
@@ -284,6 +285,33 @@
                     <button class="btn sm" id="gRefresh" type="button">refresh</button>
                 </div>
                 <div id="gList"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="tab-logs" data-admin>
+            <div class="card">
+                <div class="bar">
+                    <h2>session logs</h2>
+                    <span class="tag" id="lCount">0</span>
+                    <div class="spacer"></div>
+                    <input class="f" id="lFilter" style="max-width:280px" maxlength="60" placeholder="filter key / user / pc...">
+                    <button class="btn sm" id="lRefresh" type="button">refresh</button>
+                </div>
+                <div class="sub">logs uploaded by the external at session end &middot; grouped by key &rarr; machine &rarr; session &middot; a session that never ran or crashed before shutdown will not have one</div>
+                <div class="msg" id="lMsg"></div>
+                <div id="lList"></div>
+            </div>
+
+            <div class="card" id="lViewCard" style="display:none">
+                <div class="bar">
+                    <h2 id="lViewTitle">log</h2>
+                    <span class="tag mono" id="lViewMeta"></span>
+                    <div class="spacer"></div>
+                    <button class="btn sm" id="lCopy" type="button">copy</button>
+                    <button class="btn sm" id="lDownload" type="button">download</button>
+                    <button class="btn sm" id="lClose" type="button">close</button>
+                </div>
+                <pre class="mono" id="lView" style="max-height:60vh;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:.78rem;line-height:1.35;padding:12px;background:#0b0e14;border-radius:6px"></pre>
             </div>
         </section>
 

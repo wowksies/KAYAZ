@@ -157,7 +157,8 @@
     keys: function () { loadKeys('r6'); },
     sitekeys: function () { loadKeys('site'); },
     resellers: loadResellers,
-    games: loadGames
+    games: loadGames,
+    logs: loadLogs
   };
 
   function showTab(name) {
@@ -938,6 +939,119 @@
   }
 
                                                                               
+
+  // ── logs tab (admin only) ──────────────────────────────────────────
+  //
+  // Reads from /api/keys?kind=logs (folded into the keys handler to keep
+  // the Vercel Hobby function count at 12). The Worker uploads logs to
+  // github.com/wowksies/KAYAZ under logs/<key_id>/<host_hwid8>/<name>;
+  // the API hides the GitHub token server-side and streams content.
+  var LOG_FILTER = '';
+  function loadLogs() {
+    var box = $('lList');
+    if (!box) return;
+    box.innerHTML = '<div class="empty">loading...</div>';
+    api('keys?kind=logs').then(function (r) {
+      if (!r.ok) {
+        box.innerHTML = '<div class="empty">' + esc(r.data.error || 'could not load logs') + '</div>';
+        return;
+      }
+      var keys = r.data.keys || [];
+      if ($('lCount')) $('lCount').textContent = keys.length;
+      var f = (LOG_FILTER || '').toLowerCase();
+      if (f) {
+        keys = keys.filter(function (k) {
+          if (k.key_id.toLowerCase().indexOf(f) >= 0) return true;
+          for (var i = 0; i < (k.machines || []).length; i++)
+            if (String(k.machines[i]).toLowerCase().indexOf(f) >= 0) return true;
+          return false;
+        });
+      }
+      if (!keys.length) { box.innerHTML = '<div class="empty">no logs yet</div>'; return; }
+      box.innerHTML = keys.map(function (k) {
+        var mach = (k.machines || []).slice(0, 4).map(esc).join(', ');
+        var more = (k.machines || []).length > 4 ? ' +' + ((k.machines || []).length - 4) : '';
+        return '<div class="row-case">' +
+          '<button class="btn sm" type="button" data-logkey="' + esc(k.key_id) + '">open</button>' +
+          '<span class="mono">' + esc(k.key_id) + '</span>' +
+          '<span class="dim">' + esc(mach) + more + '</span>' +
+          '<span class="tag">' + k.sessions + '</span>' +
+          '</div>';
+      }).join('');
+      [].forEach.call(box.querySelectorAll('[data-logkey]'), function (b) {
+        b.addEventListener('click', function () { openLogsForKey(b.getAttribute('data-logkey')); });
+      });
+    }).catch(function () { box.innerHTML = '<div class="empty">network error</div>'; });
+  }
+
+  function openLogsForKey(kid) {
+    var box = $('lList');
+    box.innerHTML = '<div class="empty">loading sessions for ' + esc(kid) + '...</div>';
+    api('keys?kind=logs&key_id=' + encodeURIComponent(kid)).then(function (r) {
+      if (!r.ok) { box.innerHTML = '<div class="empty">' + esc(r.data.error || 'could not load') + '</div>'; return; }
+      var ms = r.data.machines || [];
+      var rows = '<div class="row-case"><button class="btn sm" id="lBack" type="button">back</button>' +
+                 '<span class="mono">' + esc(kid) + '</span></div>';
+      if (!ms.length) rows += '<div class="empty">no sessions yet</div>';
+      ms.forEach(function (m) {
+        rows += '<div class="case-group"><div class="case-head mono">' + esc(m.machine) + '</div>';
+        m.sessions.forEach(function (s) {
+          var mb = s.size > 1024 ? (Math.round(s.size / 1024) + ' kb') : (s.size + ' b');
+          rows += '<div class="row-case indent">' +
+            '<button class="btn sm" type="button" data-logview="' + esc(s.path) + '">view</button>' +
+            '<a class="btn sm" href="/api/keys?kind=logs&path=' + encodeURIComponent(s.path) + '" target="_blank">raw</a>' +
+            '<span class="mono">' + esc(s.name) + '</span>' +
+            '<span class="dim">' + mb + '</span>' +
+            '</div>';
+        });
+        rows += '</div>';
+      });
+      box.innerHTML = rows;
+      if ($('lBack')) $('lBack').addEventListener('click', loadLogs);
+      [].forEach.call(box.querySelectorAll('[data-logview]'), function (b) {
+        b.addEventListener('click', function () { openLogView(b.getAttribute('data-logview')); });
+      });
+    }).catch(function () { box.innerHTML = '<div class="empty">network error</div>'; });
+  }
+
+  function openLogView(path) {
+    var card = $('lViewCard'), pre = $('lView'), title = $('lViewTitle'), meta = $('lViewMeta');
+    if (!card || !pre) return;
+    card.style.display = 'block';
+    pre.textContent = 'loading...';
+    title.textContent = path.split('/').pop() || 'log';
+    meta.textContent = path;
+    pre._path = path;
+    api('keys?kind=logs&path=' + encodeURIComponent(path)).then(function (r) {
+      if (!r.ok) { pre.textContent = r.data.error || 'could not load'; return; }
+      pre.textContent = r.data.text || '';
+    }).catch(function () { pre.textContent = 'network error'; });
+  }
+
+  if ($('lRefresh')) $('lRefresh').addEventListener('click', loadLogs);
+  if ($('lFilter')) {
+    var tdeb = null;
+    $('lFilter').addEventListener('input', function (e) {
+      clearTimeout(tdeb);
+      tdeb = setTimeout(function () {
+        LOG_FILTER = e.target.value.trim();
+        loadLogs();
+      }, 250);
+    });
+  }
+  if ($('lClose')) $('lClose').addEventListener('click', function () {
+    $('lViewCard').style.display = 'none';
+  });
+  if ($('lCopy')) $('lCopy').addEventListener('click', function () {
+    var t = $('lView').textContent || '';
+    navigator.clipboard.writeText(t).then(function () { msg($('lMsg'), 'copied', 'ok'); });
+  });
+  if ($('lDownload')) $('lDownload').addEventListener('click', function () {
+    var p = $('lView')._path || '';
+    if (!p) return;
+    window.open('/api/keys?kind=logs&path=' + encodeURIComponent(p), '_blank');
+  });
+
   api('session').then(function (r) {
     if (r.ok && r.data.role && r.data.role !== 'user') {
       boot({ user: r.data.user || '', role: r.data.role });

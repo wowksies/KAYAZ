@@ -163,6 +163,109 @@ export default async function handler(req, res) {
     return send(res, 405, { error: 'method' });
   }
 
+  // ── logs sub-route ────────────────────────────────────────────────────
+  // Admin-only. Reads session logs out of github.com/wowksies/KAYAZ under
+  // logs/<key_id>/<host_hwid8>/<session_name> (the Cloudflare Worker puts
+  // them there, authenticated by the EXT's ECDSA token -- see
+  // needed/Worker/src/index.ts /v1/upload-log).
+  //
+  //   GET /api/keys?kind=logs                      -> every key_id folder
+  //   GET /api/keys?kind=logs&key_id=<hex>         -> the sessions under it
+  //   GET /api/keys?kind=logs&path=<repo-path>     -> that one log's bytes
+  //
+  // Needs the Vercel env GITHUB_LOGS_PAT (same PAT the Worker uses).
+  if (kind === 'logs') {
+    if (!isAdmin) return send(res, 403, { error: 'admin only' });
+    if (req.method !== 'GET') { res.setHeader('allow', 'GET'); return send(res, 405, { error: 'method' }); }
+    const pat = process.env.GITHUB_LOGS_PAT || '';
+    if (!pat) return send(res, 503, { error: 'logs not configured (GITHUB_LOGS_PAT missing)' });
+
+    const gh = async (p) => {
+      const r = await fetch('https://api.github.com/repos/wowksies/KAYAZ/contents/' + p, {
+        headers: {
+          authorization: 'Bearer ' + pat,
+          accept: 'application/vnd.github+json',
+          'user-agent': 'kayaz-panel',
+        },
+      });
+      if (r.status === 404) return null;
+      if (!r.ok) throw new Error('github ' + r.status);
+      return r.json();
+    };
+    const safePath = (p) => {
+      // Only allow paths under logs/, no .. segments, printable chars.
+      const s = String(p || '');
+      if (!/^logs\/[A-Za-z0-9._\/-]{1,200}$/.test(s)) return null;
+      if (s.includes('..')) return null;
+      return s;
+    };
+
+    const q = req.query || {};
+    try {
+      // Single file content
+      if (q.path) {
+        const p = safePath(q.path);
+        if (!p) return send(res, 400, { error: 'bad path' });
+        const j = await gh(p);
+        if (!j || Array.isArray(j)) return send(res, 404, { error: 'not found' });
+        // size cap so a huge file cannot blow the response: 1 MB rendered.
+        const bytes = Number(j.size) || 0;
+        if (bytes > 1_500_000) {
+          return send(res, 413, { error: 'log too large to view in panel (' + bytes + ' bytes)' });
+        }
+        const text = Buffer.from(String(j.content || ''), 'base64').toString('utf8');
+        return send(res, 200, { path: p, size: bytes, text });
+      }
+
+      // One key_id's sessions
+      if (q.key_id) {
+        const kid = String(q.key_id).toLowerCase();
+        if (!/^[a-f0-9]{8,16}$/.test(kid)) return send(res, 400, { error: 'bad key_id' });
+        const machines = await gh('logs/' + kid);
+        if (!Array.isArray(machines)) return send(res, 200, { key_id: kid, machines: [] });
+        const out = [];
+        for (const m of machines) {
+          if (m.type !== 'dir') continue;
+          const sessions = await gh('logs/' + kid + '/' + m.name);
+          if (!Array.isArray(sessions)) continue;
+          out.push({
+            machine: m.name,
+            sessions: sessions
+              .filter(s => s.type === 'file')
+              .map(s => ({ name: s.name, size: s.size, path: s.path, sha: s.sha }))
+              .sort((a, b) => b.name.localeCompare(a.name)),
+          });
+        }
+        return send(res, 200, { key_id: kid, machines: out });
+      }
+
+      // The top-level listing: every key_id folder + a count of sessions.
+      const kids = await gh('logs');
+      if (!Array.isArray(kids)) return send(res, 200, { keys: [] });
+      const rows = [];
+      for (const d of kids) {
+        if (d.type !== 'dir') continue;
+        let sessions = 0, machines = [];
+        try {
+          const ms = await gh('logs/' + d.name);
+          if (Array.isArray(ms)) {
+            for (const m of ms) {
+              if (m.type !== 'dir') continue;
+              machines.push(m.name);
+              const ss = await gh('logs/' + d.name + '/' + m.name);
+              if (Array.isArray(ss)) sessions += ss.filter(s => s.type === 'file').length;
+            }
+          }
+        } catch (e) {}
+        rows.push({ key_id: d.name, machines, sessions });
+      }
+      rows.sort((a, b) => a.key_id.localeCompare(b.key_id));
+      return send(res, 200, { keys: rows });
+    } catch (e) {
+      return send(res, 502, { error: 'github: ' + String(e.message || e) });
+    }
+  }
+
   if (req.method === 'GET') {
     const target = pickTarget(req.query && req.query.target);
     if (!target) return send(res, 400, { error: 'bad target' });
