@@ -1017,7 +1017,7 @@
   function openLogView(path) {
     var card = $('lViewCard'), pre = $('lView'), title = $('lViewTitle'), meta = $('lViewMeta');
     if (!card || !pre) return;
-    card.style.display = 'block';
+    card.hidden = false;
     pre.textContent = 'loading...';
     title.textContent = path.split('/').pop() || 'log';
     meta.textContent = path;
@@ -1040,7 +1040,7 @@
     });
   }
   if ($('lClose')) $('lClose').addEventListener('click', function () {
-    $('lViewCard').style.display = 'none';
+    $('lViewCard').hidden = true;
   });
   if ($('lCopy')) $('lCopy').addEventListener('click', function () {
     var t = $('lView').textContent || '';
