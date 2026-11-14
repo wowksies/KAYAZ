@@ -1,0 +1,159 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-13 21:52:55   (internal, inject stage 4)
+  log           C:\Users\kajus\AppData\Local\Kayaz\logs\kayaz_20261113_215255_pid31240.log
+  process       D:\SteamLibrary\steamapps\common\Tom Clancy's Rainbow Six Siege\multiexe\RainbowSix.exe   pid 31240
+  game module   0x00007FF744BB0000  size 0x1BCEC000  BUILD STAMP 0xF8B8504D
+  our code at   0x00000215AD005EC0
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  2560x1440
+========================================================================
+  READ THE BUILD STAMP ABOVE before calling anything here a regression.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+21:52:55  panel     console buffer 64x14, window 64x14
+21:52:55  startup   stage=4
+21:52:55  auth      gate 1/3 ok
+21:52:55  startup   attached: pid 31240  base 0x7FF744BB0000
+21:52:55  config    auto-loading last: main
+21:52:55  config    loaded from D:\SteamLibrary\steamapps\common\Tom Clancy's Rainbow Six Siege\multiexe\configs\main.ini
+21:52:56  startup   starting our overlay window (no hooks)
+21:52:56  startup   waiting for the overlay's first frame...
+21:52:56  overlay   overlay thread started  (tid 27148)
+21:52:56  overlay   waiting for R6's window
+21:52:56  overlay   window + D3D11 created  (tid 27148)
+21:52:56  chams     galaxy texture 512x512 with 10 mip levels ready
+21:52:56  intro     off in the config -- not loading any of it
+21:52:56  badges    78 operator badges ready (500x400 atlas)
+21:52:56  overlay   ImGui + fonts ready  (tid 27148)
+21:52:56  overlay   R6's window thread is tid 16044  (tid 27148)
+21:52:56  overlay   R6 window 0x0000000000520882 2560x1440 -- our overlay window 0x00000000010A0A68 on top of it (no hooks), transparency via DirectComposition, click-through layered (the pointer is R6's)
+21:52:56  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+21:52:56  overlay   display refresh 6.06 ms (165 Hz); overlay thread at HIGHEST priority
+21:52:56  overlay   stream proof OFF -- the overlay is in captures again
+21:52:56  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1)
+21:52:56  state     build 0x00000000 image 0x00000000 | cfg dumped on 0x00000000: (none)
+21:52:56  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x00000000  | comp array +0xE0 count +0xE8
+21:52:56  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+21:52:56  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+21:52:56  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+21:52:56  state     memory R6 private 5825 MB, working set 5009 MB | our scan buffers ~0 MB | machine 12025 of 32547 MB free
+21:52:56  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Gradient: 0 bod(ies) | named 0
+21:52:56  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=0  (Enabled=1 Box=0 TeamCheck=0 side=unknown)
+21:52:56  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)
+21:52:56  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people
+21:52:56  startup   overlay drawing
+21:52:56  view-scan scanner started for pid=31240
+21:52:56  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  entlist   entitylist.cfg: rva 0x146FFCC8 pos +0x1D0
+21:52:56  entlist   node class NOT pinned: this is build stamp 0xF8B8504D image 0x1BCEC000, and node_rva 0x146F4428 was measured on a different build
+21:52:56  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+21:52:56  entv2     warm-up: resolving class + first sweep
+21:52:56  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   D:\Important\potenial side projects\2\try\build\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+21:52:56  dumpcfg   loaded C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (34 values) for build 0xF8B8504D -- it goes first, signatures and built-in values are the fallback
+21:52:56  view-scan dumper cfg: built-in camera anchor still valid on this build
+21:52:56  entlist   sig: 4 hits but they DISAGREE on the vtable -- refusing to use it, keeping rva 0x146FFCC8. The pattern has half-broken; re-cut it.
+21:52:56  entlist   build stamp 0xF8B8504D image 0x1BCEC000 is not the build the fallback rva 0x146FFCC8 came from -- not using it
+21:52:56  entlist   ENTITY    vtable rva 0x120187A0  (from dumper cfg)
+21:52:56  entlist   CHARACTER vtable rva 0x11E93FE8  (from dumper cfg)
+21:52:56  entlist   DAMAGE    vtable rva 0x1212B270  (from dumper cfg)
+21:52:56  dumpcfg   CHARACTER position: +0x200 from dumper cfg (built-in +0x1E0)
+21:52:56  dumpcfg   ENTITY facing quaternion: +0x60 from dumper cfg (built-in +0x20)
+21:52:56  entlist   CHARACTER MODE: identity by component, per-frame position at +0x200, health ON
+21:52:56  entlist   class = 0x7FF756A43FE8 (base 0x7FF744BB0000 + rva 0x11E93FE8 CHARACTER sig), pos +0x200, rot +0x0 (will search)
+21:52:56  view-scan view_block @ 0x21391430100  in 358ms  cam=(-106.8,-13.9,0.9)  [rpm_ok=344 rpm_blocked=0 drv_saved=0 drv_fail=0]
+21:52:56  nskel     GetTransforms at rva 0x40A030 from the dumper cfg (call site verified)
+21:52:57  entv2     sig: 0 raw hit(s) in .text
+21:52:57  entv2     sig: no lea found behind any hit
+21:52:57  entv2     derive: entity list is driving -- heap route skipped
+21:52:57  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+21:52:57  entv2     warm-up: class not resolved after 688 ms
+21:52:57  view-scan cached block no longer self-consistent and none of the 1 known block(s) fits — re-scanning
+21:52:57  entlist   component array +0xE0/+0xE8 PROVEN on the data (3 of 400 entities hold a character component) -- it is a property of the binary, so it is fixed for this session now
+21:52:57  entlist   char sweep: 8387 entities, 5 character comps, 6 damage comps -> 3 character(s), 3 with health, 0 with 2+ damage comps (1132 ms)
+21:52:57  entlist   OK -- 3 object(s) of the configured class
+21:52:57  entlist   rotation: NO offset holds on a majority of 3 entit(ies) -- none at all
+21:52:57  entlist   0 live entit(ies) from 3 slot(s)
+21:53:01  pos       no orthonormal transform in actor 0x21505171800 +0x10..+0x400 (sel@0x5E=0)
+21:53:03  view-scan pattern not found (5242ms) [rpm_ok=7845 rpm_blocked=0 drv_saved=0 drv_fail=0] — retry in 1000ms
+21:53:04  mapgeo    3 character(s), steady for 2.5 s -- everyone has spawned, re-reading the walls
+21:53:20  view-scan a known block is live again @ 0x21391430100, cam=(14.2,-74.8,1.7) -- no sweep needed
+21:53:21  esp-draw    first box: world=(-0.7 0.0 0.8) feet=(129 726) head=(129 703) w=15 h=25 screen=2560x1440
+21:53:22  esp-src   ENTITY LIST driving -- 1 entit(ies)
+21:53:22  native    334939 functions in .pdata, code rva 0x1000 size 0x11CC9C00
+21:53:22  mapgeo    radar dots: 23181, from 105073 world matri(ces) around you (420 on characters left out) -- every placed object, no class chosen (1674 ms, around 14 -75 2)
+21:53:22  mapgeo    the dots are saved to C:\Users\kajus\AppData\Local\Kayaz\logs\radar_dots_F8B8504D_541641750.bin -- send it if the radar looks wrong
+21:53:22  native    health function NOT found: 713 candidate function(s), 0 matched the shape (need exactly 1) -- health stays on the hit records (536 ms)
+21:53:22  native    health 0 of 1 read (no health function) | operator 0 of 1 () | 0 CRC layout(s) of 40 vtables tried
+21:53:24  entlist     [0] 000002158BEE05D0  (15.8 -72.1 0.2)  hp -1/-1
+21:53:24  nskel     Reflex layout from the dumper cfg: class rva 0x122E4500, component +0x20, abstraction +0xB8, position +0x70, facing +0x80
+21:53:24  nskel     layout resolved on attempt 1
+21:53:24  nskel     0 of 13 character(s) posed | 0 step(s), 0 read(s) last run | not posed: 13 unbound
+21:53:24  native    module layout FROM DATA on component vtable rva 0x121F7CB0: checksum +0x1E8, primary +0x158, list +0x90/+0x98, signature +0x74 (holds on 3 bodies, names a known operator on 1) (14 ms)
+21:53:25  native    0x2158BEE05D0 is Ash
+21:53:25  nskel       rax 0 rcx 21585FD3C78 rdx 215AD676860 rbx 0 rsp 215AD67E2E0 rbp 0 rsi 0 rdi 0
+21:53:25  nskel       r8 215AD6768E0 r9 0 r10 0 r11 0 r12 0 r13 0 r14 0 r15 0 | gs 6A4C0A4000 tls 2157BD17120
+21:53:25  nskel       path: 40A030 40A032 40A033 40A034 40A036 40A038 40A039 40A03B 40A03C 40A040
+21:53:25  nskel     run stopped after 10 step(s) at rva 0x40A040 [66 44 0F 7F 5C 24 20 4C] unknown-op 0xF7F
+21:53:25  native    0x21588CE3FE0: module list valid but its id 0x69C65D0A is not in the operator table (new operator?)
+21:53:26  overlay   4448 frames in 30 s (paced by DwmFlush, refresh 6.06 ms) | missed 534 refresh(es) | frame work p50 3.52 ms, p95 5.52 ms, max 10.19 ms (CPU p50 0.31 p95 0.54 | our draw p50 0.03 p95 0.08 | Present p50 3.18 -- Present is the GPU queue and the compositor, which drawing less cannot fix) | before the wait p50 0.01 p95 0.02 max 0.63 (window calls + the message pump; this one is not in frame work and still costs a refresh when it is late) | 0 skipped with nothing on them
+21:53:26  team        0000021585FC1480  (not named)  -
+21:53:26  team        000002158BEE05D0  Ash          ATTACK
+21:53:27  xref      1 code-shape candidates
+21:53:27  xref      REJECTED: best candidate resolved only 1/11 actors (arr=+0xE0 idx=+0x228)
+21:53:29  nskel     0 of 13 character(s) posed | 10 step(s), 0 read(s) last run | not posed: 13 no run
+21:53:32  entlist   facing changes/s per character: 36.2 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+21:53:32  native    health 0 of 13 read (no health function) | operator 1 of 13 (Ash) | 1 CRC layout(s) of 44 vtables tried
+21:53:40  nskel     nobody posed for 15 s -- dropping this layout and learning it again
+21:53:48  entlist   dead at (-3.7 -37.8 3.8): health 0
+21:53:48  entlist     [6] 000002158BDB2990  (-3.7 -37.8 3.8)  hp 0/110  DEAD
+21:53:51  nskel     character 0x2158BDB2990: its Reflex object 0x2158BD3ADA0 is gone (freed or reused) -- rebinding
+21:53:57  nskel     character 0x2159EF67510 will not rebind: its entity offers no skeleton-component candidates (0 candidate comp(s), 46 Reflex object(s) on the heap)
+21:53:57  entlist   char sweep: 24281 entities, 16 character comps, 44 damage comps -> 12 character(s), 12 with health, 0 with 2+ damage comps (1114 ms)  (+4 like this in the last minute)
+21:53:57  entlist   position loop: 20063 pass(es) in the last minute, 0.00 ms each on average, worst 2 ms
+21:53:57  entlist   10 live entit(ies) from 12 slot(s)  (+19 like this in the last minute)
+21:53:59  backend   2001 faulted reads (2001 this session) -- kernel-checked reads for the rest of this session
+21:54:00  esp-filt  total=8 player=8 teamok=8 alive=8 havepos=8 groups=8  (TeamCheck=0 DeadCheck=1)  (+11 like this in the last minute)
+21:54:00  state     build 0xF8B8504D image 0x1BCEC000 | cfg dumped on 0x00000000: (none)  (+3 like this in the last minute)
+21:54:00  state     CHARACTER rva 0x11E93FE8  ENTITY rva 0x120187A0  DAMAGE rva 0x1212B270  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+21:54:00  state     mode char=1 xbuild=0 pos_ok=0 ready=1 anchors=0  (+3 like this in the last minute)
+21:54:00  state     counts total=8 havepos=8 groups=8 | skeletons posed=0  (+3 like this in the last minute)
+21:54:00  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (-12.5 -38.4 5.3)  (+3 like this in the last minute)
+21:54:00  state     memory R6 private 6698 MB, working set 8780 MB | our scan buffers ~163 MB | machine 8590 of 32547 MB free  (+3 like this in the last minute)
+21:54:00  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 8 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Gradient: 0 bod(ies) | named 0  (+11 like this in the last minute)
+21:54:00  esp-draw  groups=8 drawn=1 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=6  (Enabled=1 Box=0 TeamCheck=0 side=unknown)  (+11 like this in the last minute)
+21:54:00  team      9 character(s): 1 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+21:54:00  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+21:54:01  pos       no orthonormal transform in actor 0x2150C5A1230 +0x10..+0x400 (sel@0x5E=45499)  (+19 like this in the last minute)
+21:54:02  entlist   facing changes/s per character: 0.1 0.1 0.1 0.1 0.1 0.1 74.8 0.1 0.1 0.1 0.1 0.1
+21:54:12  entlist   facing changes/s per character: 0.1 0.1 0.1 0.1 0.1 32.8 0.1 0.1 0.1
+21:54:22  entlist   facing changes/s per character: 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+21:54:22  esp-src   ENTITY LIST driving -- 7 entit(ies)  (+11 like this in the last minute)
+21:54:24  entlist     [0] 0000021585FC1480  (-37.4 -39.0 3.8)  hp -1/-1  (+190 like this in the last minute)
+21:54:25  esp-draw    first box: world=(-37.4 -39.0 3.8) feet=(-4009 809) head=(-4528 518) w=190 h=328 screen=2560x1440  (+11 like this in the last minute)
+21:54:26  overlay   3951 frames in 30 s (paced by DwmFlush, refresh 6.06 ms) | missed 624 refresh(es) | frame work p50 4.59 ms, p95 6.89 ms, max 9.41 ms (CPU p50 0.81 p95 1.06 | our draw p50 0.10 p95 0.18 | Present p50 3.68 -- Present is the GPU queue and the compositor, which drawing less cannot fix) | before the wait p50 0.01 p95 0.02 max 0.60 (window calls + the message pump; this one is not in frame work and still costs a refresh when it is late) | 0 skipped with nothing on them  (+1 like this in the last minute)
+21:54:28  nskel     Reflex layout from the dumper cfg: class rva 0x122E4500, component +0x20, abstraction +0xB8, position +0x70, facing +0x80  (+3 like this in the last minute)
+21:54:28  nskel     layout resolved on attempt 1  (+3 like this in the last minute)
+21:54:28  xref      1 code-shape candidates  (+2 like this in the last minute)
+21:54:28  xref      REJECTED: best candidate resolved only 1/11 actors (arr=+0xE0 idx=+0x228)  (+2 like this in the last minute)
+21:54:29  nskel       rax 0 rcx 21585FD3C78 rdx 215AD676860 rbx 0 rsp 215AD67E2E0 rbp 0 rsi 0 rdi 0  (+11 like this in the last minute)
+21:54:29  nskel       r8 215AD6768E0 r9 0 r10 0 r11 0 r12 0 r13 0 r14 0 r15 0 | gs 6A4C0A4000 tls 2157BD17120  (+11 like this in the last minute)
+21:54:29  nskel     run stopped after 10 step(s) at rva 0x40A040 [66 44 0F 7F 5C 24 20 4C] unknown-op 0xF7F  (+11 like this in the last minute)
+21:54:30  nskel     0 of 7 character(s) posed | 10 step(s), 0 read(s) last run | not posed: 7 no run  (+11 like this in the last minute)
+21:54:30  team        0000021585FC1480  (not named)  -  (+37 like this in the last minute)
+21:54:30  team        000002158BEE05D0  Ash          ATTACK  (+3 like this in the last minute)
+21:54:32  native    health 0 of 7 read (no health function) | operator 1 of 7 (Ash) | 1 CRC layout(s) of 45 vtables tried  (+5 like this in the last minute)
+21:54:44  nskel     nobody posed for 15 s -- dropping this layout and learning it again  (+3 like this in the last minute)
+21:54:57  entlist   position loop: 20043 pass(es) in the last minute, 0.00 ms each on average, worst 14 ms
+21:54:57  entlist   7 live entit(ies) from 9 slot(s)  (+19 like this in the last minute)
+21:55:00  nskel     0 of 7 character(s) posed | 10 step(s), 0 read(s) last run | not posed: 7 unbound
+21:55:02  pos       no orthonormal transform in actor 0x2150C5A1230 +0x10..+0x400 (sel@0x5E=45499)  (+19 like this in the last minute)
