@@ -1,0 +1,231 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-14 16:09:43   (internal, inject stage 4)
+  log           C:\Users\kajus\AppData\Local\Kayaz\logs\kayaz_20261114_160943_pid22636.log
+  process       D:\SteamLibrary\steamapps\common\Tom Clancy's Rainbow Six Siege\multiexe\RainbowSix.exe   pid 22636
+  game module   0x00007FF731F90000  size 0x1BCEC000  BUILD STAMP 0xF8B8504D
+  our code at   0x000001C59C779910
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  2560x1440
+========================================================================
+  READ THE BUILD STAMP ABOVE before calling anything here a regression.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+16:09:43  panel     console buffer 64x14, window 64x14
+16:09:43  startup   stage=4
+16:09:43  auth      gate 1/3 ok
+16:09:43  startup   attached: pid 22636  base 0x7FF731F90000
+16:09:43  config    auto-loading last: main
+16:09:43  config    loaded from D:\SteamLibrary\steamapps\common\Tom Clancy's Rainbow Six Siege\multiexe\configs\main.ini
+16:09:43  startup   starting our overlay window (no hooks)
+16:09:43  startup   waiting for the overlay's first frame...
+16:09:43  overlay   overlay thread started  (tid 8420)
+16:09:43  overlay   waiting for R6's window
+16:09:43  overlay   GPU: NVIDIA GeForce RTX 4060, 7956 MB dedicated, 16274 MB shared
+16:09:43  overlay   displays: 2 [2560x1440@165Hz PRIMARY, 1920x1080@165Hz]  -- MULTI-MONITOR: DWM composes every display, and a desktop recorder duplicates one of them; the user measured that dropping to a single 1080p screen is much smoother
+16:09:43  overlay   VRAM at startup: using 1654 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)
+16:09:43  overlay   frame-latency waitable object ACTIVE (latency 1): the wait happens BEFORE drawing, so Present stops blocking the loop. Measured without it: one Present of 218.8 ms.
+16:09:43  overlay   window + D3D11 created  (tid 8420)
+16:09:43  chams     galaxy texture 512x512 with 10 mip levels ready
+16:09:43  intro     off in the config -- not loading any of it
+16:09:43  badges    78 operator badges ready (500x400 atlas)
+16:09:43  overlay   ImGui + fonts ready  (tid 8420)
+16:09:43  overlay   R6's window thread is tid 18440  (tid 8420)
+16:09:43  overlay   R6 window 0x000000000005017C 2560x1440 -- our overlay window 0x00000000006A01A2 on top of it (no hooks), transparency via DirectComposition, click-through layered (the pointer is R6's)
+16:09:43  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+16:09:43  overlay   paced by DwmFlush (Present(0,0)); a waitable timer is held in reserve if DwmFlush stops pacing
+16:09:43  overlay   display refresh 6.06 ms (165 Hz); overlay thread at HIGHEST priority
+16:09:43  overlay   stream proof OFF -- the overlay is in captures again
+16:09:43  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1) | dead-by-marker=0 | byte4 seen:   <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+16:09:43  state     build 0x00000000 image 0x00000000 | cfg dumped on 0x00000000: (none)
+16:09:43  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x00000000  | comp array +0xE0 count +0xE8
+16:09:43  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+16:09:43  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+16:09:43  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+16:09:43  state     memory R6 private 5747 MB, working set 4972 MB | our scan buffers ~0 MB | machine 14657 of 32547 MB free
+16:09:43  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Gradient: 0 bod(ies) | named 0
+16:09:43  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=0  (Enabled=1 Box=0 TeamCheck=0 side=unknown)
+16:09:43  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)
+16:09:43  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people
+16:09:43  startup   overlay drawing
+16:09:43  view-scan scanner started for pid=22636
+16:09:43  entlist   entitylist.cfg: rva 0x146FFCC8 pos +0x1D0
+16:09:43  entlist   node class NOT pinned: this is build stamp 0xF8B8504D image 0x1BCEC000, and node_rva 0x146F4428 was measured on a different build
+16:09:43  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+16:09:43  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  entv2     warm-up: resolving class + first sweep
+16:09:43  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   D:\Important\potenial side projects\2\try\build\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+16:09:43  dumpcfg   loaded C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (34 values) for build 0xF8B8504D -- it goes first, signatures and built-in values are the fallback
+16:09:43  view-scan dumper cfg: built-in camera anchor still valid on this build
+16:09:44  entlist   sig: 4 hits but they DISAGREE on the vtable -- refusing to use it, keeping rva 0x146FFCC8. The pattern has half-broken; re-cut it.
+16:09:44  entlist   build stamp 0xF8B8504D image 0x1BCEC000 is not the build the fallback rva 0x146FFCC8 came from -- not using it
+16:09:44  entlist   ENTITY    vtable rva 0x120187A0  (from dumper cfg)
+16:09:44  entlist   CHARACTER vtable rva 0x11E93FE8  (from dumper cfg)
+16:09:44  entlist   DAMAGE    vtable rva 0x1212B270  (from dumper cfg)
+16:09:44  dumpcfg   CHARACTER position: +0x200 from dumper cfg (built-in +0x1E0)
+16:09:44  dumpcfg   ENTITY facing quaternion: +0x60 from dumper cfg (built-in +0x20)
+16:09:44  entlist   CHARACTER MODE: identity by component, per-frame position at +0x200, health ON
+16:09:44  entlist   class = 0x7FF743E23FE8 (base 0x7FF731F90000 + rva 0x11E93FE8 CHARACTER sig), pos +0x200, rot +0x0 (will search)
+16:09:44  nskel     cached .rdata rva 0x11CCB000 (13157 KB) -- the build's decryption reads its AES constants from there, and each one was a separate driver request
+16:09:44  nskel     GetTransforms at rva 0x40A030 from the dumper cfg (call site verified)
+16:09:44  entv2     sig: 0 raw hit(s) in .text
+16:09:44  entv2     sig: no lea found behind any hit
+16:09:44  entv2     derive: entity list is driving -- heap route skipped
+16:09:44  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+16:09:44  entv2     warm-up: class not resolved after 687 ms
+16:09:45  entlist   component array +0xE0/+0xE8 PROVEN on the data (3 of 400 entities hold a character component) -- it is a property of the binary, so it is fixed for this session now
+16:09:45  entlist   char sweep: 8387 entities, 5 character comps, 6 damage comps -> 3 character(s), 3 with health, 0 with 2+ damage comps (1165 ms, next sweep rests 3000 ms)
+16:09:45  entlist   OK -- 3 object(s) of the configured class
+16:09:45  entlist   rotation: NO offset holds on a majority of 3 entit(ies) -- none at all
+16:09:45  entlist   0 live entit(ies) from 3 slot(s)
+16:09:48  overlay   828 frames in 5.0 s | presenting every 1 refresh(es) (165 Hz target)
+16:09:48  overlay   828 frames in 5.0 s | paced by DwmFlush at 6.058 ms (DWM refresh 6.058 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them
+16:09:48  overlay   pacing wait p50 5.85 ms p95 6.82 max 8.89 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.06 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)
+16:09:48  overlay   loop period p50 6.04 ms p95 7.02 max 9.04 | frame work p50 0.14 p95 0.22 max 0.73 (CPU p50 0.06 p95 0.10 | our draw p50 0.02 p95 0.03 | Present MEASURED p50 0.06 p95 0.10 max 0.44) | before the wait p50 0.01 p95 0.02 max 0.57
+16:09:48  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.70 ms | delivered every 6.1 ms on AVERAGE (median 6.04 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen
+16:09:48  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 5016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.
+16:09:48  overlay   DRIVER reads: 0/s total | (nothing busy)
+16:09:48  overlay   VRAM now: using 1675 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)
+16:09:48  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)
+16:09:48  pos       no orthonormal transform in actor 0x1C4FC9F1800 +0x10..+0x400 (sel@0x5E=0)
+16:09:49  view-scan pattern not found (5881ms) [rpm_ok=9282 rpm_blocked=6 drv_saved=4 drv_fail=6] — retry in 1000ms
+16:09:53  esp-filt  total=3 player=3 teamok=3 alive=3 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1) | dead-by-marker=0 | byte4 seen: 0xA8 x1 0xB2 x1 0xD2 x1  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+16:10:01  backend   2001 faulted reads (2001 this session) -- kernel-checked reads for the rest of this session
+16:10:14  xref      1 code-shape candidates
+16:10:14  xref      REJECTED: best candidate resolved only 0/3 actors (arr=+0xE0 idx=+0x228)
+16:10:18  esp-src   ENTITY LIST driving -- 1 entit(ies)
+16:10:18  native    334939 functions in .pdata, code rva 0x1000 size 0x11CC9C00
+16:10:18  entlist     [0] 000001C585FF6380  (14.2 -74.8 0.2)  hp -1/-1
+16:10:18  esp-filt  total=1 player=1 teamok=1 alive=1 havepos=1 groups=1  (TeamCheck=0 DeadCheck=1) | dead-by-marker=0 | byte4 seen: 0x00 x1  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+16:10:18  native    health: 2 function(s) fit the shape -- keeping all of them and letting a live run decide, the first that returns a sane value wins
+16:10:18  native      candidate 0: rva 0x100C72C0, current ecx, maximum ebx
+16:10:18  native      candidate 1: rva 0x1010F0B0, current r12d, maximum r14d
+16:10:18  native    game module TLS slot index 0 -- threads without it are skipped
+16:10:18  native    158 of 158 thread(s) have the game's TLS slot -- only those can run its code
+16:10:18  native    health 0 of 1 read | operator 0 of 1 () | 0 CRC layout(s) of 40 vtables tried
+16:10:20  native    health: no receiver/thread pair lets the run finish (47 receiver(s) x 158 thread(s) tried) -- retrying
+16:10:20  native    health run stopped at rva 0x100C7351 (read failed) after 26 step(s), address 0x0
+16:10:20  native    health: diagnostic written to D:\Important\potenial side projects\2\try\build\native_health_F8B8504D.txt
+16:10:21  nskel     Reflex layout from the dumper cfg: class rva 0x122E4500, component +0x20, abstraction +0xB8, position +0x70, facing +0x80
+16:10:21  nskel     layout resolved on attempt 1
+16:10:21  nskel     0 of 2 character(s) posed | 0 step(s), 0 read(s) last run | not posed: 2 unbound
+16:10:21  native    module layout FROM DATA on component vtable rva 0x121F7CB0: checksum +0x1E8, primary +0x158, list +0x90/+0x98, signature +0x74 (holds on 2 bodies, names a known operator on 1) (7 ms)
+16:10:21  native    0x1C585FF6380 is Ash
+16:10:21  boneids   0:B6C65665:-1 1:22E53C03:0 2:DED10611:1 3:530EC1CB:2 4:8F39FA4E:3 5:1630ABF4:4 6:F60647E5:5 7:6BB3F727:6 8:7257A1AA:7 9:75F94D30:8 10:B133130A:9 11:DBF635C5:10 12:42FF647F:11 13:35F854E9:12 14:2BBB5B07:10 15:CDCAE074:9 16:147BB2DF:15 17:8D72E365:16 18:FA75D3F3:17 19:C3B6A8EC:15 20:54635597:9 21:45445772:20 22:DC4D06C8:21 23:AB4A365E:22 24:5F4D44D1:20 25:D9FEB5F0:9 26:FEBAC1B3:25 27:67B39009:26 28:10B4A09F:27 29:76CFDB37:25 30:9829BECF:9 31:0120EF75:30 32:7627DFE3:31 33:0A7DF37A:9 34:3A95D1C8:9 35:3758E8EA:9 36:350887E0:9 37:B6938BD1:8 38:EB35514A:8 39:F0F3D174:8 40:456684F2:39 41:C22B13C9:39 42:EED4E2A6:39 43:35EABC4C:8 44:EEF1099C:7 45:A112F08C:7 46:69CB68BC:45 47:384C3AA5:7 48:416FDA92:6 49:77F85826:6 50:8023796D:5 51:07C159A2:50 52:19EAC858:51 53:9E72D497:51 54:E30520D2:51 55:8A74E51C:51 
+16:10:21  boneids   56:40CDE165:51 57:CE744349:56 58:347B7E2A:56 59:4ED9C94E:56 60:75710E2B:56 61:8F7E3348:56 62:AEF9053C:56 63:D427BD67:56 64:C66A1DCE:56 65:3C6520AD:56 66:AC172D1E:56 67:5618107D:56 68:72586AEA:56 69:88575789:56 70:FD854A47:56 71:2E555B1E:70 72:D45A667D:70 73:29A684AC:70 74:3344C640:70 75:C94BFB23:70 76:E9031A80:70 77:9E149EFB:70 78:641BA398:70 79:D8F170CA:56 80:22FE4DA9:56 81:CC6830DB:56 82:36670DB8:56 83:A3032C97:56 84:590C11F4:56 85:855BDA43:51 86:CE4E6F1F:51 87:8028ED24:51 88:177F7511:51 89:16177517:51 90:99F072F2:89 91:8F1E24AD:89 92:555A726C:91 93:F819143B:91 94:5F9F7B75:93 95:667D8198:93 96:93357BEB:95 97:117AB10E:95 98:1DBA7C08:97 99:8873E0B4:97 100:4A5439E3:99 101:8FD9B6D6:51 102:47F9DB05:51 103:C194460B:50 104:B12A604F:50 105:2D4660A8:5 106:EB830ADA:105 107:89B93A80:106 108:B675F36C:107 
+16:10:21  boneids   109:51EE4C69:108 110:D34048CF:109 111:4A491975:110 112:3D4E29E3:111 113:E736CE53:109 114:19910DC9:108 115:F4A6EDBC:114 116:6DAFBC06:115 117:1AA88C90:116 118:AF7CB094:114 119:E167C14B:108 120:911FBACF:119 121:0816EB75:120 122:7F11DBE3:121 123:01FF77C7:119 124:0DA5584D:108 125:1E679ED0:124 126:876ECF6A:125 127:F069FFFC:126 128:1A05C34F:124 129:78F4E1AC:108 130:E1FDB016:129 131:96FA8080:130 132:D5ADDA99:108 133:93D33837:108 134:53A4F2D1:108 135:D450C1AE:108 136:8F253FBB:108 137:B2D93F78:108 138:38E4FAFF:107 139:30818F43:107 140:78CB9BB6:139 141:196CC10D:139 142:4C4EB4FD:139 143:F9672918:107 144:CCA7C32E:107 145:C389D259:106 146:A5F93406:106 147:C2BDD9E0:146 148:78819F37:106 149:F9872CD6:105 150:5A8083E3:105 151:C4C3F53F:5 152:02325860:151 153:472CEAA0:152 154:2E1DC9B9:152 155:954E95EC:151 156:4722E143:5 
+16:10:21  boneids   157:31C8CA79:156 158:B2A3C0F9:157 159:1EDA8CD9:5 160:F41BC281:5 161:AF3F909C:5 162:6FA387E3:5 163:FB24C4BB:162 164:83D81C2B:5 165:410A0C8A:164 166:2DFD95B3:5 167:1E6431BA:5 168:B9F830DD:5 169:F076CA78:168 170:76334C87:169 171:22029E2E:170 172:CEFF004B:5 173:F0C23906:172 174:26D16240:173 175:02447625:173 176:5BB4885A:172 177:EBC12FA9:176 178:CA76EC5A:176 179:6B00F33D:172 180:FBBFEEAC:172 181:8CB8DE3A:172 182:15B18F80:172 183:62B6BF16:172 184:FCD22AB5:172 185:8BD51A23:172 186:12DC4B99:172 187:DEA7049B:172 188:502AFABC:187 189:272DCA2A:187 190:BE249B90:187 191:57F651F1:5 192:8BF083FF:5 193:285E3E4E:5 194:F68EDF5A:193 195:91B21876:194 196:57473EA5:195 197:20400E33:195 198:CEC5F372:193 199:C923AB06:198 200:1125C39A:193 201:1B55B67B:200 202:B9495F89:201 203:B1C2A2E5:5 204:3FD31336:5 205:697F9BC2:204 
+16:10:21  boneids   206:A6DA428C:5 207:D27C95DF:5 208:D5157D69:4 209:1EA74405:3 210:757F1291:2 211:863D09FC:210 212:9B14362C:211 213:42BE0FCB:212 214:78C2D910:210 215:CC559E90:210 216:DC54D032:210 217:DEBE22C7:216 218:355365C3:210 219:8E904DC4:218 220:176183F0:2 221:060DF401:220 222:58988870:221 223:B95094E1:222 224:7F9D9777:220 225:FEDFE094:220 226:CEFA24D8:220 227:A48A6A38:226 228:7748D025:226 229:10032C4C:2 230:4901A991:2 231:630B6A55:2 232:6B6D1E0D:2 233:2BA0BB9F:2 234:962A1657:1 235:0F2347ED:1 236:EF24A42F:1 237:00A12C5D:1 238:3E020E50:237 239:FEB3708A:237 240:C37DEEFE:237 241:50770E9A:237 242:75FC5A8B:1 243:F92A73B3:242 244:63DADDF5:242 245:A9CEFD4A:0 246:827D21E4:245 
+16:10:21  nskel     bone records at 0x1C57CB55A30, 247 of 0x1C bytes:
+16:10:21  nskel      [ 0] par    -1 id B6C65665 | FFFFF6000000000000001000010000000000FFDF6556C6B6FFFFFFFF | f+4    0.000    0.000    0.000 -36749372959343247360.000   -0.000     -nan
+16:10:21  nskel      [ 1] par     0 id 22E53C03 | 0000F3000100010000FC010001000000008000D0033CE5226556C6B6 | f+4    0.000    0.000    0.000 -8623489024.000    0.000   -0.000
+16:10:21  nskel      [ 2] par     1 id DED10611 | 0100E7000200020009FEFFFF0100000000000C001106D1DE033CE522 | f+4    0.000     -nan    0.000    0.000 -7530872347742437376.000    0.000
+16:10:21  nskel      [ 3] par     2 id 530EC1CB | 0200CE000300030009F020E001000000008001FFCBC10E531106D1DE | f+4    0.000 -46387115744334708736.000    0.000 -172135025454146605541043014306304622592.000 613136662528.000 -7530872347742437376.000
+16:10:21  nskel      [ 4] par     3 id 8F39FA4E | 0300CC000400040009FEFFFF010000000080FFFD4EFA398FCBC10E53 | f+4    0.000     -nan    0.000 -42452219115380750690865337987703504896.000   -0.000 613136662528.000
+16:10:21  nskel      [ 6] par     5 id F60647E5 | 05002B0006006900077EE01F0100000000002F10E54706F6F4AB3016 | f+4    0.000    0.000    0.000    0.000 -680884739623771423199702816915456.000    0.000
+16:10:21  nskel      [ 7] par     6 id 6BB3F727 | 0600280007006A0003010200010000000080FF8027F7B36BE54706F6 | f+4    0.000    0.000    0.000   -0.000 435129731310612598625402880.000 -680884739623771423199702816915456.000
+16:10:21  nskel      [ 8] par     7 id 7257A1AA | 0700230008006B0003EFC0FF0100000000807FFFAAA1577227F7B36B | f+4    0.000     -nan    0.000 -339617752923046005526922703901628039168.000 4271021886134350906409084780544.000 435129731310612598625402880.000
+16:10:22  native    0x1C58C29F7C0: module list valid but its id 0x69C65D0A is not in the operator table (new operator?)
+16:10:24  view-scan view_block @ 0x1C4E45818D0  in 1856ms  cam=(17.2,-62.0,1.7)  [rpm_ok=3195 rpm_blocked=0 drv_saved=0 drv_fail=0]
+16:10:25  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 12.6 ms old (p50), 29.5 p95, 29.9 max | R6 published a new one every 30.7 ms (p50), over 64 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.
+16:10:26  nskel     8 of 8 character(s) posed | 427 step(s), 48 read(s) last run
+16:10:26  posebuf   over 5 s: 1546 pass(es) kept the address, 761 moved, 8 character(s) tracked
+16:10:28  entlist   facing changes/s per character: 9.7 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+16:10:28  esp-draw    first box: world=(17.7 -62.3 0.2) feet=(1258 1036) head=(1260 560) w=305 h=526 screen=2560x1440
+16:10:28  team        000001C57ACFAA50  (not named)  -
+16:10:28  team        000001C585FF6380  Ash          ATTACK
+16:10:28  native    health 0 of 11 read | operator 1 of 11 (Ash) | 1 CRC layout(s) of 44 vtables tried
+16:10:38  view-scan the cached block has not changed in 10010 ms -- the game is not writing it any more, dropping it
+16:10:38  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile
+16:10:43  team      11 character(s): 1 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+16:10:43  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+16:10:43  state     build 0xF8B8504D image 0x1BCEC000 | cfg dumped on 0x00000000: (none)  (+3 like this in the last minute)
+16:10:43  state     CHARACTER rva 0x11E93FE8  ENTITY rva 0x120187A0  DAMAGE rva 0x1212B270  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+16:10:43  state     mode char=1 xbuild=0 pos_ok=0 ready=1 anchors=0  (+3 like this in the last minute)
+16:10:43  state     counts total=11 havepos=11 groups=11 | skeletons posed=11  (+3 like this in the last minute)
+16:10:43  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (14.3 -60.2 0.3)  (+3 like this in the last minute)
+16:10:43  state     memory R6 private 6495 MB, working set 8499 MB | our scan buffers ~32 MB | machine 11422 of 32547 MB free  (+3 like this in the last minute)
+16:10:43  skel      Skeleton=1 Solid=0 style=0 | have_sk 1 of 11 | block entered 1 | max nb 22 nlink 19 | bones projected 22 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Gradient: 0 bod(ies) | named 1  (+11 like this in the last minute)
+16:10:43  esp-draw  groups=11 drawn=1 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=10  (Enabled=1 Box=0 TeamCheck=0 side=unknown)  (+11 like this in the last minute)
+16:10:45  entlist   position loop: 20741 pass(es) in the last minute, 0.00 ms each on average, worst 1 ms
+16:10:45  entlist   11 live entit(ies) from 13 slot(s)  (+19 like this in the last minute)
+16:10:48  entlist   char sweep: 24284 entities, 17 character comps, 47 damage comps -> 13 character(s), 13 with health, 0 with 2+ damage comps (964 ms, next sweep rests 3000 ms)  (+20 like this in the last minute)
+16:10:49  pos       no orthonormal transform in actor 0x1C4FC9F1800 +0x10..+0x400 (sel@0x5E=0)  (+19 like this in the last minute)
+16:10:52  native    health: the game's function will not run on this build after 12 rounds -- stopped for this session to free the CPU. Health comes from the damage records.
+16:11:04  dance     Flair.dae: collada, 67 joints (0 mapped), 31 frames @ 30.0 Hz, hip height 0.00 units
+16:11:04  dance       only 0 of 20 joints matched -- is this a Mixamo/Biped rig?
+16:11:04  dance     TEST_FullRig.bvh: bvh, 60 joints (60 mapped), 120 frames @ 30.0 Hz, hip height 86.49 units
+16:11:04  dance     TEST_RaiseTheRoof.bvh: bvh, 20 joints (20 mapped), 120 frames @ 30.0 Hz, hip height 81.29 units
+16:11:04  dance     3 clip(s) loaded from C:\Users\kajus\AppData\Local\Kayaz\dances
+16:11:07  poke      mode 1 (hands up)
+16:11:07  poke      high-rate writer thread started
+16:11:07  poke      bone record A858F73C36D7AA3EE9B12C3F000000009C6050BF059F11BF832548BD3381DB3D
+16:11:07  poke        +0x00  0.0302  0.3337  0.6746  0.0000  |norm 0.7532|
+16:11:07  poke        +0x10 -0.8140 -0.5688 -0.0489  0.1072  |norm 1.0000|  <- unit means QUATERNION
+16:11:08  poke      mode 2 (wave)
+16:11:08  overlay   4950 frames in 30.0 s | presenting every 1 refresh(es) (165 Hz target)  (+10 like this in the last minute)
+16:11:08  overlay   4950 frames in 30.0 s | paced by DwmFlush at 6.058 ms (DWM refresh 6.058 ms) | delivered one refresh apart 99.8%, two 0.2%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 13 | 0 skipped with nothing on them  (+10 like this in the last minute)
+16:11:08  overlay   pacing wait p50 5.83 ms p95 7.15 max 7.96 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.06 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+10 like this in the last minute)
+16:11:08  overlay   loop period p50 6.04 ms p95 7.48 max 8.26 | frame work p50 0.16 p95 0.72 max 3.86 (CPU p50 0.08 p95 0.14 | our draw p50 0.02 p95 0.03 | Present MEASURED p50 0.06 p95 0.52 max 3.77) | before the wait p50 0.01 p95 0.01 max 0.61  (+10 like this in the last minute)
+16:11:08  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.95 ms | delivered every 6.1 ms on AVERAGE (median 6.04 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+10 like this in the last minute)
+16:11:08  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30015 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+10 like this in the last minute)
+16:11:08  overlay   DRIVER reads: 0/s total | (nothing busy)  (+10 like this in the last minute)
+16:11:08  overlay   VRAM now: using 1791 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)  (+10 like this in the last minute)
+16:11:08  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+10 like this in the last minute)
+16:11:09  poke      mode 3 (full-body twist, POSITIONS only)
+16:11:10  poke      mode 3 | 11 body(s) | 0 bone(s) driven by the clip | 21120 rig write(s), 0 skip(s) in 3 s
+16:11:15  poke      mode 4 (full-body twist, POSITIONS + QUATERNIONS)
+16:11:15  xref      1 code-shape candidates  (+2 like this in the last minute)
+16:11:15  xref      REJECTED: best candidate resolved only 0/3 actors (arr=+0xE0 idx=+0x228)  (+2 like this in the last minute)
+16:11:15  poke      mode 5 (DANCE)
+16:11:15  poke      mode 0 (off)
+16:11:18  esp-src   ENTITY LIST driving -- 11 entit(ies)  (+11 like this in the last minute)
+16:11:18  entlist     [0] 000001C57ACFAA50  (-9.1 -19.2 -3.4)  hp -1/-1  (+197 like this in the last minute)
+16:11:18  esp-filt  total=11 player=11 teamok=11 alive=11 havepos=11 groups=11  (TeamCheck=0 DeadCheck=1) | dead-by-marker=0 | byte4 seen: 0x00 x11  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+16:11:25  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 16.9 ms old (p50), 72.9 p95, 109.6 max | R6 published a new one every 30.7 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+16:11:26  nskel     11 of 11 character(s) posed | 427 step(s), 48 read(s) last run  (+11 like this in the last minute)
+16:11:26  posebuf   over 5 s: 4160 pass(es) kept the address, 2011 moved, 11 character(s) tracked  (+11 like this in the last minute)
+16:11:28  entlist   facing changes/s per character: 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1  (+5 like this in the last minute)
+16:11:28  team        000001C57ACFAA50  (not named)  -  (+39 like this in the last minute)
+16:11:28  team        000001C585FF6380  Ash          ATTACK  (+3 like this in the last minute)
+16:11:28  esp-draw    first box: world=(17.7 -62.3 0.2) feet=(1276 1037) head=(1277 542) w=317 h=546 screen=2560x1440  (+11 like this in the last minute)
+16:11:28  native    health 0 of 11 read | operator 1 of 11 (Ash) | 1 CRC layout(s) of 44 vtables tried  (+5 like this in the last minute)
+16:11:31  dance     clip 2/3: TEST_FullRig.bvh
+16:11:32  ppoke     palette write ON
+16:11:35  ppoke     0 palette(s) | 0 bone write(s) ok, 0 failed, 0 out of range | bone0 z 0.000, dz -0.39
+16:11:43  team      11 character(s): 1 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+16:11:43  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+16:11:43  skel      Skeleton=1 Solid=0 style=0 | have_sk 1 of 11 | block entered 1 | max nb 22 nlink 19 | bones projected 22 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Gradient: 0 bod(ies) | named 1  (+11 like this in the last minute)
+16:11:43  esp-draw  groups=11 drawn=1 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=10  (Enabled=1 Box=0 TeamCheck=0 side=unknown)  (+11 like this in the last minute)
+16:11:43  state     build 0xF8B8504D image 0x1BCEC000 | cfg dumped on 0x00000000: (none)  (+3 like this in the last minute)
+16:11:43  state     CHARACTER rva 0x11E93FE8  ENTITY rva 0x120187A0  DAMAGE rva 0x1212B270  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+16:11:43  state     mode char=1 xbuild=0 pos_ok=0 ready=1 anchors=0  (+3 like this in the last minute)
+16:11:43  state     counts total=11 havepos=11 groups=11 | skeletons posed=11  (+3 like this in the last minute)
+16:11:43  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (14.7 -60.6 0.3)  (+3 like this in the last minute)
+16:11:43  state     memory R6 private 6505 MB, working set 8503 MB | our scan buffers ~32 MB | machine 11490 of 32547 MB free  (+3 like this in the last minute)
+16:11:45  entlist   position loop: 20758 pass(es) in the last minute, 0.00 ms each on average, worst 3 ms
+16:11:45  entlist   11 live entit(ies) from 13 slot(s)  (+19 like this in the last minute)
+16:11:46  view-scan the cached block has not changed in 10009 ms -- the game is not writing it any more, dropping it  (+2 like this in the last minute)
+16:11:46  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile  (+2 like this in the last minute)
+16:11:48  entlist   char sweep: 24284 entities, 17 character comps, 46 damage comps -> 13 character(s), 13 with health, 0 with 2+ damage comps (1014 ms, next sweep rests 3000 ms)  (+19 like this in the last minute)
+16:11:49  pos       no orthonormal transform in actor 0x1C4FC9F1800 +0x10..+0x400 (sel@0x5E=0)  (+19 like this in the last minute)
+16:11:51  dance     clip 3/3: TEST_RaiseTheRoof.bvh
+16:11:53  dance     clip 1/3: Flair.dae
+16:12:08  overlay   4948 frames in 30.0 s | presenting every 1 refresh(es) (165 Hz target)  (+1 like this in the last minute)
+16:12:08  overlay   4948 frames in 30.0 s | paced by DwmFlush at 6.058 ms (DWM refresh 6.058 ms) | delivered one refresh apart 99.8%, two 0.1%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 12 | 0 skipped with nothing on them  (+1 like this in the last minute)
+16:12:08  overlay   pacing wait p50 5.79 ms p95 7.66 max 10.53 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.06 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+16:12:08  overlay   loop period p50 6.01 ms p95 7.96 max 10.81 | frame work p50 0.17 p95 0.87 max 3.02 (CPU p50 0.09 p95 0.16 | our draw p50 0.02 p95 0.03 | Present MEASURED p50 0.06 p95 0.74 max 2.92) | before the wait p50 0.01 p95 0.02 max 0.51  (+1 like this in the last minute)
+16:12:08  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 1.14 ms | delivered every 6.1 ms on AVERAGE (median 6.01 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+16:12:08  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+16:12:08  overlay   DRIVER reads: 0/s total | (nothing busy)  (+1 like this in the last minute)
+16:12:08  overlay   VRAM now: using 1793 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)  (+1 like this in the last minute)
+16:12:08  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
