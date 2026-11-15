@@ -1,0 +1,153 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-15 18:52:13   (internal, inject stage 4)
+  log           C:\Users\kajus\AppData\Local\Kayaz\logs\kayaz_20261115_185213_pid25972.log
+  process       D:\SteamLibrary\steamapps\common\Tom Clancy's Rainbow Six Siege\multiexe\RainbowSix.exe   pid 25972
+  game module   0x00007FF655E20000  size 0x1BCEC000  BUILD STAMP 0xF8B8504D
+  our code at   0x000001718ABD3500
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  2560x1440
+========================================================================
+  READ THE BUILD STAMP ABOVE before calling anything here a regression.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+18:52:13  panel     console buffer 64x14, window 64x14
+18:52:13  startup   stage=4
+18:52:13  auth      gate 1/3 ok
+18:52:13  startup   attached: pid 25972  base 0x7FF655E20000
+18:52:13  config    auto-loading last: main
+18:52:13  config    loaded from D:\SteamLibrary\steamapps\common\Tom Clancy's Rainbow Six Siege\multiexe\configs\main.ini
+18:52:13  startup   starting our overlay window (no hooks)
+18:52:13  startup   waiting for the overlay's first frame...
+18:52:13  overlay   overlay thread started  (tid 29560)
+18:52:13  overlay   waiting for R6's window
+18:52:13  overlay   GPU: NVIDIA GeForce RTX 4060, 7956 MB dedicated, 16274 MB shared
+18:52:13  overlay   displays: 2 [2560x1440@165Hz PRIMARY, 1920x1080@165Hz]  -- MULTI-MONITOR: DWM composes every display, and a desktop recorder duplicates one of them; the user measured that dropping to a single 1080p screen is much smoother
+18:52:13  overlay   VRAM at startup: using 1780 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)
+18:52:13  overlay   frame-latency waitable object ACTIVE (latency 1): the wait happens BEFORE drawing, so Present stops blocking the loop. Measured without it: one Present of 218.8 ms.
+18:52:13  overlay   window + D3D11 created  (tid 29560)
+18:52:13  chams     galaxy texture 512x512 with 10 mip levels ready
+18:52:13  intro     off in the config -- not loading any of it
+18:52:13  badges    78 operator badges ready (500x400 atlas)
+18:52:13  overlay   ImGui + fonts ready  (tid 29560)
+18:52:13  overlay   R6's window thread is tid 17860  (tid 29560)
+18:52:13  overlay   R6 window 0x0000000000080742 2560x1440 -- our overlay window 0x0000000000080436 on top of it (no hooks), transparency via DirectComposition, click-through layered (the pointer is R6's)
+18:52:13  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+18:52:13  overlay   paced by DwmFlush (Present(0,0)); a waitable timer is held in reserve if DwmFlush stops pacing
+18:52:13  overlay   display refresh 6.06 ms (165 Hz); overlay thread at HIGHEST priority
+18:52:13  overlay   stream proof ON -- captures get the game without the overlay
+18:52:13  startup   overlay drawing
+18:52:13  view-scan scanner started for pid=25972
+18:52:13  entlist   entitylist.cfg: rva 0x146FFCC8 pos +0x1D0
+18:52:13  entlist   node class NOT pinned: this is build stamp 0xF8B8504D image 0x1BCEC000, and node_rva 0x146F4428 was measured on a different build
+18:52:13  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+18:52:13  entv2     warm-up: resolving class + first sweep
+18:52:13  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   D:\Important\potenial side projects\2\try\build\KAYAZ-Int.dat is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper_F8B8504D.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper.cfg is for this build too but older than C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat -- not used
+18:52:13  dumpcfg   loaded C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (34 values) for build 0xF8B8504D -- it goes first, signatures and built-in values are the fallback
+18:52:13  view-scan dumper cfg: built-in camera anchor still valid on this build
+18:52:14  entlist   sig: 4 hits but they DISAGREE on the vtable -- refusing to use it, keeping rva 0x146FFCC8. The pattern has half-broken; re-cut it.
+18:52:14  entlist   build stamp 0xF8B8504D image 0x1BCEC000 is not the build the fallback rva 0x146FFCC8 came from -- not using it
+18:52:14  entlist   ENTITY    vtable rva 0x120187A0  (from dumper cfg)
+18:52:14  entlist   CHARACTER vtable rva 0x11E93FE8  (from dumper cfg)
+18:52:14  entlist   DAMAGE    vtable rva 0x1212B270  (from dumper cfg)
+18:52:14  dumpcfg   CHARACTER position: +0x200 from dumper cfg (built-in +0x1E0)
+18:52:14  dumpcfg   ENTITY facing quaternion: +0x60 from dumper cfg (built-in +0x20)
+18:52:14  entlist   CHARACTER MODE: identity by component, per-frame position at +0x200, health ON
+18:52:14  entlist   class = 0x7FF667CB3FE8 (base 0x7FF655E20000 + rva 0x11E93FE8 CHARACTER sig), pos +0x200, rot +0x0 (will search)
+18:52:14  nskel     cached .rdata rva 0x11CCB000 (13157 KB) -- the build's decryption reads its AES constants from there, and each one was a separate driver request
+18:52:14  nskel     GetTransforms at rva 0x40A030 from the dumper cfg (call site verified)
+18:52:14  poke      high-rate writer thread started
+18:52:14  entv2     sig: 0 raw hit(s) in .text
+18:52:14  entv2     sig: no lea found behind any hit
+18:52:14  entv2     derive: entity list is driving -- heap route skipped
+18:52:14  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+18:52:14  entv2     warm-up: class not resolved after 953 ms
+18:52:14  pos       no orthonormal transform in actor 0x16F1CAC5C20 +0x10..+0x400 (sel@0x5E=63239)
+18:52:15  entlist   char sweep: 26073 entities, 4 character comps, 29 damage comps -> 2 character(s), 2 with health, 0 with 2+ damage comps (1559 ms, next sweep rests 3118 ms)
+18:52:15  entlist   OK -- 2 object(s) of the configured class
+18:52:15  entlist   0 live entit(ies) from 2 slot(s)
+18:52:18  overlay   828 frames in 5.0 s | presenting every 1 refresh(es) (165 Hz target)
+18:52:18  overlay   828 frames in 5.0 s | paced by DwmFlush at 6.058 ms (DWM refresh 6.058 ms) | delivered one refresh apart 99.9%, two 0.1%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 1 | 0 skipped with nothing on them
+18:52:18  overlay   pacing wait p50 5.85 ms p95 6.17 max 7.21 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.06 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)
+18:52:18  overlay   loop period p50 6.06 ms p95 6.52 max 7.45 | frame work p50 0.18 p95 0.30 max 0.72 (CPU p50 0.06 p95 0.09 | our draw p50 0.02 p95 0.03 | Present MEASURED p50 0.10 p95 0.19 max 0.63) | before the wait p50 0.01 p95 0.03 max 0.76
+18:52:18  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.70 ms | delivered every 6.1 ms on AVERAGE (median 6.06 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen
+18:52:18  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 5016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.
+18:52:18  overlay   DRIVER reads: 0/s total | (nothing busy)
+18:52:18  overlay   VRAM now: using 1842 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)
+18:52:18  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)
+18:52:19  view-scan pattern not found (5391ms) [rpm_ok=8326 rpm_blocked=0 drv_saved=1 drv_fail=0] — retry in 1000ms
+18:52:20  overlay   menu opened  (tid 29560)
+18:52:20  config    saved to D:\SteamLibrary\steamapps\common\Tom Clancy's Rainbow Six Siege\multiexe\configs\main.ini
+18:52:23  nospread  constant @ 0x7FF667BB9590 | 154 site(s): 124 mulss, 30 movss
+18:52:23  nospread  ARMED on dr1, 154 site(s)
+18:52:23  overlay   SPIKE: one frame took 194.5 ms (wait 5.3 | pre-wait 0.69 | CPU 188.45 | draw 0.02 | Present 0.1)
+18:52:23  overlay     DRIVER during it: 0 read(s) in 194.5 ms = 0/ms, against 0/ms on normal frames. -> driver traffic was NOT elevated: the stall is not our own reads.
+18:52:23  nospread  off
+18:52:26  overlay   menu closed  (tid 29560)
+18:52:26  nospread  0 zeroed, 0 unmapped site(s) | dr1 | last rva 0x0 | 161 thread(s), 0 still armed
+18:52:27  entlist   component array +0xE0/+0xE8 PROVEN on the data (3 of 400 entities hold a character component) -- it is a property of the binary, so it is fixed for this session now
+18:52:28  nskel     Reflex layout from the dumper cfg: class rva 0x122E4500, component +0x20, abstraction +0xB8, position +0x70, facing +0x80
+18:52:28  nskel     layout resolved on attempt 1
+18:52:28  nskel     0 of 2 character(s) posed | 0 step(s), 0 read(s) last run | not posed: 2 unbound
+18:52:28  esp-src   ENTITY LIST driving -- 2 entit(ies)
+18:52:28  native    334939 functions in .pdata, code rva 0x1000 size 0x11CC9C00
+18:52:29  native    health: 2 function(s) fit the shape -- keeping all of them and letting a live run decide, the first that returns a sane value wins
+18:52:29  native      candidate 0: rva 0x100C72C0, current ecx, maximum ebx
+18:52:29  native      candidate 1: rva 0x1010F0B0, current r12d, maximum r14d
+18:52:29  native    game module TLS slot index 0 -- threads without it are skipped
+18:52:29  native    158 of 161 thread(s) have the game's TLS slot -- only those can run its code
+18:52:29  native    module layout FROM DATA on component vtable rva 0x121F7CB0: checksum +0x1E8, primary +0x158, list +0x90/+0x98, signature +0x74 (holds on 2 bodies, names a known operator on 2) (16 ms)
+18:52:29  native    health 0 of 2 read | operator 0 of 2 () | 1 CRC layout(s) of 46 vtables tried
+18:52:29  boneids   0:B6C65665:-1 1:22E53C03:0 2:DED10611:1 3:530EC1CB:2 4:8F39FA4E:3 5:1630ABF4:4 6:F60647E5:5 7:6BB3F727:6 8:7257A1AA:7 9:75F94D30:8 10:B133130A:9 11:DBF635C5:10 12:42FF647F:11 13:35F854E9:12 14:2BBB5B07:10 15:CDCAE074:9 16:147BB2DF:15 17:8D72E365:16 18:FA75D3F3:17 19:C3B6A8EC:15 20:54635597:9 21:45445772:20 22:DC4D06C8:21 23:AB4A365E:22 24:5F4D44D1:20 25:D9FEB5F0:9 26:FEBAC1B3:25 27:67B39009:26 28:10B4A09F:27 29:76CFDB37:25 30:9829BECF:9 31:0120EF75:30 32:7627DFE3:31 33:0A7DF37A:9 34:3A95D1C8:9 35:3758E8EA:9 36:350887E0:9 37:F0F3D174:8 38:B9AD596B:37 39:41712CC8:38 40:456684F2:37 41:C22B13C9:37 42:EED4E2A6:37 43:EB35514A:8 44:35EABC4C:8 45:273CBF76:8 46:5A8F8EBA:45 47:B6938BD1:8 48:384C3AA5:7 49:7B34AEA5:7 50:EEF1099C:7 51:77F85826:6 52:416FDA92:6 53:29909DB3:6 54:8023796D:5 55:07C159A2:54 56:40CDE165:55 
+18:52:29  boneids   57:590C11F4:56 58:A3032C97:56 59:36670DB8:56 60:CC6830DB:56 61:4A4E158F:56 62:B04128EC:56 63:546D3422:56 64:AE620941:56 65:25F3034B:56 66:DFFC3E28:56 67:48869F90:56 68:B289A2F3:56 69:AE3A872C:56 70:5435BA4F:56 71:22FE4DA9:56 72:D8F170CA:56 73:BEBE0CA4:56 74:C04DD5A7:56 75:3A42E8C4:56 76:FD854A47:56 77:87092B95:76 78:7D0616F6:76 79:09E6983A:76 80:F3E9A559:76 81:1679C764:76 82:617EF7F2:76 83:EC76FA07:76 84:FF7CBAFD:76 85:0573879E:76 86:641BA398:76 87:C35D6C00:86 88:9E149EFB:76 89:39525163:88 90:E9031A80:76 91:F45746EE:90 92:C94BFB23:76 93:DDE69E5C:92 94:3344C640:76 95:27E9A33F:94 96:D2A7CD3A:76 97:6C982E8C:96 98:28A8F059:76 99:969713EF:98 100:52691512:76 101:DE7BF83E:100 102:A8662871:76 103:2474C55D:102 104:29A684AC:76 105:395210A2:76 106:C35D2DC1:76 107:03D8F688:76 108:F9D7CBEB:76 109:D45A667D:76 
+18:52:29  boneids   110:2E555B1E:76 111:44C99CD9:76 112:ABA21B96:111 113:51AD26F5:111 114:9617CE35:111 115:DD7DE5C9:111 116:2772D8AA:111 117:822D3CBE:111 118:0BF08EDF:56 119:C3C18E17:56 120:39CEB374:56 121:AFE87C06:56 122:55E74165:56 123:88575789:56 124:5265AB10:123 125:ED225A54:123 126:72586AEA:56 127:A86A9673:126 128:172D6737:126 129:A543E500:56 130:5F4CD863:56 131:F0626C7E:56 132:0A6D511D:56 133:5618107D:56 134:CA0D85D5:133 135:06B40445:133 136:AC172D1E:56 137:3002B8B6:136 138:FCBB3926:136 139:49B0BCE7:56 140:B3BF8184:56 141:211AA268:56 142:DB159F0B:56 143:B25E6C19:56 144:4851517A:56 145:10C28BD3:56 146:67C0960D:56 147:3C6520AD:56 148:C66A1DCE:56 149:512A07B2:56 150:D427BD67:56 151:23501993:56 152:04395EA3:56 153:FE3663C0:56 154:80A20B99:56 155:7AAD36FA:56 156:CB69E588:56 157:3166D8EB:56 158:AEF9053C:56 159:2E71CBF6:158 
+18:52:29  boneids   160:8F7E3348:56 161:047ED111:160 162:75710E2B:56 163:FE71EC72:162 164:711379EB:56 165:0D60184E:164 166:8B1C4488:56 167:F76F252D:166 168:884F980A:56 169:D6CF5D5C:168 170:7240A569:56 171:2CC0603F:170 172:4ED9C94E:56 173:40E2363F:56 174:BAED0B5C:56 175:F6C6FE19:56 176:0CC9C37A:56 177:347B7E2A:56 178:CE744349:56 179:4BC3B1AF:55 180:322ED48C:55 181:4D14ABB8:55 182:781FC36E:55 183:CB06D016:55 184:8028ED24:183 185:C194460B:54 186:2D4660A8:5 187:EB830ADA:186 188:89B93A80:187 189:B675F36C:188 190:51EE4C69:189 191:D34048CF:190 192:4A491975:191 193:3D4E29E3:192 194:E736CE53:190 195:19910DC9:189 196:F4A6EDBC:195 197:6DAFBC06:196 198:1AA88C90:197 199:AF7CB094:195 200:E167C14B:189 201:911FBACF:200 202:0816EB75:201 203:7F11DBE3:202 204:01FF77C7:200 205:0DA5584D:189 206:1E679ED0:205 207:876ECF6A:206 208:F069FFFC:207 
+18:52:29  boneids   258:DC54D032:252 259:CC559E90:252 260:78C2D910:252 261:176183F0:2 262:060DF401:261 263:58988870:262 264:B95094E1:263 265:CEFA24D8:261 266:FEDFE094:261 267:7F9D9777:261 268:10032C4C:2 269:4901A991:2 270:630B6A55:2 271:2BA0BB9F:2 272:6B6D1E0D:2 273:962A1657:1 274:0F2347ED:1 275:EF24A42F:1 276:00A12C5D:1 277:3E020E50:276 278:FEB3708A:276 279:C37DEEFE:276 280:50770E9A:276 281:75FC5A8B:1 282:F92A73B3:281 283:63DADDF5:281 284:A9CEFD4A:0 285:827D21E4:284 
+18:52:29  nskel     bone records at 0x1710307D3B0, 286 of 0x1C bytes:
+18:52:29  nskel      [ 0] par    -1 id B6C65665 | FFFF1D010000000000A4250A01000000000000006556C6B6FFFFFFFF | f+4    0.000    0.000    0.000    0.000   -0.000     -nan
+18:52:29  nskel      [ 1] par     0 id 22E53C03 | 00001A010100010000000000010000000000803F033CE5226556C6B6 | f+4    0.000    0.000    0.000    1.000    0.000   -0.000
+18:52:29  nskel      [ 2] par     1 id DED10611 | 01000E0102000200090EA83701000000000000001106D1DE033CE522 | f+4    0.000    0.000    0.000    0.000 -7530872347742437376.000    0.000
+18:52:29  nskel      [ 3] par     2 id 530EC1CB | 0200F8000300030009D0224E010000000000803FCBC10E531106D1DE | f+4    0.000 682885696.000    0.000    1.000 613136662528.000 -7530872347742437376.000
+18:52:29  nskel      [ 4] par     3 id 8F39FA4E | 0300F700040004000900001A01000000000000004EFA398FCBC10E53 | f+4    0.000    0.000    0.000    0.000   -0.000 613136662528.000
+18:52:29  nskel      [ 7] par     6 id 6BB3F727 | 06002B000700BB000301803F010000000000000027F7B36BE54706F6 | f+4    0.000    1.000    0.000    0.000 435129731310612598625402880.000 -680884739623771423199702816915456.000
+18:52:29  poke      bone record E004B83BAC4AE23E72FBA23F0000000002D65FBF4EF8EDBE1048F7BDE13D8FBD
+18:52:29  poke        +0x00  0.0056  0.4420  1.2733  0.0000  |norm 1.3478|
+18:52:29  poke        +0x10 -0.8744 -0.4648 -0.1207 -0.0699  |norm 1.0000|  <- unit means QUATERNION
+18:52:30  native    health: no receiver/thread pair lets the run finish (53 receiver(s) x 158 thread(s) tried) -- retrying
+18:52:30  native    health run stopped at rva 0x100C7351 (read failed) after 26 step(s), address 0x0
+18:52:30  native    health: diagnostic written to D:\Important\potenial side projects\2\try\build\native_health_F8B8504D.txt
+18:52:30  native    0x1715A8017B0 is Frost
+18:52:30  native    0x171020E4DE0 is Azami
+18:52:30  entlist     [0] 00000171020E4DE0  (-16.5 -36.4 3.8)  hp -1/-1
+18:52:31  native    0x17101DCA8E0 is Amaru
+18:52:31  native    0x1712B1FE730: module list valid but its id 0xC3EA1652 is not in the operator table (new operator?)
+18:52:32  view-scan view_block @ 0x170653024B0  in 2796ms  cam=(-18.1,-32.8,5.3)  [rpm_ok=3274 rpm_blocked=0 drv_saved=0 drv_fail=0]
+18:52:33  nskel     4 of 4 character(s) posed | 427 step(s), 48 read(s) last run
+18:52:34  posebuf   over 5 s: 141 pass(es) kept the address, 1538 moved, 4 character(s) tracked
+18:52:38  entlist   facing changes/s per character: 19.5 18.4 46.2 24.1
+18:52:39  native    health 0 of 4 read | operator 3 of 4 (Amaru Frost Azami) | 1 CRC layout(s) of 46 vtables tried
+18:52:42  view-scan the cached block has not changed in 10009 ms -- the game is not writing it any more, dropping it
+18:52:42  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile
+18:52:52  xref      1 code-shape candidates
+18:52:52  xref      REJECTED: best candidate resolved only 0/13 actors (arr=+0xE0 idx=+0x228)
+18:53:03  native    health: the game's function will not run on this build after 12 rounds -- stopped for this session to free the CPU. Health comes from the damage records.
+18:53:03  entlist   dead at (-6.0 -35.7 3.8): still 4 s and flat
+18:53:03  entlist     [2] 000001712B1FE730  (-6.0 -35.7 3.8)  hp -1/-1  DEAD
+18:53:10  entv2     no characters for 601 ms -- dropping 2 stale box(es) rather than drawing them at their last position
+18:53:13  native    operator data search: 0 layout(s) seen over 4 bodies, none holds on two (0 ms)
+18:53:15  overlay   hiding the ESP: foreground is hwnd 0x000000001D5D05DA class 'ConsoleWindowClass' pid 25972 (R6 is 0x0000000000080742). If this keeps happening while you play, THAT window is what blanks the overlay.
+18:53:15  pos       no orthonormal transform in actor 0x171253B6630 +0x10..+0x400 (sel@0x5E=0)  (+19 like this in the last minute)
+18:53:15  entlist   position loop: 22075 pass(es) in the last minute, 0.00 ms each on average, worst 1 ms
+18:53:15  entlist   0 live entit(ies) from 2 slot(s)  (+19 like this in the last minute)
+18:53:16  entlist   char sweep: 21686 entities, 7 character comps, 23 damage comps -> 1 character(s), 1 with health, 0 with 2+ damage comps (1091 ms, next sweep rests 3000 ms)  (+19 like this in the last minute)
+18:53:19  entv2     classic path has 0/0 with positions and EntityV2 returned nothing  (+4 like this in the last minute)
