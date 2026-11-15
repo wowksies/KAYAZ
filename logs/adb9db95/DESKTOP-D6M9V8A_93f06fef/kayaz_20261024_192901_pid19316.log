@@ -1,0 +1,339 @@
+=== kayaz.xyz internal =================================================
+  when          2026-10-24 19:29:01   (inject stage 4)
+  log           C:\Users\manur\AppData\Local\Kayaz\logs\kayaz_20261024_192901_pid19316.log
+  process       D:\Program Files\Ubisoft\Games\Tom Clancy's Rainbow Six Siege X\multiexe\RainbowSix.exe   pid 19316
+  game module   0x00007FF6619E0000  size 0x188C0000  BUILD STAMP 0xE9C46785
+  our code at   0x0000020B53B98290
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  1920x1080
+========================================================================
+  READ THE BUILD STAMP ABOVE before calling anything here a regression.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+19:29:01  startup   stage=4
+19:29:01  auth      gate 1/3 ok
+19:29:01  startup   attached: pid 19316  base 0x7FF6619E0000
+19:29:01  config    loaded from D:\Program Files\Ubisoft\Games\Tom Clancy's Rainbow Six Siege X\multiexe\config.ini
+19:29:02  startup   starting our overlay window (no hooks)
+19:29:02  startup   waiting for the overlay's first frame...
+19:29:02  overlay   overlay thread started  (tid 304)
+19:29:02  overlay   waiting for R6's window
+19:29:02  overlay   window + D3D11 created  (tid 304)
+19:29:02  chams     galaxy texture 512x512 with 10 mip levels ready
+19:29:02  badges    78 operator badges ready (500x400 atlas)
+19:29:02  overlay   ImGui + fonts ready  (tid 304)
+19:29:02  overlay   R6's window thread is tid 14540  (tid 304)
+19:29:02  overlay   R6 window 0x0000000001E600DC 1920x1080 -- our overlay window 0x000000000046099C on top of it (no hooks), transparency via DirectComposition
+19:29:02  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+19:29:04  overlay   stream proof OFF -- the overlay is in captures again
+19:29:04  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1)
+19:29:04  state     build 0x00000000 image 0x00000000 | cfg dumped on 0x00000000: (none)
+19:29:04  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x00000000  | comp array +0xE0 count +0xE8
+19:29:04  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+19:29:04  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+19:29:04  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+19:29:04  skel      Skeleton=0 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Galaxy: 0 bod(ies) | named 0
+19:29:04  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 decoy=0 proj=0  (Enabled=1 Box=1)
+19:29:04  startup   overlay drawing
+19:29:05  view-scan scanner started for pid=19316
+19:29:05  dumpcfg   C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat is for build 0x8617A605, this is 0xE9C46785 -- but it carries 6 cross-build anchor(s), keeping it as a candidate
+19:29:05  dumpcfg   C:\Users\manur\AppData\Local\Kayaz\bin\results\dumper.cfg is for build 0xC7872F42, this is 0xE9C46785 -- ignored
+19:29:05  dumpcfg   no cfg for build 0xE9C46785, using the CROSS-BUILD anchors from C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (dumped on build 0x8617A605) -- the classes are re-found on this build, no dump needed here
+19:29:05  entlist   entitylist.cfg: rva 0x13BA5378 pos +0x160
+19:29:05  entlist   node class NOT pinned: this is build stamp 0xE9C46785 image 0x188C0000, and node_rva 0x146F4428 was measured on a different build
+19:29:05  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+19:29:05  entv2     warm-up: resolving class + first sweep
+19:29:05  entlist   sig: 3 hits but they DISAGREE on the vtable -- refusing to use it, keeping rva 0x13BA5378. The pattern has half-broken; re-cut it.
+19:29:05  entlist   build stamp 0xE9C46785 image 0x188C0000 is not the build the fallback rva 0x13BA5378 came from -- not using it
+19:29:05  xbuild    4 anchor(s) from C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+19:29:05  xbuild    135066 vtable-store site(s), 44151 distinct vtable(s) in 389 ms
+19:29:05  entv2     sig: 0 raw hit(s) in .text
+19:29:05  entv2     sig: no lea found behind any hit
+19:29:05  entv2     derive: signature found nothing in 782 ms -- falling back to the heap route.
+19:29:06  xbuild    CHARACTER rva 0x0FA2A458  (anchor, 78 ms)
+19:29:06  xbuild    ENTITY    2 candidate(s) -- not used (68 ms)
+19:29:06  xbuild    DAMAGE    rva 0x0FBC14E0  (anchor, 327 ms)
+19:29:06  xbuild    SKELETON  rva 0x0FAB30B0  (anchor, 81 ms)
+19:29:06  xbuild    no identity-quaternion store found here -- falling back to the cfg's facing candidate(s) from build 0x8617A605
+19:29:06  xbuild    facing candidate(s): +0x20 +0x60 -- the one whose yaw tracks the camera wins
+19:29:06  xbuild    ENTITY not pinned by its anchor -- it will be found from the characters instead (no input needed, just a round loaded)
+19:29:06  entlist   CROSS-BUILD CHARACTER MODE: CHARACTER 0x0FA2A458, ENTITY to be found from the characters, DAMAGE ok, hit list +0x350/+0x358 -- the position offset is measured from the characters themselves
+19:29:06  entlist   class = 0x7FF67140A458 (base 0x7FF6619E0000 + rva 0x0FA2A458 CHARACTER sig), pos +0x0, rot +0x0 (will search)
+19:29:06  xbuild    ENTITY is not known on this build -- finding it from the CHARACTER instances (needs no sweep and no round, just characters in memory)
+19:29:07  entv2     heap A: 48901 distinct module pointer(s) in 1250 ms
+19:29:07  entv2     heap B: 1323 real vtable(s)
+19:29:09  xbuild      owner candidate rva 0x0F96C368 array +0xE0: 3 character(s), entity code YES
+19:29:09  xbuild    ENTITY search: 7 character(s), 59 pointer(s) to them, 8 owner shape(s) in 3521 ms
+19:29:10  xbuild    ENTITY = rva 0x0F96C368, component array +0xE0, count +0xE8  (3 distinct owner(s) of 3 character(s), found from the characters)
+19:29:10  view-scan pattern not found (5121ms) [rpm_ok=5926 rpm_blocked=1 drv_saved=3 drv_fail=1] — retry in 1000ms
+19:29:11  entv2     heap C: 58 (class, transform) candidate(s) -- every orthonormal offset kept, not just the first
+19:29:11  entlist   char sweep: 5191 entities, 4 character comps, 2 damage comps -> 1 character(s), 1 with health, 0 with 2+ damage comps (1374 ms)
+19:29:11  xbuild    1 character(s) in memory -- the position offset needs 3 or more, so it is measured once a round is up
+19:29:14  backend   2001 faulted reads -- switching to kernel-checked reads for the rest of this session
+19:29:15  overlay   put the blank pointer back (1 time(s); the game keeps setting one of its own)
+19:29:20  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+19:29:31  entv2     heap: camera unavailable
+19:29:32  overlay   5935 frames drawn in the last 30 s (paced by DwmFlush)
+19:29:34  xbuild    position +0x1A0 from 9 character(s): 6 distinct, 15 change(s) over 16 sample(s).  also sane: +0x2C(mv 0) +0x30(mv 0) +0x50(mv 0) +0x54(mv 0) +0xFC(mv 0) +0x100(mv 0) +0x104(mv 0) +0x164(mv 0) +0x168(mv 0) +0x198(mv 15) +0x1A4(mv 15)
+19:29:34  entlist   CROSS-BUILD ready: position +0x1A0 (the other account's cfg said +0x230 on its own build)
+19:29:34  entv2     heap C2: 1 candidate(s) hold WORLD positions (model-local frames dropped)
+19:29:34  entv2     heap D: watching 9 s for movement (a bonus, not a requirement -- shape alone can carry the pick)
+19:29:34  xbuild    facing +0x20: unit on 108 of 108 read(s), 72 differ between characters, 4 change(s) over time
+19:29:34  xbuild    facing LEARNED: ENTITY +0x20
+19:29:34  entlist   OK -- 9 object(s) of the configured class
+19:29:34  entlist   rotation: NO offset holds on a majority of 9 entit(ies) -- none at all
+19:29:34  entlist   6 live entit(ies) from 9 slot(s)
+19:29:34  entlist     [0] 0000020B21BD5390  (40.4 -6.6 31.4)  hp -1/-1
+19:29:34  native    336638 functions in .pdata, code rva 0x1000 size 0xF615E00
+19:29:35  native    health function rva 0x727E0C0 (stop +0x844): current r8d, maximum r9d, 14 helper(s), 3716 instr, 416 anchor function(s) (547 ms)
+19:29:35  native    module-CRC method rva 0x3EED70 on component vtable rva 0xFAD4C80 (slot 43): checksum +0x1E4/+0x1E0/+0x1F0/+0x1E8/+0x1F8, primary +0xF0, 1 list / 2 signature candidate(s)
+19:29:35  native    module layout PROVEN on 0x20B42948B50 (7 module(s), CRC matches the game's, names Ash): checksum +0x1E0, primary +0xF0, list +0xD8/+0xE0, signature +0x74
+19:29:35  native    0x20B21BD5390 is Ash
+19:29:35  native    0x20B2ECB96C0: module list valid but its id 0xC6741545 is not in the operator table (new operator?)
+19:29:35  native    health 0 of 6 read | operator 1 of 6 (Ash) | 1 CRC layout(s) of 41 vtables tried
+19:29:35  native    health: no receiver/thread pair lets the run finish (47 receiver(s) x 138 thread(s) tried) -- retrying
+19:29:35  native    health run stopped at rva 0x727E11C (read failed) after 19 step(s), address 0x6ED18116501A8EDF
+19:29:35  native    health: diagnostic written to C:\Users\manur\AppData\Local\Temp\native_health_E9C46785.txt
+19:29:43  view-scan view_block @ 0x20AAE3BDAA0  in 2338ms  cam=(56.9,-8.4,32.9)  [rpm_ok=2587 rpm_blocked=0 drv_saved=0 drv_fail=0]
+19:29:44  entlist   facing changes/s per character: 35.4 0.1 0.1 0.1 0.1 0.1
+19:29:47  entv2     heap E: consensus = 1 person/people from movement
+19:29:47  entv2       rva 0xF7B7570  rot +0x40 pos +0x70 stride 0x170  2 moving, 58 person-shaped, 93% off-origin
+19:29:47  entlist   0 rotation + 0 head anchor(s) of 6 entit(ies)
+19:29:48  entv2     labelled: no cluster at the camera, so no known person to learn from
+19:29:49  entv2     type sweep: 0 offset(s) over 0x170 byte(s) gave character-shaped clusters
+19:29:49  entv2     derive: no (offset,bit) produced character-shaped clusters
+19:29:49  entv2       rva 0xF7B7570 rejected -- no character byte
+19:29:49  entv2     heap route: 1 candidate(s) and none carried a character byte -- retrying later
+19:29:49  entv2     derive: heap route did not resolve either. Retrying shortly.
+19:29:49  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+19:29:49  entv2     warm-up: class not resolved after 44094 ms
+19:29:49  esp-src   ENTITY LIST driving -- 6 entit(ies)
+19:29:51  esp-draw    first box: world=(59.0 20.4 31.4) feet=(1128 586) head=(1127 555) w=20 h=34 screen=1920x1080
+19:29:56  pos       no orthonormal transform in actor 0x20AC8ECC1E0 +0x10..+0x400 (sel@0x5E=0)
+19:29:58  overlay   menu opened  (tid 304)
+19:29:58  config    saved to D:\Program Files\Ubisoft\Games\Tom Clancy's Rainbow Six Siege X\multiexe\config.ini
+19:30:02  pos       learned inline transform at actor+0x30 (translation +0x60) -- confirmed on 2 actors
+19:30:05  esp-filt  total=6 player=6 teamok=6 alive=6 havepos=6 groups=6  (TeamCheck=0 DeadCheck=1)  (+51 like this in the last minute)
+19:30:05  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 6 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Galaxy: 0 bod(ies) | named 0  (+51 like this in the last minute)
+19:30:05  esp-draw  groups=6 drawn=5 | dropped: dist=0 strict=0 local=1 decoy=0 proj=0  (Enabled=1 Box=1)  (+51 like this in the last minute)
+19:30:06  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:30:06  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:30:06  state     counts total=6 havepos=6 groups=6 | skeletons posed=0  (+3 like this in the last minute)
+19:30:06  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (40.8 -4.7 32.9)  (+3 like this in the last minute)
+19:30:10  overlay   menu closed  (tid 304)
+19:30:12  nskel     GetTransforms at rva 0x443BA0, returns to 0x4390611 (7002 ms)
+19:30:12  entlist   char sweep: 15586 entities, 29 character comps, 26 damage comps -> 9 character(s), 9 with health, 0 with 2+ damage comps (1506 ms)  (+4 like this in the last minute)
+19:30:15  nskel     Reflex character: class rva 0xFC277E0, skeleton component +0x20, abstraction +0xB8 (6 character(s) agreed, proved by a pose on 2, 1160 hit(s), candidate 2)
+19:30:15  nskel     layout resolved on attempt 1
+19:30:16  nskel     Reflex transform: position +0x70, facing +0x80 (6 character(s))
+19:30:16  nskel     6 of 6 character(s) posed | 409 step(s), 74 read(s) last run
+19:30:21  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+19:30:26  entlist   dead at (41.0 1.3 31.4): health 0
+19:30:27  xref      1 code-shape candidates
+19:30:27  xref      REJECTED: best candidate resolved only 2/50 actors (arr=+0xE0 idx=+0x1E8)
+19:30:28  entlist     [5] 0000020B3312CF60  (41.0 1.3 31.4)  hp 0/100  DEAD
+19:30:28  entlist   revived at (41.0 1.3 31.4) -- health baseline reset to full
+19:30:32  overlay   7137 frames drawn in the last 30 s (paced by DwmFlush)  (+1 like this in the last minute)
+19:30:35  native    health 0 of 6 read | operator 1 of 6 (Ash) | 1 CRC layout(s) of 41 vtables tried  (+5 like this in the last minute)
+19:30:36  native    health: no receiver/thread pair lets the run finish (47 receiver(s) x 139 thread(s) tried) -- retrying
+19:30:36  native    health run stopped at rva 0x727E11C (read failed) after 19 step(s), address 0x6ED18116501A8EDF
+19:30:37  entlist   6 live entit(ies) from 9 slot(s)  (+20 like this in the last minute)
+19:30:37  entlist     [0] 0000020B21BD5390  (40.6 -5.1 31.4)  hp -1/-1  (+123 like this in the last minute)
+19:30:41  overlay   put the blank pointer back (512 time(s); the game keeps setting one of its own)  (+2 like this in the last minute)
+19:30:44  entlist   facing changes/s per character: 0.1 0.1 0.1 0.1 0.1 77.1  (+5 like this in the last minute)
+19:30:48  entlist   respawn at (50.0 -1.0 31.4): health baseline 0 -> 0 (older hits no longer counted)
+19:30:49  esp-src   ENTITY LIST driving -- 6 entit(ies)  (+11 like this in the last minute)
+19:30:51  esp-draw    first box: world=(56.5 18.0 34.3) feet=(693 476) head=(692 439) w=24 h=42 screen=1920x1080  (+59 like this in the last minute)
+19:31:04  nskel     character 0x20B2EB54850: its Reflex object 0x20B2EB67020 is gone (freed or reused) -- rebinding
+19:31:04  entv2     classic path has 1/1 with positions and EntityV2 returned nothing
+19:31:04  entv2     no characters for 602 ms -- dropping 1 stale box(es) rather than drawing them at their last position
+19:31:05  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1)  (+59 like this in the last minute)
+19:31:05  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Galaxy: 0 bod(ies) | named 0  (+59 like this in the last minute)
+19:31:05  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 decoy=0 proj=0  (Enabled=1 Box=1)  (+59 like this in the last minute)
+19:31:06  view-scan cached block no longer self-consistent and none of the 1 known block(s) fits — re-scanning
+19:31:06  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:31:06  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:31:06  state     counts total=0 havepos=0 groups=0 | skeletons posed=1  (+3 like this in the last minute)
+19:31:06  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)  (+3 like this in the last minute)
+19:31:08  view-scan view_block @ 0x20AAE3BDAA0  in 2525ms  cam=(-106.8,-13.9,0.9)  [rpm_ok=2607 rpm_blocked=19 drv_saved=10 drv_fail=19]
+19:31:08  native    operator data search: 0 layout(s) seen over 6 bodies, none holds on two (0 ms)
+19:31:18  view-scan derive: 288 MB scanned, paused at 0x2099DF40000 -- resuming there next pass
+19:31:18  view-scan pattern not found (5307ms) [rpm_ok=6891 rpm_blocked=0 drv_saved=0 drv_fail=0] — retry in 1000ms  (+3 like this in the last minute)
+19:31:22  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+19:31:24  entlist   char sweep: 4142 entities, 13 character comps, 6 damage comps -> 1 character(s), 1 with health, 0 with 2+ damage comps (1347 ms)  (+5 like this in the last minute)
+19:31:27  xref      1 code-shape candidates  (+2 like this in the last minute)
+19:31:27  xref      REJECTED: best candidate resolved only 6/50 actors (arr=+0xE0 idx=+0x1E8)  (+2 like this in the last minute)
+19:31:30  entlist   no component-array offset in +0x20..+0x300 joins an entity to a character on this build -- the ESP cannot pair anything
+19:31:32  overlay   6865 frames drawn in the last 30 s (paced by DwmFlush)  (+1 like this in the last minute)
+19:31:37  entlist   0 live entit(ies) from 1 slot(s)  (+19 like this in the last minute)
+19:32:04  entv2     classic path has 0/0 with positions and EntityV2 returned nothing  (+11 like this in the last minute)
+19:32:06  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1)  (+59 like this in the last minute)
+19:32:06  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Galaxy: 0 bod(ies) | named 0  (+59 like this in the last minute)
+19:32:06  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 decoy=0 proj=0  (Enabled=1 Box=1)  (+59 like this in the last minute)
+19:32:07  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:32:07  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:32:07  state     counts total=0 havepos=0 groups=0 | skeletons posed=1  (+3 like this in the last minute)
+19:32:07  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)  (+3 like this in the last minute)
+19:32:11  entlist   facing changes/s per character: 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+19:32:11  nskel     nobody posed for 15 s -- dropping this layout and learning it again
+19:32:11  esp-src   ENTITY LIST driving -- 10 entit(ies)  (+3 like this in the last minute)
+19:32:11  native    0x20B10FE0700 is Mute
+19:32:11  native    0x20B27506040 is Valkyrie
+19:32:11  native    0x20B1187E390 is Bandit
+19:32:11  native    0x20B2E31DDC0 is Smoke
+19:32:11  native    0x20B11973410 is Vigil
+19:32:11  native    0x20B5559F7D0 is Nomad
+19:32:11  native    0x20B27688EC0 is Thatcher
+19:32:11  native    0x20B53616E60 is Thermite
+19:32:11  native    0x20B5376C9B0 is Ash
+19:32:11  native    0x20B5E97CDC0 is Sledge
+19:32:11  native    health 0 of 10 read | operator 10 of 10 (Mute Valkyrie Bandit Smoke Vigil Nomad Thatcher Thermite Ash Sledge) | 1 CRC layout(s) of 44 vtables tried
+19:32:11  native    health: no receiver/thread pair lets the run finish (48 receiver(s) x 139 thread(s) tried) -- retrying
+19:32:11  native    health run stopped at rva 0x727E11C (read failed) after 19 step(s), address 0x6ED18116501A7CEE
+19:32:13  entlist     [0] 0000020B10FE0700  (-17.5 -33.4 3.8)  hp -1/-1  (+53 like this in the last minute)
+19:32:14  view-scan a known block is live again @ 0x20AAE3BDAA0, cam=(-18.3,-30.9,5.3) -- no sweep needed
+19:32:14  esp-draw    first box: world=(-16.3 -37.1 3.8) feet=(185 655) head=(157 471) w=119 h=205 screen=1920x1080  (+12 like this in the last minute)
+19:32:15  nskel     Reflex character: class rva 0xFC277E0, skeleton component +0x20, abstraction +0xB8 (10 character(s) agreed, proved by a pose on 2, 7270 hit(s), candidate 1)
+19:32:15  nskel     layout resolved on attempt 1
+19:32:16  nskel     Reflex transform: position +0x70, facing +0x80 (10 character(s))
+19:32:16  nskel     10 of 10 character(s) posed | 409 step(s), 74 read(s) last run  (+9 like this in the last minute)
+19:32:21  entlist   facing changes/s per character: 117.4 71.3 51.2 126.8 0.1 0.1 0.1 0.1 0.1 104.4
+19:32:21  nskel     character 0x20B1187E390: its Reflex object 0x20B54F659E0 is gone (freed or reused) -- rebinding  (+4 like this in the last minute)
+19:32:22  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+19:32:25  entlist   char sweep: 27098 entities, 17 character comps, 100 damage comps -> 12 character(s), 12 with health, 0 with 2+ damage comps (2057 ms)  (+4 like this in the last minute)
+19:32:29  xref      1 code-shape candidates  (+2 like this in the last minute)
+19:32:29  xref      REJECTED: best candidate resolved only 7/50 actors (arr=+0xE0 idx=+0x1E8)  (+2 like this in the last minute)
+19:32:32  overlay   6994 frames drawn in the last 30 s (paced by DwmFlush)  (+1 like this in the last minute)
+19:32:37  entlist   10 live entit(ies) from 12 slot(s)  (+19 like this in the last minute)
+19:32:51  nskel     9 of 10 character(s) posed | 409 step(s), 74 read(s) last run | not posed: 1 no joints
+19:33:06  esp-filt  total=10 player=10 teamok=10 alive=10 havepos=10 groups=10  (TeamCheck=0 DeadCheck=1)  (+59 like this in the last minute)
+19:33:06  skel      Skeleton=1 Solid=0 style=0 | have_sk 4 of 10 | block entered 4 | max nb 22 nlink 19 | bones projected 87 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Galaxy: 0 bod(ies) | named 4  (+59 like this in the last minute)
+19:33:06  esp-draw  groups=10 drawn=4 | dropped: dist=0 strict=0 local=1 decoy=0 proj=5  (Enabled=1 Box=1)  (+59 like this in the last minute)
+19:33:07  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:33:07  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:33:07  state     counts total=10 havepos=10 groups=10 | skeletons posed=10  (+3 like this in the last minute)
+19:33:07  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (-4.9 -44.8 5.3)  (+3 like this in the last minute)
+19:33:11  esp-src   ENTITY LIST driving -- 10 entit(ies)  (+11 like this in the last minute)
+19:33:11  native    health 0 of 10 read | operator 10 of 10 (Mute Valkyrie Bandit Smoke Vigil Nomad Thatcher Thermite Ash Sledge) | 1 CRC layout(s) of 44 vtables tried  (+5 like this in the last minute)
+19:33:12  native    health: no receiver/thread pair lets the run finish (48 receiver(s) x 139 thread(s) tried) -- retrying
+19:33:12  native    health run stopped at rva 0x727E11C (read failed) after 19 step(s), address 0x6ED18116501A7CEE
+19:33:13  entlist     [0] 0000020B10FE0700  (-8.7 -39.8 3.8)  hp -1/-1  (+199 like this in the last minute)
+19:33:15  esp-draw    first box: world=(2.7 -54.7 0.2) feet=(676 702) head=(653 629) w=47 h=81 screen=1920x1080  (+59 like this in the last minute)
+19:33:16  nskel     10 of 10 character(s) posed | 409 step(s), 74 read(s) last run  (+10 like this in the last minute)
+19:33:21  entlist   facing changes/s per character: 161.1 69.3 153.5 119.6 81.1 84.7 75.7 47.8 48.2 101.4  (+5 like this in the last minute)
+19:33:22  entlist   dead at (1.0 -32.1 3.8): health 0  (+1 like this in the last minute)
+19:33:22  entlist     [7] 0000020B5376C9B0  (1.0 -32.1 3.8)  hp 0/120  DEAD  (+1 like this in the last minute)
+19:33:22  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+19:33:29  xref      1 code-shape candidates  (+2 like this in the last minute)
+19:33:29  xref      REJECTED: best candidate resolved only 7/50 actors (arr=+0xE0 idx=+0x1E8)  (+2 like this in the last minute)
+19:33:32  overlay   6813 frames drawn in the last 30 s (paced by DwmFlush)  (+1 like this in the last minute)
+19:33:37  entlist   char sweep: 27157 entities, 17 character comps, 100 damage comps -> 12 character(s), 12 with health, 0 with 2+ damage comps (2032 ms)  (+5 like this in the last minute)
+19:33:37  entlist   10 live entit(ies) from 12 slot(s)  (+19 like this in the last minute)
+19:34:05  nskel     character 0x20B10FE0700: its Reflex object 0x20B10FF3C90 is gone (freed or reused) -- rebinding
+19:34:05  entv2     classic path has 5/5 with positions and EntityV2 returned nothing  (+1 like this in the last minute)
+19:34:06  entv2     no characters for 601 ms -- dropping 5 stale box(es) rather than drawing them at their last position
+19:34:06  entlist   component array +0xE0 paired NOTHING on 8192 entit(ies); measured +0xE0/+0xE8 instead (2 of 400 hold a character component)
+19:34:09  entlist   no component-array offset in +0x20..+0x300 joins an entity to a character on this build -- the ESP cannot pair anything
+19:34:12  overlay   put the blank pointer back (1537 time(s); the game keeps setting one of its own)  (+1 like this in the last minute)
+19:34:12  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1)  (+55 like this in the last minute)
+19:34:12  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:34:12  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:34:12  state     counts total=0 havepos=0 groups=0 | skeletons posed=6  (+3 like this in the last minute)
+19:34:12  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (-9.2 -52.3 1.7)  (+3 like this in the last minute)
+19:34:12  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Galaxy: 0 bod(ies) | named 0  (+55 like this in the last minute)
+19:34:12  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 decoy=0 proj=0  (Enabled=1 Box=1)  (+55 like this in the last minute)
+19:34:27  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+19:34:32  overlay   2394 frames drawn in the last 30 s (paced by DwmFlush)  (+1 like this in the last minute)
+19:34:37  entlist   char sweep: 26658 entities, 17 character comps, 82 damage comps -> 12 character(s), 12 with health, 0 with 2+ damage comps (2333 ms)  (+4 like this in the last minute)
+19:34:37  entlist   0 live entit(ies) from 12 slot(s)  (+19 like this in the last minute)
+19:34:38  xref      1 code-shape candidates  (+2 like this in the last minute)
+19:34:38  xref      REJECTED: best candidate resolved only 5/50 actors (arr=+0xE0 idx=+0x1E8)  (+2 like this in the last minute)
+19:34:39  entlist   facing changes/s per character: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+19:34:39  esp-src   ENTITY LIST driving -- 10 entit(ies)  (+10 like this in the last minute)
+19:34:39  nskel     nobody posed for 15 s -- dropping this layout and learning it again
+19:34:39  native    0x209E1393160 is Thermite
+19:34:39  native    0x209E15CB560 is Oryx
+19:34:39  native    0x20B2E421D20 is Valkyrie
+19:34:39  native    0x20B373D6CF0 is Sledge
+19:34:39  native    0x20B4289A730 is Thatcher
+19:34:39  native    0x20B80375E10 is Smoke
+19:34:39  native    0x20B8374E640 is Bandit
+19:34:39  native    0x20BD8BD0F30 is Mute
+19:34:39  native    0x20BDC6329A0 is Nomad
+19:34:39  native    0x20BDF332F50 is Ash
+19:34:39  native    health 0 of 10 read | operator 10 of 10 (Thermite Oryx Valkyrie Sledge Thatcher Smoke Bandit Mute Nomad Ash) | 1 CRC layout(s) of 55 vtables tried
+19:34:39  native    health: no receiver/thread pair lets the run finish (51 receiver(s) x 138 thread(s) tried) -- retrying
+19:34:39  native    health run stopped at rva 0x727E11C (read failed) after 19 step(s), address 0x6ED1811650193694
+19:34:40  esp-draw    first box: world=(-77.5 -65.8 1.7) feet=(2417 490) head=(2417 469) w=14 h=24 screen=1920x1080  (+44 like this in the last minute)
+19:34:40  entlist     [0] 00000209E1393160  (-77.5 -65.8 1.7)  hp -1/-1  (+131 like this in the last minute)
+19:34:43  nskel     Reflex character: class rva 0xFC277E0, skeleton component +0x20, abstraction +0xB8 (6 character(s) agreed, proved by a pose on 2, 20000 hit(s), candidate 10)
+19:34:43  nskel     layout resolved on attempt 1
+19:34:44  nskel     Reflex transform: position +0x70, facing +0x80 (10 character(s))
+19:34:44  nskel     10 of 10 character(s) posed | 409 step(s), 74 read(s) last run  (+8 like this in the last minute)
+19:34:44  overlay   menu opened  (tid 304)
+19:34:44  config    saved to D:\Program Files\Ubisoft\Games\Tom Clancy's Rainbow Six Siege X\multiexe\config.ini  (+2 like this in the last minute)
+19:34:49  entlist   facing changes/s per character: 0.1 12.2 0.1 0.1 12.9 12.5 12.9 0.1 0.1 0.1  (+4 like this in the last minute)
+19:35:11  skel      Skeleton=1 Solid=0 style=0 | have_sk 9 of 10 | block entered 9 | max nb 22 nlink 19 | bones projected 153 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Flat: 9 bod(ies) | named 9
+19:35:12  entlist   no component-array offset in +0x20..+0x300 joins an entity to a character on this build -- the ESP cannot pair anything  (+1 like this in the last minute)
+19:35:12  esp-draw  groups=10 drawn=9 | dropped: dist=0 strict=0 local=1 decoy=0 proj=0  (Enabled=1 Box=1)  (+49 like this in the last minute)
+19:35:12  esp-filt  total=10 player=10 teamok=10 alive=10 havepos=10 groups=10  (TeamCheck=0 DeadCheck=1)  (+49 like this in the last minute)
+19:35:13  skel      Skeleton=1 Solid=0 style=0 | have_sk 9 of 10 | block entered 9 | max nb 22 nlink 19 | bones projected 153 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Gradient: 9 bod(ies) | named 9
+19:35:13  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:35:13  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:35:13  state     counts total=10 havepos=10 groups=10 | skeletons posed=10  (+3 like this in the last minute)
+19:35:13  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (-2.8 -26.0 -1.9)  (+3 like this in the last minute)
+19:35:19  overlay   menu closed  (tid 304)
+19:35:19  overlay   put the blank pointer back (1 time(s); the game keeps setting one of its own)  (+1 like this in the last minute)
+19:35:20  nskel     character 0x209E1393160: its Reflex object 0x20B1FC701B0 is gone (freed or reused) -- rebinding  (+4 like this in the last minute)
+19:35:28  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+19:35:32  overlay   6297 frames drawn in the last 30 s (paced by DwmFlush)  (+1 like this in the last minute)
+19:35:37  entlist   10 live entit(ies) from 12 slot(s)  (+19 like this in the last minute)
+19:35:39  esp-src   ENTITY LIST driving -- 10 entit(ies)  (+11 like this in the last minute)
+19:35:39  native    health: no receiver/thread pair lets the run finish (51 receiver(s) x 144 thread(s) tried) -- retrying
+19:35:39  native    health run stopped at rva 0x727E11C (read failed) after 19 step(s), address 0x6ED1811650193694
+19:35:40  entlist     [0] 00000209E1393160  (-77.5 -65.8 1.7)  hp -1/-1  (+199 like this in the last minute)
+19:35:40  xref      1 code-shape candidates  (+2 like this in the last minute)
+19:35:40  xref      REJECTED: best candidate resolved only 5/50 actors (arr=+0xE0 idx=+0x1E8)  (+2 like this in the last minute)
+19:35:40  esp-draw    first box: world=(-2.7 -29.0 -3.4) feet=(951 1088) head=(950 432) w=431 h=743 screen=1920x1080  (+59 like this in the last minute)
+19:35:46  config    saved to D:\Program Files\Ubisoft\Games\Tom Clancy's Rainbow Six Siege X\multiexe\config.ini  (+10 like this in the last minute)
+19:35:46  nskel     10 of 10 character(s) posed | 404 step(s), 70 read(s) last run  (+11 like this in the last minute)
+19:35:49  entlist   char sweep: 26943 entities, 17 character comps, 102 damage comps -> 12 character(s), 12 with health, 0 with 2+ damage comps (2302 ms)  (+5 like this in the last minute)
+19:35:49  entlist   facing changes/s per character: 8.4 27.2 0.1 0.1 4.4 22.6 22.7 0.1 0.1 0.1  (+5 like this in the last minute)
+19:35:49  native    health 0 of 10 read | operator 10 of 10 (Thermite Oryx Valkyrie Sledge Thatcher Smoke Bandit Mute Nomad Ash) | 1 CRC layout(s) of 55 vtables tried  (+6 like this in the last minute)
+19:36:13  esp-filt  total=10 player=10 teamok=10 alive=10 havepos=10 groups=10  (TeamCheck=0 DeadCheck=1)  (+59 like this in the last minute)
+19:36:13  esp-draw  groups=10 drawn=7 | dropped: dist=0 strict=0 local=1 decoy=0 proj=2  (Enabled=1 Box=1)  (+59 like this in the last minute)
+19:36:14  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:36:14  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:36:14  state     counts total=10 havepos=10 groups=10 | skeletons posed=10  (+3 like this in the last minute)
+19:36:14  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (6.3 -45.9 1.9)  (+3 like this in the last minute)
+19:36:14  skel      Skeleton=1 Solid=0 style=0 | have_sk 3 of 10 | block entered 3 | max nb 22 nlink 19 | bones projected 66 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Gradient: 0 bod(ies) | named 3  (+59 like this in the last minute)
+19:36:16  entlist   no component-array offset in +0x20..+0x300 joins an entity to a character on this build -- the ESP cannot pair anything  (+1 like this in the last minute)
+19:36:29  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+19:36:32  overlay   6861 frames drawn in the last 30 s (paced by DwmFlush)  (+1 like this in the last minute)
+19:36:37  entlist   10 live entit(ies) from 12 slot(s)  (+19 like this in the last minute)
+19:36:39  esp-src   ENTITY LIST driving -- 10 entit(ies)  (+11 like this in the last minute)
+19:36:40  native    health: no receiver/thread pair lets the run finish (51 receiver(s) x 145 thread(s) tried) -- retrying
+19:36:40  native    health run stopped at rva 0x727E11C (read failed) after 19 step(s), address 0x6ED18116501931F6
+19:36:40  entlist     [0] 00000209E1393160  (-35.6 -48.9 0.4)  hp -1/-1  (+199 like this in the last minute)
+19:36:41  esp-draw    first box: world=(1.1 -56.3 0.2) feet=(931 653) head=(922 550) w=67 h=115 screen=1920x1080  (+59 like this in the last minute)
+19:36:41  xref      1 code-shape candidates  (+2 like this in the last minute)
+19:36:41  xref      REJECTED: best candidate resolved only 5/50 actors (arr=+0xE0 idx=+0x1E8)  (+2 like this in the last minute)
+19:36:46  nskel     10 of 10 character(s) posed | 409 step(s), 74 read(s) last run  (+11 like this in the last minute)
+19:36:49  entlist   dead at (-9.6 -55.6 0.2): health 0  (+4 like this in the last minute)
+19:36:49  entlist   char sweep: 27049 entities, 17 character comps, 103 damage comps -> 12 character(s), 12 with health, 0 with 2+ damage comps (2376 ms)  (+4 like this in the last minute)
+19:36:49  entlist   facing changes/s per character: 88.7 84.9 121.6 25.2 107.4 103.3 55.7 34.3 50.3 17.0  (+5 like this in the last minute)
+19:36:49  entlist     [4] 0000020B4289A730  (-9.6 -55.6 0.2)  hp 0/145  DEAD  (+47 like this in the last minute)
+19:36:49  native    health 0 of 10 read | operator 10 of 10 (Thermite Oryx Valkyrie Sledge Thatcher Smoke Bandit Mute Nomad Ash) | 1 CRC layout(s) of 55 vtables tried  (+5 like this in the last minute)
+19:37:01  nskel     9 of 10 character(s) posed | 409 step(s), 74 read(s) last run | not posed: 1 no joints  (+1 like this in the last minute)
+19:37:13  esp-filt  total=5 player=5 teamok=5 alive=5 havepos=5 groups=5  (TeamCheck=0 DeadCheck=1)  (+59 like this in the last minute)
+19:37:13  esp-draw  groups=5 drawn=2 | dropped: dist=0 strict=0 local=0 decoy=0 proj=3  (Enabled=1 Box=1)  (+59 like this in the last minute)
+19:37:14  state     CHARACTER rva 0x0FA2A458  ENTITY rva 0x0F96C368  DAMAGE rva 0x0FBC14E0  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+19:37:14  state     mode char=1 xbuild=1 pos_ok=1 ready=1 anchors=1  (+3 like this in the last minute)
+19:37:14  state     counts total=5 havepos=5 groups=5 | skeletons posed=10  (+3 like this in the last minute)
+19:37:14  state     health native_fn=1 receiver=the entity thread_teb=0x0 | camera (-1.0 -47.0 2.3)  (+3 like this in the last minute)
+19:37:14  skel      Skeleton=1 Solid=0 style=0 | have_sk 4 of 5 | block entered 4 | max nb 22 nlink 19 | bones projected 88 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Gradient: 0 bod(ies) | named 4  (+59 like this in the last minute)
+19:37:14  nskel     character 0x209E1393160: its Reflex object 0x209E13A66E0 is gone (freed or reused) -- rebinding
+19:37:14  entv2     classic path has 4/4 with positions and EntityV2 returned nothing  (+6 like this in the last minute)
+19:37:15  entv2     no characters for 602 ms -- dropping 4 stale box(es) rather than drawing them at their last position
+19:37:19  native    operator data search: 0 layout(s) seen over 10 bodies, none holds on two (0 ms)
