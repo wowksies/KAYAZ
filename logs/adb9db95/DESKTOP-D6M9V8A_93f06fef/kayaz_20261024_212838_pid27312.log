@@ -1,0 +1,83 @@
+=== kayaz.xyz internal =================================================
+  when          2026-10-24 21:28:38   (inject stage 4)
+  log           C:\Users\manur\AppData\Local\Kayaz\logs\kayaz_20261024_212838_pid27312.log
+  process       D:\Program Files\Ubisoft\Games\Tom Clancy's Rainbow Six Siege X\multiexe\RainbowSix.exe   pid 27312
+  game module   0x00007FF6619E0000  size 0x188C0000  BUILD STAMP 0xE9C46785
+  our code at   0x000001DCE3F30F20
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  1920x1080
+========================================================================
+  READ THE BUILD STAMP ABOVE before calling anything here a regression.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+21:28:38  startup   stage=4
+21:28:38  auth      gate 1/3 ok
+21:28:38  startup   attached: pid 27312  base 0x7FF6619E0000
+21:28:38  config    loaded from D:\Program Files\Ubisoft\Games\Tom Clancy's Rainbow Six Siege X\multiexe\config.ini
+21:28:38  startup   starting our overlay window (no hooks)
+21:28:38  startup   waiting for the overlay's first frame...
+21:28:38  overlay   overlay thread started  (tid 28096)
+21:28:38  overlay   waiting for R6's window
+21:28:39  overlay   window + D3D11 created  (tid 28096)
+21:28:39  chams     galaxy texture 512x512 with 10 mip levels ready
+21:28:39  intro     logo 252x293 decoded, glow built
+21:28:39  badges    78 operator badges ready (500x400 atlas)
+21:28:39  overlay   ImGui + fonts ready  (tid 28096)
+21:28:39  overlay   R6's window thread is tid 29824  (tid 28096)
+21:28:39  overlay   R6 window 0x00000000045005B2 1920x1080 -- our overlay window 0x0000000001180250 on top of it (no hooks), transparency via DirectComposition
+21:28:39  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+21:28:39  intro     9.38 s track, 36 beat(s), 101 bpm, timeline 9.38 s -- analysed in 62 ms
+21:28:39  overlay   put the blank pointer back (1 time(s); the game keeps setting one of its own)
+21:28:39  overlay   stream proof OFF -- the overlay is in captures again
+21:28:39  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=0 DeadCheck=1)
+21:28:39  state     build 0x00000000 image 0x00000000 | cfg dumped on 0x00000000: (none)
+21:28:39  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x00000000  | comp array +0xE0 count +0xE8
+21:28:39  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+21:28:39  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+21:28:39  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+21:28:39  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Gradient: 0 bod(ies) | named 0
+21:28:39  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 decoy=0 proj=0  (Enabled=1 Box=1)
+21:28:40  startup   overlay drawing
+21:28:40  view-scan scanner started for pid=27312
+21:28:41  dumpcfg   C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat is for build 0x8617A605, this is 0xE9C46785 -- but it carries 6 cross-build anchor(s), keeping it as a candidate
+21:28:41  dumpcfg   C:\Users\manur\AppData\Local\Kayaz\bin\results\dumper.cfg is for build 0xC7872F42, this is 0xE9C46785 -- ignored
+21:28:41  entlist   entitylist.cfg: rva 0x13BA5378 pos +0x160
+21:28:41  entlist   node class NOT pinned: this is build stamp 0xE9C46785 image 0x188C0000, and node_rva 0x146F4428 was measured on a different build
+21:28:41  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+21:28:41  dumpcfg   no cfg for build 0xE9C46785, using the CROSS-BUILD anchors from C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (dumped on build 0x8617A605) -- the classes are re-found on this build, no dump needed here
+21:28:41  entv2     warm-up: resolving class + first sweep
+21:28:41  entlist   sig: 3 hits but they DISAGREE on the vtable -- refusing to use it, keeping rva 0x13BA5378. The pattern has half-broken; re-cut it.
+21:28:41  entlist   build stamp 0xE9C46785 image 0x188C0000 is not the build the fallback rva 0x13BA5378 came from -- not using it
+21:28:41  xbuild    4 anchor(s) from C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+21:28:41  entv2     sig: 0 raw hit(s) in .text
+21:28:41  entv2     sig: no lea found behind any hit
+21:28:41  entv2     derive: signature found nothing in 812 ms -- falling back to the heap route.
+21:28:41  xbuild    135066 vtable-store site(s), 44151 distinct vtable(s) in 570 ms
+21:28:42  xbuild    CHARACTER rva 0x0FA2A458  (anchor, 94 ms)
+21:28:42  xbuild    ENTITY    2 candidate(s) -- not used (71 ms)
+21:28:42  xbuild    DAMAGE    rva 0x0FBC14E0  (anchor, 474 ms)
+21:28:42  xbuild    SKELETON  rva 0x0FAB30B0  (anchor, 74 ms)
+21:28:42  xbuild    no identity-quaternion store found here -- falling back to the cfg's facing candidate(s) from build 0x8617A605
+21:28:42  xbuild    facing candidate(s): +0x20 +0x60 -- the one whose yaw tracks the camera wins
+21:28:42  xbuild    ENTITY not pinned by its anchor -- it will be found from the characters instead (no input needed, just a round loaded)
+21:28:42  entlist   CROSS-BUILD CHARACTER MODE: CHARACTER 0x0FA2A458, ENTITY to be found from the characters, DAMAGE ok, hit list +0x350/+0x358 -- the position offset is measured from the characters themselves
+21:28:42  entlist   class = 0x7FF67140A458 (base 0x7FF6619E0000 + rva 0x0FA2A458 CHARACTER sig), pos +0x0, rot +0x0 (will search)
+21:28:42  xbuild    ENTITY is not known on this build -- finding it from the CHARACTER instances (needs no sweep and no round, just characters in memory)
+21:28:43  entv2     heap A: 49207 distinct module pointer(s) in 1407 ms
+21:28:43  entv2     heap B: 1336 real vtable(s)
+21:28:44  view-scan view_block @ 0x1DC2F48FCC0  in 3136ms  cam=(-106.8,-13.9,0.9)  [rpm_ok=2599 rpm_blocked=0 drv_saved=0 drv_fail=0]
+21:28:46  xbuild      owner candidate rva 0x0F96C368 array +0xE0: 3 character(s), entity code YES
+21:28:46  xbuild    ENTITY search: 7 character(s), 141 pointer(s) to them, 17 owner shape(s) in 3597 ms
+21:28:46  xbuild    ENTITY = rva 0x0F96C368, component array +0xE0, count +0xE8  (3 distinct owner(s) of 3 character(s), found from the characters)
+21:28:48  entlist   char sweep: 10212 entities, 7 character comps, 9 damage comps -> 3 character(s), 3 with health, 0 with 2+ damage comps (1795 ms)
+21:28:48  entv2     heap C: 62 (class, transform) candidate(s) -- every orthonormal offset kept, not just the first
+21:28:48  entv2     heap: camera up -- ranking by who stands at it
+21:28:49  xbuild    no field on the characters looks like a world position yet -- retrying
+21:28:49  intro     finished
+21:28:50  nskel     GetTransforms at rva 0x443BA0, returns to 0x4390611 (7562 ms)
+21:28:51  entv2     heap C2: 1 candidate(s) hold WORLD positions (model-local frames dropped)
+21:28:51  entv2     heap D: watching 9 s for movement (a bonus, not a requirement -- shape alone can carry the pick)
+21:28:54  state     build 0xE9C46785 image 0x188C0000 | cfg dumped on 0x8617A605: C:\Users\manur\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+21:28:58  view-scan cached block no longer self-consistent and none of the 1 known block(s) fits — re-scanning
+21:29:03  xbuild    1 character(s) in memory -- the position offset needs 3 or more, so it is measured once a round is up
