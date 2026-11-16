@@ -1,0 +1,103 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-16 14:05:35   (external, driver)
+  log           C:\Users\matte\AppData\Local\Kayaz\logs\kayaz_20261116_140535_pid14348.log
+  process       C:\Users\matte\AppData\Local\Kayaz\bin\gdvlrdlggu.exe   pid 14348
+  game module   0x0000000140000000  size 0x02718000  BUILD STAMP 0x6AF779C4
+  our code at   0x0000000140103570
+  machine       Windows 10.0.26300  12 core(s)  16 GB RAM  2560x1440
+========================================================================
+  READ THE BUILD STAMP ABOVE before calling anything here a regression.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+14:05:35  panel     console buffer 64x14, window 64x14
+14:05:36  auth      gate 1/3 ok
+14:05:36  backend   Connected to WinNotify.
+14:05:36  backend   Searching for process RainbowSix.exe
+14:05:36  backend   Process PID: 12220
+14:05:36  backend   CR3 (DTB): 0xaa7ba000
+14:05:36  backend   Base: 0x7ff6989f0000
+14:05:36            === kayaz.xyz external ================================================
+14:05:36              when          2026-11-16 14:05:36   (external, driver)
+14:05:36              log           C:\Users\matte\AppData\Local\Kayaz\logs\kayaz_20261116_140535_pid14348.log
+14:05:36              game pid      12220
+14:05:36              game module   0x00007FF6989F0000  BUILD STAMP 0xABA9DBBD
+14:05:36              machine       12 core(s)  15 GB RAM
+14:05:36            ========================================================================
+14:05:36              READ THE BUILD STAMP ABOVE before calling anything here a regression.
+14:05:36  config    loaded from C:\Users\matte\AppData\Local\Kayaz\bin\config.ini
+14:05:36  overlay   overlay thread started  (tid 19028)
+14:05:36  overlay   waiting for R6's window
+14:05:36  view-scan scanner started for pid=12220
+14:05:36  entlist   entitylist.cfg: rva 0x13BA5378 pos +0x160
+14:05:36  entlist   node class NOT pinned: this is build stamp 0xABA9DBBD image 0x1C492000, and node_rva 0x146F4428 was measured on a different build
+14:05:36  dumpcfg   C:\Users\matte\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat is for build 0xF8B8504D, this is 0xABA9DBBD -- but it carries 6 cross-build anchor(s), keeping it as a candidate
+14:05:36  dumpcfg   no cfg for build 0xABA9DBBD, using the CROSS-BUILD anchors from C:\Users\matte\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (dumped on build 0xF8B8504D) -- the classes are re-found on this build, no dump needed here
+14:05:36  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+14:05:36  entv2     warm-up: resolving class + first sweep
+14:05:36  native    emulating on R6's window thread (tid 23376, TEB 0x5AAB002000)
+14:05:36  nskel     reading the pose decode keys through game thread block 0x5AAB002000
+14:05:36  overlay   GPU: AMD Radeon RX 7800 XT, 16344 MB dedicated, 8150 MB shared
+14:05:36  overlay   displays: 2 [1920x1080@144Hz, 2560x1440@200Hz PRIMARY]  -- MULTI-MONITOR: DWM composes every display, and a desktop recorder duplicates one of them; the user measured that dropping to a single 1080p screen is much smoother
+14:05:36  overlay   VRAM at startup: using 6 MB of a 15409 MB budget (reserved 0 MB, could reserve 7833 MB)
+14:05:36  overlay   frame-latency waitable object ACTIVE (latency 1): the wait happens BEFORE drawing, so Present stops blocking the loop. Measured without it: one Present of 218.8 ms.
+14:05:36  overlay   window + D3D11 created  (tid 19028)
+14:05:36  chams     galaxy texture 512x512 with 10 mip levels ready
+14:05:36  intro     off in the config -- not loading any of it
+14:05:36  badges    78 operator badges ready (500x400 atlas)
+14:05:36  overlay   ImGui + fonts ready  (tid 19028)
+14:05:36  overlay   R6's window thread is tid 23376  (tid 19028)
+14:05:36  overlay   R6 window 0x000000000744085C 2560x1440 -- our overlay window 0x00000000010F0AFA on top of it (no hooks), transparency via DirectComposition, click-through layered (the pointer is R6's)
+14:05:36  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+14:05:36  overlay   paced by DwmFlush (Present(0,0)); a waitable timer is held in reserve if DwmFlush stops pacing
+14:05:36  overlay   display refresh 5.00 ms (200 Hz); overlay thread at HIGHEST priority
+14:05:36  overlay   stream proof OFF -- the overlay is in captures again
+14:05:36  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=1 DeadCheck=1) | dead-by-marker=0 | byte4 seen:   <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+14:05:36  state     build 0xABA9DBBD image 0x1C492000 | cfg dumped on 0xF8B8504D: C:\Users\matte\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+14:05:36  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x00000000  | comp array +0xE0 count +0xE8
+14:05:36  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+14:05:36  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+14:05:36  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+14:05:36  state     memory R6 private 5328 MB, working set 3546 MB | our scan buffers ~0 MB | machine 1549 of 16299 MB free
+14:05:36  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Galaxy: 0 bod(ies) | named 0
+14:05:36  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=0  (Enabled=1 Box=0 TeamCheck=1 side=unknown)
+14:05:36  team      entity+0xA (u8) remembered from an earlier session on this build
+14:05:36  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)
+14:05:36  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people
+14:05:37  entlist   sig: 1 hit(s), all agree -> vtable rva 0x125AC3A8 (sibling 0x12596908)
+14:05:37  entlist   sig overrode entitylist.cfg: rva 0x13BA5378 -> 0x125AC3A8.
+14:05:37  xbuild    4 anchor(s) from C:\Users\matte\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+14:05:37  xbuild    read the game's .text: 290 MB in 163 ms
+14:05:37  entv2     sig: 0 raw hit(s) in .text
+14:05:37  entv2     sig: no lea found behind any hit
+14:05:37  entv2     derive: signature found nothing in 1094 ms -- falling back to the heap route.
+14:05:38  xbuild    153848 vtable-store site(s), 45571 distinct vtable(s) in 982 ms
+14:05:38  xbuild    CHARACTER rva 0x1261AE60  (anchor, 116 ms)
+14:05:38  xbuild    ENTITY    0 candidate(s) -- not used (98 ms)
+14:05:38  xbuild    DAMAGE    rva 0x12788AD0  (anchor, 450 ms)
+14:05:39  xbuild    SKELETON  0 candidate(s) -- not used (99 ms)
+14:05:39  xbuild    no identity-quaternion store found here -- falling back to the cfg's facing candidate(s) from build 0xF8B8504D
+14:05:39  xbuild    facing candidate(s): +0x50 +0x60 -- the one whose yaw tracks the camera wins
+14:05:39  xbuild    ENTITY not pinned by its anchor -- it will be found from the characters instead (no input needed, just a round loaded)
+14:05:39  entlist   CROSS-BUILD CHARACTER MODE: CHARACTER 0x1261AE60, ENTITY to be found from the characters, DAMAGE ok, hit list +0x350/+0x358 -- the position offset is measured from the characters themselves
+14:05:39  entlist   class = 0x7FF6AB00AE60 (base 0x7FF6989F0000 + rva 0x1261AE60 CHARACTER sig), pos +0x0, rot +0x0 (will search)
+14:05:39  xbuild    ENTITY is not known on this build -- finding it from the CHARACTER instances (needs no sweep and no round, just characters in memory)
+14:05:39  learned   5 value(s) remembered from an earlier run on this build (C:\Users\matte\AppData\Local\Kayaz\cfg\learned_ABA9DBBD_1C492000.txt)
+14:05:40  entv2     heap A: 62453 distinct module pointer(s) in 2672 ms
+14:05:40  entv2     heap B: 1412 real vtable(s)
+14:05:41  view-scan pattern not found (5163ms) [rpm_ok=0 rpm_blocked=129 drv_saved=1938 drv_fail=129] — retry in 1000ms
+14:05:41  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=0  (Enabled=1 Box=0 TeamCheck=1 side=learned)
+14:05:41  overlay   718 frames in 5.0 s | presenting every 1 refresh(es) (200 Hz target)
+14:05:41  overlay   718 frames in 5.0 s | paced by DwmFlush at 5.000 ms (DWM refresh 5.000 ms) | delivered one refresh apart 62.8%, two 35.3%, three 1.1%, 4+ 0.8% -- the first number IS "frame perfect" | missed 294 | 0 skipped with nothing on them
+14:05:41  overlay   pacing wait p50 6.46 ms p95 10.37 max 31.55 (asked for p50 0.00) -- a wait near zero while frame work exceeds 5.00 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)
+14:05:41  overlay   loop period p50 7.21 ms p95 11.18 max 33.98 | frame work p50 0.56 p95 1.25 max 13.81 (CPU p50 0.13 p95 0.19 | our draw p50 0.03 p95 0.05 | Present MEASURED p50 0.39 p95 1.06 max 13.63) | before the wait p50 0.01 p95 0.05 max 1.00
+14:05:41  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 1.87 ms | delivered every 7.0 ms on AVERAGE (median 7.21 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 1.3 ms for how late our layer reaches the screen
+14:05:41  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 5016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.
+14:05:41  overlay   DRIVER reads: 20386/s total | tid 13844:14718/s, tid 7196:3587/s, tid 14248:2023/s, tid 10156:58/s
+14:05:41  overlay   VRAM now: using 57 MB of a 15409 MB budget (reserved 0 MB, could reserve 7833 MB)
+14:05:41  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)
+14:05:44  xbuild    ENTITY: only 0 CHARACTER instance(s) -- waiting for a round
+14:05:46  overlay   DRIVER reads: 22295/s total | tid 13844:15157/s, tid 7196:1902/s, tid 14248:5236/s
+14:05:47  entv2     heap C: 63 (class, transform) candidate(s) -- every orthonormal offset kept, not just the first
+14:05:48  nskel     GetTransforms at rva 0x482930, returns to 0x50B71C3 (9599 ms)
