@@ -1,0 +1,802 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-22 15:36:48   (external, driver)
+  log           C:\Users\yusuf\AppData\Local\Kayaz\logs\kayaz_20261122_153648_pid17212.log
+  process       C:\Users\yusuf\AppData\Local\Kayaz\bin\rohkslnafa.exe   pid 17212
+  OUR exe       0x0000000140000000  size 0x0262A000  stamp 0x6AFB4AA4   <- NOT the game
+  our code at   0x0000000140103BC0
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  1920x1080
+========================================================================
+  THE GAME'S BUILD STAMP IS NOT ABOVE -- externally the line above is
+  our own exe. R6's stamp is on the `[state] build 0x...` line, and on
+  `[entlist] ... this is build stamp 0x...`. Read one of those.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+15:36:48  panel     console buffer 64x14, window 64x14
+15:36:49  auth      gate 1/3 ok
+15:36:49  backend   Connected to WinNotify.
+15:36:49  backend   Searching for process RainbowSix.exe
+15:36:49  backend   Process PID: 17676
+15:36:49  backend   CR3 (DTB): 0x42b490000
+15:36:49  backend   Base: 0x7ff6775e0000
+15:36:49            === kayaz.xyz external ================================================
+15:36:49              when          2026-11-22 15:36:49   (external, driver)
+15:36:49              log           C:\Users\yusuf\AppData\Local\Kayaz\logs\kayaz_20261122_153648_pid17212.log
+15:36:49              game pid      17676
+15:36:49              game module   0x00007FF6775E0000  BUILD STAMP 0x7CB20503
+15:36:49              machine       16 core(s)  31 GB RAM
+15:36:49            ========================================================================
+15:36:49              READ THE BUILD STAMP ABOVE before calling anything here a regression.
+15:36:49  config    loaded from C:\Users\yusuf\AppData\Local\Kayaz\bin\config.ini
+15:36:49  view-scan scanner started for pid=17676
+15:36:49  overlay   overlay thread started  (tid 13400)
+15:36:49  overlay   waiting for R6's window
+15:36:49  entlist   entitylist.cfg: rva 0x13BA5378 pos +0x160
+15:36:49  entlist   node class NOT pinned: this is build stamp 0x7CB20503 image 0x1C5CB000, and node_rva 0x146F4428 was measured on a different build
+15:36:49  entv2     warm-up: resolving class + first sweep
+15:36:49  dumpcfg   C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat is for build 0x81F5E896, this is 0x7CB20503 -- but it carries 6 cross-build anchor(s), keeping it as a candidate
+15:36:49  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+15:36:49  nskel     no game thread block yet -- it is found from the game window's thread, so the named pose waits for the window
+15:36:49  dumpcfg   no cfg for build 0x7CB20503, using the CROSS-BUILD anchors from C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (dumped on build 0x81F5E896) -- the classes are re-found on this build, no dump needed here
+15:36:49  entlist   sig: 4 hit(s), all agree -> vtable rva 0x127A5E40 (sibling 0x1257D828)
+15:36:49  entlist   sig overrode entitylist.cfg: rva 0x13BA5378 -> 0x127A5E40.
+15:36:49  xbuild    4 anchor(s) from C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+15:36:49  xbuild    read the game's .text: 291 MB in 172 ms (100.0% complete)
+15:36:49  xbuild    61794 vtable-store site(s), 23831 distinct vtable(s) in 314 ms
+15:36:49  entv2     sig: 0 raw hit(s) in .text
+15:36:49  entv2     sig: no lea found behind any hit
+15:36:49  entv2     derive: signature found nothing in 859 ms -- falling back to the heap route.
+15:36:49  entv2     heap A: 11 distinct module pointer(s) in 16 ms
+15:36:49  entv2     heap B: 0 real vtable(s)
+15:36:49  entv2     derive: heap route did not resolve either. Retrying shortly.
+15:36:49  entv2     warm-up: class not resolved after 890 ms
+15:36:49  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+15:36:49  xbuild    CHARACTER 0 candidate(s) -- not used (29 ms)
+15:36:49  xbuild    ENTITY    0 candidate(s) -- not used (21 ms)
+15:36:50  view-scan pattern not found (1016ms) [rpm_ok=949 rpm_blocked=0 drv_saved=0 drv_fail=0] — retry in 1000ms
+15:36:50  xbuild    DAMAGE    0 candidate(s) -- the sweep will pick the one every character owns (229 ms)
+15:36:50  xbuild    SKELETON  0 candidate(s) -- not used (20 ms)
+15:36:50  xbuild    no identity-quaternion store found here -- falling back to the cfg's facing candidate(s) from build 0x81F5E896
+15:36:50  xbuild    facing candidate(s): +0x20 +0x60 -- the one whose yaw tracks the camera wins
+15:36:50  xbuild    CHARACTER did not resolve -- cross-build OFF, nothing guessed
+15:36:50  entlist   ENTITY sig 0: 2 hit(s), none resolve to a sane vtable
+15:36:51  entlist   ENTITY: no signature resolved -- disabled, not guessed
+15:36:52  entlist   CHARACTER sig 0: 0 hit(s), none resolve to a sane vtable
+15:36:53  entlist   CHARACTER: no signature resolved -- disabled, not guessed
+15:36:53  entlist   DAMAGE sig 0: 1 hit(s), none resolve to a sane vtable
+15:36:54  entlist   DAMAGE    vtable rva 0x126DB010  (sig 2, 1 hit(s) agree)
+15:36:54  entlist   character mode UNAVAILABLE -- staying on the vtable-A +0x160 path with the geometric root filter
+15:36:54  entlist   class = 0x7FF689D85E40 (base 0x7FF6775E0000 + rva 0x127A5E40 from SIG), pos +0x160, rot +0x0 (will search)
+15:36:58  entv2     heap route: cannot read PE headers
+15:36:59  watchdog  ===============================================
+15:36:59  watchdog  RainbowSix.exe (pid 17676) has EXITED. Everything below
+15:36:59  watchdog  this line about unreadable PE headers or a missing
+15:36:59  watchdog  window is that, not a bad build. Waiting for the game.
+15:36:59  watchdog  RainbowSix.exe (pid 17676) exit code 0x0000002A -- unexpected -- a code above 0xC0000000 is an unhandled exception
+15:36:59  watchdog  it ran for 0 min 10 s
+15:36:59  watchdog  memory AT THE MOMENT IT WENT: 23947 of 32721 MB free (26% in use). A game that dies with little free memory may simply have run out.
+15:36:59  watchdog  Windows logs the faulting MODULE and OFFSET for a crash: Event Viewer > Windows Logs > Application, source "Application Error", newest entry for RainbowSix.exe. That names what actually broke.
+15:36:59            =======================================================
+15:36:59               Rainbow Six is not running.
+15:36:59               Please launch the game and get to the MAIN MENU.
+15:36:59               Waiting for RainbowSix.exe   [overlay] still no window for pid 17676 after 10 s -- is the game running, and borderless/windowed?  (tid 13400)
+15:36:59  +         Game detected -- attaching.
+15:36:59  watchdog  re-attached: pid 15020, module 0x00007FF6775E0000
+15:37:09  overlay   still no window for pid 15020 after 20 s -- is the game running, and borderless/windowed?  (tid 13400)
+15:37:15  watchdog  RainbowSix.exe (pid 15020) exit code 0x00000000 -- clean exit -- closed normally, NOT a crash
+15:37:16               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+15:37:19               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] sig: no .text section
+15:37:19               Waiting for RainbowSix.exe...   [overlay] still no window for pid 15020 after 30 s -- is the game running, and borderless/windowed?  (tid 13400)
+15:37:19               Waiting for RainbowSix.exe   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+15:37:22               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+15:37:24               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+15:37:25  entv2     sig: no .text section
+15:37:27               Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   
+15:37:49  entv2     sig: 0 raw hit(s) in .text  (+15 like this in the last minute)
+15:37:49  entv2     sig: no lea found behind any hit  (+15 like this in the last minute)
+15:37:49  entv2     derive: signature found nothing in 875 ms -- falling back to the heap route.  (+19 like this in the last minute)
+15:37:50  entv2     heap A: 13946 distinct module pointer(s) in 390 ms  (+13 like this in the last minute)
+15:37:50  entv2     heap B: 2 real vtable(s)  (+13 like this in the last minute)
+15:37:50  entv2     heap C: 0 (class, transform) candidate(s) -- every orthonormal offset kept, not just the first
+15:37:50  entv2     derive: heap route did not resolve either. Retrying shortly.  (+19 like this in the last minute)
+15:37:50  entv2     classic path has 0/0 with positions and EntityV2 returned nothing  (+9 like this in the last minute)
+15:38:01  overlay   GPU: AMD Radeon RX 5700 XT, 8152 MB dedicated, 16361 MB shared
+15:38:01  overlay   displays: 2 [1920x1080@144Hz PRIMARY, 1920x1080@144Hz]  -- MULTI-MONITOR: DWM composes every display, and a desktop recorder duplicates one of them; the user measured that dropping to a single 1080p screen is much smoother
+15:38:01  overlay   VRAM at startup: using 2 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)
+15:38:01  overlay   frame-latency waitable object ACTIVE (latency 1): the wait happens BEFORE drawing, so Present stops blocking the loop. Measured without it: one Present of 218.8 ms.
+15:38:01  overlay   window + D3D11 created  (tid 13400)
+15:38:01  chams     galaxy texture 512x512 with 10 mip levels ready
+15:38:01  intro     logo 252x293 uploaded, glow built
+15:38:01  badges    78 operator badges ready (500x400 atlas)
+15:38:01  overlay   ImGui + fonts ready  (tid 13400)
+15:38:01  overlay   R6's window thread is tid 16072  (tid 13400)
+15:38:01  overlay   R6 window 0x00000000001804B6 1920x1080 -- our overlay window 0x00000000002808B8 on top of it (no hooks), transparency via DirectComposition, click-through layered (the pointer is R6's)
+15:38:01  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+15:38:01  overlay   paced by DwmFlush (Present(0,0)); a waitable timer is held in reserve if DwmFlush stops pacing
+15:38:01  overlay   display refresh 6.94 ms (144 Hz); overlay thread at HIGHEST priority
+15:38:01  overlay   stream proof OFF -- the overlay is in captures again
+15:38:01  intro     9.38 s track, 36 beat(s), 101 bpm, timeline 9.38 s -- analysed in 24 ms
+15:38:01  overlay   SPIKE: one frame took 74.3 ms (wait 4.6 | pre-wait 0.01 | CPU 52.56 | draw 0.02 | Present 1.6)
+15:38:01  overlay     DRIVER during it: 979 read(s) in 74.3 ms = 13/ms, against 691/ms on normal frames. -> driver traffic was NOT elevated: the stall is not our own reads.
+15:38:06  overlay   712 frames in 5.0 s | presenting every 1 refresh(es) (144 Hz target)
+15:38:06  overlay   712 frames in 5.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 99.7%, two 0.3%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 2 | 1 skipped with nothing on them
+15:38:06  overlay   pacing wait p50 6.54 ms p95 6.90 max 7.49 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)
+15:38:06  overlay   loop period p50 6.95 ms p95 7.39 max 11.07 | frame work p50 0.38 p95 0.57 max 4.16 (CPU p50 0.18 p95 0.28 | our draw p50 0.02 p95 0.04 | Present MEASURED p50 0.18 p95 0.26 max 3.79) | before the wait p50 0.01 p95 0.02 max 0.67
+15:38:06  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.85 ms | delivered every 7.0 ms on AVERAGE (median 6.95 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen
+15:38:06  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 5016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.
+15:38:06  overlay   DRIVER reads: 92754/s total | entlist-heap(16096) 57288/s avg 187369B, ent-cache(12332) 17062/s avg 111878B, view-scan(5020) 16379/s avg 15131B, ent-sweep(3124) 385/s avg 210858B, unnamed(728) 365/s avg 196259B, unnamed(9428) 230/s avg 700629B, entlist-tick(13164) 195/s avg 3134165B, unnamed(12292) 192/s avg 164036B, unnamed(12928) 135/s avg 216677B, unnamed(12044) 128/s avg 213056B, unnamed(1132) 128/s avg 214131B, unnamed(3888) 128/s avg 214074B, entv2-warmup(14444) 72/s avg 890800B
+15:38:06                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.
+15:38:06  overlay   VRAM now: using 34 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)
+15:38:06  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)
+15:38:10  intro     finished
+15:38:10  overlay   the frame-latency object stopped signalling (3 timeouts) -- Present may block again, but the cadence is unaffected
+15:38:14  entv2     heap: camera unavailable
+15:38:17  entv2     heap C2: 0 candidate(s) hold WORLD positions (model-local frames dropped)
+15:38:20  overlay   menu opened  (tid 13400)
+15:38:20  config    saved to C:\Users\yusuf\AppData\Local\Kayaz\bin\config.ini
+15:38:20  overlay   DRIVER reads: 7542/s total | entlist-heap(16096) 5579/s avg 216171B, ent-cache(12332) 1389/s avg 220769B, ent-sweep(17760) 574/s avg 256410B
+15:38:25  overlay   DRIVER reads: 11666/s total | ent-sweep(17760) 8352/s avg 52072B, ent-cache(12332) 1675/s avg 238615B, entlist-heap(16096) 1640/s avg 265248B
+15:38:28  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen:   <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+15:38:28  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+15:38:28  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8
+15:38:28  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+15:38:28  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+15:38:28  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+15:38:28  state     memory R6 private 4484 MB, working set 2946 MB | our scan buffers ~317 MB | machine 20292 of 32721 MB free
+15:38:28  skel      Skeleton=0 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0
+15:38:28  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=0  (Enabled=1 Box=1 TeamCheck=1 side=unknown)
+15:38:28  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)
+15:38:28  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people
+15:38:30  overlay   DRIVER reads: 8482/s total | entlist-heap(16096) 3804/s avg 212977B, ent-sweep(17760) 2580/s avg 164492B, ent-cache(12332) 2098/s avg 225893B
+15:38:31  overlay   menu closed  (tid 13400)
+15:38:40  overlay   DRIVER reads: 4866/s total | entlist-heap(16096) 4432/s avg 218000B, ent-sweep(17760) 434/s avg 372206B
+15:38:45  overlay   DRIVER reads: 5739/s total | entlist-heap(16096) 5739/s avg 231777B
+15:38:55  overlay   DRIVER reads: 7359/s total | entlist-heap(16096) 5162/s avg 228863B, ent-cache(12332) 2197/s avg 211934B
+15:38:57  entv2     heap D: watching 9 s for movement (a bonus, not a requirement -- shape alone can carry the pick)
+15:39:14  entv2     heap E: consensus = 0 person/people from movement
+15:39:14  entv2       rva 0x115D3280  rot +0x40 pos +0x70 stride 0x170  0 moving, 50 person-shaped, 97% off-origin
+15:39:17  entv2     labelled: no camera, so no known person to learn from
+15:39:20  entv2     type sweep: 4 offset(s) over 0x170 byte(s) gave character-shaped clusters
+15:39:20  entv2       pass   +0x7B in {0x00 0x3F 0xBF 0xC0 0xC1 0xC2}: 70 node(s), 13 cluster(s)
+15:39:20  entv2       pass   +0xDB in {0x3F 0x79 0x7F 0xBD 0xBE 0xBF 0xC0 0xC1 0xC2}: 71 node(s), 13 cluster(s)
+15:39:20  entv2       pass   +0xEB in {0x07 0x3D 0x3E 0x3F 0x40 0xBF 0xC1 0xC2 0xFF}: 71 node(s), 13 cluster(s)
+15:39:20  entv2       pass   +0x156 in {0x00 0x01 0x11 0x20 0x21 0x40 0x41 0x7E}: 43 node(s), 6 cluster(s)
+15:39:21  entv2       move   +0x7B in {0x00 0x3F 0xBF 0xC0 0xC1 0xC2}: 0 of 13 cluster(s) displaced
+15:39:21  entv2       move   +0xDB in {0x3F 0x79 0x7F 0xBD 0xBE 0xBF 0xC0 0xC1 0xC2}: 0 of 13 cluster(s) displaced
+15:39:21  entv2       move   +0xEB in {0x07 0x3D 0x3E 0x3F 0x40 0xBF 0xC1 0xC2 0xFF}: 0 of 13 cluster(s) displaced
+15:39:21  entv2       move   +0x156 in {0x00 0x01 0x11 0x20 0x21 0x40 0x41 0x7E}: 0 of 6 cluster(s) displaced
+15:39:21  entv2     derive: WARNING nothing displaced -- everyone may be standing still; picked by coverage, re-derive while moving
+15:39:21  entv2     derive: type = +0xDB in {0x3F 0x79 0x7F 0xBD 0xBE 0xBF 0xC0 0xC1 0xC2}  (13 cluster(s), 71 node(s), 0 displaced = 0%)
+15:39:23  entv2       rva 0x115D3280 rejected -- byte found but only 0 person-shaped cluster(s)
+15:39:23  entv2     heap route: 1 candidate(s) and none carried a character byte -- retrying later
+15:39:23  entv2     derive: heap route did not resolve either. Retrying shortly.  (+1 like this in the last minute)
+15:39:23  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+15:39:24  pos       no orthonormal transform in actor 0x10B275D97F0 +0x10..+0x400 (sel@0x5E=16256)
+15:39:24  pos       learned inline transform at actor+0x310 (translation +0x340) -- confirmed on 2 actors
+15:39:25  entv2     sig: 0 raw hit(s) in .text  (+2 like this in the last minute)
+15:39:25  entv2     sig: no lea found behind any hit  (+2 like this in the last minute)
+15:39:25  entv2     derive: signature found nothing in 1047 ms -- falling back to the heap route.  (+2 like this in the last minute)
+15:39:25  config    saved to C:\Users\yusuf\AppData\Local\Kayaz\bin\config.ini  (+3 like this in the last minute)
+15:39:28  esp-filt  total=1492 player=1492 teamok=1492 alive=1492 havepos=213 groups=56  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x1489 0x05 x1 0xB2 x1 0xD2 x1  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+15:39:28  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:39:28  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:39:28  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:39:28  state     counts total=1492 havepos=213 groups=56 | skeletons posed=0  (+3 like this in the last minute)
+15:39:28  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)  (+3 like this in the last minute)
+15:39:28  state     memory R6 private 4946 MB, working set 2950 MB | our scan buffers ~325 MB | machine 20386 of 32721 MB free  (+3 like this in the last minute)
+15:39:28  skel      Skeleton=0 Solid=0 style=0 | have_sk 0 of 56 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:39:28  esp-draw  groups=56 drawn=0 | dropped: dist=5 strict=0 local=15 team=0 decoy=0 proj=36  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:39:28  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:39:28  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:39:30  overlay   4322 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+9 like this in the last minute)
+15:39:30  overlay   4322 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+9 like this in the last minute)
+15:39:30  overlay   pacing wait p50 6.35 ms p95 6.56 max 7.27 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+9 like this in the last minute)
+15:39:30  overlay   loop period p50 6.94 ms p95 7.18 max 8.23 | frame work p50 0.58 p95 0.78 max 2.18 (CPU p50 0.34 p95 0.46 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.21 p95 0.30 max 1.07) | before the wait p50 0.01 p95 0.03 max 0.66  (+9 like this in the last minute)
+15:39:30  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 1.08 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+9 like this in the last minute)
+15:39:30  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+9 like this in the last minute)
+15:39:30  overlay   DRIVER reads: 8556/s total | ent-cache(12332) 4089/s avg 145774B, entlist-heap(16096) 4042/s avg 229938B, ent-sweep(15468) 425/s avg 279918B
+15:39:30                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+9 like this in the last minute)
+15:39:30  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+9 like this in the last minute)
+15:39:30  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+9 like this in the last minute)
+15:39:32  entv2     heap A: 54607 distinct module pointer(s) in 7015 ms  (+2 like this in the last minute)
+15:39:32  entv2     heap B: 1417 real vtable(s)  (+2 like this in the last minute)
+15:39:38  view-scan pattern not found (143186ms) [rpm_ok=0 rpm_blocked=0 drv_saved=0 drv_fail=0] — retry in 8000ms  (+4 like this in the last minute)
+15:39:40  overlay   menu opened  (tid 13400)  (+1 like this in the last minute)
+15:39:40  entv2     heap C: 57 (class, transform) candidate(s) -- every orthonormal offset kept, not just the first  (+2 like this in the last minute)
+15:39:49  view-scan view_block @ 0x10A9C9AA640  in 3286ms  cam=(39.5,-6.7,32.9)  [rpm_ok=0 rpm_blocked=340 drv_saved=1313 drv_fail=340]
+15:39:49  entv2     heap: camera up -- ranking by who stands at it
+15:39:50  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 16.0 ms old (p50), 32.6 p95, 35.0 max | R6 published a new one every 35.0 ms (p50), over 64 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.
+15:39:53  esp-draw    first box: world=(0.0 0.3 0.0) feet=(-76 1519) head=(-105 1495) w=15 h=26 screen=1920x1080
+15:39:54  entv2     heap C2: 4 candidate(s) hold WORLD positions (model-local frames dropped)  (+1 like this in the last minute)
+15:39:54  entv2     heap D: skipped -- 3 candidate(s) already have a cluster standing at the camera
+15:39:54  entv2       rva 0x116EDDB8  rot +0x60 pos +0x90 stride 0x100  0 moving, 58 person-shaped, 98% off-origin  <== AT THE CAMERA
+15:39:57  entv2     labelled 19 point(s) on the player at the camera, 1139 prop point(s), from 58 cluster(s)
+15:39:59  overlay   menu closed  (tid 13400)  (+1 like this in the last minute)
+15:39:59  entv2       labelled +0xB    {0x06 0x22 0x46}  100% of me, 8% of props -> 2 cluster(s)  <== chosen
+15:39:59  entv2     derive: type = +0xB in {0x06 0x22 0x46} learned from the player at the camera, verified on 2 cluster(s)
+15:40:00  overlay   DRIVER reads: 12296/s total | entlist-heap(16096) 3659/s avg 226314B, view-scan(5020) 3418/s avg 21663B, ent-sweep(15468) 3007/s avg 69502B, ent-cache(12332) 2054/s avg 221866B, cam-poll(11672) 158/s avg 256B
+15:40:12  entv2     at the camera on 3 of 3 sample(s) -- that is a person, not a coincidence
+15:40:12  entv2     heap route: vtable = 0x7FF617A1DDB8 (RVA 0x116EDDB8, stride 0x100, rot +0x60, pos +0x90) in 47593 ms -- no .text read
+15:40:19  view-scan camera poll: 437 read(s)/s, 81 of them a new view -- the frame never waits on the driver for this
+15:40:25  entv2     cached the derived class -- next launch on this build skips the heap route entirely
+15:40:25  entv2     classic path has 213/1492 with positions and EntityV2 returned nothing
+15:40:28  esp-filt  total=1492 player=1492 teamok=1492 alive=1492 havepos=213 groups=56  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x1489 0x05 x1 0xB2 x1 0xD2 x1  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:40:28  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:40:28  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:40:28  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:40:28  state     counts total=1492 havepos=213 groups=56 | skeletons posed=0  (+3 like this in the last minute)
+15:40:28  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (54.3 -6.6 32.9)  (+3 like this in the last minute)
+15:40:28  state     memory R6 private 4959 MB, working set 2839 MB | our scan buffers ~341 MB | machine 20536 of 32721 MB free  (+3 like this in the last minute)
+15:40:28  skel      Skeleton=0 Solid=0 style=0 | have_sk 0 of 56 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:40:28  esp-draw  groups=56 drawn=45 | dropped: dist=8 strict=0 local=0 team=0 decoy=0 proj=3  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:40:29  view-scan the cached block has not changed in 10109 ms -- the game is not writing it any more, dropping it
+15:40:29  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile
+15:40:30  overlay   4121 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:40:30  overlay   4121 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 98.4%, two 0.0%, three 0.1%, 4+ 1.5% -- the first number IS "frame perfect" | missed 202 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:40:30  overlay   pacing wait p50 6.19 ms p95 6.60 max 8.30 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:40:30  overlay   loop period p50 6.97 ms p95 28.94 max 37.24 | frame work p50 0.76 p95 23.11 max 30.74 (CPU p50 0.51 p95 22.30 | our draw p50 0.04 p95 0.42 | Present MEASURED p50 0.20 p95 0.34 max 0.71) | before the wait p50 0.01 p95 0.03 max 0.70  (+1 like this in the last minute)
+15:40:30  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 1.40 ms | delivered every 7.3 ms on AVERAGE (median 6.97 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:40:30  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:40:30  overlay   DRIVER reads: 17102/s total | ent-cache(12332) 12204/s avg 62646B, entlist-heap(16096) 3754/s avg 231055B, cam-poll(11672) 425/s avg 256B, entv2-sweep(16904) 359/s avg 211218B, ent-sweep(12056) 352/s avg 257689B, view-scan(5020) 8/s avg 85B
+15:40:30                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:40:30  overlay   VRAM now: using 53 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:40:30  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:40:33  entv2     funnel: vt 2072 -> type(1 vote) 236 -> pos 198   [rot +0x60 pos +0x90 stride 0x100]
+15:40:33  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:55 0x86:226
+15:40:33  esp-filt  total=16821 player=16821 teamok=16757 alive=16757 havepos=5375 groups=1590  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x16191 0x20 x562 0x80 x64 0x05 x1 0xB2 x1 0xBF x1  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+15:40:35  entv2     stance root = type 0x46 (5 of 9 character(s) agree)
+15:40:35  entv2     598 node(s) -> 129 cluster(s) -> 8 character(s) (105 single-part, 0 unmarked, 16 flat dropped)
+15:40:35  entv2       char[0] = (57.0 20.6 32.5) id=1 coast=0   SPAN 1.33  p50 0.08 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 32.49  types: 06:5 26:2 46:1
+15:40:35  entv2       char[2] = (54.5 -6.4 32.5) id=3 coast=0   SPAN 1.43  p50 0.25 drop 0.00 root=y anchor=r  20 part(s)  raw 1.45  box 32.51  types: 06:16 46:4
+15:40:35  entv2       char[3] = (41.5 -3.8 31.1) id=4 coast=0   SPAN 0.33  p50 0.33 drop 0.00 root=n anchor=m  4 part(s)  raw 0.33  box 31.08  types: 22:3 26:1
+15:40:38  esp-filt  total=8 player=8 teamok=8 alive=8 havepos=8 groups=8  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x8  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+15:40:38  entv2     read interval: avg 3922.0 ms  max 3922 ms  (1 samples)
+15:40:38  entv2       char[0] = (57.0 20.6 32.5) id=1 coast=0   SPAN 1.33  p50 0.08 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 32.49 moved 0.00/0.00 m  types: 06:5 26:2 46:1
+15:40:38  entv2       char[2] = (54.5 -6.4 32.5) id=3 coast=0   SPAN 1.44  p50 0.25 drop 0.00 root=y anchor=r  20 part(s)  raw 1.45  box 32.51 moved 0.00/0.00 m  types: 06:16 46:4
+15:40:38  entv2       char[3] = (41.5 -3.8 30.1) id=4 coast=0   SPAN 0.33  p50 0.33 drop 0.00 root=n anchor=m  4 part(s)  raw 0.33  box 30.11 moved 0.00/0.00 m  types: 22:3 26:1
+15:40:43  entv2     root type 0x26 joins the set (8 ground sighting(s)) -- 2 type(s) now anchor bodies
+15:40:43  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+4 like this in the last minute)
+15:40:43  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+4 like this in the last minute)
+15:40:50  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 2.4 ms old (p50), 10.5 p95, 21.6 max | R6 published a new one every 7.2 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:40:50  entv2     validated: a character cluster sits at the camera -- this class is people
+15:40:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(2155 680) head=(2174 604) w=49 h=85 screen=1920x1080  (+11 like this in the last minute)
+15:41:00  overlay   DRIVER reads: 82953/s total | ent-cache(12332) 62976/s avg 17B, entv2-tick(9996) 12463/s avg 256B, ent-sweep(12056) 3061/s avg 72900B, entlist-heap(16096) 2216/s avg 228169B, unnamed(16904) 1402/s avg 232928B, entv2-sweep(15336) 482/s avg 224498B, cam-poll(11672) 347/s avg 256B, view-scan(5020) 6/s avg 79B
+15:41:19  view-scan camera poll: 398 read(s)/s, 135 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:41:28  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:41:28  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:41:28  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:41:28  state     counts total=8 havepos=8 groups=8 | skeletons posed=0  (+3 like this in the last minute)
+15:41:28  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (54.2 -6.6 32.9)  (+3 like this in the last minute)
+15:41:28  state     memory R6 private 4962 MB, working set 2838 MB | our scan buffers ~341 MB | machine 20538 of 32721 MB free  (+3 like this in the last minute)
+15:41:28  skel      Skeleton=0 Solid=0 style=0 | have_sk 0 of 8 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:41:28  esp-draw  groups=8 drawn=7 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=0  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:41:30  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:41:30  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 1 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:41:30  overlay   pacing wait p50 6.52 ms p95 6.67 max 7.42 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:41:30  overlay   loop period p50 6.95 ms p95 7.14 max 8.19 | frame work p50 0.42 p95 0.57 max 1.66 (CPU p50 0.19 p95 0.26 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.18 p95 0.28 max 0.47) | before the wait p50 0.01 p95 0.03 max 0.57  (+1 like this in the last minute)
+15:41:30  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.86 ms | delivered every 6.9 ms on AVERAGE (median 6.95 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:41:30  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:41:30  overlay   DRIVER reads: 138218/s total | ent-cache(12332) 112106/s avg 17B, entv2-tick(9996) 19988/s avg 256B, entlist-heap(16096) 3097/s avg 228120B, unnamed(7308) 1321/s avg 228716B, unnamed(15336) 837/s avg 231338B, cam-poll(11672) 441/s avg 256B, entv2-sweep(17788) 398/s avg 218076B, ent-sweep(12056) 22/s avg 696626B, view-scan(5020) 8/s avg 86B
+15:41:30                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:41:30  overlay   VRAM now: using 40 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:41:30  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:41:38  entv2     598 node(s) -> 129 cluster(s) -> 8 character(s) (105 single-part, 0 unmarked, 16 flat dropped)  (+15 like this in the last minute)
+15:41:38  esp-filt  total=8 player=8 teamok=8 alive=8 havepos=8 groups=8  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x8  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:41:40  entv2     read interval: avg 1849.0 ms  max 2094 ms  (3 samples)  (+9 like this in the last minute)
+15:41:42  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+79 like this in the last minute)
+15:41:42  entv2       char[2] = (54.5 -6.4 32.5) id=3 coast=0   SPAN 1.43  p50 0.25 drop 0.00 root=y anchor=r  20 part(s)  raw 1.45  box 32.50 moved 0.00/0.00 m  types: 06:16 46:4  (+45 like this in the last minute)
+15:41:46  view-scan the cached block has not changed in 10020 ms -- the game is not writing it any more, dropping it
+15:41:46  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile
+15:41:47  entv2     funnel: vt 2072 -> type(1 vote) 236 -> pos 198   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:41:47  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:55 0x86:226  (+3 like this in the last minute)
+15:41:50  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 1.8 ms old (p50), 8.6 p95, 34.6 max | R6 published a new one every 6.8 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:41:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(2155 680) head=(2174 604) w=49 h=85 screen=1920x1080  (+11 like this in the last minute)
+15:41:58  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+4 like this in the last minute)
+15:41:58  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+4 like this in the last minute)
+15:42:00  overlay   DRIVER reads: 140758/s total | ent-cache(12332) 114162/s avg 17B, entv2-tick(9996) 20322/s avg 256B, entlist-heap(16096) 3161/s avg 229115B, unnamed(10364) 1326/s avg 228350B, unnamed(17788) 927/s avg 232767B, cam-poll(11672) 447/s avg 256B, entv2-sweep(15028) 406/s avg 225765B, view-scan(5020) 6/s avg 78B
+15:42:19  view-scan camera poll: 448 read(s)/s, 0 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:42:28  skel      Skeleton=0 Solid=0 style=0 | have_sk 0 of 8 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:42:28  esp-draw  groups=8 drawn=7 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=0  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:42:30  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:42:30  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:42:30  overlay   pacing wait p50 6.47 ms p95 6.64 max 7.46 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:42:30  overlay   loop period p50 6.94 ms p95 7.13 max 8.00 | frame work p50 0.46 p95 0.60 max 1.15 (CPU p50 0.21 p95 0.29 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.21 p95 0.29 max 0.87) | before the wait p50 0.01 p95 0.03 max 0.83  (+1 like this in the last minute)
+15:42:30  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.86 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:42:30  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30015 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:42:30  overlay   DRIVER reads: 138619/s total | ent-cache(12332) 111867/s avg 17B, entv2-tick(9996) 20228/s avg 256B, entlist-heap(16096) 3198/s avg 225512B, unnamed(6552) 1322/s avg 228831B, unnamed(15028) 918/s avg 229886B, entv2-sweep(17068) 631/s avg 213156B, cam-poll(11672) 449/s avg 256B, view-scan(5020) 5/s avg 73B
+15:42:30                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:42:30  overlay   VRAM now: using 39 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:42:30  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:42:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:42:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:42:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:42:33  state     counts total=8 havepos=8 groups=8 | skeletons posed=0  (+3 like this in the last minute)
+15:42:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (54.2 -6.6 32.9)  (+3 like this in the last minute)
+15:42:33  state     memory R6 private 4968 MB, working set 2844 MB | our scan buffers ~373 MB | machine 20623 of 32721 MB free  (+3 like this in the last minute)
+15:42:38  esp-filt  total=8 player=8 teamok=8 alive=8 havepos=8 groups=8  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x8  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:42:40  entv2     598 node(s) -> 129 cluster(s) -> 8 character(s) (105 single-part, 0 unmarked, 16 flat dropped)  (+16 like this in the last minute)
+15:42:44  entv2     read interval: avg 1436.8 ms  max 2047 ms  (4 samples)  (+10 like this in the last minute)
+15:42:44  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+84 like this in the last minute)
+15:42:44  entv2       char[2] = (54.3 -6.6 32.5) id=3 coast=0   SPAN 1.34  p50 0.23 drop 0.00 root=y anchor=r  20 part(s)  raw 1.34  box 32.52 moved 0.00/0.46 m  types: 06:16 46:4  (+50 like this in the last minute)
+15:42:50  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 3.6 ms old (p50), 6.5 p95, 15.7 max | R6 published a new one every 7.0 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:42:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(5424 1088) head=(5709 886) w=131 h=226 screen=1920x1080  (+11 like this in the last minute)
+15:42:59  entv2     funnel: vt 2072 -> type(1 vote) 236 -> pos 198   [rot +0x60 pos +0x90 stride 0x100]  (+4 like this in the last minute)
+15:42:59  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:55 0x86:226  (+4 like this in the last minute)
+15:43:03  entv2     validate: 2 person-shaped cluster(s) but NONE at the camera (44.2 -7.6 32.9) -- this class is not people
+15:43:06  entv2       char[8] = (51.1 -6.0 32.5) id=10 coast=0   SPAN 1.30  p50 0.78 drop 0.00 root=y anchor=r  7 part(s)  raw 1.30  box 32.48  types: 06:6 46:1
+15:43:13  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+4 like this in the last minute)
+15:43:13  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+4 like this in the last minute)
+15:43:19  view-scan camera poll: 450 read(s)/s, 105 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:43:21  entv2       char[0] = (57.8 5.2 31.4) id=1 coast=0   SPAN 1.33  p50 0.50 drop 0.00 root=y anchor=r  9 part(s)  raw 1.33  box 31.38 moved 9.95/10.00 m  types: 06:5 22:1 26:1 46:2
+15:43:28  skel      Skeleton=0 Solid=0 style=0 | have_sk 0 of 8 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:43:28  esp-draw  groups=8 drawn=5 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=2  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:43:30  overlay   menu opened  (tid 13400)
+15:43:30  config    saved to C:\Users\yusuf\AppData\Local\Kayaz\bin\config.ini  (+5 like this in the last minute)
+15:43:31  overlay   4322 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:43:31  overlay   4322 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 1 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:43:31  overlay   pacing wait p50 6.44 ms p95 6.67 max 8.09 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:43:31  overlay   loop period p50 6.94 ms p95 7.16 max 8.67 | frame work p50 0.47 p95 0.66 max 1.77 (CPU p50 0.21 p95 0.38 | our draw p50 0.03 p95 0.05 | Present MEASURED p50 0.21 p95 0.31 max 0.35) | before the wait p50 0.01 p95 0.21 max 0.79  (+1 like this in the last minute)
+15:43:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.93 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:43:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:43:31  overlay   DRIVER reads: 142916/s total | ent-cache(12332) 115869/s avg 17B, entv2-tick(9996) 20822/s avg 256B, entlist-heap(16096) 3192/s avg 228845B, unnamed(10876) 1331/s avg 228351B, unnamed(8896) 1022/s avg 233954B, cam-poll(11672) 452/s avg 256B, entv2-sweep(6532) 221/s avg 175373B, view-scan(5020) 8/s avg 86B
+15:43:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:43:31  overlay   VRAM now: using 45 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:43:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:43:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:43:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:43:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:43:33  state     counts total=8 havepos=8 groups=8 | skeletons posed=0  (+3 like this in the last minute)
+15:43:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (56.1 -7.3 32.9)  (+3 like this in the last minute)
+15:43:33  state     memory R6 private 4979 MB, working set 2855 MB | our scan buffers ~405 MB | machine 20579 of 32721 MB free  (+3 like this in the last minute)
+15:43:34  xref      1 code-shape candidates
+15:43:34  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)
+15:43:38  esp-filt  total=8 player=8 teamok=8 alive=8 havepos=8 groups=8  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x8  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:43:41  view-scan the cached block has not changed in 10039 ms -- the game is not writing it any more, dropping it  (+2 like this in the last minute)
+15:43:41  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile  (+2 like this in the last minute)
+15:43:43  entv2     605 node(s) -> 127 cluster(s) -> 8 character(s) (102 single-part, 0 unmarked, 17 flat dropped)  (+16 like this in the last minute)
+15:43:44  overlay   menu closed  (tid 13400)
+15:43:47  entv2     read interval: avg 1327.0 ms  max 1425 ms  (4 samples)  (+10 like this in the last minute)
+15:43:47  entv2       char[0] = (62.6 0.9 31.4) id=1 coast=0   SPAN 0.34  p50 0.19 drop 0.00 root=y anchor=r  7 part(s)  raw 0.34  box 31.39 moved 0.00/0.00 m  types: 06:5 22:1 46:1  (+73 like this in the last minute)
+15:43:47  entv2       char[1] = (41.0 -3.9 31.1) id=4 coast=0   SPAN 0.33  p50 0.33 drop 0.00 root=y anchor=r  4 part(s)  raw 0.33  box 31.08 moved 0.00/0.00 m  types: 22:3 26:1  (+51 like this in the last minute)
+15:43:51  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 1.7 ms old (p50), 8.0 p95, 10.2 max | R6 published a new one every 6.6 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:43:52  entv2       char[8] = (62.1 3.0 31.4) id=13 coast=0   SPAN 0.38  p50 0.26 drop 0.00 root=n anchor=r  6 part(s)  raw 0.38  box 31.39  types: 06:5 46:1
+15:43:53  esp-draw    first box: world=(62.6 0.9 31.4) feet=(1127 869) head=(1092 554) w=203 h=350 screen=1920x1080  (+11 like this in the last minute)
+15:44:01  overlay   DRIVER reads: 152895/s total | ent-cache(12332) 123157/s avg 17B, entv2-tick(9996) 14673/s avg 256B, unnamed(16476) 9145/s avg 2110B, entlist-heap(16096) 3073/s avg 228963B, entv2-sweep(16836) 1310/s avg 228658B, unnamed(6532) 1104/s avg 239702B, cam-poll(11672) 427/s avg 256B, view-scan(5020) 6/s avg 78B
+15:44:01  entv2       char[8] = (58.1 3.0 30.4) id=13 coast=0   SPAN 0.34  p50 0.54 drop 0.00 root=n anchor=r  6 part(s)  raw 0.34  box 30.43 moved 5.94/5.88 m  types: 06:5 46:1
+15:44:05  entv2     funnel: vt 2120 -> type(1 vote) 284 -> pos 220   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:44:05  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:103 0x86:226  (+3 like this in the last minute)
+15:44:10  entv2       char[9] = (56.0 -4.4 31.1) id=14 coast=0   SPAN 1.67  p50 1.65 drop 0.00 root=y anchor=r  10 part(s)  raw 1.67  box 31.10  types: 26:1 46:9  (+2 like this in the last minute)
+15:44:19  view-scan camera poll: 438 read(s)/s, 109 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:44:23  entv2       char[4] = (41.0 -3.9 31.1) id=9 coast=0   SPAN 1.56  p50 1.53 drop 0.00 root=y anchor=r  22 part(s)  raw 1.89  box 31.08 moved 14.62/14.27 m  types: 06:16 22:2 26:1 46:3  (+12 like this in the last minute)
+15:44:28  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+4 like this in the last minute)
+15:44:28  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+4 like this in the last minute)
+15:44:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 9 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:44:28  esp-draw  groups=9 drawn=6 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=2  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:44:31  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:44:31  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 1 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:44:31  overlay   pacing wait p50 6.50 ms p95 6.66 max 8.18 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:44:31  overlay   loop period p50 6.94 ms p95 7.13 max 8.80 | frame work p50 0.42 p95 0.59 max 0.97 (CPU p50 0.19 p95 0.28 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.19 p95 0.27 max 0.32) | before the wait p50 0.01 p95 0.03 max 0.65  (+1 like this in the last minute)
+15:44:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.89 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:44:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:44:31  overlay   DRIVER reads: 123250/s total | ent-cache(12332) 93151/s avg 17B, entv2-tick(9996) 15469/s avg 256B, unnamed(16476) 10974/s avg 885B, entlist-heap(16096) 3192/s avg 229997B, cam-poll(11672) 440/s avg 256B, unnamed(16836) 18/s avg 234290B, view-scan(5020) 6/s avg 80B
+15:44:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:44:31  overlay   VRAM now: using 45 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:44:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:44:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:44:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:44:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:44:33  state     counts total=9 havepos=9 groups=9 | skeletons posed=0  (+3 like this in the last minute)
+15:44:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (41.5 -4.8 32.9)  (+3 like this in the last minute)
+15:44:33  state     memory R6 private 4982 MB, working set 2858 MB | our scan buffers ~437 MB | machine 20565 of 32721 MB free  (+3 like this in the last minute)
+15:44:36  entv2       char[9] = (45.8 -6.6 31.0) id=16 coast=0   SPAN 1.64  p50 1.52 drop 0.00 root=y anchor=r  23 part(s)  raw 1.77  box 30.99  types: 06:16 26:4 46:2 86:1
+15:44:38  esp-filt  total=10 player=10 teamok=10 alive=10 havepos=10 groups=10  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x10  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:44:45  entv2     624 node(s) -> 131 cluster(s) -> 10 character(s) (104 single-part, 0 unmarked, 17 flat dropped)  (+13 like this in the last minute)
+15:44:46  entv2     validate: 5 person-shaped cluster(s) but NONE at the camera (33.4 -6.1 32.9) -- this class is not people
+15:44:46  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:44:46  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:44:50  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+60 like this in the last minute)
+15:44:50  entv2       char[3] = (26.9 -3.4 31.0) id=8 coast=0   SPAN 0.45  p50 0.40 drop 0.00 root=y anchor=r  3 part(s)  raw 0.45  box 31.00 moved 0.00/0.00 m  types: 22:2 26:1  (+55 like this in the last minute)
+15:44:51  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 2.4 ms old (p50), 7.8 p95, 9.3 max | R6 published a new one every 6.9 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:44:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(1212 568) head=(1211 539) w=19 h=33 screen=1920x1080  (+11 like this in the last minute)
+15:44:54  entv2     read interval: avg 1824.8 ms  max 2653 ms  (4 samples)  (+9 like this in the last minute)
+15:45:01  overlay   DRIVER reads: 129841/s total | ent-cache(12332) 97617/s avg 17B, entv2-tick(9996) 16323/s avg 256B, unnamed(16476) 12116/s avg 802B, entlist-heap(16096) 3333/s avg 225605B, cam-poll(11672) 444/s avg 256B, view-scan(5020) 8/s avg 85B
+15:45:12  entv2     funnel: vt 2255 -> type(1 vote) 419 -> pos 261   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:45:12  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:238 0x86:226  (+3 like this in the last minute)
+15:45:12  entv2       char[12] = (43.9 -4.4 31.4) id=20 coast=0   SPAN 0.52  p50 0.22 drop 0.00 root=y anchor=r  8 part(s)  raw 0.52  box 31.40  types: 22:2 46:6  (+3 like this in the last minute)
+15:45:17  entv2       char[12] = (50.5 -8.3 31.7) id=21 coast=0   SPAN 0.27  p50 0.02 drop 0.00 root=y anchor=r  4 part(s)  raw 0.27  box 31.69 moved 10.60/10.27 m  types: 46:4
+15:45:19  view-scan camera poll: 445 read(s)/s, 139 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:45:28  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:45:28  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:45:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 12 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:45:28  esp-draw  groups=12 drawn=9 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=2  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:45:31  overlay   4322 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:45:31  overlay   4322 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 1 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:45:31  overlay   pacing wait p50 6.46 ms p95 6.65 max 7.66 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:45:31  overlay   loop period p50 6.94 ms p95 7.17 max 9.06 | frame work p50 0.46 p95 0.66 max 2.55 (CPU p50 0.22 p95 0.33 | our draw p50 0.03 p95 0.05 | Present MEASURED p50 0.20 p95 0.30 max 0.78) | before the wait p50 0.01 p95 0.03 max 0.68  (+1 like this in the last minute)
+15:45:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.96 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:45:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:45:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:45:31  overlay   VRAM now: using 45 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:45:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:45:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:45:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:45:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:45:33  state     counts total=12 havepos=12 groups=12 | skeletons posed=0  (+3 like this in the last minute)
+15:45:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (48.4 -7.9 32.9)  (+3 like this in the last minute)
+15:45:33  state     memory R6 private 4989 MB, working set 2864 MB | our scan buffers ~422 MB | machine 20555 of 32721 MB free  (+3 like this in the last minute)
+15:45:38  esp-filt  total=12 player=12 teamok=12 alive=12 havepos=12 groups=12  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x12  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:45:46  entv2     651 node(s) -> 135 cluster(s) -> 12 character(s) (109 single-part, 0 unmarked, 14 flat dropped)  (+13 like this in the last minute)
+15:45:51  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 3.1 ms old (p50), 7.0 p95, 9.6 max | R6 published a new one every 6.8 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:45:53  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+94 like this in the last minute)
+15:45:53  entv2       char[3] = (26.9 -3.4 31.0) id=8 coast=0   SPAN 0.45  p50 0.40 drop 0.00 root=y anchor=r  3 part(s)  raw 0.45  box 31.00 moved 0.00/0.00 m  types: 22:2 26:1  (+71 like this in the last minute)
+15:45:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(1041 319) head=(1043 284) w=23 h=39 screen=1920x1080  (+11 like this in the last minute)
+15:45:57  entv2     read interval: avg 1799.2 ms  max 2278 ms  (4 samples)  (+9 like this in the last minute)
+15:45:59  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:45:59  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:46:01  overlay   DRIVER reads: 129662/s total | ent-cache(12332) 98405/s avg 17B, entv2-tick(9996) 16463/s avg 256B, unnamed(16476) 11179/s avg 1728B, entlist-heap(16096) 3168/s avg 229022B, cam-poll(11672) 440/s avg 256B, view-scan(5020) 8/s avg 86B  (+1 like this in the last minute)
+15:46:14  entv2     funnel: vt 2270 -> type(1 vote) 434 -> pos 245   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:46:14  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:253 0x86:226  (+3 like this in the last minute)
+15:46:19  view-scan camera poll: 441 read(s)/s, 142 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:46:28  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:46:28  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:46:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 12 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:46:28  esp-draw  groups=12 drawn=9 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=2  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:46:31  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:46:31  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 1 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:46:31  overlay   pacing wait p50 6.46 ms p95 6.64 max 7.60 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:46:31  overlay   loop period p50 6.95 ms p95 7.12 max 8.26 | frame work p50 0.46 p95 0.61 max 0.89 (CPU p50 0.22 p95 0.31 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.21 p95 0.28 max 0.34) | before the wait p50 0.01 p95 0.03 max 0.66  (+1 like this in the last minute)
+15:46:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.91 ms | delivered every 6.9 ms on AVERAGE (median 6.95 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:46:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30015 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:46:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:46:31  overlay   VRAM now: using 45 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:46:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:46:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:46:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:46:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:46:33  state     counts total=12 havepos=12 groups=12 | skeletons posed=0  (+3 like this in the last minute)
+15:46:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (48.4 -7.9 32.9)  (+3 like this in the last minute)
+15:46:33  state     memory R6 private 4995 MB, working set 2868 MB | our scan buffers ~493 MB | machine 20544 of 32721 MB free  (+3 like this in the last minute)
+15:46:38  entv2       char[11] = (39.4 -6.1 31.4) id=19 coast=0   SPAN 1.32  p50 1.32 drop 0.00 root=y anchor=r  4 part(s)  raw 1.32  box 31.44 moved 0.00/0.00 m  types:[esp-filt] total=12 player=12 teamok=12 alive=12 havepos=12 groups=12  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x12  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+15:46:38             22:2 46:2
+15:46:43  esp-filt  total=12 player=12 teamok=12 alive=12 havepos=12 groups=12  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x12  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:46:47  entv2     651 node(s) -> 135 cluster(s) -> 12 character(s) (109 single-part, 0 unmarked, 14 flat dropped)  (+14 like this in the last minute)
+15:46:51  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 3.7 ms old (p50), 7.5 p95, 9.0 max | R6 published a new one every 6.7 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:46:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(1041 319) head=(1043 284) w=23 h=39 screen=1920x1080  (+11 like this in the last minute)
+15:46:56  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+104 like this in the last minute)
+15:46:56  entv2       char[3] = (26.9 -3.4 31.0) id=8 coast=0   SPAN 0.45  p50 0.40 drop 0.00 root=y anchor=r  3 part(s)  raw 0.45  box 31.00 moved 0.00/0.00 m  types: 22:2 26:1  (+73 like this in the last minute)
+15:46:58  entv2     read interval: avg 1672.7 ms  max 2509 ms  (3 samples)  (+9 like this in the last minute)
+15:47:01  overlay   DRIVER reads: 136468/s total | ent-cache(12332) 102916/s avg 17B, entv2-tick(9996) 16584/s avg 256B, unnamed(16476) 11805/s avg 823B, entlist-heap(16096) 3374/s avg 224813B, unnamed(728) 1339/s avg 228455B, cam-poll(11672) 443/s avg 256B, view-scan(5020) 8/s avg 86B
+15:47:14  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:47:15  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:47:19  view-scan camera poll: 442 read(s)/s, 142 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:47:20  entv2     funnel: vt 2270 -> type(1 vote) 434 -> pos 245   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:47:20  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:253 0x86:226  (+3 like this in the last minute)
+15:47:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 12 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:47:28  esp-draw  groups=12 drawn=9 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=2  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:47:31  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:47:31  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:47:31  overlay   pacing wait p50 6.47 ms p95 6.64 max 7.61 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:47:31  overlay   loop period p50 6.95 ms p95 7.12 max 8.43 | frame work p50 0.45 p95 0.64 max 0.94 (CPU p50 0.22 p95 0.32 | our draw p50 0.03 p95 0.05 | Present MEASURED p50 0.20 p95 0.29 max 0.36) | before the wait p50 0.01 p95 0.03 max 0.78  (+1 like this in the last minute)
+15:47:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.97 ms | delivered every 6.9 ms on AVERAGE (median 6.95 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:47:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:47:31  overlay   DRIVER reads: 127288/s total | ent-cache(12332) 96935/s avg 17B, entv2-tick(9996) 16080/s avg 256B, unnamed(16476) 10618/s avg 914B, entlist-heap(16096) 3205/s avg 230708B, cam-poll(11672) 442/s avg 256B, view-scan(5020) 8/s avg 86B  (+1 like this in the last minute)
+15:47:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:47:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:47:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:47:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:47:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:47:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:47:33  state     counts total=12 havepos=12 groups=12 | skeletons posed=0  (+3 like this in the last minute)
+15:47:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (48.4 -7.9 32.9)  (+3 like this in the last minute)
+15:47:33  state     memory R6 private 5006 MB, working set 2873 MB | our scan buffers ~525 MB | machine 20555 of 32721 MB free  (+3 like this in the last minute)
+15:47:43  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+4 like this in the last minute)
+15:47:43  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+4 like this in the last minute)
+15:47:43  esp-filt  total=12 player=12 teamok=12 alive=12 havepos=12 groups=12  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x12  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:47:49  entv2     651 node(s) -> 135 cluster(s) -> 12 character(s) (109 single-part, 0 unmarked, 14 flat dropped)  (+14 like this in the last minute)
+15:47:51  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 3.1 ms old (p50), 7.8 p95, 15.1 max | R6 published a new one every 6.7 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:47:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(1041 319) head=(1043 284) w=23 h=39 screen=1920x1080  (+11 like this in the last minute)
+15:47:58  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+104 like this in the last minute)
+15:47:58  entv2       char[3] = (26.9 -3.4 31.0) id=8 coast=0   SPAN 0.45  p50 0.40 drop 0.00 root=y anchor=r  3 part(s)  raw 0.45  box 31.00 moved 0.00/0.00 m  types: 22:2 26:1  (+74 like this in the last minute)
+15:47:59  entv2     read interval: avg 2115.3 ms  max 2394 ms  (3 samples)  (+9 like this in the last minute)
+15:48:19  view-scan camera poll: 438 read(s)/s, 142 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:48:27  entv2     funnel: vt 2270 -> type(1 vote) 434 -> pos 245   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:48:27  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:253 0x86:226  (+3 like this in the last minute)
+15:48:28  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:48:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 12 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:48:28  esp-draw  groups=12 drawn=9 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=2  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:48:28  xref      REJECTED: best candidate resolved only 9/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:48:31  overlay   4322 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:48:31  overlay   4322 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:48:31  overlay   pacing wait p50 6.46 ms p95 6.65 max 7.65 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:48:31  overlay   loop period p50 6.94 ms p95 7.18 max 8.08 | frame work p50 0.48 p95 0.64 max 0.91 (CPU p50 0.23 p95 0.32 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.21 p95 0.30 max 0.49) | before the wait p50 0.01 p95 0.03 max 0.73  (+1 like this in the last minute)
+15:48:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.96 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:48:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:48:31  overlay   DRIVER reads: 132162/s total | ent-cache(12332) 100769/s avg 17B, entv2-tick(9996) 16241/s avg 256B, unnamed(16476) 11464/s avg 1685B, entlist-heap(16096) 3243/s avg 228323B, cam-poll(11672) 438/s avg 256B, view-scan(5020) 8/s avg 86B  (+1 like this in the last minute)
+15:48:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:48:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:48:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:48:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:48:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:48:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:48:33  state     counts total=12 havepos=12 groups=12 | skeletons posed=0  (+3 like this in the last minute)
+15:48:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (48.4 -7.9 32.9)  (+3 like this in the last minute)
+15:48:33  state     memory R6 private 5007 MB, working set 2877 MB | our scan buffers ~549 MB | machine 20553 of 32721 MB free  (+3 like this in the last minute)
+15:48:43  esp-filt  total=12 player=12 teamok=12 alive=12 havepos=12 groups=12  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x12  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:48:43  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:48:43  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:48:51  entv2     651 node(s) -> 135 cluster(s) -> 12 character(s) (109 single-part, 0 unmarked, 14 flat dropped)  (+14 like this in the last minute)
+15:48:51  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 2.3 ms old (p50), 7.9 p95, 11.0 max | R6 published a new one every 6.7 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:48:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(2015 614) head=(2032 510) w=67 h=116 screen=1920x1080  (+11 like this in the last minute)
+15:48:54  entv2       char[12] = (46.8 -6.9 31.4) id=22 coast=0   SPAN 1.42  p50 1.25 drop 0.00 root=y anchor=r  18 part(s)  raw 1.43  box 31.44  types: 06:16 22:1 46:1  (+4 like this in the last minute)
+15:48:58  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+103 like this in the last minute)
+15:48:58  entv2       char[3] = (26.9 -3.4 31.0) id=8 coast=0   SPAN 0.45  p50 0.40 drop 0.00 root=y anchor=r  3 part(s)  raw 0.45  box 31.00 moved 0.00/0.00 m  types: 22:2 26:1  (+75 like this in the last minute)
+15:49:00  entv2     read interval: avg 2105.0 ms  max 2218 ms  (3 samples)  (+9 like this in the last minute)
+15:49:12  entv2       char[13] = (38.3 -4.1 31.4) id=24 coast=0   SPAN 1.27  p50 0.03 drop 0.00 root=y anchor=r  3 part(s)  raw 1.27  box 31.40  types: 22:2 46:1
+15:49:19  view-scan camera poll: 439 read(s)/s, 115 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:49:25  view-scan the cached block has not changed in 10020 ms -- the game is not writing it any more, dropping it  (+1 like this in the last minute)
+15:49:25  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile  (+1 like this in the last minute)
+15:49:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 13 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:49:28  esp-draw  groups=13 drawn=11 | dropped: dist=0 strict=0 local=2 team=0 decoy=0 proj=0  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:49:29  entv2     funnel: vt 2338 -> type(1 vote) 502 -> pos 251   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:49:29  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:321 0x86:226  (+3 like this in the last minute)
+15:49:31  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:49:31  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 2 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:49:31  overlay   pacing wait p50 6.48 ms p95 6.66 max 7.44 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:49:31  overlay   loop period p50 6.95 ms p95 7.18 max 7.96 | frame work p50 0.45 p95 0.65 max 1.37 (CPU p50 0.23 p95 0.32 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.19 p95 0.30 max 1.08) | before the wait p50 0.01 p95 0.03 max 0.69  (+1 like this in the last minute)
+15:49:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.96 ms | delivered every 6.9 ms on AVERAGE (median 6.95 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:49:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:49:31  overlay   DRIVER reads: 120936/s total | ent-cache(12332) 90848/s avg 17B, entv2-tick(9996) 15338/s avg 256B, unnamed(16476) 11122/s avg 873B, entlist-heap(16096) 3181/s avg 230620B, cam-poll(11672) 440/s avg 256B, view-scan(5020) 7/s avg 82B  (+1 like this in the last minute)
+15:49:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:49:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:49:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:49:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:49:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:49:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:49:33  state     counts total=13 havepos=13 groups=13 | skeletons posed=0  (+3 like this in the last minute)
+15:49:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (40.3 -5.0 32.9)  (+3 like this in the last minute)
+15:49:33  state     memory R6 private 5006 MB, working set 2879 MB | our scan buffers ~542 MB | machine 20598 of 32721 MB free  (+3 like this in the last minute)
+15:49:37  entv2       char[12] = (41.0 -3.1 31.0) id=22 coast=0   SPAN 1.77  p50 1.01 drop 0.00 root=y anchor=r  20 part(s)  raw 1.87  box 30.99 moved 4.85/3.81 m  types: 06:16 26:2 46:1 86:1  (+7 like this in the last minute)
+15:49:43  esp-filt  total=13 player=13 teamok=13 alive=13 havepos=13 groups=13  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x13  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:49:44  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:49:45  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:49:45  entv2     root type 0x86 joins the set (8 ground sighting(s)) -- 4 type(s) now anchor bodies  (+1 like this in the last minute)
+15:49:52  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 3.2 ms old (p50), 7.5 p95, 10.9 max | R6 published a new one every 6.7 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:49:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(1329 511) head=(1330 475) w=23 h=40 screen=1920x1080  (+11 like this in the last minute)
+15:49:54  entv2     670 node(s) -> 137 cluster(s) -> 13 character(s) (109 single-part, 0 unmarked, 15 flat dropped)  (+14 like this in the last minute)
+15:49:58  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+4 like this in the last minute)
+15:49:58  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+4 like this in the last minute)
+15:50:02  entv2     read interval: avg 1755.5 ms  max 2434 ms  (4 samples)  (+9 like this in the last minute)
+15:50:02  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+85 like this in the last minute)
+15:50:02  entv2       char[3] = (26.9 -3.4 31.0) id=8 coast=0   SPAN 0.45  p50 0.40 drop 0.00 root=y anchor=r  3 part(s)  raw 0.45  box 31.00 moved 0.00/0.00 m  types: 22:2 26:1  (+102 like this in the last minute)
+15:50:02  entv2       char[11] = (41.0 -3.1 31.0) id=22 coast=0   SPAN 1.78  p50 1.74 drop 0.00 root=y anchor=r  34 part(s)  raw 1.87  box 30.99 moved 4.63/5.14 m  types: 06:16 22:1 26:2 46:14 86:1
+15:50:19  view-scan camera poll: 444 read(s)/s, 68 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:50:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 12 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:50:28  esp-draw  groups=12 drawn=5 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=6  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:50:31  overlay   4320 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:50:31  overlay   4320 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 99.9%, two 0.1%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 3 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:50:31  overlay   pacing wait p50 6.47 ms p95 6.66 max 7.46 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:50:31  overlay   loop period p50 6.94 ms p95 7.13 max 7.91 | frame work p50 0.46 p95 0.62 max 0.94 (CPU p50 0.21 p95 0.31 | our draw p50 0.03 p95 0.05 | Present MEASURED p50 0.22 p95 0.29 max 0.37) | before the wait p50 0.01 p95 0.03 max 0.80  (+1 like this in the last minute)
+15:50:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.92 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:50:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30015 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:50:31  overlay   DRIVER reads: 130019/s total | ent-cache(12332) 98335/s avg 17B, entv2-tick(9996) 16796/s avg 256B, unnamed(16476) 11205/s avg 866B, entlist-heap(16096) 3233/s avg 227646B, cam-poll(11672) 443/s avg 256B, view-scan(5020) 6/s avg 78B  (+1 like this in the last minute)
+15:50:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:50:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:50:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:50:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:50:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:50:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:50:33  state     counts total=12 havepos=12 groups=12 | skeletons posed=0  (+3 like this in the last minute)
+15:50:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (41.0 -3.6 32.9)  (+3 like this in the last minute)
+15:50:33  state     memory R6 private 5015 MB, working set 2885 MB | our scan buffers ~613 MB | machine 20545 of 32721 MB free  (+3 like this in the last minute)
+15:50:36  entv2     funnel: vt 2531 -> type(1 vote) 695 -> pos 324   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:50:36  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:514 0x86:226  (+3 like this in the last minute)
+15:50:43  esp-filt  total=14 player=14 teamok=14 alive=14 havepos=14 groups=14  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x14  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:50:44  entv2       char[12] = (43.0 -4.4 31.4) id=26 coast=0   SPAN 0.93  p50 1.50 drop 0.00 root=y anchor=r  4 part(s)  raw 0.93  box 31.40  types: 22:2 46:2
+15:50:52  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 2.9 ms old (p50), 7.6 p95, 9.2 max | R6 published a new one every 6.8 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:50:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(1333 561) head=(1332 525) w=23 h=40 screen=1920x1080  (+11 like this in the last minute)
+15:50:55  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:50:56  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:50:57  entv2     690 node(s) -> 136 cluster(s) -> 12 character(s) (107 single-part, 0 unmarked, 17 flat dropped)  (+14 like this in the last minute)
+15:50:58  entv2     validate: 8 person-shaped cluster(s) but NONE at the camera (41.1 -3.6 32.4) -- this class is not people
+15:50:58  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:50:58  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:51:04  entv2     read interval: avg 2175.3 ms  max 2208 ms  (3 samples)  (+9 like this in the last minute)
+15:51:06  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+74 like this in the last minute)
+15:51:06  entv2       char[3] = (26.9 -3.4 31.0) id=8 coast=0   SPAN 0.45  p50 0.40 drop 0.00 root=y anchor=r  3 part(s)  raw 0.45  box 31.00 moved 0.00/0.00 m  types: 22:2 26:1  (+88 like this in the last minute)
+15:51:06  entv2       char[10] = (41.0 -3.1 31.0) id=22 coast=0   SPAN 1.68  p50 1.75 drop 0.00 root=y anchor=r  62 part(s)  raw 1.77  box 30.99 moved 0.00/0.00 m  types: 06:16 22:1 26:2 46:42 86:1  (+14 like this in the last minute)
+15:51:19  entv2       char[8] = (41.0 -3.1 31.0) id=22 coast=0   SPAN 1.68  p50 1.75 drop 0.00 root=y anchor=r  47 part(s)  raw 1.77  box 30.99 moved 10.26/9.62 m  types: 22:1 26:2 46:43 86:1  (+5 like this in the last minute)
+15:51:19  view-scan camera poll: 439 read(s)/s, 129 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:51:23  entv2       char[10] = (36.0 -7.8 31.4) id=32 coast=0   SPAN 1.42  p50 0.41 drop 0.00 root=y anchor=r  19 part(s)  raw 1.43  box 31.40  types: 06:16 26:2 46:1
+15:51:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 14 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:51:28  esp-draw  groups=14 drawn=13 | dropped: dist=0 strict=0 local=1 team=0 decoy=0 proj=0  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:51:31  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:51:31  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:51:31  overlay   pacing wait p50 6.45 ms p95 6.63 max 7.24 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:51:31  overlay   loop period p50 6.94 ms p95 7.17 max 8.45 | frame work p50 0.48 p95 0.67 max 1.31 (CPU p50 0.24 p95 0.33 | our draw p50 0.03 p95 0.05 | Present MEASURED p50 0.20 p95 0.29 max 0.59) | before the wait p50 0.01 p95 0.03 max 0.56  (+1 like this in the last minute)
+15:51:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.97 ms | delivered every 6.9 ms on AVERAGE (median 6.94 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:51:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:51:31  overlay   DRIVER reads: 134677/s total | ent-cache(12332) 102059/s avg 17B, entv2-tick(9996) 16754/s avg 256B, unnamed(16476) 12034/s avg 807B, entlist-heap(16096) 3379/s avg 224141B, cam-poll(11672) 444/s avg 256B, view-scan(5020) 8/s avg 86B  (+1 like this in the last minute)
+15:51:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:51:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:51:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:51:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:51:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:51:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:51:33  state     counts total=14 havepos=14 groups=14 | skeletons posed=0  (+3 like this in the last minute)
+15:51:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (42.4 -7.8 32.9)  (+3 like this in the last minute)
+15:51:33  state     memory R6 private 5030 MB, working set 2890 MB | our scan buffers ~584 MB | machine 20572 of 32721 MB free  (+3 like this in the last minute)
+15:51:43  esp-filt  total=14 player=14 teamok=14 alive=14 havepos=14 groups=14  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x14  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:51:48  entv2     funnel: vt 2649 -> type(1 vote) 813 -> pos 297   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:51:48  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:632 0x86:226  (+3 like this in the last minute)
+15:51:49  entv2       char[14] = (43.9 -4.4 31.4) id=38 coast=0   SPAN 1.46  p50 0.01 drop 0.00 root=y anchor=r  3 part(s)  raw 1.46  box 31.40  types: 22:2 46:1  (+2 like this in the last minute)
+15:51:52  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 2.6 ms old (p50), 7.1 p95, 9.8 max | R6 published a new one every 7.0 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:51:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(2021 492) head=(2008 396) w=62 h=107 screen=1920x1080  (+11 like this in the last minute)
+15:51:58  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:51:58  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:51:58  entv2     718 node(s) -> 136 cluster(s) -> 14 character(s) (107 single-part, 0 unmarked, 15 flat dropped)  (+13 like this in the last minute)
+15:52:07  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+77 like this in the last minute)
+15:52:07  entv2       char[4] = (47.8 -6.7 31.4) id=12 coast=0   SPAN 1.33  p50 1.33 drop 0.00 root=y anchor=r  4 part(s)  raw 1.33  box 31.43 moved 0.00/0.00 m  types: 22:2 46:2  (+86 like this in the last minute)
+15:52:08  entv2     validate: 9 person-shaped cluster(s) but NONE at the camera (42.5 -6.1 32.4) -- this class is not people  (+1 like this in the last minute)
+15:52:08  entv2     read interval: avg 1358.0 ms  max 1665 ms  (4 samples)  (+10 like this in the last minute)
+15:52:10  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:52:10  view-scan the cached block has not changed in 10033 ms -- the game is not writing it any more, dropping it  (+1 like this in the last minute)
+15:52:10  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile  (+1 like this in the last minute)
+15:52:11  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:52:19  view-scan camera poll: 435 read(s)/s, 52 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:52:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 14 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:52:28  esp-draw  groups=14 drawn=7 | dropped: dist=0 strict=0 local=3 team=0 decoy=0 proj=4  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:52:31  overlay   4322 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:52:31  overlay   4322 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:52:31  overlay   pacing wait p50 6.56 ms p95 7.02 max 7.67 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:52:31  overlay   loop period p50 6.92 ms p95 7.47 max 8.09 | frame work p50 0.37 p95 0.52 max 0.91 (CPU p50 0.17 p95 0.26 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.16 p95 0.25 max 0.72) | before the wait p50 0.01 p95 0.03 max 0.55  (+1 like this in the last minute)
+15:52:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.82 ms | delivered every 6.9 ms on AVERAGE (median 6.92 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:52:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:52:31  overlay   DRIVER reads: 161805/s total | ent-cache(12332) 135881/s avg 17B, entv2-tick(9996) 14196/s avg 256B, unnamed(16476) 8091/s avg 1196B, entlist-heap(16096) 3202/s avg 227971B, cam-poll(11672) 428/s avg 256B, view-scan(5020) 6/s avg 78B  (+1 like this in the last minute)
+15:52:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:52:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:52:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:52:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:52:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:52:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:52:33  state     counts total=14 havepos=14 groups=14 | skeletons posed=0  (+3 like this in the last minute)
+15:52:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (42.5 -6.1 32.4)  (+3 like this in the last minute)
+15:52:33  state     memory R6 private 5029 MB, working set 2891 MB | our scan buffers ~622 MB | machine 20479 of 32721 MB free  (+3 like this in the last minute)
+15:52:43  esp-filt  total=14 player=14 teamok=14 alive=14 havepos=14 groups=14  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x14  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:52:51  entv2       char[13] = (43.8 -5.3 31.4) id=43 coast=0   SPAN 1.07  p50 0.79 drop 0.00 root=n anchor=r  4 part(s)  raw 1.07  box 31.42  types: 06:3 46:1
+15:52:52  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 2.8 ms old (p50), 7.4 p95, 9.8 max | R6 published a new one every 6.7 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:52:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(677 534) head=(676 494) w=26 h=44 screen=1920x1080  (+11 like this in the last minute)
+15:52:58  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:52:58  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:52:59  entv2     702 node(s) -> 137 cluster(s) -> 14 character(s) (107 single-part, 0 unmarked, 16 flat dropped)  (+14 like this in the last minute)
+15:53:00  entv2     funnel: vt 2694 -> type(1 vote) 858 -> pos 304   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:53:00  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:677 0x86:226  (+3 like this in the last minute)
+15:53:09  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+102 like this in the last minute)
+15:53:09  entv2       char[4] = (48.6 -7.1 31.4) id=12 coast=0   SPAN 1.33  p50 0.08 drop 0.00 root=y anchor=r  3 part(s)  raw 1.33  box 31.44 moved 0.00/0.00 m  types: 22:2 46:1  (+104 like this in the last minute)
+15:53:09  entv2       char[14] = (41.7 -12.9 31.4) id=45 coast=0   SPAN 1.73  p50 0.82 drop 0.00 root=y anchor=r  6 part(s)  raw 1.73  box 31.39  types: 26:1 46:2 86:3  (+1 like this in the last minute)
+15:53:12  entv2     read interval: avg 2929.5 ms  max 3055 ms  (2 samples)  (+10 like this in the last minute)
+15:53:14  entv2       char[10] = (41.0 -3.1 31.0) id=40 coast=0   SPAN 1.85  p50 1.76 drop 0.00 root=y anchor=r  64 part(s)  raw 2.10  box 30.99 moved 0.00/0.78 m  types: 06:14 26:2 46:47 86:1  (+9 like this in the last minute)
+15:53:17  entv2       char[14] = (42.3 -3.8 31.4) id=46 coast=0   SPAN 1.47  p50 1.34 drop 0.00 root=y anchor=r  8 part(s)  raw 1.47  box 31.41  types: 22:1 46:7
+15:53:18  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:53:19  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:53:19  view-scan camera poll: 442 read(s)/s, 138 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:53:28  entv2       char[15] = (43.1 -6.0 31.4) id=48 coast=0   SPAN 1.39  p50 1.30 drop 0.00 root=n anchor=m  14 part(s)  raw 1.40  box 31.42  types: 06:14
+15:53:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 16 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:53:28  esp-draw  groups=16 drawn=5 | dropped: dist=0 strict=0 local=4 team=0 decoy=0 proj=7  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:53:31  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:53:31  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 2 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:53:31  overlay   pacing wait p50 6.45 ms p95 7.24 max 7.85 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:53:31  overlay   loop period p50 6.96 ms p95 7.77 max 8.61 | frame work p50 0.49 p95 0.65 max 0.92 (CPU p50 0.26 p95 0.35 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.19 p95 0.27 max 0.42) | before the wait p50 0.01 p95 0.04 max 0.59  (+1 like this in the last minute)
+15:53:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.93 ms | delivered every 6.9 ms on AVERAGE (median 6.96 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:53:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:53:31  overlay   DRIVER reads: 109410/s total | ent-cache(12332) 75332/s avg 17B, entv2-tick(9996) 16978/s avg 256B, unnamed(16476) 13641/s avg 713B, entlist-heap(16096) 3006/s avg 230582B, cam-poll(11672) 446/s avg 256B, view-scan(5020) 8/s avg 86B  (+1 like this in the last minute)
+15:53:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:53:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:53:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:53:33  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:53:33  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:53:33  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:53:33  state     counts total=16 havepos=16 groups=16 | skeletons posed=0  (+3 like this in the last minute)
+15:53:33  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (54.6 -6.3 32.9)  (+3 like this in the last minute)
+15:53:33  state     memory R6 private 5034 MB, working set 2899 MB | our scan buffers ~693 MB | machine 20552 of 32721 MB free  (+3 like this in the last minute)
+15:53:43  esp-filt  total=15 player=15 teamok=15 alive=15 havepos=15 groups=15  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x15  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:53:52  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 2.8 ms old (p50), 7.5 p95, 10.8 max | R6 published a new one every 6.9 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:53:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(1527 501) head=(1521 454) w=30 h=52 screen=1920x1080  (+11 like this in the last minute)
+15:53:58  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+3 like this in the last minute)
+15:53:58  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+3 like this in the last minute)
+15:54:02  entv2     754 node(s) -> 142 cluster(s) -> 17 character(s) (110 single-part, 0 unmarked, 15 flat dropped)  (+12 like this in the last minute)
+15:54:07  entv2     funnel: vt 2741 -> type(1 vote) 905 -> pos 316   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:54:07  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:724 0x86:226  (+3 like this in the last minute)
+15:54:11  view-scan the cached block has not changed in 10034 ms -- the game is not writing it any more, dropping it  (+1 like this in the last minute)
+15:54:11  view-scan the cached block has stopped changing and no other known block is live -- re-scanning for the real one, still drawing with this one meanwhile  (+1 like this in the last minute)
+15:54:12  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+80 like this in the last minute)
+15:54:12  entv2       char[4] = (48.6 -7.1 31.4) id=12 coast=0   SPAN 1.36  p50 1.23 drop 0.00 root=y anchor=r  4 part(s)  raw 1.36  box 31.44 moved 0.00/0.00 m  types: 22:2 46:2  (+106 like this in the last minute)
+15:54:15  entv2     read interval: avg 2525.0 ms  max 2819 ms  (3 samples)  (+9 like this in the last minute)
+15:54:19  view-scan camera poll: 446 read(s)/s, 86 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:54:23  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:54:23  entv2       char[11] = (41.0 -3.1 31.0) id=50 coast=0   SPAN 1.71  p50 1.76 drop 0.00 root=y anchor=r  51 part(s)  raw 1.82  box 30.99 moved 10.64/9.25 m  types: 22:1 26:2 46:47 86:1  (+8 like this in the last minute)
+15:54:23  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:54:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 18 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:54:28  esp-draw  groups=18 drawn=7 | dropped: dist=0 strict=0 local=5 team=0 decoy=0 proj=6  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:54:31  overlay   4321 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:54:31  overlay   4321 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:54:31  overlay   pacing wait p50 6.42 ms p95 7.21 max 7.52 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:54:31  overlay   loop period p50 6.95 ms p95 7.80 max 8.25 | frame work p50 0.50 p95 0.66 max 1.15 (CPU p50 0.27 p95 0.35 | our draw p50 0.03 p95 0.04 | Present MEASURED p50 0.20 p95 0.29 max 0.34) | before the wait p50 0.01 p95 0.03 max 0.78  (+1 like this in the last minute)
+15:54:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.96 ms | delivered every 6.9 ms on AVERAGE (median 6.95 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:54:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30015 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:54:31  overlay   DRIVER reads: 107366/s total | ent-cache(12332) 73519/s avg 17B, entv2-tick(9996) 17083/s avg 256B, unnamed(16476) 13242/s avg 1460B, entlist-heap(16096) 3074/s avg 226310B, cam-poll(11672) 442/s avg 256B, view-scan(5020) 6/s avg 78B  (+1 like this in the last minute)
+15:54:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:54:31  overlay   VRAM now: using 44 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:54:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:54:38  entv2       char[14] = (40.9 -4.2 32.3) id=61 coast=0   SPAN 0.51  p50 1.44 drop 0.00 root=y anchor=r  11 part(s)  raw 0.51  box 32.29 moved 5.02/6.19 m  types: 46:11
+15:54:38  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:54:38  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:54:38  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:54:38  state     counts total=18 havepos=18 groups=18 | skeletons posed=0  (+3 like this in the last minute)
+15:54:38  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (40.3 -6.7 32.4)  (+3 like this in the last minute)
+15:54:38  state     memory R6 private 5043 MB, working set 2915 MB | our scan buffers ~686 MB | machine 20551 of 32721 MB free  (+3 like this in the last minute)
+15:54:42  entv2     validate: 11 person-shaped cluster(s) but NONE at the camera (41.2 -5.3 32.4) -- this class is not people  (+5 like this in the last minute)
+15:54:43  entv2       char[18] = (41.0 -6.8 31.4) id=65 coast=0   SPAN 0.71  p50 0.50 drop 0.00 root=y anchor=r  7 part(s)  raw 0.71  box 31.43  types: 06:5 26:1 46:1  (+1 like this in the last minute)
+15:54:43  esp-filt  total=19 player=19 teamok=19 alive=19 havepos=19 groups=19  (TeamCheck=1 DeadCheck=0) | dead-by-marker=0 | byte4 seen: 0x00 x19  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build  (+11 like this in the last minute)
+15:54:53  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 3.0 ms old (p50), 17.3 p95, 41.9 max | R6 published a new one every 7.0 ms (p50), over 256 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.  (+11 like this in the last minute)
+15:54:53  esp-draw    first box: world=(57.0 20.1 31.8) feet=(5393 540) head=(5415 314) w=146 h=252 screen=1920x1080  (+11 like this in the last minute)
+15:55:06  entv2     769 node(s) -> 142 cluster(s) -> 20 character(s) (108 single-part, 0 unmarked, 14 flat dropped)  (+12 like this in the last minute)
+15:55:06  entv2       char[19] = (39.4 -6.1 31.4) id=66 coast=0   SPAN 0.87  p50 0.81 drop 0.00 root=y anchor=r  9 part(s)  raw 0.87  box 31.44  types: 22:1 46:8  (+6 like this in the last minute)
+15:55:13  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)  (+4 like this in the last minute)
+15:55:13  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people  (+4 like this in the last minute)
+15:55:14  entv2     funnel: vt 2845 -> type(1 vote) 1009 -> pos 360   [rot +0x60 pos +0x90 stride 0x100]  (+3 like this in the last minute)
+15:55:14  entv2     type bytes: 0x06:47 0x22:134 0x26:1604 0x44:6 0x46:828 0x86:226  (+3 like this in the last minute)
+15:55:15  overlay   menu opened  (tid 13400)
+15:55:15  config    saved to C:\Users\yusuf\AppData\Local\Kayaz\bin\config.ini  (+3 like this in the last minute)
+15:55:15  entv2       char[0] = (57.0 20.1 31.8) id=1 coast=0   SPAN 1.33  p50 0.72 drop 0.00 root=y anchor=r  8 part(s)  raw 1.33  box 31.83 moved 0.00/0.00 m  types: 06:5 26:2 46:1  (+82 like this in the last minute)
+15:55:15  entv2       char[4] = (48.6 -7.1 31.4) id=12 coast=0   SPAN 1.36  p50 1.33 drop 0.00 root=y anchor=r  4 part(s)  raw 1.36  box 31.44 moved 0.00/0.00 m  types: 22:2 46:2  (+136 like this in the last minute)
+15:55:19  view-scan camera poll: 440 read(s)/s, 66 of them a new view -- the frame never waits on the driver for this  (+1 like this in the last minute)
+15:55:20  entv2     read interval: avg 1738.3 ms  max 2439 ms  (3 samples)  (+9 like this in the last minute)
+15:55:24  overlay   menu closed  (tid 13400)
+15:55:26  entv2       char[11] = (41.0 -3.1 31.0) id=56 coast=0   SPAN 1.71  p50 1.75 drop 0.00 root=y anchor=r  53 part(s)  raw 1.82  box 30.99 moved 0.00/0.00 m  types: 22:2 26:2 46:48 86:1  (+15 like this in the last minute)
+15:55:28  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 18 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0  (+11 like this in the last minute)
+15:55:28  esp-draw  groups=18 drawn=6 | dropped: dist=0 strict=0 local=7 team=0 decoy=0 proj=5  (Enabled=1 Box=1 TeamCheck=1 side=unknown)  (+11 like this in the last minute)
+15:55:30  entv2       char[11] = (41.0 -3.1 31.0) id=56 coast=0   SPAN 1.76  p50 1.75 drop 0.00 root=y anchor=r  72 part(s)  raw 1.86  box 30.99 moved 0.00/0.33 m  types: 06:18 22:2 26:2 46:49 86:1  (+2 like this in the last minute)
+15:55:30  xref      1 code-shape candidates  (+2 like this in the last minute)
+15:55:31  xref      REJECTED: best candidate resolved only 8/16576 actors (arr=+0xE0 idx=+0x1F9)  (+2 like this in the last minute)
+15:55:31  overlay   4322 frames in 30.0 s | presenting every 1 refresh(es) (144 Hz target)  (+1 like this in the last minute)
+15:55:31  overlay   4322 frames in 30.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 100.0%, two 0.0%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 0 | 0 skipped with nothing on them  (+1 like this in the last minute)
+15:55:31  overlay   pacing wait p50 6.43 ms p95 7.27 max 8.59 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)  (+1 like this in the last minute)
+15:55:31  overlay   loop period p50 6.96 ms p95 7.84 max 9.60 | frame work p50 0.50 p95 0.72 max 4.83 (CPU p50 0.27 p95 0.37 | our draw p50 0.03 p95 0.05 | Present MEASURED p50 0.20 p95 0.32 max 4.42) | before the wait p50 0.01 p95 0.03 max 0.63  (+1 like this in the last minute)
+15:55:31  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 1.05 ms | delivered every 6.9 ms on AVERAGE (median 6.96 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen  (+1 like this in the last minute)
+15:55:31  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 30016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.  (+1 like this in the last minute)
+15:55:31  overlay   DRIVER reads: 122321/s total | ent-cache(12332) 91181/s avg 17B, entv2-tick(9996) 15566/s avg 256B, unnamed(16476) 12035/s avg 1605B, entlist-heap(16096) 3093/s avg 228913B, cam-poll(11672) 438/s avg 256B, view-scan(5020) 8/s avg 86B  (+1 like this in the last minute)
+15:55:31                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.  (+1 like this in the last minute)
+15:55:31  overlay   VRAM now: using 45 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)  (+1 like this in the last minute)
+15:55:31  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)  (+1 like this in the last minute)
+15:55:38  state     build 0x7CB20503 image 0x1C5CB000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat  (+3 like this in the last minute)
+15:55:38  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x8398B010  | comp array +0xE0 count +0xE8  (+3 like this in the last minute)
+15:55:38  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0  (+3 like this in the last minute)
+15:55:38  state     counts total=19 havepos=19 groups=19 | skeletons posed=0  (+3 like this in the last minute)
+15:55:38  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (42.2 -6.2 32.9)  (+3 like this in the last minute)
+15:55:38  state     memory R6 private 5037 MB, working set 2912 MB | our scan buffers ~749 MB | machine 20499 of 32721 MB free  (+3 like this in the last minute)
+15:55:40  entv2       char[13] = (41.5 -4.4 32.3) id=61 coast=0   SPAN 0.50  p50 0.49 drop 0.00 root=y anchor=r  15 part(s)  raw 0.52  box 32.28 moved 0.00/0.00 m  types: 46:15  (+12 like this in the last minute)
+15:55:43  overlay   hiding the ESP: foreground is hwnd 0x000000000001048C class 'Chrome_WidgetWin_1' pid 10536 (R6 is 0x00000000001804B6). If this keeps happening while you play, THAT window is what blanks the overlay.
+15:55:44  entv2     359/359 nodes stale -- round change, rescanning now
+15:55:44  entv2     no characters for 1428 ms -- dropping 19 stale box(es) rather than drawing them at their last position
+15:55:44  entv2     classic path has 19/19 with positions and EntityV2 returned nothing  (+1 like this in the last minute)
+15:55:46  entv2     type bytes:
+15:55:47  view-scan cached block no longer self-consistent and none of the 1 known block(s) fits — re-scanning
+15:55:47  watchdog  ===============================================  (+3 like this in the last minute)
+15:55:47  watchdog  RainbowSix.exe (pid 7972) has EXITED. Everything below  (+1 like this in the last minute)
+15:55:47  watchdog  this line about unreadable PE headers or a missing  (+1 like this in the last minute)
+15:55:47  watchdog  window is that, not a bad build. Waiting for the game.  (+1 like this in the last minute)
+15:55:47  watchdog  RainbowSix.exe (pid 7972) exit code 0x00000000 -- clean exit -- closed normally, NOT a crash
+15:55:47  watchdog  it ran for 18 min 20 s  (+1 like this in the last minute)
+15:55:47  watchdog  memory AT THE MOMENT IT WENT: 23736 of 32721 MB free (27% in use). A game that dies with little free memory may simply have run out.  (+1 like this in the last minute)
+15:55:47  watchdog  Windows logs the faulting MODULE and OFFSET for a crash: Event Viewer > Windows Logs > Application, source "Application Error", newest entry for RainbowSix.exe. That names what actually broke.  (+1 like this in the last minute)
+15:55:47            =======================================================  (+3 like this in the last minute)
+15:55:47               Rainbow Six is not running.  (+1 like this in the last minute)
+15:55:47               Please launch the game and get to the MAIN MENU.  (+1 like this in the last minute)
+15:55:49               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+15:55:50               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [xref] no .text
+15:55:53               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] funnel: vt 0 -> type(1 vote) 0 -> pos 0   [rot +0x60 pos +0x90 stride 0x100]
+15:55:54               Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+15:55:59               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] funnel: vt 0 -> type(1 vote) 0 -> pos 0   [rot +0x60 pos +0x90 stride 0x100]
+15:56:04               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+15:56:05               Waiting for RainbowSix.exe...   [entv2] funnel: vt 0 -> type(1 vote) 0 -> pos 0   [rot +0x60 pos +0x90 stride 0x100]
