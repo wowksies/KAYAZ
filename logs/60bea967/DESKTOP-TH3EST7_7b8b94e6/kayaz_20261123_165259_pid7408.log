@@ -1,0 +1,207 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-23 16:52:59   (external, driver)
+  log           C:\Users\yusuf\AppData\Local\Kayaz\logs\kayaz_20261123_165259_pid7408.log
+  process       C:\Users\yusuf\AppData\Local\Kayaz\bin\rohkslnafa.exe   pid 7408
+  OUR exe       0x00007FF6DC8F0000  size 0x007B9000  stamp 0x6B046502   <- NOT the game
+  our code at   0x00007FF6DC9F92E0
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  1920x1080
+========================================================================
+  THE GAME'S BUILD STAMP IS NOT ABOVE -- externally the line above is
+  our own exe. R6's stamp is on the `[state] build 0x...` line, and on
+  `[entlist] ... this is build stamp 0x...`. Read one of those.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+16:52:59  panel     console buffer 64x14, window 64x14
+16:53:00  auth      gate 1/3 ok
+16:53:00  backend   Connected to WinNotify.
+16:53:00  attach    RainbowSix.exe pid 180 is holding 339 MB -- that is a startup stub, not the loaded game. Waiting for the real one instead of deriving every class against a process that is about to exit.
+16:53:11  attach    pid 180: 527 MB and steady for 3000 ms -- this is the game.
+16:53:11  backend   Process PID: 180
+16:53:11  backend   CR3 (DTB): 0x4a5b72000
+16:53:11  backend   Base: 0x7ff70e950000
+16:53:11            === kayaz.xyz external ================================================
+16:53:11              when          2026-11-23 16:53:11   (external, driver)
+16:53:11              log           C:\Users\yusuf\AppData\Local\Kayaz\logs\kayaz_20261123_165259_pid7408.log
+16:53:11              game pid      180
+16:53:11              game module   0x00007FF70E950000  BUILD STAMP 0x7CB20503
+16:53:11              machine       16 core(s)  31 GB RAM
+16:53:11            ========================================================================
+16:53:11              READ THE BUILD STAMP ABOVE before calling anything here a regression.
+16:53:11  config    loaded from C:\Users\yusuf\AppData\Local\Kayaz\bin\config.ini
+16:53:11  view-scan scanner started for pid=180
+16:53:11  overlay   overlay thread started  (tid 14996)
+16:53:11  overlay   waiting for R6's window
+16:53:11  entlist   entitylist.cfg: rva 0x13BA5378 pos +0x160
+16:53:11  entlist   node class NOT pinned: this is build stamp 0x7CB20503 image 0x1C5CB000, and node_rva 0x146F4428 was measured on a different build
+16:53:11  dumpcfg   C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat is for build 0x81F5E896, this is 0x7CB20503 -- but it carries 6 cross-build anchor(s), keeping it as a candidate
+16:53:11  entv2     warm-up: resolving class + first sweep
+16:53:11  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+16:53:11  nskel     no game thread block yet -- it is found from the game window's thread, so the named pose waits for the window
+16:53:11  entlist   waiting for the game to finish loading before resolving anything (image readable, window not yet)
+16:53:11  dumpcfg   no cfg for build 0x7CB20503, using the CROSS-BUILD anchors from C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (dumped on build 0x81F5E896) -- the classes are re-found on this build, no dump needed here
+16:53:11  havok     walk saw 26 region(s), 135 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+16:53:12  view-scan pattern not found (950ms) [rpm_ok=1209 rpm_blocked=0 drv_saved=0 drv_fail=0] — retry in 1000ms
+16:53:12  entv2     sig: 0 raw hit(s) in .text
+16:53:12  entv2     sig: no lea found behind any hit
+16:53:12  entv2     derive: signature found nothing in 1015 ms -- falling back to the heap route.
+16:53:12  entv2     heap A: 472 distinct module pointer(s) in 188 ms
+16:53:12  entv2     heap B: 0 real vtable(s)
+16:53:12  entv2     derive: heap route did not resolve either. Retrying shortly.
+16:53:12  entv2     warm-up: class not resolved after 1219 ms
+16:53:12  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+16:53:13  watchdog  ===============================================
+16:53:13  watchdog  RainbowSix.exe (pid 180) has EXITED. Everything below
+16:53:13  watchdog  this line about unreadable PE headers or a missing
+16:53:13  watchdog  window is that, not a bad build. Waiting for the game.
+16:53:13  watchdog  RainbowSix.exe (pid 180) exit code 0x0000002A -- unexpected -- a code above 0xC0000000 is an unhandled exception
+16:53:13  watchdog  it ran for 0 min 2 s
+16:53:13  watchdog  memory AT THE MOMENT IT WENT: 23699 of 32721 MB free (27% in use). A game that dies with little free memory may simply have run out.
+16:53:13  watchdog  Windows logs the faulting MODULE and OFFSET for a crash: Event Viewer > Windows Logs > Application, source "Application Error", newest entry for RainbowSix.exe. That names what actually broke.
+16:53:13            =======================================================
+16:53:13               Rainbow Six is not running.
+16:53:13               Please launch the game and get to the MAIN MENU.
+16:53:14               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+16:53:14  entv2     heap route: cannot read PE headers
+16:53:15               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+16:53:16               Waiting for RainbowSix.exe.   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+16:53:17               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] sig: no .text section
+16:53:19               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+16:53:20               Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+16:53:21               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+16:53:21  overlay   still no window for pid 180 after 10 s -- is the game running, and borderless/windowed?  (tid 14996)
+16:53:23               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] sig: no .text section
+16:53:23               Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+16:53:26               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+16:53:29               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   
+16:53:29  +         Game detected -- attaching.
+16:53:29  entv2     sig: no .text section
+16:53:42  entv2     RESET (the game process changed) -- re-deriving from scratch
+16:53:42  watchdog  re-deriving from scratch against the new process: the anchors, the entity class and the build stamp all came from the old one.
+16:53:42  watchdog  re-attached: pid 6452, module 0x00007FF70E950000
+16:53:44  watchdog  RainbowSix.exe (pid 6452) exit code 0x00000000 -- clean exit -- closed normally, NOT a crash
+16:53:44               Waiting for RainbowSix.exe   [entv2] sig: no .text section
+16:53:46               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+16:53:47               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] sig: no .text section
+16:53:47               Waiting for RainbowSix.exe...   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+16:53:50               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [entv2] sig: no .text section
+16:53:51               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+16:53:53               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] sig: no .text section
+16:53:55               Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+16:53:57               Waiting for RainbowSix.exe.   
+16:54:11  havok     walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))  (+7 like this in the last minute)
+16:54:13  attach    pid 17728: 508 MB and steady for 3000 ms -- this is the game.  (+1 like this in the last minute)
+16:54:13  backend   Process PID: 17728  (+1 like this in the last minute)
+16:54:13  backend   CR3 (DTB): 0x2f4ce2000  (+1 like this in the last minute)
+16:54:13  backend   Base: 0x7ff754c90000  (+1 like this in the last minute)
+16:54:13  entv2     cache: fingerprint matched but the class is not in this process -- deriving fresh
+16:54:15  entv2     sig: 0 raw hit(s) in .text
+16:54:15  entv2     sig: no lea found behind any hit
+16:54:15  entv2     derive: signature found nothing in 734 ms -- falling back to the heap route.  (+20 like this in the last minute)
+16:54:15  entv2     heap A: 638 distinct module pointer(s) in 156 ms
+16:54:15  entv2     heap B: 0 real vtable(s)
+16:54:15  entv2     derive: heap route did not resolve either. Retrying shortly.  (+20 like this in the last minute)
+16:54:17  entv2     classic path has 0/0 with positions and EntityV2 returned nothing  (+8 like this in the last minute)
+16:54:19  entv2     heap C: 0 (class, transform) candidate(s) -- every orthonormal offset kept, not just the first
+16:54:21  overlay   still no window for pid 17728 after 70 s -- is the game running, and borderless/windowed?  (tid 14996)  (+5 like this in the last minute)
+16:54:31  overlay   GPU: AMD Radeon RX 5700 XT, 8152 MB dedicated, 16361 MB shared
+16:54:31  overlay   displays: 1 [1920x1080@144Hz PRIMARY]
+16:54:31  overlay   VRAM at startup: using 2 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)
+16:54:31  overlay   frame-latency waitable object ACTIVE (requested 2, reported 2): wait before drawing, with compositor pacing retained
+16:54:31  overlay   window + D3D11 created  (tid 14996)
+16:54:31  chams     galaxy texture 512x512 with 10 mip levels ready
+16:54:31  intro     logo 252x293 uploaded, glow built
+16:54:31  badges    78 operator badges ready (500x400 atlas)
+16:54:31  overlay   ImGui + fonts ready  (tid 14996)
+16:54:31  overlay   R6's window thread is tid 9544  (tid 14996)
+16:54:31  overlay   R6 window 0x00000000000C0A74 1920x1080 -- our overlay window 0x00000000000A084C on top of it (no hooks), transparency via DirectComposition, click-through layered (the pointer is R6's)
+16:54:31  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+16:54:31  overlay   paced by DwmFlush (Present(0,0)); a waitable timer is held in reserve if DwmFlush stops pacing
+16:54:31  overlay   display refresh 6.94 ms (144 Hz); overlay thread at HIGHEST priority
+16:54:31  overlay   configured frame cap 0 FPS (0 = uncapped); menu always follows display cadence.
+16:54:31  overlay   stream proof OFF -- the overlay is in captures again
+16:54:31  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=1 DeadCheck=1) | dead-by-marker=0 | byte4 seen:   <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+16:54:31  state     build 0x00000000 image 0x00000000 | cfg dumped on 0x81F5E896: C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+16:54:31  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x00000000  | comp array +0xE0 count +0xE8
+16:54:31  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+16:54:31  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+16:54:31  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+16:54:31  team      0 character(s): 0 labelled attacker(s), 0 labelled defender(s)
+16:54:31  team      need at least 2 named operators on each side -- run this in a live round once the operator ESP has named people
+16:54:31  state     memory R6 private 3225 MB, working set 2123 MB | our scan buffers ~132 MB | machine 22433 of 32721 MB free
+16:54:31  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=1 Glow: 0 bod(ies) | named 0 | MESH PARKED: drew 0 of 0, 0 tri(s) | declined off 0 sk 0 load 0 | refused asset 0 offscreen 0 big 0 culled 0 | VIS off: 0 shown 0 hidden of 0 occluder(s)
+16:54:31  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=0  (Enabled=1 Box=1 TeamCheck=1 side=unknown)
+16:54:31  intro     9.38 s track, 36 beat(s), 101 bpm, timeline 9.38 s -- analysed in 30 ms
+16:54:31  entlist   game is up (image readable, window found) after 80 s -- resolving now
+16:54:32  entlist   sig: 4 hits but they DISAGREE on the vtable -- refusing to use it, keeping rva 0x13BA5378. The pattern has half-broken; re-cut it.
+16:54:32  entlist   build stamp 0xFCF66644 image 0x1B0C0000 is not the build the fallback rva 0x13BA5378 came from -- not using it
+16:54:32  xbuild    4 anchor(s) from C:\Users\yusuf\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat
+16:54:32  overlay   frame-latency waiting verified after 120 accepted frames
+16:54:32  xbuild    read the game's .text: 275 MB in 206 ms (100.0% complete)
+16:54:32  xbuild    140533 vtable-store site(s), 45609 distinct vtable(s) in 327 ms
+16:54:32  xbuild    CHARACTER rva 0x11647F60  (anchor, 63 ms)
+16:54:32  xbuild    ENTITY    rva 0x1154E208  (anchor, 51 ms)
+16:54:32  xbuild    component array +0xE0, count +0xE8  (first of 1 candidate pair(s) from the ENTITY constructor on THIS build -- the sweep re-measures it if it pairs nothing)
+16:54:33  xbuild    DAMAGE    3 candidate(s) -- the sweep will pick the one every character owns (283 ms)
+16:54:33  xbuild    SKELETON  0 candidate(s) -- not used (58 ms)
+16:54:33  xbuild    facing candidate(s): +0x50 +0x60 -- the one whose yaw tracks the camera wins
+16:54:33  entlist   CROSS-BUILD CHARACTER MODE: CHARACTER 0x11647F60, ENTITY 0x1154E208 array +0xE0/+0xE8, DAMAGE unresolved, hit list +0x350/+0x358 -- the position offset is measured from the characters themselves
+16:54:33  entlist   class = 0x7FF7662D7F60 (base 0x7FF754C90000 + rva 0x11647F60 CHARACTER sig), pos +0x0, rot +0x0 (will search)
+16:54:35  entlist   none of the 3 DAMAGE candidate(s) is owned by enough characters (best 1 of 1) -- health stays unknown
+16:54:35  entlist   char sweep: 69 entities, 1 character comps, 0 damage comps -> 1 character(s), 0 with health, 0 with 2+ damage comps (2401 ms, next sweep rests 4802 ms)
+16:54:35  learned   2 value(s) remembered from an earlier run on this build (C:\Users\yusuf\AppData\Local\Kayaz\cfg\learned_FCF66644_1B0C0000.txt)
+16:54:35  entlist   the remembered position +0x1F0 reads as a world point on 0 of 1 character(s), all at the same point -- keeping it and measuring alongside
+16:54:35  xbuild    1 character(s) in memory -- the position offset needs 3 or more, so it is measured once a round is up
+16:54:35  havok     1 body range(s), 18 validated bodies in 18 slots (0 sparse ranges); individual layout validation unchanged
+16:54:35  havok     18 bodies: 18 slab occluder(s) kept, 0 blob(s) dropped (they enclose air -- a facade's box would hide someone stood in its window) | 4992 ms
+16:54:35  havok     world spans x 0..1  y 0..0  z 0..1  |  camera (0.0 0.0 0.0)
+16:54:35  havok     ^^ IF THE CAMERA IS NOT INSIDE THAT BOX, Havok and the ESP are not in the same coordinate space, every ray is meaningless, and nothing will ever be reported hidden.
+16:54:36  overlay   698 frames in 5.0 s | presenting every 1 refresh(es) (144 Hz target)
+16:54:36  overlay   698 frames in 5.0 s | paced by DwmFlush at 6.944 ms (DWM refresh 6.944 ms) | delivered one refresh apart 99.9%, two 0.1%, three 0.0%, 4+ 0.0% -- the first number IS "frame perfect" | missed 1 | 0 skipped with nothing on them | 16 identical to the frame already up (not presented, not a miss) | 0 congested Present(s), 0 frame(s) at half rate after them
+16:54:36  overlay   pacing wait p50 6.56 ms p95 7.15 max 13.57 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.94 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)
+16:54:36  overlay   loop period p50 6.92 ms p95 7.69 max 13.94 | frame work p50 0.39 p95 0.66 max 2.31 (CPU p50 0.19 p95 0.32 | our draw p50 0.04 p95 0.06 | Present MEASURED p50 0.17 p95 0.29 max 1.96) | before the wait p50 0.00 p95 0.00 max 0.88
+16:54:36  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 0.97 ms | delivered every 7.2 ms on AVERAGE (median 6.92 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 0.0 ms for how late our layer reaches the screen
+16:54:36  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 5016 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.
+16:54:36  overlay   DRIVER reads: 35384/s total | ent-cache(6080) 26415/s avg 137403B, havok-world(17564) 4738/s avg 201020B, entlist-heap(15872) 2292/s avg 207230B, ent-sweep(9992) 539/s avg 197123B, unnamed(11868) 371/s avg 210822B, unnamed(18260) 361/s avg 196064B, unnamed(13160) 221/s avg 209571B, unnamed(8040) 134/s avg 215615B, entv2-warmup(1760) 120/s avg 875183B, entlist-tick(17068) 113/s avg 1015426B, nskel-pose(8248) 55/s avg 1041070B, unnamed(17928) 24/s avg 382451B
+16:54:36                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.
+16:54:36  overlay   VRAM now: using 34 MB of a 7384 MB budget (reserved 0 MB, could reserve 3820 MB)
+16:54:36  framepace game focused: 698 attempts, 698 submitted, 0 GPU-busy; average wait 6.53 ms, CPU 0.26 ms, Present 0.19 ms (max 2.75); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 6.53 ms/wait, buffer 0.01 ms/wait (max 0.07, including retries); frame limit 2
+16:54:36  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)
+16:54:40  nskel     GetTransforms: 2 call site(s) matched the shape -- trying them in turn, the one that poses somebody wins
+16:54:40  nskel     GetTransforms at rva 0x4A7CB0, returns to 0x4BD0B6A (6969 ms)
+16:54:40  native    emulating on R6's window thread (tid 9544, TEB 0x79CBAC6000)
+16:54:40  nskel     reading the pose decode keys through game thread block 0x79CBAC6000
+16:54:40  intro     finished
+16:54:41  overlay   DRIVER reads: 5207/s total | entlist-heap(15872) 5205/s avg 88882B
+16:54:41  framepace game focused: 632 attempts, 632 submitted, 0 GPU-busy; average wait 6.64 ms, CPU 0.15 ms, Present 0.14 ms (max 0.27); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 6.67 ms/wait, buffer 0.01 ms/wait (max 0.23, including retries); frame limit 2
+16:54:42  view-scan pattern not found (88854ms) [rpm_ok=0 rpm_blocked=0 drv_saved=0 drv_fail=0] — retry in 2000ms
+16:54:46  entv2     heap: camera unavailable
+16:54:46  overlay   DRIVER reads: 28769/s total | view-scan(8640) 22986/s avg 28390B, entlist-heap(15872) 5663/s avg 94205B, ent-cache(6080) 118/s avg 112024B
+16:54:46  framepace game focused: 5 attempts, 5 submitted, 0 GPU-busy; average wait 6.85 ms, CPU 0.11 ms, Present 0.19 ms (max 0.27); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 6.84 ms/wait, buffer 0.00 ms/wait (max 0.01, including retries); frame limit 2
+16:54:50  entv2     heap C2: 0 candidate(s) hold WORLD positions (model-local frames dropped)
+16:54:51  entlist   DAMAGE chosen from 3 candidate(s): vtable rva 0x11932F60, owned by 2 of 2 character(s)
+16:54:51  entlist     runner-up: rva 0x114E8C40 owned by 0
+16:54:52  pos       no orthonormal transform in actor 0x202AD6A9860 +0x10..+0x400 (sel@0x5E=0)
+16:54:52  overlay   DRIVER reads: 14667/s total | entlist-heap(15872) 6069/s avg 77182B, view-scan(8640) 4882/s avg 53489B, ent-cache(6080) 2394/s avg 190508B, ent-sweep(11100) 1320/s avg 241196B
+16:54:52  framepace game focused: 6 attempts, 6 submitted, 0 GPU-busy; average wait 6.77 ms, CPU 0.10 ms, Present 0.16 ms (max 0.17); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 6.84 ms/wait, buffer 0.00 ms/wait (max 0.02, including retries); frame limit 2
+16:54:54  pos       learned inline transform at actor+0x310 (translation +0x340) -- confirmed on 2 actors
+16:54:56  esp-filt  total=4078 player=4078 teamok=4077 alive=4077 havepos=733 groups=132  (TeamCheck=1 DeadCheck=1) | dead-by-marker=0 | byte4 seen: 0x00 x4074 0x80 x1 0xB2 x1 0xD2 x1 0xE7 x1  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+16:54:57  overlay   DRIVER reads: 144538/s total | ent-cache(6080) 123750/s avg 26B, view-scan(8640) 15038/s avg 21381B, ent-sweep(11100) 4371/s avg 99726B, entlist-heap(15872) 1376/s avg 182262B
+16:54:57  framepace game focused: 239 attempts, 239 submitted, 0 GPU-busy; average wait 6.02 ms, CPU 0.75 ms, Present 0.21 ms (max 0.36); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 6.37 ms/wait, buffer 0.00 ms/wait (max 0.05, including retries); frame limit 2
+16:55:00  mapgeo    8370 character(s), steady for 2.5 s -- everyone has spawned, re-reading the walls
+16:55:01  esp-filt  total=8370 player=8370 teamok=8367 alive=8367 havepos=2316 groups=168  (TeamCheck=1 DeadCheck=1) | dead-by-marker=0 | byte4 seen: 0x00 x8362 0x80 x3 0xAF x1 0xB2 x1 0xB4 x1 0xD2 x1  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+16:55:02  overlay   DRIVER reads: 210432/s total | ent-cache(6080) 192365/s avg 17B, entlist-heap(15872) 7726/s avg 42354B, ent-sweep(11100) 6260/s avg 50796B, view-scan(8640) 4077/s avg 22004B
+16:55:02  framepace game focused: 494 attempts, 494 submitted, 0 GPU-busy; average wait 5.04 ms, CPU 1.65 ms, Present 0.21 ms (max 0.45); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.04 ms/wait, buffer 0.01 ms/wait (max 0.06, including retries); frame limit 2
+16:55:07  overlay   DRIVER reads: 175933/s total | ent-cache(6080) 169505/s avg 17B, view-scan(8640) 3334/s avg 18004B, entlist-heap(15872) 2154/s avg 212589B, ent-sweep(11100) 936/s avg 344476B
+16:55:07  framepace game focused: 499 attempts, 499 submitted, 0 GPU-busy; average wait 4.83 ms, CPU 1.88 ms, Present 0.22 ms (max 0.40); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 4.80 ms/wait, buffer 0.01 ms/wait (max 0.30, including retries); frame limit 2
+16:55:12  xref      1 code-shape candidates
+16:55:12  xref      REJECTED: best candidate resolved only 5/8370 actors (arr=+0xE0 idx=+0x1F9)
+16:55:12  overlay   DRIVER reads: 129991/s total | ent-cache(6080) 103917/s avg 17B, view-scan(8640) 14209/s avg 21968B, entlist-heap(15872) 7480/s avg 32839B, unnamed(1832) 3366/s avg 17087B, unnamed(11100) 565/s avg 424916B, ent-sweep(292) 451/s avg 239478B
+16:55:12  framepace game focused: 521 attempts, 521 submitted, 0 GPU-busy; average wait 4.78 ms, CPU 1.87 ms, Present 0.23 ms (max 0.59); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 4.77 ms/wait, buffer 0.02 ms/wait (max 0.28, including retries); frame limit 2
+16:55:17  overlay   DRIVER reads: 102548/s total | ent-cache(6080) 88989/s avg 17B, unnamed(1832) 9760/s avg 9B, entlist-heap(15872) 1913/s avg 224656B, ent-sweep(292) 1882/s avg 279347B
+16:55:17  framepace game unfocused: 200 attempts, 200 submitted, 0 GPU-busy; average wait 5.15 ms, CPU 1.63 ms, Present 0.19 ms (max 0.35); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.09 ms/wait, buffer 0.01 ms/wait (max 0.07, including retries); frame limit 2
+16:55:17  framepace game focused: 313 attempts, 313 submitted, 0 GPU-busy; average wait 4.96 ms, CPU 1.74 ms, Present 0.19 ms (max 0.43); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 4.96 ms/wait, buffer 0.02 ms/wait (max 0.39, including retries); frame limit 2
+16:55:18  entv2     classic path has 2317/8370 with positions and EntityV2 returned nothing  (+6 like this in the last minute)
+16:55:20  overlay   hiding the ESP: foreground is hwnd 0x000000000001017E class 'Shell_TrayWnd' pid 7724 (R6 is 0x00000000000C0A74). If this keeps happening while you play, THAT window is what blanks the overlay.
+16:55:24  view-scan view_block @ 0x2029C978270  in 4743ms  cam=(-106.8,-13.9,0.9)  [rpm_ok=0 rpm_blocked=380 drv_saved=1245 drv_fail=380]
