@@ -401,6 +401,10 @@ export default async function handler(req, res) {
 
     const bod = parsedBody || await readBody(req);
     const { h, revoked, reset, duration, banHwid, target: rawTarget } = bod;
+    for (const flag of ['revoked', 'reset', 'banHwid']) {
+      if (bod[flag] !== undefined && typeof bod[flag] !== 'boolean')
+        return send(res, 400, { error: 'bad ' + flag });
+    }
     const target = pickTarget(rawTarget);
     if (!target) return send(res, 400, { error: 'bad target' });
     if (target === 'r6' && !r6Configured()) return send(res, 503, { error: 'r6 key store not configured' });
@@ -437,7 +441,7 @@ export default async function handler(req, res) {
         patch.disabled = revoked;
         patch.active = !revoked;
       }
-      if (reset) patch.hwid = '';
+      if (reset === true) patch.hwid = '';
       if (duration !== undefined && duration !== '') {
         const d = parseDuration(duration);
         if (d === null) return send(res, 400, { error: 'bad duration' });
@@ -446,12 +450,21 @@ export default async function handler(req, res) {
       }
     } else {
       if (typeof revoked === 'boolean') patch.revoked = revoked;
-      if (reset) { patch.device = null; patch.usedAt = 0; }
+      if (reset === true) { patch.device = null; patch.usedAt = 0; }
     }
     if (!Object.keys(patch).length) return send(res, 400, { error: 'nothing to change' });
 
     try {
-      await store.patch(node + '/' + h, patch);
+      if (target === 'r6') {
+        const changed = await r6db.transaction(node + '/' + h, current => {
+          if (!current || (!isAdmin && current.owner !== acc.id)) return undefined;
+          const version = current.auth_version ?? 0;
+          if (!Number.isSafeInteger(version) || version < 0 || version >= Number.MAX_SAFE_INTEGER)
+            throw new Error('bad auth version');
+          return { ...current, ...patch, auth_version: version + 1 };
+        });
+        if (!changed) return send(res, 409, { error: 'key changed; refresh and retry' });
+      } else await store.patch(node + '/' + h, patch);
     } catch (e) {
       return send(res, 500, { error: 'server error' });
     }
@@ -460,7 +473,8 @@ export default async function handler(req, res) {
       : (patch.revoked === undefined && patch.disabled === undefined
           ? 'key.unbind'
           : (revoked ? 'key.revoke' : 'key.restore'));
-    await audit(acc, act, target + ':' + h.slice(0, 12), req);
+    await audit(acc, act, target + ':' + h.slice(0, 12) +
+      (reset === true && target === 'r6' ? ':previous-hwid=' + String(rec.hwid || '').slice(0, 16) : ''), req);
     return send(res, 200, { ok: true, target });
   }
 
@@ -487,7 +501,16 @@ export default async function handler(req, res) {
         if (!v || (target === 'r6' ? v.hwid : v.device)) continue;
         if (target === 'r6' && !v.owner) continue;
         if (!isAdmin && v.owner !== acc.id) continue;
-        try { await store.del(node + '/' + k); removed++; } catch (e) {}
+        try {
+          if (target === 'r6') {
+            const deleted = await r6db.transaction(node + '/' + k, current => {
+              if (!current || current.hwid || !current.owner || (!isAdmin && current.owner !== acc.id))
+                return undefined;
+              return null;
+            });
+            if (deleted === null) removed++;
+          } else { await store.del(node + '/' + k); removed++; }
+        } catch (e) {}
       }
       await audit(acc, 'keys.prune', removed + ' (' + target + ')', req);
       return send(res, 200, { removed, target });

@@ -39,14 +39,17 @@ function drop(path) {
   if (cur && typeof cur === 'object') delete cur[ks[ks.length - 1]];
 }
 
+let afterR6Read = null;
 globalThis.fetch = async (url, opts = {}) => {
   const u = new URL(url);
   const path = (u.host === 'fake-r6.local' ? 'r6/' : '') + u.pathname.replace(/^\//, '').replace(/\.json$/, '');
   const method = String(opts.method || 'GET').toUpperCase();
+  const etag = '"' + Buffer.from(JSON.stringify(read(path))).toString('base64') + '"';
+  if (new Headers(opts.headers).has('if-match') && new Headers(opts.headers).get('if-match') !== etag) return new Response('conflict', { status: 412 });
   const body = opts.body ? JSON.parse(opts.body) : null;
   let value = null;
 
-  if (method === 'GET') value = clone(read(path));
+  if (method === 'GET') { value = clone(read(path)); if (afterR6Read && path.startsWith('r6/keys/')) { const edit = afterR6Read; afterR6Read = null; edit(); } }
   else if (method === 'PUT') { write(path, body); value = body; }
   else if (method === 'PATCH') {
     const cur = read(path);
@@ -61,10 +64,10 @@ globalThis.fetch = async (url, opts = {}) => {
     value = { name: id };
   } else if (method === 'DELETE') { drop(path); value = null; }
 
-  return { ok: true, status: 200, text: async () => JSON.stringify(value) };
+  return { ok: true, status: 200, headers: new Headers({ etag }), json: async () => clone(value), text: async () => JSON.stringify(value) };
 };
 
-const { sha256, normCode, r6Status, verifyPassword } = await import('../api/_lib.js');
+const { sha256, normCode, r6Status, verifyPassword, r6db } = await import('../api/_lib.js');
 const { default: login } = await import('../api/login.js');
 const { default: logout } = await import('../api/logout.js');
 const { default: session } = await import('../api/session.js');
@@ -205,6 +208,29 @@ ok('r6 key uses the launcher record shape', (() => {
 ok('r6 key label encrypted at rest', String(store.r6.keys[sellerHash].memo).startsWith('kz1.'));
 ok('r6 key label is generic for the launcher', store.r6.keys[sellerHash].label === 'KAYAZ R6');
 ok('key owner recorded server side', store.r6.keys[sellerHash].owner === sellerId);
+
+// An edit must preserve an HWID bound after the initial ETag read.
+afterR6Read = () => { store.r6.keys[sellerHash].hwid = 'b'.repeat(64); };
+await r6db.transaction('keys/' + sellerHash, current => ({ ...current, duration_days: 30 }));
+ok('conditional edit retries and preserves a concurrent HWID bind', store.r6.keys[sellerHash].hwid === 'b'.repeat(64));
+// Return to the original duration for the existing panel scenarios.
+store.r6.keys[sellerHash].duration_days = 0;
+// Binding edits are explicit booleans and rotate the session generation.
+store.r6.keys[sellerHash].hwid = 'b'.repeat(64);
+for (const reset of ['false', 'true', 1, [], {}]) {
+  r = res();
+  await keys(req({ method: 'PATCH', cookie: adminCookie, body: { h: sellerHash, reset, target: 'r6' } }), r);
+  ok('malformed reset flag cannot clear a binding', r.statusCode === 400 && store.r6.keys[sellerHash].hwid === 'b'.repeat(64), json(r));
+}
+r = res();
+await keys(req({ method: 'PATCH', cookie: adminCookie, body: { h: sellerHash, reset: true, target: 'r6' } }), r);
+ok('explicit reset clears only the binding and rotates auth generation', r.statusCode === 200 && store.r6.keys[sellerHash].hwid === '' && store.r6.keys[sellerHash].auth_version === 1 && store.r6.keys[sellerHash].owner === sellerId, json(r));
+r = res();
+await keys(req({ method: 'PATCH', cookie: adminCookie, body: { h: sellerHash, revoked: true, target: 'r6' } }), r);
+ok('revoking a key rotates auth generation', r.statusCode === 200 && store.r6.keys[sellerHash].auth_version === 2 && store.r6.keys[sellerHash].disabled === true, json(r));
+r = res();
+await keys(req({ method: 'PATCH', cookie: adminCookie, body: { h: sellerHash, revoked: false, target: 'r6' } }), r);
+ok('restoring a key does not revive previous tokens', r.statusCode === 200 && store.r6.keys[sellerHash].auth_version === 3, json(r));
 ok('plaintext code never stored', !JSON.stringify(store).includes(sellerCode));
 
 r = res();

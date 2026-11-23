@@ -568,6 +568,28 @@ export const db = {
 };
 
 export const r6db = {
+  // Compare-and-set preserves a concurrent launcher HWID bind or admin edit.
+  // update must be pure: Firebase can reject the ETag and invoke it again.
+  transaction: async (path, update) => {
+    if (!r6Configured()) throw new Error('unconfigured');
+    const url = `${R6_DB_URL}/${path}.json?auth=${encodeURIComponent(R6_DB_SECRET)}`;
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const get = await fetch(url, { headers: { 'X-Firebase-ETag': 'true' } });
+      if (!get.ok) throw new Error('db unavailable');
+      const etag = get.headers.get('etag');
+      if (!etag) throw new Error('db etag unavailable');
+      const next = update(await get.json());
+      if (next === undefined) return undefined; // Explicitly abort without writing.
+      const put = await fetch(url, {
+        method: 'PUT', headers: { 'content-type': 'application/json', 'if-match': etag },
+        body: JSON.stringify(next)
+      });
+      if (put.status === 412) continue;
+      if (!put.ok) throw new Error('db unavailable');
+      return next;
+    }
+    throw new Error('db conflict');
+  },
   get: p => r6Fetch(p),
   put: (p, v) => r6Fetch(p, { method: 'PUT', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
   patch: (p, v) => r6Fetch(p, { method: 'PATCH', body: JSON.stringify(v), headers: { 'content-type': 'application/json' } }),
