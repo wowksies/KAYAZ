@@ -1,0 +1,88 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-24 19:24:45   (external, driver)
+  log           C:\Users\milan\AppData\Local\Kayaz\logs\kayaz_20261124_192445_pid18896.log
+  process       C:\Users\milan\AppData\Local\Kayaz\bin\qiuzxivfpd.exe   pid 18896
+  OUR exe       0x00007FF76DAD0000  size 0x00E2A000  stamp 0x6B05D5F5   <- NOT the game
+  our code at   0x00007FF76DC07ED0
+  machine       Windows 10.0.26300  12 core(s)  16 GB RAM  1920x1080
+========================================================================
+  THE GAME'S BUILD STAMP IS NOT ABOVE -- externally the line above is
+  our own exe. R6's stamp is on the `[state] build 0x...` line, and on
+  `[entlist] ... this is build stamp 0x...`. Read one of those.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+19:24:45  panel     console buffer 120x30, window 120x30
+19:24:45  auth      gate 1/3 ok
+19:24:45  backend   Connected to WinNotify.
+19:24:49  attach    pid 14736: 3790 MB and steady for 3000 ms -- this is the game.
+19:24:49  backend   Process PID: 14736
+19:24:49  backend   CR3 (DTB): 0x36892c000
+19:24:49  backend   Base: 0x7ff64ad20000
+19:24:49            === kayaz.xyz external ================================================
+19:24:49              when          2026-11-24 19:24:49   (external, driver)
+19:24:49              log           C:\Users\milan\AppData\Local\Kayaz\logs\kayaz_20261124_192445_pid18896.log
+19:24:49              game pid      14736
+19:24:49              game module   0x00007FF64AD20000  BUILD STAMP 0xE2BA906A
+19:24:49              machine       12 core(s)  15 GB RAM
+19:24:49            ========================================================================
+19:24:49              READ THE BUILD STAMP ABOVE before calling anything here a regression.
+19:24:49  config    loaded from C:\Users\milan\AppData\Local\Kayaz\bin\config.ini
+19:24:49  view-scan scanner started for pid=14736
+19:24:49  overlay   overlay thread started  (tid 20012)
+19:24:49  overlay   waiting for R6's window
+19:24:49  view-scan camera poll thread ready
+19:24:49  dumpcfg   C:\Users\milan\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat is for build 0x81F5E896, this is 0xE2BA906A -- but it carries 6 cross-build anchor(s), keeping it as a candidate
+19:24:49  entlist   entitylist.cfg: rva 0x13BA5378 pos +0x160
+19:24:49  entlist   node class NOT pinned: this is build stamp 0xE2BA906A image 0x1B408000, and node_rva 0x146F4428 was measured on a different build
+19:24:49  dumpcfg   no cfg for build 0xE2BA906A, using the CROSS-BUILD anchors from C:\Users\milan\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat (dumped on build 0x81F5E896) -- the classes are re-found on this build, no dump needed here
+19:24:49  view-scan layout pid=14736 module=0x7FF64AD20000 anchor-fnv=DF80FE5E length=40 block-from-hit=-676 cam+0x190 vp+0x250
+19:24:49  entv2     warm-up: resolving class + first sweep
+19:24:49  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+19:24:49  entlist   waiting for the game to finish loading before resolving anything (image readable, window not yet)
+19:24:49  nskel     no game thread block yet -- it is found from the game window's thread, so the named pose waits for the window
+19:24:49  havok     walk saw 40 region(s), 57 MB, 55 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+19:24:49  entv2     sig: 0 raw hit(s) in .text
+19:24:49  entv2     sig: no lea found behind any hit
+19:24:49  entv2     derive: signature found nothing in 469 ms -- falling back to the heap route.
+19:24:49  entv2     heap route: cannot read PE headers
+19:24:49  entv2     derive: heap route did not resolve either. Retrying shortly.
+19:24:49  entv2     warm-up: class not resolved after 469 ms
+19:24:49  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+19:24:51  watchdog  ===============================================
+19:24:51  watchdog  RainbowSix.exe (pid 14736) has EXITED. Everything below
+19:24:51  watchdog  this line about unreadable PE headers or a missing
+19:24:51  watchdog  window is that, not a bad build. Waiting for the game.
+19:24:51  watchdog  RainbowSix.exe (pid 14736) exit code 0x00000000 -- clean exit -- closed normally, NOT a crash
+19:24:51  watchdog  it ran for 0 min 2 s
+19:24:51  watchdog  memory AT THE MOMENT IT WENT: 8273 of 16256 MB free (49% in use). A game that dies with little free memory may simply have run out.
+19:24:51  watchdog  Windows logs the faulting MODULE and OFFSET for a crash: Event Viewer > Windows Logs > Application, source "Application Error", newest entry for RainbowSix.exe. That names what actually broke.
+19:24:51            =======================================================
+19:24:51               Rainbow Six is not running.
+19:24:51               Please launch the game and get to the MAIN MENU.
+19:24:52               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+19:24:53               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+19:24:54               Waiting for RainbowSix.exe.   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+19:24:55               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] sig: no .text section
+19:24:57               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+19:24:58               Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+19:24:59               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+19:24:59               Waiting for RainbowSix.exe   [overlay] still no window for pid 14736 after 10 s -- is the game running, and borderless/windowed?  (tid 20012)
+19:25:01               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] sig: no .text section
+19:25:01               Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+19:25:04               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+19:25:09               Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+19:25:09  overlay   still no window for pid 14736 after 20 s -- is the game running, and borderless/windowed?  (tid 20012)
+19:25:13               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] sig: no .text section
+19:25:16               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] sig: no .text section
+19:25:19  view-scan camera poll: 0 read(s)/s, 0 of them a new view | failed reads 0, no-block ticks 1105, current block 0x0
+19:25:21               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+19:25:22               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..   [entv2] sig: no .text section
+19:25:24               Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+19:25:29               Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+19:25:31               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [entv2] sig: no .text section
+19:25:34               Waiting for RainbowSix.exe..   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+19:25:37               Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe      Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] sig: no .text section
+19:25:39               Waiting for RainbowSix.exe.      Waiting for RainbowSix.exe..      Waiting for RainbowSix.exe...   [entv2] classic path has 0/0 with positions and EntityV2 returned nothing
+19:25:41               Waiting for RainbowSix.exe...      Waiting for RainbowSix.exe   [havok] walk saw 0 region(s), 0 MB, 0 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
