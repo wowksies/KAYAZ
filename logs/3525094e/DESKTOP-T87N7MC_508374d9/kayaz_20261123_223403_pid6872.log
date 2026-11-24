@@ -1,0 +1,228 @@
+=== kayaz.xyz internal =================================================
+  when          2026-11-23 22:34:03   (external, driver)
+  log           C:\Users\kajus\AppData\Local\Kayaz\logs\kayaz_20261123_223403_pid6872.log
+  process       C:\Users\kajus\AppData\Local\Kayaz\bin\kwftksfnmd.exe   pid 6872
+  OUR exe       0x00007FF618470000  size 0x00D6D000  stamp 0x6B04BDFA   <- NOT the game
+  our code at   0x00007FF61857E490
+  machine       Windows 10.0.19045  16 core(s)  32 GB RAM  1920x1080
+========================================================================
+  THE GAME'S BUILD STAMP IS NOT ABOVE -- externally the line above is
+  our own exe. R6's stamp is on the `[state] build 0x...` line, and on
+  `[entlist] ... this is build stamp 0x...`. Read one of those.
+  A different stamp is a DIFFERENT BINARY -- another account, another
+  store, or a game update -- so every class and offset is re-derived
+  from scratch and none of them are comparable across stamps.
+========================================================================
+22:34:03  panel     console buffer 64x14, window 64x14
+22:34:04  auth      gate 1/3 ok
+22:34:04  backend   Connected to WinNotify.
+22:34:07  attach    pid 2156: 5874 MB and steady for 3000 ms -- this is the game.
+22:34:07  backend   Process PID: 2156
+22:34:07  backend   CR3 (DTB): 0x1dbd78000
+22:34:07  backend   Base: 0x7ff6f7d90000
+22:34:07            === kayaz.xyz external ================================================
+22:34:07              when          2026-11-23 22:34:07   (external, driver)
+22:34:07              log           C:\Users\kajus\AppData\Local\Kayaz\logs\kayaz_20261123_223403_pid6872.log
+22:34:07              game pid      2156
+22:34:07              game module   0x00007FF6F7D90000  BUILD STAMP 0x81F5E896
+22:34:07              machine       16 core(s)  31 GB RAM
+22:34:07            ========================================================================
+22:34:07              READ THE BUILD STAMP ABOVE before calling anything here a regression.
+22:34:07  config    auto-loading last: main
+22:34:07  config    loaded from C:\Users\kajus\AppData\Local\Kayaz\bin\configs\main.ini
+22:34:07  view-scan scanner started for pid=2156
+22:34:07  overlay   overlay thread started  (tid 28556)
+22:34:07  view-scan camera poll thread ready
+22:34:07  overlay   waiting for R6's window
+22:34:07  entlist   entitylist.cfg: rva 0x13BA5378 pos +0x160
+22:34:07  entlist   node class NOT pinned: this is build stamp 0x81F5E896 image 0x1BBE4000, and node_rva 0x146F4428 was measured on a different build
+22:34:07  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper_81F5E896.cfg is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  entv2     warm-up: resolving class + first sweep
+22:34:07  entlist   waiting for the game to finish loading before resolving anything (image readable, window not yet)
+22:34:07  nskel     fitted rigs PARKED (kFittedRigsParked) -- the named pose is the skeleton
+22:34:07  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\dumper.cfg is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  nskel     no game thread block yet -- it is found from the game window's thread, so the named pose waits for the window
+22:34:07  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\KAYAZ-Int.dat is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper_81F5E896.cfg is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\cfg\dumper.cfg is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\KAYAZ-Int.dat is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper_81F5E896.cfg is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   D:\Important\potenial side projects\2\Custom Dumper\bin\results\dumper.cfg is for this build too but has older/equal config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   D:\Important\potenial side projects\2\try\build\KAYAZ-Int.dat has newer config data than C:\Users\kajus\AppData\Local\Kayaz\bin\results\KAYAZ-Int.dat -- using it (dump generation 20261123220439)
+22:34:07  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper_81F5E896.cfg is for this build too but has older/equal config data than D:\Important\potenial side projects\2\try\build\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   D:\Important\potenial side projects\2\try\build\dumper.cfg is for this build too but has older/equal config data than D:\Important\potenial side projects\2\try\build\KAYAZ-Int.dat -- not used
+22:34:07  dumpcfg   loaded D:\Important\potenial side projects\2\try\build\KAYAZ-Int.dat (34 values) for build 0x81F5E896 -- it goes first, signatures and built-in values are the fallback
+22:34:07  dumpcfg   selected dump generation 20261123220439
+22:34:07  view-scan dumper cfg: built-in camera anchor still valid on this build
+22:34:07  view-scan layout pid=2156 module=0x7FF6F7D90000 anchor-fnv=DF80FE5E length=40 block-from-hit=-676 cam+0x190 vp+0x250
+22:34:07  overlay   GPU: NVIDIA GeForce RTX 4060, 7956 MB dedicated, 16274 MB shared
+22:34:07  overlay   displays: 1 [1920x1080@165Hz PRIMARY]
+22:34:07  overlay   VRAM at startup: using 7 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)
+22:34:07  overlay   frame-latency waitable object ACTIVE (requested 2, reported 2): wait before drawing, with compositor pacing retained
+22:34:07  overlay   window + D3D11 created  (tid 28556)
+22:34:07  chams     galaxy texture 512x512 with 10 mip levels ready
+22:34:07  intro     off in the config -- not loading any of it
+22:34:07  badges    78 operator badges ready (500x400 atlas)
+22:34:07  overlay   ImGui + fonts ready  (tid 28556)
+22:34:07  overlay   R6's window thread is tid 28192  (tid 28556)
+22:34:07  overlay   R6 window 0x00000000000E0C54 1920x1080 -- our overlay window 0x00000000003506BE on top of it (no hooks), transparency via DirectComposition, click-through layered (the pointer is R6's)
+22:34:07  overlay   INSERT opens the menu. Run R6 in BORDERLESS or windowed.
+22:34:07  overlay   paced by DwmFlush (Present(0,0)); a waitable timer is held in reserve if DwmFlush stops pacing
+22:34:07  overlay   display refresh 6.06 ms (165 Hz); overlay thread at HIGHEST priority
+22:34:07  overlay   configured frame cap 0 FPS (0 = uncapped); menu always follows display cadence.
+22:34:07  overlay   stream proof OFF -- the overlay is in captures again
+22:34:07  team      entity+0x71 (u8) remembered from an earlier session on this build
+22:34:07  esp-filt  total=0 player=0 teamok=0 alive=0 havepos=0 groups=0  (TeamCheck=1 DeadCheck=1) | dead-by-marker=0 | byte4 seen:   <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+22:34:07  state     build 0x81F5E896 image 0x1BBE4000 | cfg dumped on 0x00000000: (none)
+22:34:07  state     CHARACTER rva 0x00000000  ENTITY rva 0x00000000  DAMAGE rva 0x00000000  | comp array +0xE0 count +0xE8
+22:34:07  state     mode char=0 xbuild=0 pos_ok=0 ready=0 anchors=0
+22:34:07  state     counts total=0 havepos=0 groups=0 | skeletons posed=0
+22:34:07  state     health native_fn=0 receiver=the entity thread_teb=0x0 | camera (0.0 0.0 0.0)
+22:34:07  state     memory R6 private 5874 MB, working set 3462 MB | our scan buffers ~19 MB | machine 17363 of 32547 MB free
+22:34:07  skel      Skeleton=1 Solid=0 style=0 | have_sk 0 of 0 | block entered 0 | max nb 0 nlink 0 | bones projected 0 | solid: seen 0 span 0px drew 0 | body outline=0: 0 bod(ies), 0 line(s) | chams=0 Flat: 0 bod(ies) | named 0 | MESH PARKED: drew 0 of 0, 0 tri(s) | declined off 0 sk 0 load 0 | refused asset 0 offscreen 0 big 0 culled 0 | VIS off: 0 shown 0 hidden of 0 occluder(s)
+22:34:07  esp-draw  groups=0 drawn=0 | dropped: dist=0 strict=0 local=0 team=0 decoy=0 proj=0  (Enabled=1 Box=0 TeamCheck=1 side=learned)
+22:34:07  overlay   SPIKE: one frame took 50.9 ms (wait 4.1 | pre-wait 0.61 | CPU 43.08 | draw 0.75 | Present 2.3)
+22:34:07  overlay     DRIVER during it: 1851 read(s) in 50.9 ms = 36/ms, against 0/ms on normal frames. -> driver traffic was NOT elevated: the stall is not our own reads.
+22:34:07  view-scan pattern slice: 281/5699 region(s), requested 69 MB, anchor hits 1, rejected first 0 after-60ms 0, result=accepted
+22:34:07  view-scan view_block @ 0x26988E14CC0  in 418ms  cam=(40.5,-5.5,32.9)  [rpm_ok=303 rpm_blocked=0 drv_saved=0 drv_fail=0]
+22:34:08  entlist   game is up (image readable, window found) after 0 s -- resolving now
+22:34:08  entv2     sig: 0 raw hit(s) in .text
+22:34:08  entv2     sig: no lea found behind any hit
+22:34:08  entv2     derive: signature found nothing in 672 ms -- falling back to the heap route.
+22:34:08  cam-age   WHILE THE CAMERA WAS MOVING, the matrix we drew with was 5.2 ms old (p50), 20.9 p95, 39.1 max | R6 published a new one every 8.5 ms (p50), over 64 sample(s). Age near one publish interval means we are as fresh as the game allows; several intervals means we are sitting on stale matrices.
+22:34:08  entlist   sig: 2 hits but they DISAGREE on the vtable -- refusing to use it, keeping rva 0x13BA5378. The pattern has half-broken; re-cut it.
+22:34:08  entlist   build stamp 0x81F5E896 image 0x1BBE4000 is not the build the fallback rva 0x13BA5378 came from -- not using it
+22:34:08  entlist   ENTITY    vtable rva 0x11EDB188  (from dumper cfg)
+22:34:08  entlist   CHARACTER vtable rva 0x11ED4A98  (from dumper cfg)
+22:34:08  entlist   DAMAGE    vtable rva 0x120392A0  (from dumper cfg)
+22:34:08  dumpcfg   CHARACTER position: +0x220 from dumper cfg (built-in +0x1E0)
+22:34:08  dumpcfg   ENTITY component array: +0xC8 from dumper cfg (built-in +0xE0)
+22:34:08  dumpcfg   ENTITY component count: +0xD0 from dumper cfg (built-in +0xE8)
+22:34:08  entlist   CHARACTER MODE: identity by component, per-frame position at +0x220, health ON
+22:34:08  entlist   class = 0x7FF709C64A98 (base 0x7FF6F7D90000 + rva 0x11ED4A98 CHARACTER sig), pos +0x220, rot +0x0 (will search)
+22:34:08  nskel     cached .rdata rva 0x11C02000 (13105 KB) -- the build's decryption reads its AES constants from there, and each one was a separate driver request
+22:34:08  nskel     GetTransforms at rva 0x4F8B10 from the dumper cfg (call site verified)
+22:34:08  native    emulating on R6's window thread (tid 28192, TEB 0xE080576000)
+22:34:08  nskel     reading the pose decode keys through game thread block 0xE080576000
+22:34:09  overlay   frame-latency waiting verified after 120 accepted frames
+22:34:10  entv2     heap A: 48806 distinct module pointer(s) in 1922 ms
+22:34:10  entv2     heap B: 1140 real vtable(s)
+22:34:10  entlist   char sweep: 15398 entities, 8 character comps, 20 damage comps -> 8 character(s), 8 with health, 0 with 2+ damage comps (2184 ms, next sweep rests 4368 ms)
+22:34:10  entlist   OK -- 8 object(s) of the configured class
+22:34:10  entlist   dead at (41.0 6.3 31.4): health 0
+22:34:10  entlist   rotation: NO offset holds on a majority of 8 entit(ies) -- none at all
+22:34:10  entlist   6 live entit(ies) from 8 slot(s)
+22:34:10  entlist     [0] 0000026B87466220  (41.9 -9.9 31.4)  hp -1/-1
+22:34:10  entlist     [3] 0000026B8D65EC90  (41.0 6.3 31.4)  hp 0/100  DEAD
+22:34:10  native    345854 functions in .pdata, code rva 0x1000 size 0x11C00C00
+22:34:10  nskel     Reflex layout from the dumper cfg: class rva 0x1208D090, component +0x20, abstraction +0xB8, position +0x70, facing +0x80
+22:34:10  nskel     layout resolved on attempt 1
+22:34:10  nskel     0 of 6 character(s) posed | 0 step(s), 0 read(s) last run | not posed: 5 unbound
+22:34:10  mapgeo    radar dots: 6787, from 23190 world matri(ces) around you (372 on characters left out) -- every placed object, no class chosen (2779 ms, around 41 -6 33)
+22:34:10  mapgeo    the dots are saved to C:\Users\kajus\AppData\Local\Kayaz\logs\radar_dots_81F5E896_24070453.bin -- send it if the radar looks wrong
+22:34:11  native    health: 3 function(s) fit the shape -- keeping all of them and letting a live run decide, the first that returns a sane value wins
+22:34:11  native      candidate 0: rva 0x7419DF0, current r11d, maximum r8d
+22:34:11  native      candidate 1: rva 0x100FF320, current ebp, maximum r14d
+22:34:11  native      candidate 2: rva 0x10123700, current r13d, maximum ebx
+22:34:11  native    game module TLS slot index 0 -- threads without it are skipped
+22:34:12  native    107 of 108 thread(s) have the game's TLS slot -- only those can run its code
+22:34:12  native    module-CRC method rva 0x453460 on component vtable rva 0x121983D0 (slot 35): checksum +0x1F4/+0x1EC/+0x1F8/+0x1E4/+0x1E8, primary +0x1B0, 1 list / 2 signature candidate(s)
+22:34:12  native    module layout PROVEN on 0x26B8ECA5E60 (7 module(s), CRC matches the game's, names Ash): checksum +0x1EC, primary +0x1B0, list +0x1D0/+0x1D8, signature +0x74
+22:34:12  native    0x26B87466220 is Ash
+22:34:12  native    0x26B8E42FEC0: module list valid but its id 0xC6741545 is not in the operator table (new operator?)
+22:34:12  native    health 0 of 6 read | operator 1 of 6 (Ash) | 1 CRC layout(s) of 41 vtables tried
+22:34:12  nskel     bone records at 0x26B5C588B20, 247 of 0x1C bytes:
+22:34:12  nskel      [ 0] par    -1 id B6C65665 | FFFFF6000000000000106D5901000000000000006556C6B6FFFFFFFF | f+4    0.000 4170447604154368.000    0.000    0.000   -0.000     -nan
+22:34:12  nskel      [ 1] par     0 id 22E53C03 | 0000F30001000100007E0000010000000080C922033CE5226556C6B6 | f+4    0.000    0.000    0.000    0.000    0.000   -0.000
+22:34:12  nskel      [ 2] par     1 id DED10611 | 0100E7000200020009401FD001000000008000F51106D1DE033CE522 | f+4    0.000 -10687095808.000    0.000 -162893102129327478092326361890816.000 -7530872347742437376.000    0.000
+22:34:12  nskel      [ 3] par     2 id 530EC1CB | 0200CE000300030009008FF8010000000080DBF7CBC10E531106D1DE | f+4    0.000 -23203098869498218101840603655438336.000    0.000 -8903977816003083316112843314561024.000 613136662528.000 -7530872347742437376.000
+22:34:12  nskel      [ 4] par     3 id 8F39FA4E | 0300CC000400040009FEFFFF010000000080FFFF4EFA398FCBC10E53 | f+4    0.000     -nan    0.000     -nan   -0.000 613136662528.000
+22:34:12  nskel      [ 6] par     5 id F60647E5 | 05002B0006006900073EA00F010000000080A0FFE54706F6F4AB3016 | f+4    0.000    0.000    0.000     -nan -680884739623771423199702816915456.000    0.000
+22:34:12  nskel      [ 7] par     6 id 6BB3F727 | 0600280007006A0003FFE0FF010000000080EBF127F7B36BE54706F6 | f+4    0.000     -nan    0.000 -2332279034013656437909950038016.000 435129731310612598625402880.000 -680884739623771423199702816915456.000
+22:34:12  nskel      [ 9] par     8 id 75F94D30 | 08001B0009006C00050B94FF010000000080201C304DF975AAA15772 | f+4    0.000     -nan    0.000    0.000 632054426887916964265108405485568.000 4271021886134350906409084780544.000
+22:34:12  native    health: no receiver/thread pair lets the run finish (47 receiver(s) x 107 thread(s) tried) -- retrying
+22:34:12  native    health run stopped at rva 0x7419E30 (read failed) after 16 step(s), address 0xDAAF7E2CF71D1BC5
+22:34:12  native    health: diagnostic written to D:\Important\potenial side projects\2\try\build\native_health_81F5E896.txt
+22:34:12  overlay   560 frames in 5.0 s | presenting every 1 refresh(es) (165 Hz target)
+22:34:12  overlay   560 frames in 5.0 s | paced by DwmFlush at 6.061 ms (DWM refresh 6.061 ms) | delivered one refresh apart 91.5%, two 7.3%, three 1.2%, 4+ 0.0% -- the first number IS "frame perfect" | missed 40 | 0 skipped with nothing on them | 118 identical to the frame already up (not presented, not a miss) | 6 congested Present(s), 109 frame(s) at half rate after them
+22:34:12  overlay   pacing wait p50 5.50 ms p95 6.90 max 9.40 (asked for p50 0.00) -- a wait near zero while frame work exceeds 6.06 ms means the pacer is OFF and Present is pacing the loop | wake error p50 +0.00 p95 +0.00 p1 +0.00 (negative = the wait ended on something other than the timer) | 0 early wake(s), 0 timeout(s)
+22:34:12  overlay   loop period p50 6.09 ms p95 9.78 max 20.60 | frame work p50 0.30 p95 4.79 max 12.16 (CPU p50 0.12 p95 0.29 | our draw p50 0.04 p95 0.08 | Present MEASURED p50 0.06 p95 4.67 max 11.92) | before the wait p50 0.01 p95 0.02 max 0.64
+22:34:12  overlay   slot margin p50 +0.00 ms p1 +0.00 -- how early Present had returned before the compose it aimed at; it must stay POSITIVE or the frame missed its slot | lead now 3.03 ms | delivered every 9.0 ms on AVERAGE (median 6.09 -- if these disagree the stalls are bimodal and the median is lying) -> telling the ESP to lead 1.1 ms for how late our layer reaches the screen
+22:34:12  overlay   loop produced NO frame on 0 iteration(s), eating ~0 ms of the 5015 ms window (R6 not foreground -> overlay hidden + Sleep(50)); 0 parked. THIS TIME IS IN NO OTHER NUMBER HERE -- every percentile above is per delivered frame. If this is large it is the whole gap between "64% of frames are one refresh apart" and 20 fps.
+22:34:12  overlay   DRIVER reads: 40009/s total | entlist-heap(22756) 11001/s avg 59732B, nskel-rebind(20676) 5865/s avg 112328B, entv2-warmup(27996) 5748/s avg 216898B, nskel-pose(15216) 4502/s avg 13950B, entlist-tick(22236) 3614/s avg 241B, native-info(28584) 3287/s avg 18676B, mapgeo(22284) 3056/s avg 214976B, havok-world(30688) 2491/s avg 206978B, cam-poll(15212) 441/s avg 256B
+22:34:12                      A thread with a SMALL avg is one IOCTL per field: coalesce its struct into one read and that traffic goes away. A large avg is real data and coalescing buys nothing.
+22:34:12  overlay   VRAM now: using 46 MB of a 7188 MB budget (reserved 0 MB, could reserve 3722 MB)
+22:34:12  framepace game focused: 560 attempts, 560 submitted, 0 GPU-busy; average wait 5.56 ms, CPU 0.22 ms, Present 0.64 ms (max 11.92); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.57 ms/wait, buffer 0.09 ms/wait (max 7.75, including retries); frame limit 2
+22:34:12  overlay   Present said: OCCLUDED 0 (DXGI THROTTLES presents when it says this -- a large number here IS the stall), still-drawing 0, other 0 (last 0x00000000)
+22:34:13  entlist   revived at (41.0 6.3 31.4) -- health baseline reset to full
+22:34:13  entv2     heap C: 49 (class, transform) candidate(s) -- every orthonormal offset kept, not just the first
+22:34:13  entv2     heap: camera up -- ranking by who stands at it
+22:34:14  havok     walk saw 3567 region(s), 2308 MB, 296 MB of it blank (ReadProcessMemory on the same process sees 4062 region(s))
+22:34:14  havok     10 body range(s), 291 validated bodies in 404 slots (6 sparse ranges); individual layout validation unchanged
+22:34:14  havok     291 bodies: 280 slab occluder(s) kept, 11 blob(s) dropped (they enclose air -- a facade's box would hide someone stood in its window) | 6910 ms
+22:34:14  havok     world spans x -0..74  y -42..96  z -19..41  |  camera (41.5 -8.9 32.9)
+22:34:14  havok     ^^ IF THE CAMERA IS NOT INSIDE THAT BOX, Havok and the ESP are not in the same coordinate space, every ray is meaningless, and nothing will ever be reported hidden.
+22:34:15  nskel     6 of 6 character(s) posed | 408 step(s), 52 read(s) last run
+22:34:16  entv2     heap C2: 4 candidate(s) hold WORLD positions (model-local frames dropped)
+22:34:16  entv2     heap D: skipped -- 3 candidate(s) already have a cluster standing at the camera
+22:34:16  entv2     heap D: watching 0 s for movement (a bonus, not a requirement -- shape alone can carry the pick)
+22:34:16  entv2     heap E: consensus = 0 person/people from movement
+22:34:16  entv2       rva 0x11F69A28  rot +0x60 pos +0x90 stride 0x100  0 moving, 65 person-shaped, 96% off-origin  <== AT THE CAMERA
+22:34:16  entv2       rva 0x11F699A8  rot +0x60 pos +0x90 stride 0x1E0  0 moving, 12 person-shaped, 91% off-origin
+22:34:16  entlist   0 rotation + 0 head anchor(s) of 6 entit(ies)
+22:34:17  nskel     pose data refused: buffer-changing-between-reads, buffer 0x26B944235B0 count 247 joint-index -1
+22:34:17  entv2     labelled: no cluster at the camera, so no known person to learn from
+22:34:17  overlay   DRIVER reads: 70281/s total | nskel-pose(15216) 28583/s avg 166B, entlist-heap(22756) 22004/s avg 59816B, entlist-tick(22236) 9311/s avg 250B, entv2-warmup(27996) 6908/s avg 214398B, native-info(28584) 2232/s avg 8B, havok-world(30688) 739/s avg 207997B, cam-poll(15212) 497/s avg 256B
+22:34:17  framepace game focused: 642 attempts, 642 submitted, 0 GPU-busy; average wait 5.45 ms, CPU 0.21 ms, Present 0.67 ms (max 20.76); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.37 ms/wait, buffer 0.19 ms/wait (max 9.89, including retries); frame limit 2
+22:34:18  entv2     type sweep: 11 offset(s) over 0x100 byte(s) gave character-shaped clusters
+22:34:18  entv2       pass   +0xB in {0x0A 0x0F 0x21 0x22 0x25 0xC4 0xC6 0xCF 0xD7 0xD8 0xDA 0xDD 0xDF}: 58 node(s), 6 cluster(s)
+22:34:18  entv2       pass   +0x10 in {0x18 0x28 0x38 0x58 0x78 0x88 0xB8 0xC8 0xD8 0xE8 0xF8}: 30 node(s), 6 cluster(s)
+22:34:18  entv2       pass   +0x13 in {0x91 0x93 0x98 0x9C 0x9D 0x9E 0xE4}: 31 node(s), 6 cluster(s)
+22:34:18  entv2       pass   +0x14 in {0x90}: 34 node(s), 6 cluster(s)
+22:34:18  entv2       pass   +0x15 in {0xEC}: 34 node(s), 6 cluster(s)
+22:34:18  entv2       pass   +0x19 in {0x81 0x83 0xA0}: 37 node(s), 6 cluster(s)
+22:34:18  entv2       pass   +0x1B in {0x00 0x01 0x08 0x0C}: 37 node(s), 6 cluster(s)
+22:34:18  entv2       pass   +0x9B in {0x00 0x3F 0xBF 0xC0 0xC1 0xC2}: 69 node(s), 13 cluster(s)
+22:34:18  entv2       pass   +0xAB in {0x05 0x83 0x84 0x85 0x86 0x87}: 69 node(s), 13 cluster(s)
+22:34:18  entv2       pass   +0xBB in {0x71 0x73 0x76 0xCD 0xF0 0xF1 0xF2 0xF3}: 71 node(s), 13 cluster(s)
+22:34:19  entv2       move   +0xB in {0x0A 0x0F 0x21 0x22 0x25 0xC4 0xC6 0xCF 0xD7 0xD8 0xDA 0xDD 0xDF}: 0 of 6 cluster(s) displaced
+22:34:19  entv2       move   +0x10 in {0x18 0x28 0x38 0x58 0x78 0x88 0xB8 0xC8 0xD8 0xE8 0xF8}: 0 of 6 cluster(s) displaced
+22:34:19  entv2       move   +0x13 in {0x91 0x93 0x98 0x9C 0x9D 0x9E 0xE4}: 0 of 6 cluster(s) displaced
+22:34:19  entv2       move   +0x14 in {0x90}: 0 of 6 cluster(s) displaced
+22:34:19  entv2       move   +0x15 in {0xEC}: 0 of 6 cluster(s) displaced
+22:34:19  entv2       move   +0x19 in {0x81 0x83 0xA0}: 0 of 6 cluster(s) displaced
+22:34:19  entv2       move   +0x1B in {0x00 0x01 0x08 0x0C}: 0 of 6 cluster(s) displaced
+22:34:19  entv2       move   +0x9B in {0x00 0x3F 0xBF 0xC0 0xC1 0xC2}: 0 of 13 cluster(s) displaced
+22:34:19  entv2       move   +0xAB in {0x05 0x83 0x84 0x85 0x86 0x87}: 0 of 13 cluster(s) displaced
+22:34:19  entv2       move   +0xBB in {0x71 0x73 0x76 0xCD 0xF0 0xF1 0xF2 0xF3}: 0 of 13 cluster(s) displaced
+22:34:19  entv2     derive: WARNING nothing displaced -- everyone may be standing still; picked by coverage, re-derive while moving
+22:34:19  entv2     derive: type = +0xBB in {0x71 0x73 0x76 0xCD 0xF0 0xF1 0xF2 0xF3}  (13 cluster(s), 71 node(s), 0 displaced = 0%)
+22:34:20  entv2     validate: 0 person-shaped cluster(s) but NONE at the camera (41.3 -6.1 32.9) -- this class is not people
+22:34:20  entv2       rva 0x11F69A28 rejected -- byte found but only 0 person-shaped cluster(s)
+22:34:20  entlist   facing changes/s per character: 52.2 0.1 0.1 0.1 0.1 0.1
+22:34:21  entv2     labelled 15 point(s) on the player at the camera, 1133 prop point(s), from 59 cluster(s)
+22:34:22  entv2       labelled +0x157  {0xC0}  100% of me, 11% of props -> 9 cluster(s)  <== chosen
+22:34:22  entv2     derive: type = +0x157 in {0xC0} learned from the player at the camera, verified on 9 cluster(s)
+22:34:22  overlay   DRIVER reads: 63482/s total | nskel-pose(15216) 25322/s avg 166B, entv2-warmup(27996) 13467/s avg 208553B, entlist-heap(22756) 11002/s avg 59816B, entlist-tick(22236) 8785/s avg 251B, native-info(28584) 4352/s avg 8B, cam-poll(15212) 485/s avg 256B, unnamed(18532) 60/s avg 986091B
+22:34:22  framepace game unfocused: 62 attempts, 62 submitted, 0 GPU-busy; average wait 5.66 ms, CPU 0.22 ms, Present 0.27 ms (max 10.28); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.71 ms/wait, buffer 0.01 ms/wait (max 0.21, including retries); frame limit 2
+22:34:22  framepace game focused: 474 attempts, 474 submitted, 0 GPU-busy; average wait 5.37 ms, CPU 0.22 ms, Present 0.69 ms (max 24.58); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.37 ms/wait, buffer 0.16 ms/wait (max 7.58, including retries); frame limit 2
+22:34:27  overlay   DRIVER reads: 60223/s total | nskel-pose(15216) 23952/s avg 166B, entlist-heap(22756) 11898/s avg 71891B, entv2-warmup(27996) 10188/s avg 217303B, entlist-tick(22236) 7959/s avg 251B, native-info(28584) 4241/s avg 8B, unnamed(18532) 1500/s avg 280180B, cam-poll(15212) 478/s avg 256B
+22:34:27  framepace game focused: 680 attempts, 680 submitted, 0 GPU-busy; average wait 5.44 ms, CPU 0.22 ms, Present 0.63 ms (max 11.34); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.40 ms/wait, buffer 0.12 ms/wait (max 10.07, including retries); frame limit 2
+22:34:28  entv2     at the camera on 3 of 3 sample(s) -- that is a person, not a coincidence
+22:34:28  entv2     heap route: vtable = 0x7FF709D66D20 (RVA 0x11FD6D20, stride 0x170, rot +0xB0, pos +0xE0) in 20141 ms -- no .text read
+22:34:32  framepace game focused: 695 attempts, 695 submitted, 0 GPU-busy; average wait 5.45 ms, CPU 0.20 ms, Present 0.75 ms (max 15.52); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.31 ms/wait, buffer 0.20 ms/wait (max 8.35, including retries); frame limit 2
+22:34:33  entv2     cached the derived class -- next launch on this build skips the heap route entirely
+22:34:33  entv2     node sweep on STANDBY -- the entity list is driving, so this pipeline's results are unused. It resumes automatically if the entity list stops resolving.
+22:34:33  entv2     warm-up: class ready 26172 ms after start -- first sweep running
+22:34:33  entv2     classic path has 0/0 with positions and EntityV2 returned nothing
+22:34:33  esp-src   ENTITY LIST driving -- 6 entit(ies)
+22:34:36  mapgeo    6 character(s), steady for 2.5 s -- everyone has spawned, re-reading the walls
+22:34:37  view-scan camera poll: 482 read(s)/s, 110 of them a new view | failed reads 0, no-block ticks 16, current block 0x26988E14CC0
+22:34:37  esp-draw    first box: world=(57.0 20.4 31.4) feet=(2402 693) head=(2398 595) w=63 h=109 screen=1920x1080
+22:34:37  esp-filt  total=5 player=5 teamok=5 alive=5 havepos=5 groups=5  (TeamCheck=1 DeadCheck=1) | dead-by-marker=0 | byte4 seen: 0x00 x5  <- IsPlayerDead only matches 0x84/0x82; if those never appear the dead check is a NO-OP on this build
+22:34:37  overlay   DRIVER reads: 71544/s total | nskel-pose(15216) 31289/s avg 166B, entlist-heap(22756) 19965/s avg 43716B, entlist-tick(22236) 10504/s avg 249B, native-info(28584) 4160/s avg 8B, mapgeo(22284) 2784/s avg 218261B, entv2-warmup(27996) 1994/s avg 208948B, cam-poll(15212) 523/s avg 256B, ent-cache(23296) 319/s avg 8B
+22:34:37  framepace game focused: 635 attempts, 635 submitted, 0 GPU-busy; average wait 5.22 ms, CPU 0.32 ms, Present 0.74 ms (max 10.89); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.25 ms/wait, buffer 0.11 ms/wait (max 6.33, including retries); frame limit 2
+22:34:42  overlay   DRIVER reads: 66486/s total | nskel-pose(15216) 34533/s avg 166B, entlist-heap(22756) 15089/s avg 87150B, entlist-tick(22236) 11343/s avg 248B, native-info(28584) 4315/s avg 8B, cam-poll(15212) 536/s avg 256B, ent-cache(23296) 388/s avg 8B, mapgeo(22284) 275/s avg 182943B
+22:34:42  framepace game focused: 619 attempts, 619 submitted, 0 GPU-busy; average wait 5.26 ms, CPU 0.35 ms, Present 0.79 ms (max 20.68); nonblocking enabled, latency wait active (0 timeouts, 0 recoveries total); compositor 5.21 ms/wait, buffer 0.17 ms/wait (max 9.19, including retries); frame limit 2
+22:34:45  native    health: the game's function will not run on this build after 12 rounds -- stopped for this session to free the CPU. Health comes from the damage records.
